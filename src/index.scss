@@ -30,6 +30,8 @@
 @import "certificates/scss/Certificates";
 @import "group-configurations/GroupConfigurations";
 
+@import url('https://victoria-eclass-lms-assets.s3.amazonaws.com/assets/mfe_overrides.css');
+
 // To apply the glow effect to the selected Section/Subsection, in the Course Outline
 div.row:has(> div > div.highlight) {
   animation: 5s glow;
