@@ -22,7 +22,7 @@ import {
 import { v4 as uuid4 } from 'uuid';
 
 import { ToastContext } from '../../generic/toast-context';
-import { useCopyToClipboard } from '../../generic/clipboard';
+import { useClipboard } from '../../generic/clipboard';
 import { getCanEdit } from '../../course-unit/data/selectors';
 import { useCreateLibraryBlock, useLibraryPasteClipboard, useAddComponentsToCollection } from '../data/apiHooks';
 import { useLibraryContext } from '../common/context';
@@ -114,6 +114,112 @@ const AddContentContainer = () => {
     blockType: 'libraryContent',
   };
 
+  return (
+    <>
+      {collectionId ? (
+        componentPicker && (
+          <>
+            <AddContentButton contentType={libraryContentButtonData} onCreateContent={onCreateContent} />
+            <PickLibraryContentModal
+              isOpen={isAddLibraryContentModalOpen}
+              onClose={closeAddLibraryContentModal}
+            />
+          </>
+        )
+      ) : (
+        <AddContentButton contentType={collectionButtonData} onCreateContent={onCreateContent} />
+      )}
+      <hr className="w-100 bg-gray-500" />
+      {/* Note: for MVP we are hiding the unuspported types, not just disabling them. */}
+      {contentTypes.filter(ct => !ct.disabled).map((contentType) => (
+        <AddContentButton
+          key={`add-content-${contentType.blockType}`}
+          contentType={contentType}
+          onCreateContent={onCreateContent}
+        />
+      ))}
+    </>
+  );
+};
+
+const AddAdvancedContentView = ({
+  closeAdvancedList,
+  onCreateContent,
+  advancedBlocks,
+  isBlockTypeEnabled,
+}: AddAdvancedContentViewProps) => {
+  const intl = useIntl();
+  return (
+    <>
+      <div className="d-flex">
+        <Button variant="tertiary" iconBefore={KeyboardBackspace} onClick={closeAdvancedList}>
+          {intl.formatMessage(messages.backToAddContentListButton)}
+        </Button>
+      </div>
+      {Object.keys(advancedBlocks).map((blockType) => (
+        isBlockTypeEnabled(blockType) ? (
+          <AddContentButton
+            key={`add-content-${blockType}`}
+            contentType={{
+              name: advancedBlocks[blockType].displayName,
+              blockType,
+              icon: AutoAwesome,
+              disabled: false,
+            }}
+            onCreateContent={onCreateContent}
+          />
+        ) : null
+      ))}
+    </>
+  );
+};
+
+export const parseErrorMsg = (
+  intl,
+  error: any,
+  detailedMessage: MessageDescriptor,
+  defaultMessage: MessageDescriptor,
+) => {
+  try {
+    const { response: { data } } = error;
+    const detail = data && (Array.isArray(data) ? data.join() : String(data));
+    if (detail) {
+      return intl.formatMessage(detailedMessage, { detail });
+    }
+  } catch (_err) {
+    // ignore
+  }
+  return intl.formatMessage(defaultMessage);
+};
+
+const AddContentContainer = () => {
+  const intl = useIntl();
+  const {
+    libraryId,
+    collectionId,
+    openCreateCollectionModal,
+    openComponentEditor,
+  } = useLibraryContext();
+  const updateComponentsMutation = useAddComponentsToCollection(libraryId, collectionId);
+  const createBlockMutation = useCreateLibraryBlock();
+  const pasteClipboardMutation = useLibraryPasteClipboard();
+  const { showToast } = useContext(ToastContext);
+  const canEdit = useSelector(getCanEdit);
+  const { showPasteXBlock, sharedClipboardData } = useClipboard(canEdit);
+
+  const [isAddLibraryContentModalOpen, showAddLibraryContentModal, closeAddLibraryContentModal] = useToggle();
+  const [isAdvancedListOpen, showAdvancedList, closeAdvancedList] = useToggle();
+
+  // We use block types data from backend to verify the enabled basic and advanced blocks.
+  // Also, we use that data to get the translated display name of the block.
+  const { data: blockTypesDataList } = useBlockTypesMetadata(libraryId);
+  const blockTypesData = useMemo(() => blockTypesDataList?.reduce((acc, block) => {
+    acc[block.blockType] = block;
+    return acc;
+  }, {}), [blockTypesDataList]);
+
+  const isBlockTypeEnabled = (blockType: string) => !getConfig().LIBRARY_UNSUPPORTED_BLOCKS.includes(blockType);
+
   const contentTypes = [
     {
       name: intl.formatMessage(messages.textTypeButton),
@@ -172,7 +278,14 @@ const AddContentContainer = () => {
   };
 
   const onPaste = () => {
-    if (!isBlockTypeEnabled(sharedClipboardData.content?.blockType)) {
+    const clipboardBlockType = sharedClipboardData?.content?.blockType;
+
+    // istanbul ignore if: this should never happen
+    if (!clipboardBlockType) {
+      return;
+    }
+
+    if (!isBlockTypeEnabled(clipboardBlockType)) {
       showToast(intl.formatMessage(messages.unsupportedBlockPasteClipboardMessage));
       return;
     }

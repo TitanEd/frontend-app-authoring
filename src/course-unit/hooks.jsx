@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { RequestStatus } from '../data/constants';
+import { useClipboard } from '../generic/clipboard';
+import { useEventListener } from '../generic/hooks';
+import { COURSE_BLOCK_NAMES } from '../constants';
+import { messageTypes, PUBLISH_TYPES } from './constants';
 import {
   createNewCourseXBlock,
   fetchCourseUnitQuery,
@@ -47,7 +51,7 @@ export const useCourseUnit = ({ courseId, blockId }) => {
   const isTitleEditFormOpen = useSelector(state => state.courseUnit.isTitleEditFormOpen);
   const canEdit = useSelector(getCanEdit);
   const { currentlyVisibleToStudents } = courseUnit;
-  const { sharedClipboardData, showPasteXBlock, showPasteUnit } = useCopyToClipboard(canEdit);
+  const { sharedClipboardData, showPasteXBlock, showPasteUnit } = useClipboard(canEdit);
   const { canPasteComponent } = courseVerticalChildren;
 
   const unitTitle = courseUnit.metadata?.displayName || '';
