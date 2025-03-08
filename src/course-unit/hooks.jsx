@@ -30,7 +30,6 @@ import {
   getCanEdit,
 } from './data/selectors';
 import { changeEditTitleFormOpen, updateQueryPendingStatus } from './data/slice';
-import { PUBLISH_TYPES } from './constants';
 
 import { useCopyToClipboard } from '../generic/clipboard';
 
