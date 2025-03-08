@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import type { MessageDescriptor } from 'react-intl';
 import { useSelector } from 'react-redux';
 import {
@@ -18,18 +18,25 @@ import {
   Question,
   VideoCamera,
   ContentPaste,
+  KeyboardBackspace,
 } from '@openedx/paragon/icons';
 import { v4 as uuid4 } from 'uuid';
 
 import { ToastContext } from '../../generic/toast-context';
 import { useClipboard } from '../../generic/clipboard';
 import { getCanEdit } from '../../course-unit/data/selectors';
-import { useCreateLibraryBlock, useLibraryPasteClipboard, useAddComponentsToCollection } from '../data/apiHooks';
-import { useLibraryContext } from '../common/context';
-import { canEditComponent } from '../components/ComponentEditorModal';
+import {
+  useCreateLibraryBlock,
+  useLibraryPasteClipboard,
+  useAddComponentsToCollection,
+  useBlockTypesMetadata,
+} from '../data/apiHooks';
+import { useLibraryContext } from '../common/context/LibraryContext';
 import { PickLibraryContentModal } from './PickLibraryContentModal';
+import { blockTypes } from '../../editors/data/constants/app';
 
 import messages from './messages';
+import type { BlockTypeMetadata } from '../data/api';
 
 type ContentType = {
   name: string,
@@ -41,6 +48,20 @@ type ContentType = {
 type AddContentButtonProps = {
   contentType: ContentType,
   onCreateContent: (blockType: string) => void,
+};
+
+type AddContentViewProps = {
+  contentTypes: ContentType[],
+  onCreateContent: (blockType: string) => void,
+  isAddLibraryContentModalOpen: boolean,
+  closeAddLibraryContentModal: () => void,
+};
+
+type AddAdvancedContentViewProps = {
+  closeAdvancedList: () => void,
+  onCreateContent: (blockType: string) => void,
+  advancedBlocks: Record<string, BlockTypeMetadata>,
+  isBlockTypeEnabled: (blockType) => boolean,
 };
 
 const AddContentButton = ({ contentType, onCreateContent } : AddContentButtonProps) => {
@@ -63,42 +84,17 @@ const AddContentButton = ({ contentType, onCreateContent } : AddContentButtonPro
   );
 };
 
-const AddContentContainer = () => {
+const AddContentView = ({
+  contentTypes,
+  onCreateContent,
+  isAddLibraryContentModalOpen,
+  closeAddLibraryContentModal,
+}: AddContentViewProps) => {
   const intl = useIntl();
   const {
-    libraryId,
     collectionId,
-    openCreateCollectionModal,
-    openComponentEditor,
-    componentPickerModal,
+    componentPicker,
   } = useLibraryContext();
-  const createBlockMutation = useCreateLibraryBlock();
-  const updateComponentsMutation = useAddComponentsToCollection(libraryId, collectionId);
-  const pasteClipboardMutation = useLibraryPasteClipboard();
-  const { showToast } = useContext(ToastContext);
-  const canEdit = useSelector(getCanEdit);
-  const { showPasteXBlock, sharedClipboardData } = useCopyToClipboard(canEdit);
-
-  const [isAddLibraryContentModalOpen, showAddLibraryContentModal, closeAddLibraryContentModal] = useToggle();
-
-  const parseErrorMsg = (
-    error: any,
-    detailedMessage: MessageDescriptor,
-    defaultMessage: MessageDescriptor,
-  ) => {
-    try {
-      const { response: { data } } = error;
-      const detail = data && (Array.isArray(data) ? data.join() : String(data));
-      if (detail) {
-        return intl.formatMessage(detailedMessage, { detail });
-      }
-    } catch (_err) {
-      // ignore
-    }
-    return intl.formatMessage(defaultMessage);
-  };
-
-  const isBlockTypeEnabled = (blockType: string) => getConfig().LIBRARY_SUPPORTED_BLOCKS.includes(blockType);
 
   const collectionButtonData = {
     name: intl.formatMessage(messages.collectionButton),
@@ -251,13 +247,26 @@ const AddContentContainer = () => {
       icon: VideoCamera,
       blockType: 'video',
     },
-    {
-      name: intl.formatMessage(messages.otherTypeButton),
-      disabled: !isBlockTypeEnabled('other'),
-      icon: AutoAwesome,
-      blockType: 'other', // This block doesn't exist yet.
-    },
   ];
+
+  const isBasicBlock = (blockType: string) => contentTypes.some(
+    content => content.blockType === blockType,
+  );
+
+  const advancedBlocks = useMemo(() => (blockTypesData ? Object.fromEntries(
+    Object.entries(blockTypesData).filter(([key]) => !isBasicBlock(key)),
+  ) : {}), [blockTypesData]) as Record<string, BlockTypeMetadata>;
+
+  // Include the 'Advanced / Other' button if there are enabled advanced Xblocks
+  if (Object.keys(advancedBlocks).length > 0) {
+    const pasteButton = {
+      name: intl.formatMessage(messages.otherTypeButton),
+      disabled: false,
+      icon: AutoAwesome,
+      blockType: 'advancedXBlock',
+    };
+    contentTypes.push(pasteButton);
+  }
 
   // Include the 'Paste from Clipboard' button if there is an Xblock in the clipboard
   // that can be pasted
@@ -297,35 +306,36 @@ const AddContentContainer = () => {
       showToast(intl.formatMessage(messages.successPasteClipboardMessage));
     }).catch((error) => {
       showToast(parseErrorMsg(
+        intl,
         error,
         messages.errorPasteClipboardMessageWithDetail,
         messages.errorPasteClipboardMessage,
       ));
     });
   };
-
   const onCreateBlock = (blockType: string) => {
-    createBlockMutation.mutateAsync({
-      libraryId,
-      blockType,
-      definitionId: `${uuid4()}`,
-    }).then((data) => {
-      const hasEditor = canEditComponent(data.id);
-      if (hasEditor) {
-        // linkComponent on editor close.
-        openComponentEditor(data.id, () => linkComponent(data.id));
-      } else {
+    const suportedEditorTypes = Object.values(blockTypes);
+    if (suportedEditorTypes.includes(blockType)) {
+      // linkComponent on editor close.
+      openComponentEditor('', (data) => data && linkComponent(data.id), blockType);
+    } else {
+      createBlockMutation.mutateAsync({
+        libraryId,
+        blockType,
+        definitionId: `${uuid4()}`,
+      }).then((data) => {
         // We can't start editing this right away so just show a toast message:
         showToast(intl.formatMessage(messages.successCreateMessage));
         linkComponent(data.id);
-      }
-    }).catch((error) => {
-      showToast(parseErrorMsg(
-        error,
-        messages.errorCreateMessageWithDetail,
-        messages.errorCreateMessage,
-      ));
-    });
+      }).catch((error) => {
+        showToast(parseErrorMsg(
+          intl,
+          error,
+          messages.errorCreateMessageWithDetail,
+          messages.errorCreateMessage,
+        ));
+      });
+    }
   };
 
   const onCreateContent = (blockType: string) => {
@@ -335,6 +345,8 @@ const AddContentContainer = () => {
       openCreateCollectionModal();
     } else if (blockType === 'libraryContent') {
       showAddLibraryContentModal();
+    } else if (blockType === 'advancedXBlock') {
+      showAdvancedList();
     } else {
       onCreateBlock(blockType);
     }
@@ -347,28 +359,21 @@ const AddContentContainer = () => {
 
   return (
     <Stack direction="vertical">
-      {collectionId ? (
-        componentPickerModal && (
-          <>
-            <AddContentButton contentType={libraryContentButtonData} onCreateContent={onCreateContent} />
-            <PickLibraryContentModal
-              isOpen={isAddLibraryContentModalOpen}
-              onClose={closeAddLibraryContentModal}
-            />
-          </>
-        )
-      ) : (
-        <AddContentButton contentType={collectionButtonData} onCreateContent={onCreateContent} />
-      )}
-      <hr className="w-100 bg-gray-500" />
-      {/* Note: for MVP we are hiding the unuspported types, not just disabling them. */}
-      {contentTypes.filter(ct => !ct.disabled).map((contentType) => (
-        <AddContentButton
-          key={`add-content-${contentType.blockType}`}
-          contentType={contentType}
+      {isAdvancedListOpen ? (
+        <AddAdvancedContentView
+          closeAdvancedList={closeAdvancedList}
           onCreateContent={onCreateContent}
+          advancedBlocks={advancedBlocks}
+          isBlockTypeEnabled={isBlockTypeEnabled}
         />
-      ))}
+      ) : (
+        <AddContentView
+          contentTypes={contentTypes}
+          onCreateContent={onCreateContent}
+          isAddLibraryContentModalOpen={isAddLibraryContentModalOpen}
+          closeAddLibraryContentModal={closeAddLibraryContentModal}
+        />
+      )}
     </Stack>
   );
 };
