@@ -138,11 +138,25 @@ const GradingSettings = ({ intl, courseId }) => {
             >
               <Layout.Element>
                 <article>
-                  <SubHeader
+                  {/* <SubHeader
                     title={intl.formatMessage(messages.headingTitle)}
                     subtitle={intl.formatMessage(messages.headingSubtitle)}
                     contentTitle={intl.formatMessage(messages.policy)}
                     description={intl.formatMessage(messages.policiesDescription)}
+                  /> */}
+                  <h2 className="lead">
+                    {intl.formatMessage(messages.policy)}
+                  </h2>
+                  <span style={{ color: '#000000' }}>
+                    {intl.formatMessage(messages.policiesDescription)}
+                  </span>
+                  <hr
+                    className="mb-4"
+                    style={{
+                      border: 'none',
+                      borderTop: '1px solid #ddd',
+                      margin: '0 0 1rem 0',
+                    }}
                   />
                   <section>
                     <GradingScale
@@ -174,9 +188,27 @@ const GradingSettings = ({ intl, courseId }) => {
                     </section>
                   )}
                   <section>
-                    <SectionSubHeader
+                    {/* <SectionSubHeader
                       title={intl.formatMessage(messages.gradingRulesPoliciesSectionTitle)}
                       description={intl.formatMessage(messages.gradingRulesPoliciesSectionDescription)}
+                    /> */}
+                    <h2 className="lead">
+                      {intl.formatMessage(
+                        messages.gradingRulesPoliciesSectionTitle,
+                      )}
+                    </h2>
+                    <span style={{ color: '#000000' }}>
+                      {intl.formatMessage(
+                        messages.gradingRulesPoliciesSectionDescription,
+                      )}
+                    </span>
+                    <hr
+                      className="mb-4"
+                      style={{
+                        border: 'none',
+                        borderTop: '1px solid #ddd',
+                        margin: '0 0 1rem 0',
+                      }}
                     />
                     <DeadlineSection
                       setShowSavePrompt={setShowSavePrompt}
@@ -186,12 +218,14 @@ const GradingSettings = ({ intl, courseId }) => {
                     />
                   </section>
                   <section>
-                    <header className="row justify-content-between align-items-center mt-4 mx-0 mb-2">
+                    <header className=" justify-content-between align-items-center mt-4 mx-0 mb-2">
                       <h2 className="lead">
                         {intl.formatMessage(messages.assignmentTypeSectionTitle)}
                       </h2>
-                      <span className="small text-gray-700">
-                        {intl.formatMessage(messages.assignmentTypeSectionDescription)}
+                      <span style={{ color: '#000000' }}>
+                        {intl.formatMessage(
+                          messages.assignmentTypeSectionDescription,
+                        )}
                       </span>
                     </header>
                     <AssignmentSection
