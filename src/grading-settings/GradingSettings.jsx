@@ -116,7 +116,7 @@ const GradingSettings = ({ intl, courseId }) => {
   return (
     <>
       <Container size="xl" className="grading px-4">
-        <div className="mt-5">
+        <div className="mt-2">
           <AlertMessage
             show={showSuccessAlert}
             variant="success"

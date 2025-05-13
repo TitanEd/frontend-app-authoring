@@ -65,10 +65,10 @@ const CourseImportPage = ({ intl, courseId }) => {
           >
             <Layout.Element>
               <article>
-                <SubHeader
+                {/* <SubHeader
                   title={intl.formatMessage(messages.headingTitle)}
                   subtitle={intl.formatMessage(messages.headingSubtitle)}
-                />
+                /> */}
                 <p className="small">{intl.formatMessage(messages.description1)}</p>
                 <p className="small">{intl.formatMessage(messages.description2)}</p>
                 <p className="small">{intl.formatMessage(messages.description3)}</p>
