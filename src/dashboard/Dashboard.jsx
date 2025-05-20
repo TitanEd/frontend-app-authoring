@@ -4,12 +4,12 @@ import {
   Card,
   Icon,
   Button,
-  Dropdown,
   ModalDialog,
 } from '@openedx/paragon';
 import {
   MenuBook, Groups, LibraryBooks, Assessment,
   DragIndicator,
+  FilterList,
 } from '@openedx/paragon/icons';
 import './Dashboard.scss';
 import {
@@ -30,16 +30,14 @@ import { CSS } from '@dnd-kit/utilities';
 import WidgetCard from './components/WidgetCard';
 
 const MetricCard = ({ icon, value, label }) => (
-  <Card className="metric-card">
-    <div className="metric-card-content">
-      <Icon
-        src={icon}
-        className="text-primary"
-        style={{ height: '50px', width: '50px' }}
-      />
-      <div className="metric-text">
-        <div className="metric-value">{value}</div>
-        <div className="metric-label">{label}</div>
+  <Card className="metric-card metric-card-modern">
+    <div className="metric-card-content-modern">
+      <div className="metric-text-modern">
+        <div className="metric-value-modern">{value}</div>
+        <div className="metric-label-modern">{label}</div>
+      </div>
+      <div className="metric-icon-modern">
+        <Icon src={icon} />
       </div>
     </div>
   </Card>
@@ -261,27 +259,25 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <div className="main-content">
+      <div className="dashboard-main-content">
         {/* Top Metric Cards */}
         <div className="metrics-container">
           <MetricCard icon={MenuBook} value={dashboardData.metrics.courses} label="Courses" />
           <MetricCard icon={Groups} value={dashboardData.metrics.students} label="Students" />
-          <MetricCard icon={LibraryBooks} value={dashboardData.metrics.enrollments} label="Enrollments" />
-          <MetricCard icon={Assessment} value={dashboardData.metrics.submissions} label="Submissions" />
+          <MetricCard icon={Assessment} value={dashboardData.metrics.enrollments} label="Enrollments" />
+          <MetricCard icon={LibraryBooks} value={dashboardData.metrics.submissions} label="Submissions" />
         </div>
 
         {/* Overview Cards */}
         <div className="overview-section">
           <div className="overview-header">
             <h1>Overview</h1>
-            <Dropdown>
-              <Dropdown.Toggle variant="primary">
-                Customize
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={handleModalOpen}>Add widget</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <Icon
+              src={FilterList}
+              className="text-primary"
+              style={{ cursor: 'pointer' }}
+              onClick={handleModalOpen}
+            />
           </div>
           <div className="overview-grid">
             {/* <div>
@@ -360,7 +356,7 @@ const Dashboard = () => {
               </Card>
             </div> */}
             {dashboardData.widgets
-              .filter(widget => widget.enabled)
+              .filter((widget) => widget.enabled)
               .map((widget) => (
                 <WidgetCard
                   key={widget.id}
@@ -393,7 +389,7 @@ const Dashboard = () => {
             onDragEnd={handleDragEnd}
           >
             <SortableContext
-              items={tempOrderedWidgets.map(widget => widget.id)}
+              items={tempOrderedWidgets.map((widget) => widget.id)}
               strategy={verticalListSortingStrategy}
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -427,7 +423,7 @@ const Dashboard = () => {
       </ModalDialog>
 
       {/* Sidebar */}
-      <div className="sidebar">
+      <div className="dashboard-sidebar">
         <Card className="sidebar-card">
           <h4 className="card-header">Titan AI suggestion</h4>
           <Card.Section className="card-section">
@@ -445,7 +441,7 @@ const Dashboard = () => {
 
         <Card className="sidebar-card">
           <h4 className="card-header">Todo List</h4>
-          <Card.Section className="card-section">
+          <Card.Section className="card-section temp-flow">
             {dashboardData.todoList.length > 0 ? (
               <ul className="card-list">
                 {dashboardData.todoList.map((todo) => (
