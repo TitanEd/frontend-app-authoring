@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@openedx/paragon';
-import { ChevronLeft, ChevronRight } from '@openedx/paragon/icons';
-// import { useLocation, useNavigate } from 'react-router-dom';
+// import { useSidebar } from '../../../hooks/useSidebar';
+import { useSidebar } from '../hooks/useSidebar';
 import './Sidebar.scss';
 
 interface SidebarProps {
@@ -16,17 +16,10 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ buttons, onNavigate, presentPath }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed } = useSidebar();
 
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-      <Button
-        variant="tertiary"
-        className="collapse-btn"
-        onClick={() => setIsCollapsed(!isCollapsed)}
-      >
-        {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
-      </Button>
       <div className="sidebar-buttons">
         {buttons.map((btn) => (
           <Button

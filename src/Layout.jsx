@@ -11,12 +11,13 @@ import {
   FolderShared,
   Home, LibraryAdd, LibraryBooks, Lightbulb, LmsBook,
 } from '@openedx/paragon/icons';
-// import Sidebar from 'library/Sidebar/Sidebar';
+import Sidebar from 'library/Sidebar/Sidebar';
 import {
-  Footer, Sidebar, MainHeader, SidebarProvider,
+  Footer,
 } from 'titaned-lib';
 import getUserMenuItems from 'library/utils/getUserMenuItems';
-// import MainHeader from 'library/Header/MainHeader';
+import MainHeader from 'library/Header/MainHeader';
+import { SidebarProvider } from 'library/providers/SidebarProvider';
 // import { FooterProps } './studio-home/interfaces/components';
 
 const Layout = () => {
