@@ -12,12 +12,12 @@ import { sortBy } from 'lodash';
 import onClickOutside from 'react-onclickoutside';
 import FormGroup from './FormGroup';
 
-class TypeaheadDropdown extends React.Component {
+class CustomTypeaheadDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isFocused: false,
-      displayValue: '',
+      displayValue: props.value || '',
       icon: this.expandMoreButton(),
       dropDownItems: [],
     };
@@ -36,6 +36,12 @@ class TypeaheadDropdown extends React.Component {
     }
 
     return true;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.setState({ displayValue: this.props.value || '' });
+    }
   }
 
   // eslint-disable-next-line react/sort-comp
@@ -150,6 +156,7 @@ class TypeaheadDropdown extends React.Component {
 
   handleItemClick(e) {
     this.setValue(e.target.value);
+    console.log("display value", this.state.displayValue);
     this.setState({ dropDownItems: '', icon: this.expandMoreButton() });
   }
 
@@ -232,7 +239,7 @@ class TypeaheadDropdown extends React.Component {
   }
 }
 
-TypeaheadDropdown.defaultProps = {
+CustomTypeaheadDropdown.defaultProps = {
   options: null,
   floatingLabel: null,
   handleFocus: null,
@@ -249,7 +256,7 @@ TypeaheadDropdown.defaultProps = {
   addNewOption: null,
 };
 
-TypeaheadDropdown.propTypes = {
+CustomTypeaheadDropdown.propTypes = {
   noOptionsMessage: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.string),
@@ -268,4 +275,4 @@ TypeaheadDropdown.propTypes = {
   addNewOption: PropTypes.func,
 };
 
-export default onClickOutside(TypeaheadDropdown);
+export default onClickOutside(CustomTypeaheadDropdown);

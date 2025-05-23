@@ -14,14 +14,17 @@ import {
 // import useIsMobileSize from '../../../hooks/useIsMobileSize';
 // import { MainHeaderProps } from '../../../interfaces/components';
 import { MainHeaderProps } from 'titaned-lib';
-import useIsMobileSize from '../hooks/useIsMobileSize';
-import UserMenu from '../UserMenu/UserMenu';
+// import useIsMobileSize from '../hooks/useIsMobileSize';
+// import UserMenu from '../UserMenu/UserMenu';
 // import { useSidebar } from '../../../hooks/useSidebar';
 import { useSidebar } from '../hooks/useSidebar';
-import './MainHeader.scss';
+// import './MainHeader.scss';
 import {
   ExitToApp, HelpCenter, Notifications, Sync, MenuIcon, Search, MoreVert,
 } from '@openedx/paragon/icons';
+import useIsMobileSize from '../hooks/useIsMobileSize';
+import UserMenu from '../UserMenu/UserMenu';
+import './MainHeader.scss';
 
 const MainHeader: React.FC<MainHeaderProps> = ({
   logoUrl,
