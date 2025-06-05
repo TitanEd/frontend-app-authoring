@@ -21,6 +21,14 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import WarningMessage from './src/generic/warning-message/WarningMessage';
 import SettingCard from './src/advanced-settings/setting-card/SettingCard';
 import ExportSidebarNew from '/src/export-page/export-sidebar/ExportSidebarNew';
+import FilesPageNew from './src/files-and-videos/files-page/FilesPageNew';
+import {
+  CardView,
+  DataTable,
+  Dropzone,
+  TextFilter,
+  useToggle,
+} from '@openedx/paragon';
 
 // Example custom component for the schedule_and_details_plugin_slot
 
@@ -467,6 +475,40 @@ const config = {
                     priority: 1,
                     RenderWidget: (props) => 
                         <ExportSidebarNew />
+                    },
+                },
+            ],
+        },
+        file_table_card_view_plugin_slot: {
+            plugins: [
+                {
+                    op: PLUGIN_OPERATIONS.Insert,
+                    widget: {
+                        id: 'file-table-card-view',
+                        type: DIRECT_PLUGIN,
+                        priority: 1,
+                        RenderWidget: ({ CardComponent, columnSizes, selectionPlacement, skeletonCardCount }) => (
+                            <CardView
+                                CardComponent={CardComponent}
+                                columnSizes={columnSizes}
+                                selectionPlacement={selectionPlacement}
+                                skeletonCardCount={skeletonCardCount}
+                            />
+                        ),
+                    },
+                },
+            ],
+        },
+        files_uploads_plugin_slot: {
+            plugins: [
+                {
+                op: PLUGIN_OPERATIONS.Insert,
+                widget: {
+                    id: "files",
+                    type: DIRECT_PLUGIN,
+                    priority: 1,
+                    RenderWidget: (props) => 
+                        <FilesPageNew />
                     },
                 },
             ],

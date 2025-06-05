@@ -9,6 +9,7 @@ import {
   TextFilter,
   useToggle,
 } from '@openedx/paragon';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 
 import { RequestStatus } from '../../data/constants';
 import { sortFiles } from './utils';
@@ -227,7 +228,24 @@ const FileTable = ({
           <div data-testid="files-data-table" className="bg-light-200">
             <DataTable.TableControlBar />
             <hr className="mb-5 border-light-700" />
-            { currentView === 'card' && <CardView CardComponent={fileCard} columnSizes={columnSizes} selectionPlacement="left" skeletonCardCount={6} /> }
+            { currentView === 'card' && (
+              <PluginSlot
+                id="file_table_card_view_plugin_slot"
+                pluginProps={{
+                  CardComponent: fileCard,
+                  columnSizes,
+                  selectionPlacement: 'left',
+                  skeletonCardCount: 6,
+                }}
+              >
+                <CardView
+                  CardComponent={fileCard}
+                  columnSizes={columnSizes}
+                  selectionPlacement="left"
+                  skeletonCardCount={6}
+                />
+              </PluginSlot>
+            ) }
             { currentView === 'list' && <DataTable.Table /> }
             <DataTable.EmptyTable content={intl.formatMessage(messages.noResultsFoundMessage)} />
             <Footer />
