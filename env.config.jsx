@@ -487,14 +487,26 @@ const config = {
                         id: 'file-table-card-view',
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: ({ CardComponent, columnSizes, selectionPlacement, skeletonCardCount }) => (
-                            <CardView
-                                CardComponent={CardComponent}
-                                columnSizes={columnSizes}
-                                selectionPlacement={selectionPlacement}
-                                skeletonCardCount={skeletonCardCount}
-                            />
-                        ),
+                        RenderWidget: ({ CardComponent, columnSizes, selectionPlacement, skeletonCardCount, ...rest }) => {
+                            // Use the CardComponent passed from FileTable (which is fileCard)
+                            // and just add your custom columnSizes and spacing class
+                            const customColumnSizes = { xs: 12, sm: 6, md: 4, lg: 3, xl: 3 };
+                            // Wrap CardComponent to add spacing class
+                            const SpacedCardComponent = (props) => (
+                                <div className="custom-card-spacing">
+                                    <CardComponent {...props} />
+                                </div>
+                            );
+                            return (
+                                <CardView
+                                    CardComponent={SpacedCardComponent}
+                                    columnSizes={customColumnSizes}
+                                    selectionPlacement={selectionPlacement}
+                                    skeletonCardCount={skeletonCardCount}
+                                    {...rest}
+                                />
+                            );
+                        },
                     },
                 },
             ],
