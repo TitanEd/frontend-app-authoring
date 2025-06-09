@@ -182,6 +182,7 @@ const FilesPage = ({
     <FilesPageProvider courseId={courseId}>
       <PluginSlot
         id="files_uploads_plugin_slot"
+        courseId={courseId}
       >
         <Container size="xl" className="p-4 pt-4.5">
           <EditFileErrors
