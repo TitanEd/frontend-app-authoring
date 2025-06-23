@@ -76,13 +76,19 @@ const CertificateSignatories = ({
             )
           ))}
         </Stack>
-        {isForm && (
+        {isForm && signatories.length < 3 && (
           <>
-            <Button variant="outline-primary" onClick={handleAddSignatory} className="w-100 mt-4">
+            <Button
+              variant="outline-primary"
+              onClick={handleAddSignatory}
+              className="w-100 mt-4"
+            >
               {intl.formatMessage(messages.addSignatoryButton)}
             </Button>
             <Form.Control.Feedback>
-              <span className="x-small">{intl.formatMessage(messages.addSignatoryButtonDescription)}</span>
+              <span className="x-small">
+                {intl.formatMessage(messages.addSignatoryButtonDescription)}
+              </span>
             </Form.Control.Feedback>
           </>
         )}
