@@ -396,7 +396,7 @@ const PageAlerts = ({
 
   return (
     <>
-      {configurationErrors()}
+      {/* {configurationErrors()} */} {/*We hide this to disable the notification for course re-run TitanEd */}
       {/*{discussionNotification()}*/} {/*We hide this to disable the notification */}
       {deprecationWarning()}
       {proctoringAlerts()}
