@@ -1,0 +1,1174 @@
+.form-control {
+    &[type="time"] {
+        padding-right: 0.5rem;
+    }
+}
+
+.datepicker-custom-control-icon {
+    right: 1.188rem !important;
+    transform: translateY(-60%);
+    color: var(--text-secondary) !important;
+}
+
+.form-text {
+    font-size: 12px;
+    margin-top: 0.25rem;
+}
+.ps-course-form {
+    .d-grid {
+        display: grid;
+    }
+
+    // Form control styles
+    .form-control {
+        // border: 1px solid #e1e1e1;
+        border-radius: 4px;
+        padding: 0.5rem;
+        // color: #454545;
+        font-size: 0.875rem;
+
+        &:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        &::placeholder {
+            color: var(--text-secondary);
+        }
+    }
+
+    // Form label styles
+    .form-label {
+        font-size: 14px;
+        font-weight: 500;
+        // color: #454545;
+        margin-bottom: 0.5rem;
+    }
+
+    // Form text (help text) styles
+    .form-text {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+    }
+
+
+    // Radio button styles
+    .radio-button {
+        margin-right: 0.5rem;
+        color: var(--text-primary);
+        font-size: 0.875rem;
+        margin-bottom: 5px;
+        display: inline-flex;
+        align-items: center;
+
+        input[type="radio"] {
+            margin-right: 4px;
+        }
+
+        .pgn__form-radio-input {
+            margin-right: 1rem;
+        }
+    }
+
+    // Switch styles
+    .form-switch {
+        .form-check-input {
+            width: 2.5rem;
+            height: 1.25rem;
+            margin-top: 0.25rem;
+
+            &:checked {
+                background-color: var(--primary);
+                border-color: var(--primary);
+            }
+        }
+    }
+
+    // Upload box styles
+    .upload-box {
+        border: 2px dashed var(--border-color);
+        border-radius: 4px;
+        background-color: var(--bg-hover);
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem !important;
+
+        &:hover {
+            border-color: var(--primary);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary-light);
+            color: var(--primary);
+            font-size: 0.75rem;
+            border-radius: 8px;
+            background-color: var(--primary-light);
+
+            &:hover {
+                background-color: var(--primary);
+                color: var(--text-white);
+            }
+        }
+
+        img {
+            object-fit: contain;
+        }
+    }
+
+    // Rich text editor styles
+    .format-toolbar {
+        border: 1px solid var(--border-color);
+        border-radius: 4px 4px 0 0;
+        padding: 0.5rem;
+        background-color: var(--bg-hover);
+
+        button {
+            padding: 0.25rem 0.5rem;
+            margin-right: 0.25rem;
+            border: none;
+            background: none;
+            color: var(--text-primary);
+
+            &:hover {
+                background-color: var(--bg-hover);
+                border-radius: 4px;
+            }
+
+            &.active {
+                background-color: var(--bg-hover);
+                border-radius: 4px;
+            }
+        }
+    }
+
+    // Description editor styles
+    .description-editor {
+        border-radius: 0.25rem;
+        width: 100%;
+        resize: vertical;
+    }
+
+    // Tab navigation styles
+    .nav-tabs {
+        border: none;
+
+        .nav-item {
+            width: 100%;
+            margin: 0;
+            border-bottom: 1px solid var(--border-color);
+
+            .nav-link {
+                width: 100%;
+                text-align: left;
+                padding: 1rem;
+                border: none;
+                color: var(--text-primary);
+                position: relative;
+                transition: all 0.2s ease;
+                border-left: 4px solid transparent;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                font-size: 0.875rem;
+                cursor: pointer;
+                border-radius: 0;
+
+                &::before {
+                    display: none;
+                }
+
+                &:focus::before,
+                &:active::before,
+                &.active::before {
+                    display: none;
+                }
+
+                &:focus,
+                &:active,
+                &.active:focus {
+                    outline: none !important;
+                    box-shadow: none !important;
+                    border: none;
+                    border-left: 4px solid var(--primary);
+
+                    &::before {
+                        display: none;
+                    }
+                }
+
+                &.active {
+                    background-color: transparent;
+                    border-left: 4px solid var(--primary);
+                    color: var(--primary);
+                    font-weight: 500;
+                    outline: none !important;
+                    box-shadow: none !important;
+                    border: none;
+
+                    .icon {
+                        color: var(--primary);
+                    }
+                }
+
+                .icon {
+                    color: var(--text-primary);
+                    width: 20px;
+                    height: 20px;
+                    flex-shrink: 0;
+                }
+            }
+        }
+    }
+
+    // Options container - main wrapper for two-column layout
+    .options-container {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--bg-surface);
+        overflow: visible;
+
+        .row {
+            margin: 0;
+            height: 100%;
+            padding: 16px;
+        }
+
+        // Left sidebar styles
+        .sidebar {
+            padding: 0;
+            background-color: transparent;
+            border-right: 1px solid var(--border-color);
+            padding-right: 16px;
+            min-height: fit-content !important;
+
+            .nav-tabs {
+                border: none;
+
+                .nav-item {
+                    width: 100%;
+                    margin: 0;
+                    width: 100%;
+                    margin: 0;
+                    border: 1px solid lightgray;
+                    border-radius: 8px;
+                    margin-bottom: 0.5rem;
+
+                    .nav-link {
+                        width: 100%;
+                        text-align: left;
+                        padding: 1rem;
+                        border: none;
+                        color: var(--text-primary);
+                        position: relative;
+                        transition: all 0.2s ease;
+                        border-left: 4px solid transparent;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        font-size: 0.875rem;
+                        cursor: pointer;
+                        border-radius: 0;
+                        outline: none !important;
+
+                        &::before {
+                            display: none;
+                        }
+
+                        &:focus::before,
+                        &:active::before,
+                        &.active::before {
+                            display: none;
+                        }
+
+                        &:focus,
+                        &:active,
+                        &.active:focus {
+                            outline: 0 !important;
+                            box-shadow: none !important;
+                            border: none;
+                            border-radius: 8px;
+
+                            &::before {
+                                display: none;
+                            }
+                        }
+
+                        &.active {
+                            border: 1px solid var(--primary-light);
+                            background: var(--primary-light);
+                            border-radius: 8px;
+                            color: var(--primary);
+                            font-weight: 500;
+                            outline: none !important;
+                            box-shadow: none !important;
+
+                            .icon {
+                                color: var(--primary);
+                            }
+                        }
+
+                        .icon {
+                            color: var(--text-primary);
+                            width: 20px;
+                            height: 20px;
+                            flex-shrink: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Right content area styles
+        .content-area {
+            background-color: var(--bg-surface);
+            min-height: 250px;
+        }
+    }
+
+    // Form section styles
+    .form-section {
+        background-color: var(--bg-surface);
+        margin-bottom: 1.5rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .radio-button {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    // Media section styles
+    .media-section {
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1rem;
+        background-color: var(--bg-surface);
+
+        .form-group {
+            margin-bottom: 1.5rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    // Course introduction video styles
+    .embed-video-container {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        border-radius: 0.1875rem;
+
+        .introduction-video {
+            padding: 0.75rem;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-hover);
+            border: 2px dashed var(--border-color);
+            border-radius: 4px;
+
+            &:hover {
+                border-color: var(--primary);
+            }
+
+            iframe {
+                max-width: 100%;
+                max-height: 100%;
+                border: none;
+            }
+        }
+
+        .btn-link {
+            font-size: 12px;
+            padding: 0.25rem 0.5rem;
+            margin-top: 0.5rem;
+        }
+    }
+
+    .card {
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+
+        .card-footer {
+            background-color: var(--bg-hover);
+            border-top: 1px solid var(--border-color);
+            padding: 1rem;
+
+            .form-control {
+                flex: 1;
+            }
+
+            .btn-outline-primary {
+                white-space: nowrap;
+                min-width: fit-content;
+            }
+        }
+    }
+
+    // Style for the inline asterisk span
+    .required-asterisk {
+        color: var(--danger);
+        margin-left: 0.25rem;
+        font-weight: bold;
+    }
+
+    .form-group-custom .pgn__form-label,
+    // Override font for labels within DatepickerControl
+    .datepicker-control .pgn__form-label,
+    // Check if DatepickerControl uses this class internally
+    .datepicker-control .form-label,
+    .time-field .pgn__form-label {
+        // Or maybe this one
+        font: inherit !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important; // Re-apply desired stack
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        line-height: 1.5 !important;
+        margin-bottom: 0rem !important;
+        color: var(--text-primary)
+    }
+
+    // Attempt to override font for IntroductionVideo label (adjust selector if needed)
+    .introduction-video-wrapper .pgn__form-label,
+    // Assuming a wrapper class
+    .introduction-video-wrapper .form-label {
+        font: inherit !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: var(--text-primary) !important;
+        line-height: 1.5 !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    [data-tooltip] {
+        position: relative;
+        margin: 0 5px 0 5px;
+        height: 20px;
+
+        &:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: calc(100% + 8px);
+            padding: 8px 12px;
+            background: var(--text-primary);
+            color: var(--text-white);
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            white-space: normal;
+            z-index: 10;
+            font-size: 12px;
+            line-height: 1.4;
+            max-width: 250px;
+            width: max-content;
+            text-align: center;
+        }
+
+        &:hover::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 100%;
+            border: 6px solid transparent;
+            border-bottom-color: var(--text-primary);
+            z-index: 11;
+        }
+    }
+}
+
+// Add these styles to your existing schedule section styles
+.schedule-section {
+    .schedule-date-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        padding-top: 0 !important;
+
+        .schedule-date-item {
+            margin-bottom: 0 !important;
+
+            .schedule-date-item-container {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                gap: 1.5rem;
+                border-bottom: none !important;
+                padding-bottom: 0.625rem;
+                margin-bottom: 0.375rem;
+
+                .datepicker-control {
+                    position: relative;
+                    flex: 2;
+
+                    .form-control {
+                        width: 100%;
+                        padding: 0.5rem;
+                        border: 1px solid var(--border-color);
+                        border-radius: 4px;
+                        height: 2.5rem;
+                        font-size: 0.875rem;
+                        color: var(--text-primary);
+
+                        &:focus {
+                            border-color: var(--primary);
+                            box-shadow: 0 0 0 1px var(--primary);
+                        }
+                    }
+                }
+
+                .time-field {
+                    flex: 1;
+                    max-width: 200px;
+                    white-space: nowrap;
+
+                    .form-control {
+                        width: 100%;
+                        padding: 0.5rem;
+                    }
+
+                    .form-label {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .timezone-text {
+                        margin-left: 0.5rem;
+                        color: var(--text-secondary);
+                        font-size: 0.75rem;
+                    }
+                }
+            }
+
+            .schedule-date-item-error {
+                display: block;
+                color: var(--danger);
+                font-size: 0.875rem;
+                margin-top: 0.25rem;
+            }
+        }
+    }
+}
+
+// Add specific styles for the DatepickerControl component
+.datepicker-control {
+    position: relative;
+    flex: 1;
+
+    .form-control {
+        width: 100%;
+        padding-left: 2rem;
+    }
+
+    .calendar-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+        pointer-events: none;
+        z-index: 1;
+    }
+}
+
+.short-description {
+    width: 100%;
+    resize: none;
+    overflow-y: hidden;
+}
+
+.description-editor {
+    width: 100%;
+    resize: none;
+}
+
+.ps-course-form {
+    .pgn__form-text-default {
+        font-size: 12px !important;
+    }
+}
+
+
+.pgn__form-group {
+    margin-bottom: 0px !important;
+}
+
+.radio-button-options {
+    gap: 1.5rem;
+
+    input {
+        margin-right: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    div {
+        font-size: 0.875rem;
+    }
+}
+
+.radio-button .pgn__form-radio-input {
+    margin-right: 0.5rem;
+}
+
+.pgn__form-label {
+    font-size: 14px !important;
+}
+
+.pgn__card-footer .btn-outline-primary {
+    font-size: 14px !important;
+}
+
+.datepicker-custom .justify-content-between {
+    justify-content: flex-start !important;
+}
+
+// Image Preview Styles
+.image-preview-container {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 150px;
+    margin: 0 auto;
+    background-color: var(--bg-hover);
+    border-radius: 4px;
+    overflow: hidden;
+
+    .preview-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 4px;
+    }
+
+    .remove-image-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(51, 51, 51, 0.6);
+        color: var(--text-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+        cursor: pointer;
+        border-radius: 50%;
+        border: none;
+        padding: 8px;
+        width: 40px;
+        height: 40px;
+
+        .pgn__icon {
+            font-size: 1.25rem;
+        }
+    }
+
+    &:hover .remove-image-overlay {
+        opacity: 1;
+    }
+}
+
+// Fix for date/time picker popups being cut off
+.schedule-detail-form,
+.form-section,
+.schedule-section,
+.schedule-date-item-container {
+    overflow: visible !important;
+    position: relative;
+    z-index: auto;
+}
+
+// If you know the popup class, add high z-index
+.pgn__datepicker-popover,
+.react-datepicker-popper {
+    z-index: 9999 !important;
+}
+
+.image-upload-section {
+    .upload-box {
+        border: 2px dashed var(--border-color);
+        border-radius: 4px;
+        background-color: var(--bg-hover);
+        min-height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        transition: border-color 0.2s ease;
+
+        &:hover {
+            border-color: var(--primary);
+        }
+
+        .upload-placeholder {
+            text-align: center;
+            width: 100%;
+
+            .upload-icon {
+                font-size: 2rem;
+                color: var(--text-secondary);
+                margin-bottom: 1rem;
+            }
+
+            .upload-text {
+                color: var(--text-secondary);
+                margin-bottom: 1rem;
+            }
+
+            .file-input {
+                display: none;
+            }
+        }
+    }
+
+    .image-preview-container {
+        width: 100%;
+
+        .image-preview {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-hover);
+            border-radius: 4px;
+            overflow: hidden;
+
+            .preview-image {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+            .remove-image-btn {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                background: rgba(0, 0, 0, 0.5);
+                border: none;
+                border-radius: 50%;
+                width: 2rem;
+                height: 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-white);
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background: rgba(0, 0, 0, 0.7);
+                }
+
+                .pgn__icon {
+                    width: 1rem;
+                    height: 1rem;
+                }
+            }
+        }
+    }
+}
+
+.d-flex {
+    display: flex
+}
+
+.form-control-feedback,
+.entrance-exam-checkbox-label,
+.entrance-exam-label {
+    font-size: 14px;
+}
+
+.form-check-input {
+    margin-top: 0.5rem !important;
+}
+
+.entrance-exam-group {
+    padding-left: 12px;
+}
+
+.datepicker-custom .datepicker-custom-control {
+    border: 1px solid var(--border-color) !important;
+}
+
+.datepicker-custom .datepicker-custom-control:focus {
+    box-shadow: none !important
+}
+
+.ps-course-form .license-section {
+    font-size: 16px;
+
+    .pgn__action-row {
+        .col-2 {
+            flex: 0 0 25%;
+            max-width: 25%;
+        }
+    }
+}
+
+.mb-8 {
+    margin-bottom: 8px;
+}
+
+.font-small {
+    font-size: 0.75rem;
+}
+
+.pacing-style {
+    font-size: 1rem;
+    display: flex;
+    gap: 1rem;
+
+    input[type="radio"] {
+        margin-right: 4px;
+    }
+}
+
+// Add responsive styles
+@media (max-width: 1200px) {
+    .ps-course-form {
+        .options-container {
+            .row {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                margin-bottom: 1rem;
+            }
+
+            .content-area {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .ps-course-form {
+        .form-section {
+            .row {
+                >[class*="col-"] {
+                    width: 100%;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+
+        .pacing-style {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .ps-course-form {
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .form-control {
+            font-size: 16px; // Prevent zoom on mobile
+        }
+
+        .nav-tabs {
+            .nav-link {
+                padding: 0.75rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        .image-preview-container {
+            height: 120px;
+        }
+
+        .upload-box {
+            min-height: 150px;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .ps-course-form {
+        .form-label {
+            font-size: 0.875rem;
+        }
+
+        .form-text {
+            font-size: 0.75rem;
+        }
+
+        .nav-tabs {
+            .nav-link {
+                padding: 0.5rem;
+
+                .icon {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+
+        .schedule-date-item-container {
+            flex-direction: column;
+            gap: 0.75rem;
+
+            .time-field {
+                max-width: 100%;
+            }
+
+            .certificate-display-row {
+                min-width: 100%;
+
+            }
+        }
+    }
+}
+
+// Add styles for certificate display row to take full width
+.certificate-display-row {
+    width: 100%;
+    grid-column: 1 / -1; // Span all columns in grid layout
+    clear: both; // Clear any floating elements
+    margin-left: 0.75rem;
+    margin-right: 0;
+    
+    .schedule-date-item-container {
+        width: 100%;
+        max-width: none;
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+// Ensure the certificate row breaks out of column layout
+.schedule-date-list .certificate-display-row {
+    width: 100%;
+    flex: 1 1 100%;
+    max-width: 100%;
+}
+
+.pacing-style {
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+}
+
+// Add styles for better touch targets on mobile
+@media (hover: none) and (pointer: coarse) {
+    .ps-course-form {
+
+        .nav-link,
+        .btn,
+        .form-control,
+        .dropdown-toggle {
+            min-height: 44px;
+        }
+
+        .form-check-input {
+            min-width: 20px;
+            min-height: 20px;
+        }
+    }
+}
+
+.title-section {
+    padding: 1rem;
+    border-radius: 16px;
+    border: 1px solid lightgray;
+    margin-bottom: 1rem;
+    background: #ffffff;
+}
+
+.font-12 {
+    font-size: 0.75rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.ps-courseform-footer-bar {
+    // position: fixed;
+    // bottom: 135px;
+    // left: 0;
+    background: #e0e0e0;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 2rem;
+    margin-left: -2.7rem;
+    margin-right: -1.75rem
+}
+
+.footer-cancel {
+    display: flex;
+    align-items: center;
+}
+
+.footer-create {
+    display: flex;
+    align-items: center;
+}
+
+.nav-tabs .nav-link:hover {
+    border-radius: 8px !important;
+}
+
+.custom-padding {
+    padding-left: 0px !important;
+    padding-top: 0px !important;
+    padding-right: 0px !important;
+}
+
+.pl-12-pr-12 {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.read-only-organization-dropdown {
+    width: 100%;
+    
+    .dropdown {
+        width: 100%;
+    }
+    
+    .dropdown-toggle {
+        width: 100% !important;
+        height: 2.5rem !important;
+        // padding: 0.5rem 2.5rem 0.5rem 0.75rem !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 4px !important;
+        background-color: var(--bg-surface) !important;
+        color: var(--text-muted) !important;
+        font-size: 0.875rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        text-align: left !important;
+        position: relative !important;
+        transition: all 0.2s ease !important;
+        font-weight: 400 !important;
+        
+        &:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 1px var(--primary) !important;
+            outline: none !important;
+        }
+        
+        &:hover {
+            border-color: var(--primary) !important;
+        }
+        
+        &.is-invalid {
+            border-color: var(--danger) !important;
+            
+            &:focus {
+                border-color: var(--danger) !important;
+                box-shadow: 0 0 0 1px var(--danger) !important;
+            }
+        }
+        
+        &::after {
+            position: absolute !important;
+            right: 0.75rem !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            border: none !important;
+            content: '' !important;
+            width: 0 !important;
+            height: 0 !important;
+            border-left: 4px solid transparent !important;
+            border-right: 4px solid transparent !important;
+            border-top: 4px solid var(--text-secondary) !important;
+            margin: 0 !important;
+            transition: transform 0.2s ease !important;
+        }
+        
+        &[aria-expanded="true"] {
+            &::after {
+                transform: translateY(-50%) rotate(180deg) !important;
+            }
+        }
+    }
+
+    .dropdown-menu {
+        width: 100% !important;
+        border-radius: 4px !important;
+        border: 1px solid var(--border-color) !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+        background-color: var(--bg-surface) !important;
+        margin-top: 0.25rem !important;
+        max-height: 300px !important;
+        overflow-y: auto !important;
+        z-index: 1000 !important;
+        
+        &.show {
+            display: block !important;
+        }
+        
+        .dropdown-item {
+            padding: 0.5rem 0.75rem !important;
+            color: var(--text-primary) !important;
+            font-size: 0.875rem !important;
+            border: none !important;
+            background: none !important;
+            text-align: left !important;
+            width: 100% !important;
+            cursor: pointer !important;
+            transition: background-color 0.2s ease !important;
+            
+            &:hover {
+                background-color: var(--bg-hover) !important;
+                color: var(--text-primary) !important;
+            }
+            
+            &:focus {
+                background-color: var(--bg-hover) !important;
+                color: var(--text-primary) !important;
+                outline: none !important;
+            }
+            
+            &:active {
+                background-color: var(--primary-light) !important;
+                color: var(--primary) !important;
+            }
+            
+            &:disabled {
+                color: var(--text-secondary) !important;
+                cursor: not-allowed !important;
+                background-color: transparent !important;
+            }
+        }
+    }
+}

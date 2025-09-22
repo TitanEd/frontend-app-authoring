@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { injectIntl, FormattedMessage, intlShape } from '@edx/frontend-platform/i18n';
 import { CheckboxFilter, Container } from '@openedx/paragon';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import Placeholder from '../../editors/Placeholder';
 
 import { RequestStatus } from '../../data/constants';
@@ -178,44 +179,49 @@ const FilesPage = ({
   }
 
   return (
-    <FilesPageProvider courseId={courseId}>
-      <Container size="xl" className="p-4 pt-4.5">
-        <EditFileErrors
-          resetErrors={handleErrorReset}
-          errorMessages={errorMessages}
-          addFileStatus={addAssetStatus}
-          deleteFileStatus={deleteAssetStatus}
-          updateFileStatus={updateAssetStatus}
-          loadingStatus={loadingStatus}
-        />
-        <div className="h2">
-          <FormattedMessage {...messages.heading} />
-        </div>
-        {loadingStatus !== RequestStatus.FAILED && (
-          <>
-            <FileTable
-              {...{
-                courseId,
-                data,
-                handleAddFile,
-                handleDeleteFile,
-                handleDownloadFile,
-                handleLockFile,
-                handleUsagePaths,
-                handleErrorReset,
-                handleFileOrder,
-                tableColumns,
-                maxFileSize,
-                thumbnailPreview,
-                infoModalSidebar,
-                files: assets,
-              }}
-            />
-            <FileValidationModal {...{ handleFileOverwrite }} />
-          </>
-        )}
-      </Container>
-    </FilesPageProvider>
+    <PluginSlot
+      id="files_page_plugin_slot"
+      pluginProps={{ courseId }}
+    >
+      <FilesPageProvider courseId={courseId}>
+        <Container size="xl" className="p-4 pt-4.5">
+          <EditFileErrors
+            resetErrors={handleErrorReset}
+            errorMessages={errorMessages}
+            addFileStatus={addAssetStatus}
+            deleteFileStatus={deleteAssetStatus}
+            updateFileStatus={updateAssetStatus}
+            loadingStatus={loadingStatus}
+          />
+          <div className="h2">
+            <FormattedMessage {...messages.heading} />
+          </div>
+          {loadingStatus !== RequestStatus.FAILED && (
+            <>
+              <FileTable
+                {...{
+                  courseId,
+                  data,
+                  handleAddFile,
+                  handleDeleteFile,
+                  handleDownloadFile,
+                  handleLockFile,
+                  handleUsagePaths,
+                  handleErrorReset,
+                  handleFileOrder,
+                  tableColumns,
+                  maxFileSize,
+                  thumbnailPreview,
+                  infoModalSidebar,
+                  files: assets,
+                }}
+              />
+              <FileValidationModal {...{ handleFileOverwrite }} />
+            </>
+          )}
+        </Container>
+      </FilesPageProvider>
+    </PluginSlot>
   );
 };
 

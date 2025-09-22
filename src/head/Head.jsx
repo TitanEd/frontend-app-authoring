@@ -11,6 +11,7 @@ const Head = ({ intl }) => (
       {intl.formatMessage(messages['course-authoring.page.title'], { siteName: getConfig().SITE_NAME })}
     </title>
     <link rel="shortcut icon" href={getConfig().FAVICON_URL} type="image/x-icon" />
+    {/* <style>{themeData}</style> */}
   </Helmet>
 );
 

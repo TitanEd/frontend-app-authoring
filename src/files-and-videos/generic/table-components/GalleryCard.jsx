@@ -8,6 +8,7 @@ import {
   Truncate,
 } from '@openedx/paragon';
 import { ClosedCaption } from '@openedx/paragon/icons';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import FileMenu from '../FileMenu';
 import FileThumbnail from '../ThumbnailPreview';
 
@@ -27,6 +28,18 @@ const GalleryCard = ({
   };
 
   return (
+    <PluginSlot
+      id="gallery_card_plugin_slot"
+      pluginProps={{
+        original,
+        handleBulkDownload,
+        handleLockFile,
+        handleOpenDeleteConfirmation,
+        handleOpenFileInfo,
+        thumbnailPreview,
+        fileType,
+      }}
+    >
     <Card className={`${className} w-100 gallery-card`} data-testid={`grid-card-${original.id}`}>
       <Card.Header
         className="pr-0 pt-2 pb-2"
@@ -79,6 +92,7 @@ const GalleryCard = ({
         {original.transcripts?.length > 0 && <Icon size="lg" src={ClosedCaption} className="m-0 text-primary-500" />}
       </Card.Footer>
     </Card>
+    </PluginSlot>
   );
 };
 

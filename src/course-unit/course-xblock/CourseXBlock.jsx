@@ -15,7 +15,7 @@ import ConfigureModal from '../../generic/configure-modal/ConfigureModal';
 import SortableItem from '../../generic/drag-helper/SortableItem';
 import { scrollToElement } from '../../course-outline/utils';
 import { COURSE_BLOCK_NAMES } from '../../constants';
-import { copyToClipboard } from '../../generic/data/thunks';
+// import { copyToClipboard } from '../../generic/data/thunks';
 import { COMPONENT_TYPES } from '../../generic/block-type-utils/constants';
 import XBlockMessages from './xblock-messages/XBlockMessages';
 import messages from './messages';
@@ -119,11 +119,11 @@ const CourseXBlock = ({
                   <Dropdown.Item>
                     {intl.formatMessage(messages.blockLabelButtonMove)}
                   </Dropdown.Item>
-                  {canEdit && (
+                  {/* {canEdit && (
                     <Dropdown.Item onClick={() => dispatch(copyToClipboard(id))}>
                       {intl.formatMessage(messages.blockLabelButtonCopyToClipboard)}
                     </Dropdown.Item>
-                  )}
+                  )} */}
                   <Dropdown.Item onClick={openConfigureModal}>
                     {intl.formatMessage(messages.blockLabelButtonManageAccess)}
                   </Dropdown.Item>

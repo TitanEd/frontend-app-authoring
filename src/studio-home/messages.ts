@@ -12,6 +12,7 @@ const messages = defineMessages({
   addNewLibraryBtnText: {
     id: 'course-authoring.studio-home.add-new-library.btn.text',
     defaultMessage: 'New library',
+    description: 'Button text for adding a new library',
   },
   homePageLoadFailedMessage: {
     id: 'course-authoring.studio-home.page-load.failed.message',

@@ -7,6 +7,7 @@ import {
 } from '@openedx/paragon';
 import { CheckCircle, Warning, Add as IconAdd } from '@openedx/paragon/icons';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { useModel } from '../generic/model-store';
 import AlertMessage from '../generic/alert-message';
 import { RequestStatus } from '../data/constants';
@@ -138,12 +139,22 @@ const GradingSettings = ({ intl, courseId }) => {
             >
               <Layout.Element>
                 <article>
-                  <SubHeader
-                    title={intl.formatMessage(messages.headingTitle)}
-                    subtitle={intl.formatMessage(messages.headingSubtitle)}
-                    contentTitle={intl.formatMessage(messages.policy)}
-                    description={intl.formatMessage(messages.policiesDescription)}
-                  />
+                  <PluginSlot
+                    id="grading_header_plugin_slot"
+                    pluginProps={{
+                      contentTitle: intl.formatMessage(messages.policy),
+                      description: intl.formatMessage(messages.policiesDescription),
+                    }}
+                  >
+                    <SubHeader
+                      title={intl.formatMessage(messages.headingTitle)}
+                      subtitle={intl.formatMessage(messages.headingSubtitle)}
+                      contentTitle={intl.formatMessage(messages.policy)}
+                      description={intl.formatMessage(
+                        messages.policiesDescription,
+                      )}
+                    />
+                  </PluginSlot>
                   <section>
                     <GradingScale
                       gradeCutoffs={gradeCutoffs}

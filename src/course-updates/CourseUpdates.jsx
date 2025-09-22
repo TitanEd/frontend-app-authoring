@@ -11,6 +11,7 @@ import {
 import { Add as AddIcon, ErrorOutline as ErrorIcon } from '@openedx/paragon/icons';
 import { useSelector } from 'react-redux';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { useModel } from '../generic/model-store';
 import { getProcessingNotification } from '../generic/processing-notification/data/selectors';
 import ProcessingNotification from '../generic/processing-notification';
@@ -68,7 +69,10 @@ const CourseUpdates = ({ courseId }) => {
   const anyStatusPending = matchesAnyStatus({ ...loadingStatuses, ...savingStatuses }, RequestStatus.PENDING);
 
   return (
-    <>
+    <PluginSlot
+      id="course_updates_plugin_slot"
+      pluginProps={{ courseId }}
+    >
       <Helmet>
         <title>
           {getPageHeadTitle(courseDetails?.name, intl.formatMessage(messages.headingTitle))}
@@ -237,7 +241,7 @@ const CourseUpdates = ({ courseId }) => {
           onInternetConnectionFailed={() => null}
         />
       </div>
-    </>
+    </PluginSlot>
   );
 };
 

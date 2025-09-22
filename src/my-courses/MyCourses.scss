@@ -1,0 +1,80 @@
+.course-card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4rem; /* Space between cards */
+    margin-bottom: 20px; /* Space below the last card */
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 0 1.25rem;
+    max-width: 1800px;
+    margin: 0 auto;
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+    }
+
+    @media (min-width: 992px) {
+        grid-template-columns: repeat(3, minmax(280px, 1fr));
+    }
+
+    @media (min-width: 1200px) {
+        grid-template-columns: repeat(4, minmax(280px, 1fr));
+    }
+
+    @media (min-width: 1600px) {
+        grid-template-columns: repeat(5, minmax(260px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+.pagination-container {
+    margin-top: 2rem;
+    padding: 0 1.25rem;
+    margin-bottom: 1rem;
+}
+
+// Override container padding
+.container {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: 1800px;
+}
+
+.filters-container {
+    padding-right: 1rem;
+    padding-left: 1.8rem;
+}
+
+.my-courses-title {
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1.2;
+    letter-spacing: normal;
+}
+
+
+.my-courses-search-field {
+    .pgn__searchfield {
+        border-radius: 8px !important;
+        border: 1px solid var(--primary) !important;
+
+        &:hover,
+        &:active {
+            border-radius: 8px !important;
+            border: 1px solid var(--primary) !important;
+        }
+    }
+
+    .pgn__searchfield-form {
+        border-radius: 8px !important;
+
+        input {
+            border-radius: 8px !important;
+        }
+    }
+}

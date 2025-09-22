@@ -10,6 +10,7 @@ import Cookies from 'universal-cookie';
 import { getConfig } from '@edx/frontend-platform';
 import { Helmet } from 'react-helmet';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import InternetConnectionAlert from '../generic/internet-connection-alert';
 import SubHeader from '../generic/sub-header/SubHeader';
 import { RequestStatus } from '../data/constants';
@@ -49,7 +50,10 @@ const CourseExportPage = ({ intl, courseId }) => {
   }, []);
 
   return (
-    <>
+    <PluginSlot
+      id="course_export_plugin_slot"
+      pluginProps={{ courseId }}
+    >
       <Helmet>
         <title>
           {intl.formatMessage(messages.pageTitle, {
@@ -113,7 +117,7 @@ const CourseExportPage = ({ intl, courseId }) => {
           onInternetConnectionFailed={() => null}
         />
       </div>
-    </>
+    </PluginSlot>
   );
 };
 
