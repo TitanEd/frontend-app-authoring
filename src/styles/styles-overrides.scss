@@ -2180,6 +2180,61 @@ select.form-control {
       top: 11rem !important;
     }
   }
+
+  // Responsive adjustments for different screen sizes
+  // Small laptops (768px - 1024px)
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .tox-tinymce--toolbar-sticky-on {
+      .tox-editor-header {
+        top: 11rem !important;
+      }
+    }
+  }
+
+  // Medium laptops (1024px - 1366px)
+  @media (min-width: 1024px) and (max-width: 1366px) {
+    .tox-tinymce--toolbar-sticky-on {
+      .tox-editor-header {
+        top: 11rem !important;
+      }
+    }
+  }
+
+  // Large laptops (1366px - 1440px)
+  @media (min-width: 1366px) and (max-width: 1440px) {
+    .tox-tinymce--toolbar-sticky-on {
+      .tox-editor-header {
+        top: 11rem !important;
+      }
+    }
+  }
+
+  // Desktop monitors (1440px - 1600px)
+  @media (min-width: 1440px) and (max-width: 1600px) {
+    .tox-tinymce--toolbar-sticky-on {
+      .tox-editor-header {
+        top: 12rem !important;
+      }
+    }
+  }
+
+  // Large monitors (1600px - 1920px)
+  @media (min-width: 1600px) and (max-width: 1920px) {
+    .tox-tinymce--toolbar-sticky-on {
+      .tox-editor-header {
+        top: 12rem !important;
+      }
+    }
+  }
+
+  // Ultra-wide monitors (1920px+)
+  @media (min-width: 1920px) {
+    .tox-tinymce--toolbar-sticky-on {
+      .tox-editor-header {
+        top: 12.5rem !important;
+      }
+    }
+  }
 }
 
 // S Styles End
