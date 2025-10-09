@@ -2174,6 +2174,14 @@ select.form-control {
   }
 }
 
+.editor-body {
+  .tox-tinymce--toolbar-sticky-on {
+    .tox-editor-header {
+      top: 11rem !important;
+    }
+  }
+}
+
 // S Styles End
 
 // N Styles Start
