@@ -20,7 +20,7 @@ const InstructorsSection = ({ instructors, onChange }) => {
   };
 
   const handleChange = (value, idx, field) => {
-    const updatedInstructors = instructors.map((instructor, index) => {
+    const updatedInstructors = instructors?.map((instructor, index) => {
       if (index === idx) {
         return {
           ...instructor,
