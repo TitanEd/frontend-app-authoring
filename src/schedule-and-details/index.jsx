@@ -77,6 +77,7 @@ const ScheduleAndDetails = ({ intl, courseId }) => {
     possiblePreRequisiteCourses,
     canShowCertificateAvailableDateField,
   } = courseSettings;
+  console.log("courseSettings", courseSettings)
 
   const {
     showLoadFailedAlert,
@@ -304,7 +305,7 @@ const ScheduleAndDetails = ({ intl, courseId }) => {
                           onChange={handleValuesChange}
                         />
                         <InstructorsSection
-                          instructors={instructorInfo?.instructors}
+                          instructors={instructorInfo?.instructors || []}
                           onChange={handleValuesChange}
                         />
                       </>
