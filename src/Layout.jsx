@@ -87,12 +87,48 @@ const Layout = () => {
   // const [headerData, setHeaderData] = useState(undefined);
   // const [footerData, setFooterData] = useState(undefined);
 
+  const [userMenuItemsFromAPI, setUserMenuItemsFromAPI] = useState({});
+
   const { authenticatedUser, config } = useContext(AppContext);
   const { STUDIO_BASE_URL, LOGOUT_URL } = config;
   const userIsAdmin = authenticatedUser.administrator;
+
+  useEffect(() => {
+    const fetchUserMenuItemsFromAPI = async () => {
+      try {
+        const response = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v1/user-dropdown-menu/`);
+        // const response = await getAuthenticatedHttpClient().get('https://staging.titaned.com/titaned/api/v1/user-dropdown-menu/');
+        const { data } = response;
+        if (data) {
+          setUserMenuItemsFromAPI(data);
+        } else {
+          setUserMenuItemsFromAPI({});
+        }
+      } catch (error) {
+        console.error('Error fetching user menu items:', error);
+        setUserMenuItemsFromAPI({});
+      }
+    };
+    fetchUserMenuItemsFromAPI();
+  }, []);
+
+  console.log('userMenuItemsFromAPI', userMenuItemsFromAPI);
+
+  const updatedAuthenticatedUser = {
+    ...authenticatedUser,
+    username: userMenuItemsFromAPI?.username || authenticatedUser?.username,
+    avatar: userMenuItemsFromAPI?.profile_image?.has_image
+      ? userMenuItemsFromAPI.profile_image.image_url_small
+      : authenticatedUser?.avatar,
+  };
+
+  console.log('updatedAuthenticatedUser', updatedAuthenticatedUser);
+
   const userMenuItems = getUserMenuItems({
     studioBaseUrl: STUDIO_BASE_URL,
     logoutUrl: LOGOUT_URL,
+    authenticatedUser: updatedAuthenticatedUser,
+    userMenuItemsFromAPI,
     isAdmin: userIsAdmin,
   });
   console.log('config', config);
@@ -512,7 +548,7 @@ const Layout = () => {
             // menuAlignment={headerData.menu.align}
             // menuList={headerData.menu.menuList}
             // loginSignupButtons={headerData.menu.loginSignupButtons}
-            authenticatedUser={authenticatedUser}
+            authenticatedUser={updatedAuthenticatedUser}
             userMenuItems={userMenuItems}
             onLanguageChange={handleLanguageChange}
             getBaseUrl={() => '/authoring'}
