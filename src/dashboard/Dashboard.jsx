@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -40,7 +43,7 @@ import MetricCard from './components/MetricCard';
 import messages from './messages';
 import { CalendarProvider, useCalendarContext } from '../calendar/context/CalendarContext';
 import NavigationButton from '../calendar/components/NavigationButton';
-import message from "../../src/calendar/data/messages"
+import message from '../calendar/data/messages';
 // Sortable widget card for modal
 const SortableWidgetCard = ({ widget, isSelected, onClick }) => {
   const {
@@ -150,8 +153,6 @@ const Dashboard = () => {
     const fetchDashboardData = async () => {
       try {
         const isLocal = process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'production';
-        console.log(isLocal, 'TEST');
-        console.log(process.env.NODE_ENV, 'process.env.NODE_ENV');
         if (isLocal) {
           // Local mock API
           const response = await fetch('http://localhost:3001/dashboard');
@@ -445,8 +446,9 @@ const Dashboard = () => {
     return (
       <>
         <h4 className="card-header">{intl && intl.formatMessage
-            ? intl.formatMessage(message.calendarTitle)
-            : message.calendarTitle.defaultMessage}</h4>
+          ? intl.formatMessage(message.calendarTitle)
+          : message.calendarTitle.defaultMessage}
+        </h4>
         <div className="calendar-card">
           <div className="calendar-nav">
             <NavigationButton type="prev" onClick={prev} />

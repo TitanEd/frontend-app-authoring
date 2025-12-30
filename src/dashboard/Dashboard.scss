@@ -86,7 +86,6 @@
       align-items: center;
       margin-bottom: 1rem;
       background-color: var(--bg-surface);
-      // padding: 0.5rem;
       border-radius: 18px;
 
       h1 {
@@ -162,8 +161,6 @@
 
   .dashboard-sidebar {
     width: 280px;
-    // border-left: 1px solid var(--primary);
-    // padding-left: 1rem;
     z-index: auto;
     background-color: var(--bg-body);
     margin-top: 37px;
@@ -183,15 +180,9 @@
         top: 0;
         z-index: 1;
       }
-
-      .ai-suggestion-list {
-        // max-height: 15.5rem;
-        // overflow-y: auto;
-      }
     }
 
     .card-list {
-      // padding-left: 1rem;
       list-style-type: disc;
       font-size: 0.875rem;
     }
@@ -377,7 +368,6 @@
 .metric-label-modern {
   font-size: 1rem;
   color: var(--text-white);
-  // margin-top: 0.25rem;
   font-weight: 400;
 }
 
@@ -429,10 +419,6 @@
   box-shadow: 0 2px 8px rgba(44, 62, 80, 0.06);
   font-size: 0.95rem;
   color: #4b4b4b;
-  //   position: relative;
-  //   display: flex;
-  //   align-items: flex-start;
-  //   min-height: 60px;
   display: flex;
   align-items: center;
   min-height: 48px;

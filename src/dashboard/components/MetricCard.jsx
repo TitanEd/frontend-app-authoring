@@ -1,12 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from '@openedx/paragon';
 import './MetricCard.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SUPPORTED_ICON_CLASSES } from '../../data/constants';
-// import { fas } from '@fortawesome/free-solid-svg-icons';
-
-// library.add(fas);
 
 const MetricCard = ({
   icon, value, label, index,
