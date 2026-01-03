@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
 /* eslint-disable no-unneeded-ternary */
 import React from 'react';
@@ -95,7 +97,7 @@ const WidgetCard = ({
             stops: [0, 90, 100],
           };
         }
-        if (content.chartType === 'bar'|| content.chartType === 'horizontalbar') {
+        if (content.chartType === 'bar' || content.chartType === 'horizontalbar') {
           options.plotOptions = {
             bar: {
               horizontal: content.chartType === 'horizontalbar',

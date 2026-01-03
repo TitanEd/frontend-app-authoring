@@ -19,7 +19,6 @@ import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { logError } from '@edx/frontend-platform/logging';
 // import { loadThemeStyles } from 'utils/themeService';
 import MyCourses from 'my-courses/MyCourses';
-import CreateWidgets from 'widgets-create/CreateWidgets';
 import LibrariesV2Tab from 'studio-home/tabs-section/libraries-v2-tab';
 import { configure, getMessages, IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
@@ -203,7 +202,6 @@ const App = () => {
         <Route element={oldUI !== 'true' ? <Layout /> : <Outlet />}>
           <Route path="/home" element={oldUI !== 'true' ? <Dashboard /> : <StudioHome />} />
           {/* <Route path="/home" element={<StudioHome />} /> */}
-          {/* <Route path="/widgets-create" element={<CreateWidgets />} /> */}
           {oldUI === 'false' && (
             <Route path="/my-courses" element={<MyCourses />} />
           )}

@@ -5,13 +5,26 @@ interface UserMenuItemsParams {
   studioBaseUrl: string;
   logoutUrl: string;
   isAdmin: any;
+  authenticatedUser: any;
+  userMenuItemsFromAPI?: any;
 }
 
 const getUserMenuItems = ({
   studioBaseUrl,
   logoutUrl,
   isAdmin,
+  authenticatedUser,
+  userMenuItemsFromAPI,
 }: UserMenuItemsParams) => {
+  // Use menu_items from API if available, otherwise use fallback items
+  if (userMenuItemsFromAPI?.menu_items && Array.isArray(userMenuItemsFromAPI.menu_items)) {
+    return userMenuItemsFromAPI.menu_items.map((item: { label: string; url: string }) => ({
+      href: item.url,
+      title: item.label,
+    }));
+  }
+
+  // Fallback items
   let items = [
     {
       href: `${studioBaseUrl}`,
