@@ -131,8 +131,9 @@ const MyCourses = () => {
     const fetchNavigationItems = async () => {
       try {
         const response = await getAuthenticatedHttpClient().get(`${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`);
+       // for local api fetch
         // const response = await getAuthenticatedHttpClient().get(
-        //   'https://staging.titaned.com/titaned/api/v1/menu-config/',
+        //   'LMS_API_DOMAIN/titaned/api/v1/menu-config/',
         // );
         if (response.status !== 200) {
           throw new Error('Failed to fetch Navigation Items');
