@@ -18,7 +18,7 @@ import * as ParagonIcons from '@openedx/paragon/icons';
 //   LmsBook,
 // } from '@openedx/paragon/icons';
 // import Sidebar from 'library/Sidebar/Sidebar';
-import { MainHeader, Sidebar, SidebarProvider } from 'titaned-frontend-library';
+import { MainHeader, Sidebar, SidebarProvider, AnnouncementBanner} from 'titaned-frontend-library';
 import getUserMenuItems from 'library/utils/getUserMenuItems';
 // import MainHeader from 'library/Header/MainHeader';
 // import { SidebarProvider } from 'library/providers/SidebarProvider';
@@ -31,8 +31,8 @@ import { useContentSearchConnection } from './search-manager/data/apiHooks';
 import { SearchContextProvider } from './search-manager';
 import { LoadingSpinner } from './generic/Loading';
 import { setUIPreference } from './services/uiPreferenceService';
-import FeedbackComponent from './feedback/FeedbackComponent';
-import FeedbackLink from './feedbackBanner/FeedbackLink';
+// import FeedbackComponent from './feedback/FeedbackComponent';
+// import FeedbackLink from './feedbackBanner/FeedbackLink';
 
 
 // Icon mapping for API icon names
@@ -135,6 +135,36 @@ const Layout = () => {
 
   const intl = useIntl();
 
+  const [systemAlert, setSystemAlert] = useState(null);
+  const [userAlert, setUserAlert] = useState(null);
+
+  useEffect(() => {
+    const fetchAlerts = async () => {
+      try {
+        const systemResponse = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v1/system/alerts/`);
+        // const systemResponse = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/system/alerts/');
+
+
+        const userResponse = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v1/user/alerts/`);
+        // for local api fetch 
+        // const userResponse = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/user/alerts/');
+
+
+        if (systemResponse?.data) {
+          setSystemAlert(systemResponse.data.alert);
+        }
+
+        if (userResponse?.data) {
+          setUserAlert(userResponse.data.alert);
+        }
+      } catch (error) {
+        console.error('Error fetching announcement alerts:', error);
+      }
+    };
+
+    fetchAlerts();
+  }, []);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -152,7 +182,7 @@ const Layout = () => {
   const [headerButtons, setHeaderButtons] = useState({});
   const [languageSelectorList, setLanguageSelectorList] = useState([]);
   const [isSearchEnabled, setIsSearchEnabled] = useState(false);
-  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  // const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   // const DefaultIcon = ParagonIcons.Home;
 
@@ -387,7 +417,9 @@ const Layout = () => {
         const success = await setUIPreference(false);
         if (success) {
           console.log('Successfully switched to old UI, reloading page...');
-          localStorage.removeItem('bannerClosedTimestamp');
+          // localStorage.removeItem('bannerClosedTimestamp');
+          localStorage.removeItem('systemAlert');
+          localStorage.removeItem('userAlert');
           window.location.href = '/authoring/home';
         } else {
           console.error('Failed to switch to old UI');
@@ -539,10 +571,25 @@ const Layout = () => {
 
   const renderContent = () => (
     <div className="app-container">
+      {systemAlert && (
+        <AnnouncementBanner
+          announcementType="systemAlert"
+          data={systemAlert}
+          backgroundColor= "#F0F1FA"
+        />
+      )}
+
+      {userAlert && (
+        <AnnouncementBanner
+          announcementType="userAlert"
+          data={userAlert}
+          backgroundColor= "#FEF8F0"
+        />
+      )}
       {/* <p>This is header</p> */}
       <SidebarProvider>
         <div className="header-container">
-          <FeedbackLink isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
+          {/* <FeedbackLink isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} /> */}
           <MainHeader
             logoUrl={config.LOGO_URL}
             // menuAlignment={headerData.menu.align}
@@ -593,7 +640,7 @@ const Layout = () => {
           </div>
         </div> */}
       </SidebarProvider>
-      <FeedbackComponent isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
+      {/* <FeedbackComponent isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} /> */}
     </div>
   );
 
