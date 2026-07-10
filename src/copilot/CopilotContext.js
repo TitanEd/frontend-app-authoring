@@ -565,9 +565,9 @@ export const CopilotProvider = ({ children, initialConfig = { width: 400, height
         setShowCopilotIcon(!!data.show_copilot_icon);
       } catch (err) {
         console.log('Failed to load menu-config for Copilot:', err);
+        setEnabledCopilot(false);
+        setShowCopilotIcon(false);
       }
-      setEnabledCopilot(false);
-      setShowCopilotIcon(false);
     };
 
     fetchMenuConfig();
