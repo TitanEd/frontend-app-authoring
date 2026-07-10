@@ -1,3 +1,34 @@
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.coursepage {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+[dir="ltr"] .pr-2,
+[dir="ltr"] .px-2 {
+    padding-right: 0 !important;
+}
+
 .form-control {
     &[type="time"] {
         padding-right: 0.5rem;
@@ -14,10 +45,31 @@
     font-size: 12px;
     margin-top: 0.25rem;
 }
+
 .ps-course-form {
+    height: 84vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+
+    ::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari, Opera */
+    }
+
+    .aibutton{
+        margin-left: 4px;
+    }
+    .pgn__vstack.pgn__stack-gap--1 {
+        gap: 2.3rem;
+    }
+
     .d-grid {
         display: grid;
     }
+
 
     // Form control styles
     .form-control {
@@ -325,9 +377,10 @@
         .content-area {
             background-color: var(--bg-surface);
             min-height: 250px;
-            .form-section{
-                .pgn__form-control-description{
-                    .pgn__icon{
+
+            .form-section {
+                .pgn__form-control-description {
+                    .pgn__icon {
                         display: none;
                     }
                 }
@@ -427,6 +480,11 @@
         color: var(--danger);
         margin-left: 0.25rem;
         font-weight: bold;
+    }
+    .form-group-custom{
+        .pgn__form-label{
+            display: flex;
+        }
     }
 
     .form-group-custom .pgn__form-label,
@@ -691,6 +749,9 @@
 
     &:hover .remove-image-overlay {
         opacity: 1;
+    }
+    &:hover .pgn__icon{
+        color: var(--text-white);
     }
 }
 
@@ -963,7 +1024,7 @@
     clear: both; // Clear any floating elements
     margin-left: 0.75rem;
     margin-right: 0;
-    
+
     .schedule-date-item-container {
         width: 100%;
         max-width: none;
@@ -1024,13 +1085,14 @@
     // position: fixed;
     // bottom: 135px;
     // left: 0;
-    background: #e0e0e0;
+    // background: #e0e0e0;
+    background: var(--bg-surface);
     padding: 20px 40px;
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid #e0e0e0;
+    // border-top: 1px solid #e0e0e0;
     margin-top: 2rem;
-    margin-left: -2.7rem;
+    margin-left: -1.65rem;
     margin-right: -1.75rem
 }
 
@@ -1065,11 +1127,11 @@
 
 .read-only-organization-dropdown {
     width: 100%;
-    
+
     .dropdown {
         width: 100%;
     }
-    
+
     .dropdown-toggle {
         width: 100% !important;
         height: 2.5rem !important;
@@ -1086,26 +1148,26 @@
         position: relative !important;
         transition: all 0.2s ease !important;
         font-weight: 400 !important;
-        
+
         &:focus {
             border-color: var(--primary) !important;
             box-shadow: 0 0 0 1px var(--primary) !important;
             outline: none !important;
         }
-        
+
         &:hover {
             border-color: var(--primary) !important;
         }
-        
+
         &.is-invalid {
             border-color: var(--danger) !important;
-            
+
             &:focus {
                 border-color: var(--danger) !important;
                 box-shadow: 0 0 0 1px var(--danger) !important;
             }
         }
-        
+
         &::after {
             position: absolute !important;
             right: 0.75rem !important;
@@ -1121,7 +1183,7 @@
             margin: 0 !important;
             transition: transform 0.2s ease !important;
         }
-        
+
         &[aria-expanded="true"] {
             &::after {
                 transform: translateY(-50%) rotate(180deg) !important;
@@ -1139,11 +1201,11 @@
         max-height: 300px !important;
         overflow-y: auto !important;
         z-index: 1000 !important;
-        
+
         &.show {
             display: block !important;
         }
-        
+
         .dropdown-item {
             padding: 0.5rem 0.75rem !important;
             color: var(--text-primary) !important;
@@ -1154,23 +1216,23 @@
             width: 100% !important;
             cursor: pointer !important;
             transition: background-color 0.2s ease !important;
-            
+
             &:hover {
                 background-color: var(--bg-hover) !important;
                 color: var(--text-primary) !important;
             }
-            
+
             &:focus {
                 background-color: var(--bg-hover) !important;
                 color: var(--text-primary) !important;
                 outline: none !important;
             }
-            
+
             &:active {
                 background-color: var(--primary-light) !important;
                 color: var(--primary) !important;
             }
-            
+
             &:disabled {
                 color: var(--text-secondary) !important;
                 cursor: not-allowed !important;
