@@ -8,6 +8,8 @@ import SearchUI from './SearchUI';
 const SearchModal: React.FC<{ courseId?: string; isOpen: boolean; onClose: () => void; }> = (
   { courseId, ...props },
 ) => {
+  console.log('SearchModal', props);
+  console.log('SearchModal ID', courseId);
   const intl = useIntl();
   const title = intl.formatMessage(messages.title);
 

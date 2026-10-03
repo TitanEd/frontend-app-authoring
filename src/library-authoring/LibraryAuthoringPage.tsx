@@ -22,6 +22,7 @@ import {
 import { Add, InfoOutline } from '@openedx/paragon/icons';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 
 import { useModulestoreMigrationStatus } from '@src/data/apiHooks';
 import Loading from '@src/generic/Loading';
@@ -350,66 +351,88 @@ const LibraryAuthoringPage = ({
   ));
 
   return (
-    <div className="d-flex">
-      <div className="flex-grow-1">
-        {libraryData
-          && (
-            <>
-              <Helmet>
-                <title>{libraryData.title} | {process.env.SITE_NAME}</title>
-              </Helmet>
-              {!componentPickerMode && (
-                <Header
-                  number={libraryData.slug}
-                  title={libraryData.title}
-                  org={libraryData.org}
-                  contextId={libraryId}
-                  readOnly={readOnly}
-                  isLibrary
-                  containerProps={{
-                    size: undefined,
-                  }}
-                />
-              )}
-            </>
-          )}
-        <Container className="px-4 mt-4 mb-5 library-authoring-page">
-          <SearchContextProvider
-            extraFilter={extraFilter}
-            overrideTypesFilter={overrideTypesFilter}
-          >
-            {libraryData
-              && (
-                <SubHeader
-                  title={<SubHeaderTitle title={libraryData.title} />}
-                  subtitle={!componentPickerMode ? intl.formatMessage(messages.headingSubtitle) : undefined}
-                  breadcrumbs={breadcumbs}
-                  headerActions={<HeaderActions />}
-                  hideBorder
-                />
-              )}
-            {visibleTabs.length > 1 && (
-              <Tabs
-                variant="tabs"
-                activeKey={activeKey}
-                onSelect={handleTabChange}
-                className="my-3"
-              >
-                {visibleTabsToRender}
-              </Tabs>
+    <PluginSlot
+      id="library_authoring_page_plugin_slot"
+      pluginProps={{
+        libraryId,
+        libraryData,
+        componentPickerMode,
+        restrictToLibrary,
+        showOnlyPublished,
+        // Verawood renamed `sidebarComponentInfo` to `sidebarItemInfo` in the SidebarContext.
+        sidebarComponentInfo: sidebarItemInfo,
+        extraFilter,
+        subHeaderTitle: <SubHeaderTitle title={libraryData?.title} />,
+        intl,
+        headerActions: <HeaderActions />,
+        breadcumbs,
+        activeKey,
+        handleTabChange,
+        contentType: activeKey,
+      }}
+    >
+      <div className="d-flex">
+        <div className="flex-grow-1">
+          {libraryData
+            && (
+              <>
+                <Helmet>
+                  <title>{libraryData.title} | {process.env.SITE_NAME}</title>
+                </Helmet>
+                {!componentPickerMode && (
+                  <Header
+                    number={libraryData.slug}
+                    title={libraryData.title}
+                    org={libraryData.org}
+                    contextId={libraryId}
+                    readOnly={readOnly}
+                    isLibrary
+                    containerProps={{
+                      size: undefined,
+                    }}
+                  />
+                )}
+              </>
             )}
-            <FiltersComponent onlyOneType={onlyOneType} />
-            <LibraryContent contentType={activeKey} />
-          </SearchContextProvider>
-        </Container>
-        {!componentPickerMode && <StudioFooterSlot containerProps={{ size: undefined }} />}
-      </div>
-      {!!sidebarItemInfo?.type && (
-        <div className="library-authoring-sidebar box-shadow-left-1 bg-white" data-testid="library-sidebar">
-          <LibrarySidebar />
+          <Container className="px-4 mt-4 mb-5 library-authoring-page">
+            <SearchContextProvider
+              extraFilter={extraFilter}
+              overrideTypesFilter={overrideTypesFilter}
+            >
+              {libraryData
+                && (
+                  <SubHeader
+                    title={<SubHeaderTitle title={libraryData.title} />}
+                    subtitle={!componentPickerMode ? intl.formatMessage(messages.headingSubtitle) : undefined}
+                    breadcrumbs={breadcumbs}
+                    headerActions={<HeaderActions />}
+                    hideBorder
+                  />
+                )}
+              {visibleTabs.length > 1 && (
+                <Tabs
+                  variant="tabs"
+                  activeKey={activeKey}
+                  onSelect={handleTabChange}
+                  className="my-3"
+                >
+                  {visibleTabsToRender}
+                </Tabs>
+              )}
+              <FiltersComponent onlyOneType={onlyOneType} />
+              <LibraryContent contentType={activeKey} />
+            </SearchContextProvider>
+          </Container>
+          {!componentPickerMode && <StudioFooterSlot containerProps={{ size: undefined }} />}
         </div>
-      )}
-    </div>
+        {!!sidebarItemInfo?.type && (
+          <div className="library-authoring-sidebar box-shadow-left-1 bg-white" data-testid="library-sidebar">
+            <LibrarySidebar />
+          </div>
+        )}
+      </div>
+    </PluginSlot>
+
   );
 };
 

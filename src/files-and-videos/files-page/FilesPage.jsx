@@ -3,6 +3,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { Container } from '@openedx/paragon';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 
 import { useCourseAuthoringContext } from '@src/CourseAuthoringContext';
 import CourseFilesSlot from '@src/plugin-slots/CourseFilesSlot';
@@ -64,26 +65,31 @@ const FilesPage = () => {
   }
 
   return (
-    <FilesPageProvider courseId={courseId}>
-      <Container size="xl" className="p-4 pt-4.5">
-        <EditFileErrors
-          resetErrors={handleErrorReset}
-          errorMessages={errorMessages}
-          addFileStatus={addAssetStatus}
-          deleteFileStatus={deleteAssetStatus}
-          updateFileStatus={updateAssetStatus}
-          loadingStatus={loadingStatus}
-        />
-        <AlertAgreementGatedFeature
-          gatingTypes={[AgreementGated.UPLOAD, AgreementGated.UPLOAD_FILES]}
-        />
-        <EditFileAlertsSlot />
-        <div className="h2">
-          {intl.formatMessage(messages.heading)}
-        </div>
-        {loadingStatus !== RequestStatus.FAILED && <CourseFilesSlot />}
-      </Container>
-    </FilesPageProvider>
+    <PluginSlot
+      id="files_page_plugin_slot"
+      pluginProps={{ courseId }}
+    >
+      <FilesPageProvider courseId={courseId}>
+        <Container size="xl" className="p-4 pt-4.5">
+          <EditFileErrors
+            resetErrors={handleErrorReset}
+            errorMessages={errorMessages}
+            addFileStatus={addAssetStatus}
+            deleteFileStatus={deleteAssetStatus}
+            updateFileStatus={updateAssetStatus}
+            loadingStatus={loadingStatus}
+          />
+          <AlertAgreementGatedFeature
+            gatingTypes={[AgreementGated.UPLOAD, AgreementGated.UPLOAD_FILES]}
+          />
+          <EditFileAlertsSlot />
+          <div className="h2">
+            {intl.formatMessage(messages.heading)}
+          </div>
+          {loadingStatus !== RequestStatus.FAILED && <CourseFilesSlot />}
+        </Container>
+      </FilesPageProvider>
+    </PluginSlot>
   );
 };
 

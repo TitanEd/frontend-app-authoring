@@ -6,6 +6,8 @@ import {
 
 import { Helmet } from 'react-helmet';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
+
 import SubHeader from '@src/generic/sub-header/SubHeader';
 import InternetConnectionAlert from '@src/generic/internet-connection-alert';
 import ConnectionErrorAlert from '@src/generic/ConnectionErrorAlert';
@@ -81,12 +83,18 @@ const CourseImportPage = () => {
                 <p className="small">{intl.formatMessage(messages.description1)}</p>
                 <p className="small">{intl.formatMessage(messages.description2)}</p>
                 <p className="small">{intl.formatMessage(messages.description3)}</p>
-                <FileSection />
-                {importTriggered && <ImportStepper />}
+
+                <PluginSlot id="course_import_plugin_slot" pluginProps={{ courseId, importTriggered }}>
+                  <FileSection />
+                  {importTriggered && <ImportStepper />}
+                </PluginSlot>
+
               </article>
             </Layout.Element>
             <Layout.Element>
-              <ImportSidebar />
+              <PluginSlot id="import_sidebar_plugin_slot" pluginProps={{ courseId }}>
+                <ImportSidebar />
+              </PluginSlot>
             </Layout.Element>
           </Layout>
         </section>

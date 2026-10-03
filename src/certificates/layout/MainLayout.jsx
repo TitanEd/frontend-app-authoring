@@ -3,6 +3,7 @@ import { Container, Layout } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { RequestStatus } from '@src/data/constants';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { SavingErrorAlert } from '../../generic/saving-error-alert';
 import SubHeader from '../../generic/sub-header/SubHeader';
 import messages from '../messages';
@@ -21,13 +22,17 @@ const MainLayout = ({ courseId, showHeaderButtons, children }) => {
   return (
     <>
       <Container size="xl" className="certificates px-4">
-        <div className="mt-5" />
-        <SubHeader
-          hideBorder
-          title={intl.formatMessage(messages.headingTitle)}
-          subtitle={intl.formatMessage(messages.headingSubtitle)}
-          headerActions={showHeaderButtons && <HeaderButtons />}
-        />
+        <PluginSlot
+          id="certificates_header_hide_plugin_slot"
+        >
+          <div className="mt-5" />
+          <SubHeader
+            hideBorder
+            title={intl.formatMessage(messages.headingTitle)}
+            subtitle={intl.formatMessage(messages.headingSubtitle)}
+            headerActions={showHeaderButtons && <HeaderButtons />}
+          />
+        </PluginSlot>
         <section>
           <Layout
             lg={[{ span: 9 }, { span: 3 }]}
@@ -38,6 +43,15 @@ const MainLayout = ({ courseId, showHeaderButtons, children }) => {
           >
             <Layout.Element>
               <article role="main">
+                <PluginSlot
+                  id="certificates_header_plugin_slot"
+                  pluginProps={{
+                    hideBorder: true,
+                    title: intl.formatMessage(messages.headingTitle),
+                    subtitle: intl.formatMessage(messages.headingSubtitle),
+                    headerActions: showHeaderButtons && <HeaderButtons />,
+                  }}
+                />
                 {children}
               </article>
             </Layout.Element>

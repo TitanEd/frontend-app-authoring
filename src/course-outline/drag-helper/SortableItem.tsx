@@ -9,6 +9,7 @@ import {
 } from '@openedx/paragon';
 import { DragIndicator } from '@openedx/paragon/icons';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import messages from './messages';
 
 interface SortableItemProps {
@@ -30,7 +31,7 @@ const SortableItem = ({
   id,
   isDraggable = true,
   isDroppable = true,
-  componentStyle,
+  // componentStyle, (custom: componentStyle override is disabled below)
   data,
   children,
   onClick,
@@ -64,7 +65,7 @@ const SortableItem = ({
     marginBottom: '1.5rem',
     borderRadius: '0.35rem',
     boxShadow: '0 0 .125rem rgba(0, 0, 0, .15), 0 0 .25rem rgba(0, 0, 0, .15)',
-    ...componentStyle,
+    // ...componentStyle,
   };
 
   return (
@@ -97,7 +98,11 @@ const SortableItem = ({
           {...listeners}
         >
           <span className="btn-icon__icon-container">
-            <Icon src={DragIndicator} />
+            <PluginSlot
+              id="drag_indicator_icon_plugin_slot"
+            >
+              <Icon src={DragIndicator} />
+            </PluginSlot>
           </span>
         </button>
       )}

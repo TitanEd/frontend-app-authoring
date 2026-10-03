@@ -6,6 +6,7 @@ import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { PageWrap } from '@edx/frontend-platform/react';
 import { Button, Hyperlink } from '@openedx/paragon';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { useModels } from '@src/generic/model-store';
 import { RequestStatus } from '@src/data/constants';
 import PermissionDeniedAlert from '@src/generic/PermissionDeniedAlert';
@@ -83,73 +84,78 @@ const PagesAndResources = () => {
   const hasAdditionalCoursePlugin = getConfig()?.pluginSlots?.additional_course_plugin != null;
 
   return (
-    <PagesAndResourcesProvider courseId={courseId} isEditable={isEditable}>
-      <main className="container container-mw-md px-3">
-        <div className="d-flex justify-content-between my-4 my-md-5 align-items-center">
-          <h3 className="m-0">{intl.formatMessage(messages.heading)}</h3>
-          <Hyperlink
-            destination={learningCourseURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            showLaunchIcon={false}
-          >
-            <Button variant="outline-primary" className="p-2">{intl.formatMessage(messages.viewLiveButton)}</Button>
-          </Hyperlink>
-        </div>
-        <Routes>
-          <Route
-            path="discussion/configure/:appId"
-            element={
-              <PageWrap>
-                <DiscussionsSettings />
-              </PageWrap>
-            }
-          />
-          <Route
-            path="discussion"
-            element={
-              <PageWrap>
-                <DiscussionsSettings />
-              </PageWrap>
-            }
-          />
-          <Route
-            path="discussion/settings"
-            element={
-              <PageWrap>
-                <DiscussionsSettings />
-              </PageWrap>
-            }
-          />
-          <Route
-            path=":appId/settings"
-            element={
-              <PageWrap>
-                <SettingsComponent url={redirectUrl} />
-              </PageWrap>
-            }
-          />
-        </Routes>
+    <PluginSlot
+      id="pages_resources_plugin_slot"
+      pluginProps={{ courseId }}
+    >
+      <PagesAndResourcesProvider courseId={courseId} isEditable={isEditable}>
+        <main className="container container-mw-md px-3">
+          <div className="d-flex justify-content-between my-4 my-md-5 align-items-center">
+            <h3 className="m-0">{intl.formatMessage(messages.heading)}</h3>
+            <Hyperlink
+              destination={learningCourseURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              showLaunchIcon={false}
+            >
+              <Button variant="outline-primary" className="p-2">{intl.formatMessage(messages.viewLiveButton)}</Button>
+            </Hyperlink>
+          </div>
+          <Routes>
+            <Route
+              path="discussion/configure/:appId"
+              element={
+                <PageWrap>
+                  <DiscussionsSettings />
+                </PageWrap>
+              }
+            />
+            <Route
+              path="discussion"
+              element={
+                <PageWrap>
+                  <DiscussionsSettings />
+                </PageWrap>
+              }
+            />
+            <Route
+              path="discussion/settings"
+              element={
+                <PageWrap>
+                  <DiscussionsSettings />
+                </PageWrap>
+              }
+            />
+            <Route
+              path=":appId/settings"
+              element={
+                <PageWrap>
+                  <SettingsComponent url={redirectUrl} />
+                </PageWrap>
+              }
+            />
+          </Routes>
 
-        <PageGrid
-          pages={pages}
-          pluginSlotComponent={<AdditionalCoursePluginSlot />}
-          courseId={courseId}
-        />
-        {(contentPermissionsPages.length > 0 || hasAdditionalCoursePlugin)
-          && (
-            <>
-              <div className="d-flex justify-content-between my-4 my-md-5 align-items-center">
-                <h3 className="m-0">{intl.formatMessage(messages.contentPermissions)}</h3>
-              </div>
-              <PageGrid
-                pages={contentPermissionsPages}
-                pluginSlotComponent={<AdditionalCourseContentPluginSlot />}
-              />
-            </>
-          )}
-      </main>
-    </PagesAndResourcesProvider>
+          <PageGrid
+            pages={pages}
+            pluginSlotComponent={<AdditionalCoursePluginSlot />}
+            courseId={courseId}
+          />
+          {(contentPermissionsPages.length > 0 || hasAdditionalCoursePlugin)
+            && (
+              <>
+                <div className="d-flex justify-content-between my-4 my-md-5 align-items-center">
+                  <h3 className="m-0">{intl.formatMessage(messages.contentPermissions)}</h3>
+                </div>
+                <PageGrid
+                  pages={contentPermissionsPages}
+                  pluginSlotComponent={<AdditionalCourseContentPluginSlot />}
+                />
+              </>
+            )}
+        </main>
+      </PagesAndResourcesProvider>
+    </PluginSlot>
   );
 };
 

@@ -7,6 +7,7 @@ import {
   CheckCircle,
 } from '@openedx/paragon/icons';
 import { Icon } from '@openedx/paragon';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 
 export interface CourseStepperProps {
   steps: {
@@ -87,6 +88,10 @@ const CourseStepper = ({
             >
               <div className="course-stepper__step-icon">
                 <Icon src={stepIcon} data-testid={`${title}-icon`} />
+                <PluginSlot
+                  id="course_export_stepper_plugin_slot"
+                  pluginProps={{ index, steps }}
+                />
               </div>
               <div className="course-stepper__step-info">
                 <h3 className="h4 title course-stepper__step-title font-weight-600">{titleComponent ?? title}</h3>

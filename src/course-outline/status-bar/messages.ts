@@ -95,6 +95,15 @@ const messages = defineMessages({
     defaultMessage: '{count, plural, one {{count} Library Update} other {{count} Library Updates}}',
     description: 'Status text displaying count of library updates',
   },
+  // Used by the custom (TitanEd) CustomStatusBar; removed upstream in Verawood.
+  highlightEmailsTitle: {
+    id: 'course-authoring.course-outline.status-bar.highlight-emails',
+    defaultMessage: 'Course highlight emails',
+  },
+  highlightEmailsLink: {
+    id: 'course-authoring.course-outline.status-bar.highlight-emails.link',
+    defaultMessage: 'Learn more',
+  },
 });
 
 export default messages;

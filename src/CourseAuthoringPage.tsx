@@ -5,12 +5,14 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { StudioFooterSlot } from '@edx/frontend-component-footer';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import Header from './header';
 import NotFoundAlert from './generic/NotFoundAlert';
 import { fetchOnlyStudioHomeData } from './studio-home/data/thunks';
 import { RequestStatus } from './data/constants';
 import Loading from './generic/Loading';
 import { useCourseAuthoringContext } from './CourseAuthoringContext';
+import HeaderSlot from './plugin-slots/HeaderSlot';
 
 interface Props {
   children?: React.ReactNode;
@@ -20,7 +22,10 @@ const CourseAuthoringPage = ({ children }: Props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchOnlyStudioHomeData());
+    // Only make API calls for new UI to prevent infinite calls in old UI
+    if (localStorage.getItem('oldUI') !== 'true') {
+      dispatch(fetchOnlyStudioHomeData());
+    }
   }, []);
 
   const { courseId, courseDetails, courseDetailStatus } = useCourseAuthoringContext();
@@ -42,21 +47,25 @@ const CourseAuthoringPage = ({ children }: Props) => {
       we shouldn't have the header and footer on these pages.
       This functionality will be removed in TNL-9591 */
       }
-      {inProgress ?
-        !isEditor && <Loading />
-        : (!isEditor && (
-          <Header
-            number={courseNumber}
-            org={courseOrg}
-            title={courseTitle}
-            contextId={courseId}
-            containerProps={{
-              size: 'fluid',
-            }}
-          />
-        ))}
+      <HeaderSlot>
+        {inProgress ?
+          !isEditor && <Loading />
+          : (!isEditor && (
+            <Header
+              number={courseNumber}
+              org={courseOrg}
+              title={courseTitle}
+              contextId={courseId}
+              containerProps={{
+                size: 'fluid',
+              }}
+            />
+          ))}
+      </HeaderSlot>
       {children}
-      {!inProgress && !isEditor && <StudioFooterSlot />}
+      <PluginSlot id="footer_plugin_slot">
+        {!inProgress && !isEditor && <StudioFooterSlot />}
+      </PluginSlot>
     </div>
   );
 };

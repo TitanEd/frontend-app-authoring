@@ -9,6 +9,7 @@ import { ArrowCircleDown as ArrowCircleDownIcon } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform';
 import { Helmet } from 'react-helmet';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { useCourseAuthoringContext } from '@src/CourseAuthoringContext';
 import InternetConnectionAlert from '@src/generic/internet-connection-alert';
 import ConnectionErrorAlert from '@src/generic/ConnectionErrorAlert';
@@ -63,7 +64,10 @@ const CourseExportPage = () => {
   }
 
   return (
-    <>
+    <PluginSlot
+      id="course_export_plugin_slot"
+      pluginProps={{ courseId }}
+    >
       <Helmet>
         <title>
           {intl.formatMessage(messages.pageTitle, {
@@ -129,7 +133,7 @@ const CourseExportPage = () => {
           onInternetConnectionFailed={() => null}
         />
       </div>
-    </>
+    </PluginSlot>
   );
 };
 

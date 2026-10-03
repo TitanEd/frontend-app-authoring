@@ -70,3 +70,5 @@ export enum UserTaskStatus {
   Cancelled = 'Cancelled',
   Retrying = 'Retrying',
 }
+
+export const SUPPORTED_ICON_CLASSES = ['apple', 'facebook', 'fa-google', 'fa-microsoft', 'fas fa-users', 'fas fa-chart-bar', 'fas fa-tachometer-alt', 'fas fa-clock', 'fas fa-chart-line', 'fas fa-chart-pie', 'fas fa-shopping-cart', 'fas fa-dollar-sign', 'fas fa-percentage', 'fas fa-calendar', 'fas fa-star', 'fas fa-heart', 'fas fa-thumbs-up', 'fas fa-eye', 'fas fa-download'];

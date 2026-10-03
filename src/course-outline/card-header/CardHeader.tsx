@@ -8,6 +8,7 @@ import {
 import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { useSearchParams } from 'react-router-dom';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import {
   Dropdown,
   Form,
@@ -250,15 +251,20 @@ const CardHeader = ({
             />
           )}
           <Dropdown data-testid={`${namePrefix}-card-header__menu`} onClick={onClickMenuButton}>
-            <Dropdown.Toggle
-              className="item-card-header__menu"
-              id={`${namePrefix}-card-header__menu`}
-              data-testid={`${namePrefix}-card-header__menu-button`}
-              as={IconButton}
-              src={MoveVertIcon}
-              alt={`${namePrefix}-card-header__menu`}
-              iconAs={Icon}
-            />
+            <PluginSlot
+              id="card_header_menu_icon_plugin_slot"
+              pluginProps={{ namePrefix }}
+            >
+              <Dropdown.Toggle
+                className="item-card-header__menu"
+                id={`${namePrefix}-card-header__menu`}
+                data-testid={`${namePrefix}-card-header__menu-button`}
+                as={IconButton}
+                src={MoveVertIcon}
+                alt={`${namePrefix}-card-header__menu`}
+                iconAs={Icon}
+              />
+            </PluginSlot>
             <Dropdown.Menu>
               {isSequential && proctoringExamConfigurationLink && (
                 <Dropdown.Item

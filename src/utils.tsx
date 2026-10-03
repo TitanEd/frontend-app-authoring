@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import * as Yup from 'yup';
 import { snakeCase } from 'lodash/string';
-import moment from 'moment';
-import { getConfig, getPath } from '@edx/frontend-platform';
+import moment from 'moment-timezone';
+import { getConfig } from '@edx/frontend-platform';
 
 import type { Dispatch, AnyAction } from 'redux';
 import type { TypeOfShape } from 'yup/lib/object';
@@ -109,15 +109,15 @@ export function parseArrayOrObjectValues(obj: { [s: string]: string; } | ArrayLi
  * Create a correct inner path depend on config PUBLIC_PATH.
  */
 export const createCorrectInternalRoute = (checkPath: string): string => {
-  let basePath = getPath(getConfig().PUBLIC_PATH);
+  // let basePath = getPath(getConfig().PUBLIC_PATH);
 
-  if (basePath.endsWith('/')) {
-    basePath = basePath.slice(0, -1);
-  }
+  // if (basePath.endsWith('/')) {
+  //   basePath = basePath.slice(0, -1);
+  // }
 
-  if (!checkPath?.startsWith(basePath)) {
-    return `${basePath}${checkPath}`;
-  }
+  // if (!checkPath?.startsWith(basePath)) {
+  //   return `${basePath}${checkPath}`;
+  // }
 
   return checkPath;
 };
@@ -163,9 +163,6 @@ interface YupTestContextExtended {
  * Adds additional validation methods to Yup.
  */
 export function setupYupExtensions() {
-  // Add a uniqueProperty method to arrays that allows validating that the specified property path is unique
-  // across all objects in the array.
-  // Credit: https://github.com/jquense/yup/issues/345#issuecomment-717400071
   Yup.addMethod(Yup.array, 'uniqueProperty', function uniqueProperty(property, message) {
     return this.test('unique', '', function testUniqueness(list) {
       const errors: Yup.ValidationError[] = [];
@@ -276,15 +273,13 @@ export const convertToDateFromString = (dateStr: string): Date | undefined => {
    * Note: react-datepicker v4 had a bug where it only interacts with local time
    * but this bug may no longer be affecting v8+ ?
    * @param {string} dateStr - YYYY-MM-DDTHH:MM:SSZ
-   * @return date in local time
+   * @return date in local time based on the user's browser time zone
    */
   if (!dateStr) {
     return undefined;
   }
 
-  const stripTimeZone = (stringValue: string) => stringValue.substring(0, 19);
-
-  return moment(stripTimeZone(String(dateStr))).toDate();
+  return moment(dateStr).local().toDate();
 };
 
 export const convertToStringFromDate = (date: moment.MomentInput): string => {
@@ -299,13 +294,38 @@ export const convertToStringFromDate = (date: moment.MomentInput): string => {
     return '';
   }
 
-  return moment(date).format(DATE_TIME_FORMAT);
+  return moment(date).utc().format('YYYY-MM-DDTHH:mm:ssZ'); // Convert to UTC before formatting
+};
+
+export const convertToLocalTime = (releaseDate: string): string => {
+  if (!releaseDate) {
+    console.error('Invalid date: No release date provided');
+    return 'Invalid date';
+  }
+
+  const localDate = moment.utc(releaseDate, 'MMM DD, YYYY at HH:mm UTC', true);
+
+  if (!localDate.isValid()) {
+    console.error('Invalid date format:', releaseDate);
+    return 'Invalid date';
+  }
+
+  const timezoneName = moment.tz.guess();
+  const normalizedTimezone = timezoneName === 'Asia/Calcutta' ? 'Asia/Kolkata' : timezoneName;
+  const formattedDate = localDate.local().format('MMM DD, YYYY [at] hh:mm A');
+  const timezoneOffset = localDate.local().format('Z');
+
+  // Adjust the return format to match your desired output
+  return `${formattedDate} (${normalizedTimezone} GMT${timezoneOffset})`;
 };
 
 export const isValidDate = (date: moment.MomentInput) => {
-  const formattedValue = convertToStringFromDate(date).split('T')[0];
-
-  return Boolean(formattedValue.length <= 10);
+  /**
+   * Validate if the date is a valid date format
+   * @param {Date | string} date - date to check
+   * @return {boolean} true if valid date, false otherwise
+   */
+  return moment(date, DATE_TIME_FORMAT, true).isValid();  // Using Moment's .isValid() for proper validation
 };
 
 export const getFileSizeToClosestByte = (fileSize: any) => {

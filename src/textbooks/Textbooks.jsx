@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { useCourseAuthoringContext } from '@src/CourseAuthoringContext';
 import { RequestStatus } from '@src/data/constants';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 
 import { useWaffleFlags } from '../data/apiHooks';
 import { SavingErrorAlert } from '../generic/saving-error-alert';
@@ -69,6 +70,21 @@ const Textbooks = () => {
           {`${courseDetails?.name} | ${intl.formatMessage(messages.headingTitle)}`}
         </title>
       </Helmet>
+      <PluginSlot
+        id="textbook_plugin_slot"
+        pluginProps={{
+          courseId,
+          textbooks,
+          isLoading,
+          isTextbookFormOpen,
+          openTextbookForm,
+          closeTextbookForm,
+          handleTextbookFormSubmit,
+          handleSavingStatusDispatch,
+          handleTextbookEditFormSubmit,
+          handleTextbookDeleteSubmit,
+        }}
+      >
       <Container size="xl" className="px-4">
         <section className="mb-4 mt-5">
           <SubHeader
@@ -134,6 +150,7 @@ const Textbooks = () => {
           </Layout>
         </section>
       </Container>
+      </PluginSlot>
       <div className="alert-toast">
         <SavingErrorAlert
           isQueryFailed={savingStatus === RequestStatus.FAILED}

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Container, Stack } from '@openedx/paragon';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { LoadingSpinner } from '../../generic/Loading';
 import { getCompletionCount, useChecklistState } from './hooks';
 import ChecklistItemBody from './ChecklistItemBody';
@@ -21,7 +22,19 @@ const ChecklistSection = ({
 
   return (
     <Container>
-      <h3 aria-describedby={getCompletionCountID()} className="lead">{dataHeading}</h3>
+      <PluginSlot
+        id="course_checklist_section_title_plugin_slot"
+        pluginProps={{
+          dataHeading,
+          getCompletionCountID,
+          getCompletionCount,
+          checks,
+          totalCompletedChecks,
+          values,
+        }}
+      >
+        <h3 aria-describedby={getCompletionCountID()} className="lead">{dataHeading}</h3>
+      </PluginSlot>
       {isLoading ?
         (
           <div className="row justify-content-center" data-testid="loading-spinner">
@@ -30,25 +43,40 @@ const ChecklistSection = ({
         ) :
         (
           <>
-            <div data-testid="completion-subheader">
-              {getCompletionCount(checks, totalCompletedChecks)}
-            </div>
+            <PluginSlot
+              id="course_checklist_section_completion_subheader_plugin_slot"
+            >
+              <div data-testid="completion-subheader">
+                {getCompletionCount(checks, totalCompletedChecks)}
+              </div>
+            </PluginSlot>
             <Stack gap={3} className="mt-3">
               {checks.map(check => {
                 const checkId = check.id;
                 const isCompleted = values[checkId];
                 return (
-                  <div
-                    className={`bg-white border py-3 px-4 ${isCompleted && 'checklist-item-complete'}`}
-                    id={`checklist-item-${checkId}`}
-                    data-testid={`checklist-item-${checkId}`}
+                  <PluginSlot
                     key={checkId}
+                    id="course_checklist_section_checklist_item_plugin_slot"
+                    pluginProps={{
+                      courseId,
+                      checkId,
+                      isCompleted,
+                      data,
+                    }}
                   >
-                    <ChecklistItemBody courseId={courseId} {...{ checkId, isCompleted }} />
-                    <div data-testid={`comment-section-${checkId}`}>
-                      <ChecklistItemComment {...{ courseId, checkId, data }} />
+                    <div
+                      className={`bg-white border py-3 px-4 ${isCompleted && 'checklist-item-complete'}`}
+                      id={`checklist-item-${checkId}`}
+                      data-testid={`checklist-item-${checkId}`}
+                      key={checkId}
+                    >
+                      <ChecklistItemBody courseId={courseId} {...{ checkId, isCompleted }} />
+                      <div data-testid={`comment-section-${checkId}`}>
+                        <ChecklistItemComment {...{ courseId, checkId, data }} />
+                      </div>
                     </div>
-                  </div>
+                  </PluginSlot>
                 );
               })}
             </Stack>

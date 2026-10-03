@@ -13,6 +13,7 @@ import {
   useToolsMenuItems,
 } from './hooks';
 import messages from './messages';
+import { setUIPreference } from '../services/uiPreferenceService';
 
 type ContainerPropsType = Omit<React.ComponentProps<typeof Container>, 'children'>;
 
@@ -97,7 +98,7 @@ const Header = ({
   };
 
   return (
-    <>
+    <div style={{ position: 'relative' }}>
       <StudioHeader
         org={org}
         number={number}
@@ -116,7 +117,27 @@ const Header = ({
           onClose={closeSearchModal}
         />
       )}
-    </>
+      <button
+        type="button"
+        className="ui-switch-button"
+        onClick={async () => {
+          try {
+            console.log('Switching to new UI...');
+            const success = await setUIPreference(true);
+            if (success) {
+              console.log('Successfully switched to new UI, reloading page...');
+              window.location.reload();
+            } else {
+              console.error('Failed to switch to new UI');
+            }
+          } catch (error) {
+            console.error('Error switching to new UI:', error);
+          }
+        }}
+      >
+        Switch to New UI
+      </button>
+    </div>
   );
 };
 

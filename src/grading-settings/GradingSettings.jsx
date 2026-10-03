@@ -22,6 +22,7 @@ import AlertMessage from '@src/generic/alert-message';
 import InternetConnectionAlert from '@src/generic/internet-connection-alert';
 import getPageHeadTitle from '@src/generic/utils';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import {
   useGradingSettings,
   useGradingSettingUpdater,
@@ -174,12 +175,22 @@ const GradingSettings = () => {
             >
               <Layout.Element>
                 <article>
-                  <SubHeader
-                    title={intl.formatMessage(messages.headingTitle)}
-                    subtitle={intl.formatMessage(messages.headingSubtitle)}
-                    contentTitle={intl.formatMessage(messages.policy)}
-                    description={intl.formatMessage(messages.policiesDescription)}
-                  />
+                  <PluginSlot
+                    id="grading_header_plugin_slot"
+                    pluginProps={{
+                      contentTitle: intl.formatMessage(messages.policy),
+                      description: intl.formatMessage(messages.policiesDescription),
+                    }}
+                  >
+                    <SubHeader
+                      title={intl.formatMessage(messages.headingTitle)}
+                      subtitle={intl.formatMessage(messages.headingSubtitle)}
+                      contentTitle={intl.formatMessage(messages.policy)}
+                      description={intl.formatMessage(
+                        messages.policiesDescription,
+                      )}
+                    />
+                  </PluginSlot>
                   <section>
                     <GradingScale
                       gradeCutoffs={gradeCutoffs}
