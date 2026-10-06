@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { StudioFooterSlot } from '@edx/frontend-component-footer';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { Toast } from '@openedx/paragon';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 
 import AlertError, { type AlertErrorProps } from '../generic/alert-error';
 import Header from '../header';
@@ -22,8 +23,10 @@ export const TaxonomyLayout = () => {
 
   return (
     <TaxonomyContext.Provider value={context}>
-      <div className="bg-light-400">
-        <Header isHiddenMainMenu />
+      <div>
+        <PluginSlot id="header_plugin_slot">
+          <Header isHiddenMainMenu />
+        </PluginSlot>
         {alertError && (
           <AlertError
             {...alertError}
@@ -31,7 +34,9 @@ export const TaxonomyLayout = () => {
           />
         )}
         <Outlet />
-        <StudioFooterSlot />
+        <PluginSlot id="footer_plugin_slot">
+          <StudioFooterSlot />
+        </PluginSlot>
         {toastMessage && (
           <Toast
             show

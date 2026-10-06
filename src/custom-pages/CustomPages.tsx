@@ -23,6 +23,7 @@ import {
   Container,
 } from '@openedx/paragon';
 import { Add, SpinnerSimple } from '@openedx/paragon/icons';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import Placeholder from '@src/editors/Placeholder';
 import DraggableList, { SortableItem } from '@src/generic/DraggableList';
 import ErrorAlert from '@src/editors/sharedComponents/ErrorAlerts/ErrorAlert';
@@ -119,6 +120,10 @@ const CustomPages = () => {
     );
   }
   return (
+    <PluginSlot
+      id="custom_pages_plugin_slot"
+      pluginProps={{ courseId }}
+    >
     <CustomPagesProvider courseId={courseId}>
       <Container size="xl" className="p-4 pt-5">
         <div className="small gray-700">
@@ -281,6 +286,7 @@ const CustomPages = () => {
         </Routes>
       </Container>
     </CustomPagesProvider>
+    </PluginSlot>
   );
 };
 

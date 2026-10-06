@@ -2,6 +2,7 @@ const path = require('path');
 const { createConfig } = require('@openedx/frontend-build');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const config = createConfig('webpack-prod', {
   resolve: {
@@ -34,4 +35,16 @@ const config = createConfig('webpack-prod', {
   ],
 });
 
+config.plugins.push(
+  new CopyPlugin({
+    patterns: [
+      {
+        from: path.resolve(__dirname, './public/static'),
+        to: path.resolve(__dirname, './dist/static'),
+      },
+    ],
+  }),
+);
+
 module.exports = config;
+

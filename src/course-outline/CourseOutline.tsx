@@ -16,6 +16,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useLocation } from 'react-router-dom';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { CourseAuthoringOutlineSidebarSlot } from '@src/plugin-slots/CourseAuthoringOutlineSidebarSlot';
 
 import { LoadingSpinner } from '@src/generic/Loading';
@@ -190,7 +191,7 @@ const CourseOutline = () => {
         <title>{getPageHeadTitle(courseName, intl.formatMessage(messages.headingTitle))}</title>
       </Helmet>
       <Container fluid className="px-3">
-        <section className="course-outline-container mb-4 mt-5">
+        <section className="course-outline-container mb-4">
           <PageAlerts
             courseId={courseId}
             notificationDismissUrl={notificationDismissUrl}
@@ -222,34 +223,30 @@ const CourseOutline = () => {
               ) :
               null}
           </TransitionReplace>
-          <SubHeader
-            title={courseName}
-            subtitle={intl.formatMessage(messages.headingSubtitle)}
-            hideBorder
-            headerActions={
-              <CourseOutlineHeaderActionsSlot
-                isReIndexShow={isReIndexShow}
-                isSectionsExpanded={isSectionsExpanded}
-                headerNavigationsActions={headerNavigationsActions}
-                isDisabledReindexButton={isDisabledReindexButton}
-                hasSections={Boolean(sections.length)}
-                courseActions={courseActions}
-                errors={errors}
-                sections={sections}
-              />
-            }
-          />
-          <StatusBar
-            courseId={courseId}
-            isLoading={isLoading}
-            statusBarData={statusBarData}
-            openEnableHighlightsModal={openEnableHighlightsModal}
-            handleVideoSharingOptionChange={handleVideoSharingOptionChange}
-          />
+          <PluginSlot id="sub_header_plugin_slot">
+            <SubHeader
+              title={courseName}
+              subtitle={intl.formatMessage(messages.headingSubtitle)}
+              hideBorder
+              headerActions={
+                <CourseOutlineHeaderActionsSlot
+                  isReIndexShow={isReIndexShow}
+                  isSectionsExpanded={isSectionsExpanded}
+                  headerNavigationsActions={headerNavigationsActions}
+                  isDisabledReindexButton={isDisabledReindexButton}
+                  hasSections={Boolean(sections.length)}
+                  courseActions={courseActions}
+                  errors={errors}
+                  sections={sections}
+                />
+              }
+            />
+          </PluginSlot>
           <hr className="mt-4 mb-0 w-100 text-light-400" />
           <div className="d-flex align-items-start">
             <div className="flex-fill">
               <article>
+                <PluginSlot id="courseoutline_header_plugin_slott" />
                 <div>
                   <ActionRow className="mt-3">
                     {Boolean(sections.length) && (
@@ -266,7 +263,48 @@ const CourseOutline = () => {
                       </Button>
                     )}
                   </ActionRow>
-                  <section>
+                  <section className="course-outline-section custom-outline-section">
+                    <PluginSlot
+                      id="view_live_button_slot"
+                      pluginProps={{
+                        courseId,
+                        isLoading,
+                        statusBarData,
+                        openEnableHighlightsModal,
+                        handleVideoSharingOptionChange,
+                      }}
+                    >
+                      <StatusBar
+                        courseId={courseId}
+                        isLoading={isLoading}
+                        statusBarData={statusBarData}
+                        openEnableHighlightsModal={openEnableHighlightsModal}
+                        handleVideoSharingOptionChange={handleVideoSharingOptionChange}
+                      />
+                    </PluginSlot>
+                    <PluginSlot
+                      id="statusbar_content_plugin_slot"
+                      pluginProps={{
+                        // `handleNewSectionSubmit` was removed from useCourseOutline in Verawood;
+                        // new sections are now added through <OutlineAddChildButtons />.
+                        onAddSection: undefined,
+                        onCollapseAll: headerNavigationsActions.handleExpandAll,
+                        isSectionsExpanded,
+                        handleExpandAll: headerNavigationsActions.handleExpandAll,
+                        headerActions: (
+                          <CourseOutlineHeaderActionsSlot
+                            isReIndexShow={isReIndexShow}
+                            isSectionsExpanded={isSectionsExpanded}
+                            headerNavigationsActions={headerNavigationsActions}
+                            isDisabledReindexButton={isDisabledReindexButton}
+                            hasSections={Boolean(sections.length)}
+                            courseActions={courseActions}
+                            errors={errors}
+                            sections={sections}
+                          />
+                        ),
+                      }}
+                    />
                     {!errors?.outlineIndexApi && (
                       <div className="pt-4">
                         {sections.length ?

@@ -6,6 +6,7 @@ import {
   Row,
 } from '@openedx/paragon';
 import { Helmet } from 'react-helmet';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { useCourseAuthoringContext } from '@src/CourseAuthoringContext';
 import { useCourseUserPermissions } from '@src/authz/hooks';
 import { getGroupConfigurationsPermissions } from '@src/authz/permissionHelpers';
@@ -86,11 +87,15 @@ const GroupConfigurations = () => {
         <title>{getPageHeadTitle(courseDetails?.name ?? '', formatMessage(messages.headingTitle))}</title>
       </Helmet>
       <Container size="xl" className="group-configurations px-4">
+                <PluginSlot
+                  id="group_configurations_hide_plugin_slot"
+                >
         <div className="mt-5" />
         <SubHeader
           title={formatMessage(messages.headingTitle)}
           subtitle={formatMessage(messages.headingSubtitle)}
         />
+                </PluginSlot>
         <Layout
           lg={[{ span: 9 }, { span: 3 }]}
           md={[{ span: 9 }, { span: 3 }]}
@@ -99,6 +104,13 @@ const GroupConfigurations = () => {
           xl={[{ span: 9 }, { span: 3 }]}
         >
           <Layout.Element>
+          <PluginSlot
+                  id="group_config_header_plugin_slot"
+                  pluginProps={{
+                    title:formatMessage(messages.headingTitle),
+                    subtitle:formatMessage(messages.headingSubtitle)
+                  }}
+                />
             <Stack
               gap={3}
               data-testid="group-configurations-main-content-wrapper"

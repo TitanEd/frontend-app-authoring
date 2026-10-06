@@ -1,4 +1,12 @@
+import moment from 'moment-timezone';
 import { defineMessages } from '@edx/frontend-platform/i18n';
+
+const getUserTimezoneDetails = () => {
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const timezoneOffset = moment.tz(userTimezone).format('Z');
+
+  return `${userTimezone} GMT${timezoneOffset}`;
+};
 
 const messages = defineMessages({
   title: {
@@ -29,6 +37,10 @@ const messages = defineMessages({
   releaseTimeUTC: {
     id: 'course-authoring.course-outline.configure-modal.basic-tab.release-time-UTC',
     defaultMessage: 'Release time in UTC:',
+  },
+  releaseTimeCustom: {
+    id: 'this.releaseTimeCustom',
+    defaultMessage: `Release time in (${getUserTimezoneDetails()})`,
   },
   visibilityTabTitle: {
     id: 'course-authoring.course-outline.configure-modal.visibility-tab.title',
@@ -126,6 +138,10 @@ const messages = defineMessages({
   dueTimeUTC: {
     id: 'course-authoring.course-outline.configure-modal.basic-tab.due-time-UTC',
     defaultMessage: 'Due time in UTC:',
+  },
+  dueTimeCustom: {
+    id: 'this.dueTimeCustom',
+    defaultMessage: `Due time in (${getUserTimezoneDetails()})`,
   },
   subsectionVisibility: {
     id: 'course-authoring.course-outline.configure-modal.visibility-tab.subsection-visibility',

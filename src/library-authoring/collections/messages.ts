@@ -116,6 +116,12 @@ const messages = defineMessages({
     defaultMessage: 'Back to Library',
     description: 'Breadcrumbs link to return to library',
   },
+  // Used by the custom (TitanEd) collection page: CustomLibraryCollectionPage.
+  searchPlaceholder: {
+    id: 'course-authoring.library-authoring.search.placeholder.text',
+    defaultMessage: 'Search Collection',
+    description: 'Search placeholder text in collections page.',
+  },
 });
 
 export default messages;

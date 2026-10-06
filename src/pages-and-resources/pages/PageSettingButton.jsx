@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Icon, IconButton } from '@openedx/paragon';
-import { ArrowForward, Settings } from '@openedx/paragon/icons';
+import { ArrowForward, MoreVert } from '@openedx/paragon/icons';
 import { useNavigate, Link } from 'react-router-dom';
 
 import { useWaffleFlags } from '../../data/apiHooks';
@@ -78,7 +78,7 @@ const PageSettingButton = ({
 
   return (
     <IconButton
-      src={Settings}
+      src={MoreVert}
       iconAs={Icon}
       size="inline"
       alt={formatMessage(messages.settings)}

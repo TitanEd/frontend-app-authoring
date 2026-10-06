@@ -2,6 +2,7 @@ import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Helmet } from 'react-helmet';
 import { Container, Stack } from '@openedx/paragon';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { useCourseAuthoringContext } from '@src/CourseAuthoringContext';
 import { useCourseUserPermissions } from '@src/authz/hooks';
 import { getChecklistsPermissions } from '@src/authz/permissionHelpers';
@@ -65,37 +66,57 @@ const CourseChecklist = () => {
           })}
         </title>
       </Helmet>
-      <Container size="xl" className="p-4 pt-4.5">
-        <SubHeader
-          title={intl.formatMessage(messages.headingTitle)}
-          subtitle={intl.formatMessage(messages.headingSubtitle)}
-        />
-        <AriaLiveRegion
-          {...{
-            isCourseLaunchChecklistLoading: isPendingLaunchData,
-            isCourseBestPracticeChecklistLoading: isPendingBestPacticeData,
-            enableQuality,
-          }}
-        />
-        <Stack gap={4}>
-          <ChecklistSection
-            courseId={courseId}
-            dataHeading={intl.formatMessage(messages.launchChecklistLabel)}
-            data={launchData}
-            idPrefix="launchChecklist"
-            isLoading={isPendingLaunchData}
+      <PluginSlot
+        id="course_checklist_plugin_slot"
+        pluginProps={{
+          courseId,
+          courseDetails,
+          enableQuality,
+          launchData,
+          bestPracticeData,
+          isCourseLaunchChecklistLoading: isPendingLaunchData,
+          isCourseBestPracticeChecklistLoading: isPendingBestPacticeData,
+          intl,
+          messages,
+          formatMessage: intl.formatMessage,
+          headingSubtitle: intl.formatMessage(messages.headingSubtitle),
+          headingTitle: intl.formatMessage(messages.headingTitle),
+          launchChecklistLabel: intl.formatMessage(messages.launchChecklistLabel),
+          bestPracticesChecklistLabel: intl.formatMessage(messages.bestPracticesChecklistLabel),
+        }}
+      >
+        <Container size="xl" className="p-4 pt-4.5">
+          <SubHeader
+            title={intl.formatMessage(messages.headingTitle)}
+            subtitle={intl.formatMessage(messages.headingSubtitle)}
           />
-          {enableQuality && (
+          <AriaLiveRegion
+            {...{
+              isCourseLaunchChecklistLoading: isPendingLaunchData,
+              isCourseBestPracticeChecklistLoading: isPendingBestPacticeData,
+              enableQuality,
+            }}
+          />
+          <Stack gap={4}>
             <ChecklistSection
               courseId={courseId}
-              dataHeading={intl.formatMessage(messages.bestPracticesChecklistLabel)}
-              data={bestPracticeData}
-              idPrefix="bestPracticesChecklist"
-              isLoading={isPendingBestPacticeData}
+              dataHeading={intl.formatMessage(messages.launchChecklistLabel)}
+              data={launchData}
+              idPrefix="launchChecklist"
+              isLoading={isPendingLaunchData}
             />
-          )}
-        </Stack>
-      </Container>
+            {enableQuality && (
+              <ChecklistSection
+                courseId={courseId}
+                dataHeading={intl.formatMessage(messages.bestPracticesChecklistLabel)}
+                data={bestPracticeData}
+                idPrefix="bestPracticesChecklist"
+                isLoading={isPendingBestPacticeData}
+              />
+            )}
+          </Stack>
+        </Container>
+      </PluginSlot>
     </>
   );
 };

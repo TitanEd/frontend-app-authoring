@@ -24,6 +24,8 @@ import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
+
 import { REGEX_RULES } from '@src/constants';
 import { useOrganizationListData } from '@src/generic/data/apiHooks';
 import FormikControl from '@src/generic/FormikControl';
@@ -150,7 +152,7 @@ export const CreateLibrary = ({
     }
   }
 
-  return (
+  const content = (
     <>
       {!showInModal && <Header isHiddenMainMenu />}
       <Container size="md" className="p-4 mt-3">
@@ -392,5 +394,33 @@ export const CreateLibrary = ({
       </Container>
       {!showInModal && <StudioFooterSlot />}
     </>
+  );
+
+  // The custom create-library page (plugin slot) is only used for the full page, not inside
+  // the Verawood "create library" modal (`showInModal`), which needs `handlePostCreate`.
+  if (showInModal) {
+    return content;
+  }
+
+  return (
+    <PluginSlot
+      id="create_library_plugin_slot"
+      pluginProps={{
+        messages,
+        formatMessage: intl.formatMessage,
+        specialCharsRule,
+        noSpaceRule,
+        validSlugIdRegex,
+        mutate,
+        isOrganizationListLoading,
+        organizationListData: organizations,
+        handleOnClickCancel,
+        isLoading: isPending,
+        isError,
+        error,
+      }}
+    >
+      {content}
+    </PluginSlot>
   );
 };

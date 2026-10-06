@@ -6,6 +6,7 @@ import {
 } from '@openedx/paragon';
 import { Add as IconAdd } from '@openedx/paragon/icons';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { useCourseAuthoringContext } from '@src/CourseAuthoringContext';
 import InternetConnectionAlert from '@src/generic/internet-connection-alert';
 import SubHeader from '@src/generic/sub-header/SubHeader';
@@ -81,23 +82,35 @@ const CourseTeam = () => {
             <Layout.Element>
               <article>
                 <div>
-                  <SubHeader
-                    title={intl.formatMessage(messages.headingTitle)}
-                    subtitle={intl.formatMessage(messages.headingSubtitle)}
-                    headerActions={isAllowActions ?
-                      (
-                        <Button
-                          variant="primary"
-                          iconBefore={IconAdd}
-                          size="sm"
-                          onClick={openForm}
-                          disabled={isFormVisible}
-                        >
-                          {intl.formatMessage(messages.addNewMemberButton)}
-                        </Button>
-                      ) :
-                      undefined}
-                  />
+                  <PluginSlot
+                    id="course_team_header_plugin_slot"
+                    pluginProps={{
+                      contentTitle: intl.formatMessage(messages.headingTitle),
+                      isAllowActions,
+                      iconBefore: IconAdd,
+                      onClick: openForm,
+                      disabled: isFormVisible,
+                      buttonText: intl.formatMessage(messages.addNewMemberButton),
+                    }}
+                  >
+                    <SubHeader
+                      title={intl.formatMessage(messages.headingTitle)}
+                      subtitle={intl.formatMessage(messages.headingSubtitle)}
+                      headerActions={isAllowActions ?
+                        (
+                          <Button
+                            variant="primary"
+                            iconBefore={IconAdd}
+                            size="sm"
+                            onClick={openForm}
+                            disabled={isFormVisible}
+                          >
+                            {intl.formatMessage(messages.addNewMemberButton)}
+                          </Button>
+                        ) :
+                        undefined}
+                    />
+                  </PluginSlot>
                   <section className="course-team-section">
                     <div className="members-container">
                       {isFormVisible && (

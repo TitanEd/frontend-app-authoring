@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/quotes */
+/* eslint-disable linebreak-style */
 import React, { useCallback } from 'react';
 import {
   Button,
@@ -10,7 +13,6 @@ import {
 import { Add as AddIcon, Error, ManageAccounts } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform';
-import { StudioFooterSlot } from '@edx/frontend-component-footer';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useWaffleFlags } from '@src/data/apiHooks';
@@ -26,6 +28,7 @@ import CreateNewCourseForm from './create-new-course-form';
 import messages from './messages';
 import { useStudioHome } from './hooks';
 import AlertMessage from '../generic/alert-message';
+// import 'titaned-lib/dist/index.css';
 
 const StudioHome = () => {
   const intl = useIntl();
@@ -97,14 +100,13 @@ const StudioHome = () => {
     if (hasAbilityToCreateNewCourse) {
       headerButtons.push(
         <Button
-          variant="outline-primary"
-          iconBefore={AddIcon}
-          size="sm"
-          disabled={showNewCourseContainer}
+          variant="primary"
+          className="mr-2"
           onClick={() => setShowNewCourseContainer(true)}
+          disabled={showNewCourseContainer}
         >
           {intl.formatMessage(messages.addNewCourseBtnText)}
-        </Button>,
+        </Button>
       );
     }
 
@@ -154,6 +156,9 @@ const StudioHome = () => {
     if (!userIsActive) {
       return <VerifyEmailLayout />;
     }
+
+    // `isPaginationCoursesEnabled` no longer exists in Verawood's StudioHome (it caused a ReferenceError here).
+    // console.log("isPaginationCoursesEnabled", isPaginationCoursesEnabled);
     return (
       <Layout
         lg={[{ span: 9 }, { span: 3 }]}
@@ -206,7 +211,6 @@ const StudioHome = () => {
           isQueryPending={anyQueryIsPending}
         />
       </div>
-      <StudioFooterSlot />
     </>
   );
 };

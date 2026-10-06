@@ -60,12 +60,38 @@ div.xblock-highlight {
   }
 }
 
+html,
 body {
   background-color: var(--pgn-color-light-200);
+  // height: 100%;
 
   .editor-page {
     background-color: var(--pgn-color-light-100);
   }
+}
+
+/* Only apply overflow hidden for new UI */
+html,
+body.new-ui {
+  overflow: hidden !important;
+  /* Prevent outer scrollbar for new UI */
+}
+
+/* Allow scrolling for old UI */
+html,
+body.old-ui {
+  overflow: auto !important;
+  /* Allow scrolling for old UI */
+}
+
+html.old-ui {
+  overflow: auto !important;
+  /* Allow scrolling for old UI */
+}
+
+html.new-ui {
+  overflow: hidden !important;
+  /* Prevent outer scrollbar for new UI */
 }
 
 mark {
@@ -74,4 +100,175 @@ mark {
 
 .border-left-purple {
   border-left: 3px solid #5E35B1 !important;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-grow: 1;
+}
+
+/* Custom UI only. The shell is exactly one viewport tall, so a top
+   announcement banner takes space from the content area instead of
+   pushing the bottom of the page below the window. */
+body.new-ui .app-container {
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.new-ui .content-wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.old-ui .app-container,
+body.old-ui .content-wrapper {
+  overflow: visible;
+}
+
+.main-content {
+  flex: 1;
+  // padding: 20px;
+  padding-left: 0px;
+  padding-bottom: 0px;
+  padding-top: 0;
+  box-sizing: border-box;
+  background-color: var(--bg-body);
+
+  .page-content {
+    flex-grow: 1;
+  }
+}
+
+/* Custom UI only. Fill the space under the header and banner. */
+body.new-ui .main-content {
+  overflow-y: auto;
+  height: auto;
+  align-self: stretch;
+  min-height: 0;
+}
+
+body.new-ui .main-content .page-content {
+  min-height: 100%;
+}
+
+body.new-ui .sidebar-container {
+  height: auto;
+  max-height: 100%;
+  align-self: stretch;
+  min-height: 0;
+}
+
+body.old-ui .main-content {
+  overflow-y: visible;
+  height: auto;
+  min-height: calc(100vh - 100px);
+}
+
+.pgn-btn-active {
+  color: #454545;
+  background-color: #E1DDDB;
+  border-color: transparent;
+}
+
+.btn-tertiary:focus::before {
+  border: solid 2px transparent;
+}
+
+.sidebar-container {
+  overflow-y: auto;
+  flex-shrink: 0;
+  overflow-x: hidden;
+  height: calc(100vh - 0px);
+
+  // @media (max-height: 690px) {
+  //   height: calc(100vh - 5rem);
+  // }
+}
+
+/* Styles for the sidebar scrollbar */
+.sidebar-container::-webkit-scrollbar {
+  width: 4px;
+  /* width of the vertical scrollbar */
+  z-index: 10;
+}
+
+.sidebar-container::-webkit-scrollbar-track {
+  background: transparent;
+  /* color of the track */
+}
+
+.sidebar-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  /* color of the scrollbar thumb */
+  border-radius: 4px;
+  /* roundness of the scrollbar thumb */
+}
+
+.sidebar-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+  /* color of the scrollbar thumb on hover */
+}
+
+/* UI Switch Button Styles */
+.ui-switch-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 6px;
+  z-index: 9999;
+  background-color: var(--primary);
+  color: white;
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  width: fit-content;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+
+  /* Use left positioning to stay consistent relative to header content */
+  left: 50%;
+  transform: translateY(-50%) translateX(-50px);
+  /* Center horizontally, then move right towards search icon */
+
+  /* Responsive adjustments - move right more as screen gets bigger */
+  @media (min-width: 680px) {
+    transform: translateY(-50%) translateX(0px);
+  }
+
+  @media (min-width: 841px) {
+    transform: translateY(-50%) translateX(115px);
+  }
+
+  @media (min-width: 841px) and (max-width:920px) {
+    padding: 6px 4px;
+    font-size: 12px;
+  }
+
+  @media (min-width: 1440px) {
+    transform: translateY(-50%) translateX(100px);
+  }
+
+  @media (min-width: 1920px) {
+    transform: translateY(-50%) translateX(150px);
+  }
+
+  /* Fallback for very small screens */
+  @media (max-width: 480px) {
+    transform: translateY(-50%) translateX(-80px);
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }

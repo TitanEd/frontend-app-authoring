@@ -9,6 +9,7 @@ import {
 import { Add as AddIcon, ErrorOutline as ErrorIcon } from '@openedx/paragon/icons';
 import { useSelector } from 'react-redux';
 
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import SubHeader from '@src/generic/sub-header/SubHeader';
 import InternetConnectionAlert from '@src/generic/internet-connection-alert';
 import ConnectionErrorAlert from '@src/generic/ConnectionErrorAlert';
@@ -85,7 +86,10 @@ const CourseUpdates = () => {
   }
 
   return (
-    <>
+    <PluginSlot
+      id="course_updates_plugin_slot"
+      pluginProps={{ courseId }}
+    >
       <Helmet>
         <title>
           {getPageHeadTitle(courseDetails?.name || '', intl.formatMessage(messages.headingTitle))}
@@ -255,7 +259,7 @@ const CourseUpdates = () => {
           onInternetConnectionFailed={() => null}
         />
       </div>
-    </>
+    </PluginSlot>
   );
 };
 

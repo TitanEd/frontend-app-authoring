@@ -130,7 +130,7 @@ export function Sidebar<T extends SidebarPages>({
             </div>
           </ResizableBox>
         ) :
-        <div className="min-vh-100 border" />}
+        null}
       <div className="sidebar-toggle p-1" data-testid="sidebar-toggle">
         <IconButton
           src={isOpen ? ExpandedIcon : CollapsedIcon}

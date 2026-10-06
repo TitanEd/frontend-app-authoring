@@ -11,6 +11,7 @@ import { Add, ArrowBack, InfoOutline } from '@openedx/paragon/icons';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 
 import { usePublishedFilterContext } from '@src/library-authoring/common/context/PublishedFilterContext';
 import { useLibraryRoutes } from '../routes';
@@ -194,54 +195,73 @@ const LibraryCollectionPage = () => {
   }
 
   return (
-    <div className="d-flex">
-      <div className="flex-grow-1">
-        <Helmet>
-          <title>{libraryData.title} | {process.env.SITE_NAME}</title>
-        </Helmet>
-        {!componentPickerMode && (
-          <Header
-            number={libraryData.slug}
-            title={libraryData.title}
-            org={libraryData.org}
-            contextId={libraryId}
-            readOnly={readOnly}
-            isLibrary
-            containerProps={{
-              size: undefined,
-            }}
-          />
-        )}
-        <Container className="px-4 mt-4 mb-5 library-authoring-page">
-          <SearchContextProvider
-            extraFilter={extraFilter}
-          >
-            <SubHeader
-              title={<SubHeaderTitle title={collectionData.title} />}
-              breadcrumbs={breadcrumbs}
-              headerActions={<HeaderActions />}
-              hideBorder
+    <PluginSlot
+      id="library_authoring_collection_page_plugin_slot"
+      pluginProps={{
+        componentPickerMode,
+        libraryData,
+        extraFilter,
+        // Verawood's SubHeaderTitle no longer accepts `infoClickHandler`
+        // (the collection info sidebar is opened from <HeaderActions />).
+        subHeaderTitle: <SubHeaderTitle title={collectionData.title} />,
+        breadcrumbTitle: collectionData.title,
+        breadcumbs: breadcrumbs,
+        headerActions: <HeaderActions />,
+        intl,
+        libraryId,
+        // Verawood renamed `sidebarComponentInfo` to `sidebarItemInfo` in the SidebarContext.
+        sidebarComponentInfo: sidebarItemInfo,
+      }}
+    >
+      <div className="d-flex">
+        <div className="flex-grow-1">
+          <Helmet>
+            <title>{libraryData.title} | {process.env.SITE_NAME}</title>
+          </Helmet>
+          {!componentPickerMode && (
+            <Header
+              number={libraryData.slug}
+              title={libraryData.title}
+              org={libraryData.org}
+              contextId={libraryId}
+              readOnly={readOnly}
+              isLibrary
+              containerProps={{
+                size: undefined,
+              }}
             />
-            <ActionRow className="my-3">
-              <SearchKeywordsField className="mr-3" />
-              <FilterByTags />
-              <FilterByBlockType />
-              <LibraryFilterByPublished />
-              <ClearFiltersButton />
-              <ActionRow.Spacer />
-              <SearchSortWidget />
-            </ActionRow>
-            <LibraryCollectionComponents />
-          </SearchContextProvider>
-        </Container>
-        {!componentPickerMode && <StudioFooterSlot containerProps={{ size: undefined }} />}
-      </div>
-      {!!sidebarItemInfo?.type && (
-        <div className="library-authoring-sidebar box-shadow-left-1 bg-white" data-testid="library-sidebar">
-          <LibrarySidebar />
+          )}
+          <Container className="px-4 mt-4 mb-5 library-authoring-page">
+            <SearchContextProvider
+              extraFilter={extraFilter}
+            >
+              <SubHeader
+                title={<SubHeaderTitle title={collectionData.title} />}
+                breadcrumbs={breadcrumbs}
+                headerActions={<HeaderActions />}
+                hideBorder
+              />
+              <ActionRow className="my-3">
+                <SearchKeywordsField className="mr-3" />
+                <FilterByTags />
+                <FilterByBlockType />
+                <LibraryFilterByPublished />
+                <ClearFiltersButton />
+                <ActionRow.Spacer />
+                <SearchSortWidget />
+              </ActionRow>
+              <LibraryCollectionComponents />
+            </SearchContextProvider>
+          </Container>
+          {!componentPickerMode && <StudioFooterSlot containerProps={{ size: undefined }} />}
         </div>
-      )}
-    </div>
+        {!!sidebarItemInfo?.type && (
+          <div className="library-authoring-sidebar box-shadow-left-1 bg-white" data-testid="library-sidebar">
+            <LibrarySidebar />
+          </div>
+        )}
+      </div>
+    </PluginSlot>
   );
 };
 
