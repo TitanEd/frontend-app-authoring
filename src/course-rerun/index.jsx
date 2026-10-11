@@ -67,7 +67,7 @@ const CourseRerun = () => {
               <section>
                 <header className="d-flex">
                   <Stack>
-                    <h2 className="course-rerun-title">
+                    <h2>
                       {intl.formatMessage(messages.rerunTitle)} {displayName}
                     </h2>
                     <span className="large">{originalCourseData}</span>

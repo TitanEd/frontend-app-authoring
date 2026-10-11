@@ -6,7 +6,7 @@ import {
   IconButton,
   Icon,
 } from '@openedx/paragon';
-import { MoreVert } from '@openedx/paragon/icons';
+import { MoreHoriz } from '@openedx/paragon/icons';
 import messages from './messages';
 
 const FileMenu = ({
@@ -30,7 +30,7 @@ const FileMenu = ({
       <Dropdown.Toggle
         id={`file-menu-dropdown-${id}`}
         as={IconButton}
-        src={MoreVert}
+        src={MoreHoriz}
         iconAs={Icon}
         variant="primary"
         alt="file-menu-toggle"

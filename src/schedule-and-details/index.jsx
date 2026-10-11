@@ -92,7 +92,6 @@ const ScheduleAndDetails = () => {
     possiblePreRequisiteCourses,
     canShowCertificateAvailableDateField,
   } = courseSettings;
-  console.log("courseSettings", courseSettings)
 
   const {
     showLoadFailedAlert,
@@ -152,8 +151,6 @@ const ScheduleAndDetails = () => {
     certificatesDisplayBehavior,
     videoThumbnailImageAssetPath,
   } = editedValues;
-
-  console.log("Editedddd", editedValues)
   useScrollToHashElement({ isLoading });
   // No need to get overview and aboutSidebarHtml from editedValues
   // As updating them re-renders TinyMCE
@@ -335,7 +332,7 @@ const ScheduleAndDetails = () => {
                           onChange={handleValuesChange}
                         />
                         <InstructorsSection
-                          instructors={instructorInfo?.instructors || []}
+                          instructors={instructorInfo?.instructors}
                           isEditable={canEditDetails}
                           onChange={handleValuesChange}
                         />

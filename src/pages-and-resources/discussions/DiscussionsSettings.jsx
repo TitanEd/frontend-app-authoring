@@ -10,7 +10,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   Alert,
   Button,
-  ModalDialog,
+  FullscreenModal,
   Stepper,
 } from '@openedx/paragon';
 
@@ -66,39 +66,27 @@ const DiscussionsSettings = () => {
 
   if (status === FAILED) {
     return (
-      <ModalDialog
+      <FullscreenModal
         className="bg-light-200"
+        title={intl.formatMessage(messages.configure)}
         onClose={handleClose}
         isOpen
       >
-        <ModalDialog.Header>
-          <ModalDialog.Title>
-            {intl.formatMessage(messages.configure)}
-          </ModalDialog.Title>
-        </ModalDialog.Header>
-        <ModalDialog.Body>
-          <ConnectionErrorAlert />
-        </ModalDialog.Body>
-      </ModalDialog>
+        <ConnectionErrorAlert />
+      </FullscreenModal>
     );
   }
 
   if (status === DENIED) {
     return (
-      <ModalDialog
+      <FullscreenModal
         className="bg-light-200"
+        title={intl.formatMessage(messages.configure)}
         onClose={handleClose}
         isOpen
       >
-        <ModalDialog.Header>
-          <ModalDialog.Title>
-            {intl.formatMessage(messages.configure)}
-          </ModalDialog.Title>
-        </ModalDialog.Header>
-        <ModalDialog.Body>
-          <PermissionDeniedAlert />
-        </ModalDialog.Body>
-      </ModalDialog>
+        <PermissionDeniedAlert />
+      </FullscreenModal>
     );
   }
 
@@ -106,58 +94,55 @@ const DiscussionsSettings = () => {
     <DiscussionsProvider path={discussionsPath}>
       <AppConfigForm.Provider>
         <Stepper activeKey={currentStep}>
-          <ModalDialog
+          <FullscreenModal
             className="bg-light-200"
+            modalBodyClassName="px-sm-4"
+            title={intl.formatMessage(messages.configure)}
             onClose={handleClose}
             isOpen
-            size="lg"
+            beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
+            isOverflowVisible={false}
+            footerNode={
+              <>
+                <Stepper.ActionRow eventKey={SELECTION_STEP}>
+                  <AppList.NextButton />
+                </Stepper.ActionRow>
+                <Stepper.ActionRow eventKey={SETTINGS_STEP}>
+                  <div className="d-flex w-100 justify-content-between">
+                    <Button
+                      variant="outline-primary"
+                      onClick={handleBack}
+                    >
+                      {intl.formatMessage(messages.backButton)}
+                    </Button>
+                    <AppConfigForm.SaveButton />
+                  </div>
+                </Stepper.ActionRow>
+              </>
+            }
           >
-            <ModalDialog.Header>
-              <ModalDialog.Title>
-                {intl.formatMessage(messages.configure)}
-              </ModalDialog.Title>
-              <Stepper.Header className="border-bottom border-light" />
-            </ModalDialog.Header>
-            <ModalDialog.Body className="px-sm-4">
-              <Stepper.Step
-                eventKey={SELECTION_STEP}
-                title={intl.formatMessage(messages.providerSelection)}
-              >
-                {!canChangeProviders && (
-                  <Alert variant="warning">
-                    {intl.formatMessage(messages.noProviderSwitchAfterCourseStarted)}
-                  </Alert>
-                )}
-                <AppList />
-              </Stepper.Step>
-              <Stepper.Step
-                eventKey={SETTINGS_STEP}
-                title={intl.formatMessage(messages.settings)}
-                description={hasValidationError ? intl.formatMessage(messages.Incomplete) : ''}
-                hasError={hasValidationError}
-              >
-                <AppConfigForm
-                  courseId={courseId}
-                />
-              </Stepper.Step>
-            </ModalDialog.Body>
-            <ModalDialog.Footer>
-              <Stepper.ActionRow eventKey={SELECTION_STEP}>
-                <AppList.NextButton />
-              </Stepper.ActionRow>
-              <Stepper.ActionRow eventKey={SETTINGS_STEP}>
-                <div className="d-flex w-100 justify-content-between">
-                  <Button
-                    variant="outline-primary"
-                    onClick={handleBack}
-                  >
-                    {intl.formatMessage(messages.backButton)}
-                  </Button>
-                  <AppConfigForm.SaveButton />
-                </div>
-              </Stepper.ActionRow>
-            </ModalDialog.Footer>
-          </ModalDialog>
+            <Stepper.Step
+              eventKey={SELECTION_STEP}
+              title={intl.formatMessage(messages.providerSelection)}
+            >
+              {!canChangeProviders && (
+                <Alert variant="warning">
+                  {intl.formatMessage(messages.noProviderSwitchAfterCourseStarted)}
+                </Alert>
+              )}
+              <AppList />
+            </Stepper.Step>
+            <Stepper.Step
+              eventKey={SETTINGS_STEP}
+              title={intl.formatMessage(messages.settings)}
+              description={hasValidationError ? intl.formatMessage(messages.Incomplete) : ''}
+              hasError={hasValidationError}
+            >
+              <AppConfigForm
+                courseId={courseId}
+              />
+            </Stepper.Step>
+          </FullscreenModal>
         </Stepper>
       </AppConfigForm.Provider>
     </DiscussionsProvider>

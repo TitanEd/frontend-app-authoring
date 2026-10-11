@@ -11,6 +11,8 @@ import LibrariesV2Filters from './libraries-v2-filters';
 import messages from '../messages';
 import LibraryCard from './LibraryCard';
 import { useStudioHome } from '../../hooks';
+import customMessages from '../../../customMessages';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const CustomLibrariesV2 = ({
   isError,
@@ -52,7 +54,7 @@ const CustomLibrariesV2 = ({
       ) : (
         <div className="libraries-tab-container">
           <div className="d-flex flex-row justify-content-between align-items-center my-2 mb-4">
-            <div className="my-courses-title">Content Libraries</div>
+            <div className="my-courses-title"><FormattedMessage {...customMessages.contentLibraries} /></div>
             <div className="d-flex flex-row gap-3 libraries-header-filters-container">
               <LibrariesV2Filters
                 isPending={isLoading}
@@ -63,7 +65,7 @@ const CustomLibrariesV2 = ({
               />
               {showNewLibraryV2Button && (
               <Button variant="primary" iconBefore={Add} size="sm" onClick={handleNewLibrary}>
-                New Library
+                <FormattedMessage {...customMessages.newLibrary} />
               </Button>
               )}
             </div>

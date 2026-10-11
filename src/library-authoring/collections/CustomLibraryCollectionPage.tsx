@@ -13,6 +13,9 @@ import { LibrarySidebar } from '../library-sidebar';
 // import Header from '../../header';
 import LibraryCollectionComponents from './LibraryCollectionComponents';
 import messages from './messages';
+import customMessages from './customMessages';
+import rootCustomMessages from '../../customMessages';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const CustomLibraryCollectionPage = ({
 //   componentPickerMode,
@@ -33,15 +36,21 @@ const CustomLibraryCollectionPage = ({
         <div className="ca-breadcrumb-bg">
           <div className="ca-breadcrumb-container">
             <div className="ca-breadcrumb d-flex align-items-center">
-              <span className="ca-breadcrumb-icon collection-breadcrumb-icon" onClick={() => navigate(`/library/${libraryId}`)}>
+              <span
+                className="ca-breadcrumb-icon collection-breadcrumb-icon"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate(`/library/${libraryId}`)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { navigate(`/library/${libraryId}`); } }}
+              >
                 <LmsBook className="custom-icon" />
-                {breadcrumbTitle || 'Loading...'}
+                {breadcrumbTitle || <FormattedMessage {...rootCustomMessages.loading} />}
               </span>
               <span className="ca-breadcrumb-divider">/</span>
-              <span className="ca-breadcrumb-current">All Collections</span>
+              <span className="ca-breadcrumb-current"><FormattedMessage {...customMessages.allCollections} /></span>
             </div>
             <div className="ca-title library-breadcrumb-title">
-              {subHeaderTitle || 'Loading...'}
+              {subHeaderTitle || <FormattedMessage {...rootCustomMessages.loading} />}
             </div>
           </div>
         </div>
@@ -55,10 +64,10 @@ const CustomLibraryCollectionPage = ({
               headerActions={headerActions}
             /> */}
             <div className="sub-header-container d-flex justify-content-between align-items-center">
-              <SearchKeywordsField className="w-40" placeholder={intl.formatMessage(messages.searchPlaceholder)} />
+              <SearchKeywordsField className="w-40" placeholder={intl.formatMessage(customMessages.searchPlaceholder)} />
               {headerActions}
             </div>
-            <hr style={{ border: 'none', borderTop: '1px solid #e5e6e6', margin: '0 0 0 0' }} />
+            <hr style={{ border: 'none', borderTop: '1px solid var(--pgn-color-light-400)', margin: '0 0 0 0' }} />
             <div className="d-flex mt-3 mb-4 align-items-center">
               <FilterByTags />
               <FilterByBlockType />

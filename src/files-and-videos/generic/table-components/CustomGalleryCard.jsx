@@ -8,7 +8,7 @@ import {
   Truncate,
 } from '@openedx/paragon';
 import { ClosedCaption } from '@openedx/paragon/icons';
-import FileMenu from '../FileMenu';
+import FileMenu from '../CustomFileMenu';
 import FileThumbnail from '../ThumbnailPreview';
 
 const CustomGalleryCard = ({

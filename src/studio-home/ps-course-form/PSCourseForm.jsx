@@ -20,7 +20,6 @@ import {
   Stack,
   Icon,
   Image,
-  // `RadioButton` was removed in Paragon 23 (Verawood); `Form.Radio` is used instead.
   // RadioButton,
   Dropdown,
   Nav,
@@ -35,11 +34,11 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform';
 import { DatepickerControl, DATEPICKER_TYPES } from '../../generic/datepicker-control';
 import './PSCourseForm.scss';
-import IntroductionVideo from '../../schedule-and-details/introducing-section/introduction-video';
+import messages from './messages';
+import IntroductionVideo from '../../schedule-and-details/introducing-section/introduction-video/CustomIntroductionVideo';
 // import { getStudioHomeData } from '../data/selectors';
 import { useCreateOrRerunCourse } from '../../generic/create-or-rerun-course/hooks';
 import { fetchStudioHomeData } from '../data/thunks';
-// Verawood removed the advanced-settings redux thunks (now React Query: advanced-settings/data/apiHooks).
 // import { fetchCourseAppSettings } from '../../advanced-settings/data/thunks';
 import { videoTranscriptLanguages } from '../../editors/data/constants/video';
 import { LICENSE_TYPE } from '../../schedule-and-details/license-section/constants';
@@ -81,7 +80,6 @@ const isValidImageUrl = (url) => {
       url.match(/^https?:\/\/(www\.)?picsum\.photos\/.+/i))
   );
 };
-
 
 const PSCourseForm = ({
   children,
@@ -235,7 +233,7 @@ const PSCourseForm = ({
 
         // Gentle highlight feedback
         targetElement.style.transition = 'background-color 1.5s ease';
-        targetElement.style.backgroundColor = 'rgba(0, 123, 255, 0.12)'; // soft blue
+        targetElement.style.backgroundColor = 'var(--pgn-color-primary-light)'; // highlight (design token)
         targetElement.style.borderRadius = '8px';
         targetElement.style.padding = '4px'; // small padding for visual pop
 
@@ -337,20 +335,16 @@ const PSCourseForm = ({
 
   const userTimezone = useMemo(getUserTimezoneString, []);
 
-
   useEffect(() => {
-    // Only make API calls for new UI to prevent infinite calls in old UI
-    if (localStorage.getItem('oldUI') !== 'true') {
-      const loadData = async () => {
-        try {
-          await dispatch(fetchStudioHomeData());
-        } catch (error) {
-          console.error('Error loading studio home data:', error);
-        }
-      };
+    const loadData = async () => {
+      try {
+        await dispatch(fetchStudioHomeData());
+      } catch (error) {
+        console.error('Error loading studio home data:', error);
+      }
+    };
 
-      loadData();
-    }
+    loadData();
   }, [dispatch]);
 
   // The fetched advanced settings were not used by this form (and it was called without a courseId).
@@ -428,7 +422,7 @@ const PSCourseForm = ({
       const endDate = new Date(editedValues.endDate);
 
       if (endDate < startDate) {
-        fieldErrors.endDate = 'Course end date cannot be earlier than start date.';
+        fieldErrors.endDate = intl.formatMessage(messages.courseEndDateCannotBeEarlierThan);
       } else {
         // Clear endDate error if dates are now valid
         delete fieldErrors.endDate;
@@ -441,7 +435,7 @@ const PSCourseForm = ({
       const endDate = new Date(value);
 
       if (endDate < startDate) {
-        fieldErrors.endDate = 'Course end date cannot be earlier than start date.';
+        fieldErrors.endDate = intl.formatMessage(messages.courseEndDateCannotBeEarlierThan);
       } else {
         // Clear endDate error if dates are now valid
         delete fieldErrors.endDate;
@@ -454,7 +448,7 @@ const PSCourseForm = ({
       const enrollmentStartDate = new Date(editedValues.enrollmentStart);
 
       if (startDate <= enrollmentStartDate) {
-        fieldErrors.startDate = 'Course start date must be later than the enrollment start date.';
+        fieldErrors.startDate = intl.formatMessage(messages.courseStartDateMustBeLaterThan);
         setTouched(prev => ({ ...prev, startDate: true }));
       } else {
         // Clear startDate error if dates are now valid
@@ -468,7 +462,7 @@ const PSCourseForm = ({
       const enrollmentStartDate = new Date(value);
 
       if (startDate <= enrollmentStartDate) {
-        fieldErrors.startDate = 'Course start date must be later than the enrollment start date.';
+        fieldErrors.startDate = intl.formatMessage(messages.courseStartDateMustBeLaterThan);
         setTouched(prev => ({ ...prev, startDate: true }));
       } else {
         // Clear startDate error if dates are now valid
@@ -482,10 +476,10 @@ const PSCourseForm = ({
       const enrollmentEndDate = new Date(editedValues.enrollmentEnd);
 
       if (enrollmentStartDate > enrollmentEndDate) {
-        fieldErrors.enrollmentStart = 'Enrollment start date cannot be later than enrollment end date.';
+        fieldErrors.enrollmentStart = intl.formatMessage(messages.enrollmentStartDateCannotBeLaterThan);
         setTouched(prev => ({ ...prev, enrollmentStart: true }));
       } else if (enrollmentEndDate < enrollmentStartDate) {
-        fieldErrors.enrollmentEnd = 'Enrollment end date cannot be earlier than enrollment start date.';
+        fieldErrors.enrollmentEnd = intl.formatMessage(messages.enrollmentEndDateCannotBeEarlierThan);
         setTouched(prev => ({ ...prev, enrollmentEnd: true }));
       } else {
         // Clear both errors if dates are now valid
@@ -500,10 +494,10 @@ const PSCourseForm = ({
       const enrollmentEndDate = new Date(value);
 
       if (enrollmentStartDate > enrollmentEndDate) {
-        fieldErrors.enrollmentStart = 'Enrollment start date cannot be later than enrollment end date.';
+        fieldErrors.enrollmentStart = intl.formatMessage(messages.enrollmentStartDateCannotBeLaterThan);
         setTouched(prev => ({ ...prev, enrollmentStart: true }));
       } else if (enrollmentEndDate < enrollmentStartDate) {
-        fieldErrors.enrollmentEnd = 'Enrollment end date cannot be earlier than enrollment start date.';
+        fieldErrors.enrollmentEnd = intl.formatMessage(messages.enrollmentEndDateCannotBeEarlierThan);
         setTouched(prev => ({ ...prev, enrollmentEnd: true }));
       } else {
         // Clear both errors if dates are now valid
@@ -518,7 +512,7 @@ const PSCourseForm = ({
       const courseStartDate = new Date(editedValues.startDate);
 
       if (enrollmentEndDate < courseStartDate) {
-        fieldErrors.enrollmentEnd = 'Enrollment end date cannot be earlier than course start date.';
+        fieldErrors.enrollmentEnd = intl.formatMessage(messages.enrollmentEndDateCannotBeEarlierThan2);
         setTouched(prev => ({ ...prev, enrollmentEnd: true }));
       } else {
         // Clear enrollmentEnd error if dates are now valid
@@ -532,7 +526,7 @@ const PSCourseForm = ({
       const courseEndDate = new Date(editedValues.endDate);
 
       if (enrollmentEndDate > courseEndDate) {
-        fieldErrors.enrollmentEnd = 'Enrollment end date cannot be later than course end date.';
+        fieldErrors.enrollmentEnd = intl.formatMessage(messages.enrollmentEndDateCannotBeLaterThan);
         setTouched(prev => ({ ...prev, enrollmentEnd: true }));
       } else {
         // Clear enrollmentEnd error if dates are now valid
@@ -546,7 +540,7 @@ const PSCourseForm = ({
       const enrollmentEndDate = new Date(editedValues.enrollmentEnd);
 
       if (enrollmentEndDate < courseStartDate) {
-        fieldErrors.enrollmentEnd = 'Enrollment end date cannot be earlier than course start date.';
+        fieldErrors.enrollmentEnd = intl.formatMessage(messages.enrollmentEndDateCannotBeEarlierThan2);
         setTouched(prev => ({ ...prev, enrollmentEnd: true }));
       } else {
         // Clear enrollmentEnd error if dates are now valid
@@ -560,7 +554,7 @@ const PSCourseForm = ({
       const enrollmentEndDate = new Date(editedValues.enrollmentEnd);
 
       if (enrollmentEndDate > courseEndDate) {
-        fieldErrors.enrollmentEnd = 'Enrollment end date cannot be later than course end date.';
+        fieldErrors.enrollmentEnd = intl.formatMessage(messages.enrollmentEndDateCannotBeLaterThan);
         setTouched(prev => ({ ...prev, enrollmentEnd: true }));
       } else {
         // Clear enrollmentEnd error if dates are now valid
@@ -671,7 +665,7 @@ const PSCourseForm = ({
       // const response = await getAuthenticatedHttpClient().post('STUDIO_API_DOMAIN/titaned/api/v1/create-course', apiPayload);
 
       if (response.status !== 200 && response.status !== 201) {
-        throw new Error('Failed to create course. Please try again.');
+        throw new Error(intl.formatMessage(messages.failedToCreateCoursePleaseTryAgain));
       }
 
       // Handle success response with new API format
@@ -705,7 +699,7 @@ const PSCourseForm = ({
       console.error('Error submitting form:', error);
 
       // Set error message based on the type of error
-      let errorMsg = 'Failed to create course. Please try again.';
+      let errorMsg = intl.formatMessage(messages.failedToCreateCoursePleaseTryAgain);
       if (error.response) {
         // Server responded with error status
         if (error.response.status === 400 || error.response.status === 403 || error.response.status === 500) {
@@ -719,23 +713,23 @@ const PSCourseForm = ({
           } else {
             // Fallback to default messages if no backend message
             if (error.response.status === 400) {
-              errorMsg = 'Bad request. Please check your inputs.';
+              errorMsg = intl.formatMessage(messages.badRequestPleaseCheckYourInputs);
             } else if (error.response.status === 403) {
-              errorMsg = 'You do not have permission to create courses.';
+              errorMsg = intl.formatMessage(messages.youDoNotHavePermissionToCreate);
             } else if (error.response.status === 500) {
-              errorMsg = 'Server error. Please try again later.';
+              errorMsg = intl.formatMessage(messages.serverErrorPleaseTryAgainLater);
             }
           }
         } else if (error.response.status === 401) {
-          errorMsg = 'Authentication failed. Please log in again.';
+          errorMsg = intl.formatMessage(messages.authenticationFailedPleaseLogInAgain);
         } else if (error.response.status === 422) {
-          errorMsg = 'Invalid course data. Please check your inputs.';
+          errorMsg = intl.formatMessage(messages.invalidCourseDataPleaseCheckYourInputs);
         } else if (error.response.data && error.response.data.message) {
           errorMsg = error.response.data.message;
         }
       } else if (error.request) {
         // Network error
-        errorMsg = 'Network error. Please check your connection and try again.';
+        errorMsg = intl.formatMessage(messages.networkErrorPleaseCheckYourConnectionAnd);
       } else if (error.message) {
         // Other error
         errorMsg = error.message;
@@ -776,7 +770,7 @@ const PSCourseForm = ({
 
   const formattedLanguage = () => {
     const result = languageOptions.find((arr) => arr[0] === editedValues.language);
-    return result ? result[1] : 'Select language';
+    return result ? result[1] : intl.formatMessage(messages.selectLanguage);
   };
 
   const renderImageUploadSection = (field, label, preview, file, hasImage, onUpload) => {
@@ -801,7 +795,7 @@ const PSCourseForm = ({
                   fontSize: "0.875rem",
                   color: "var(--primary)",
                   animation: "pulse 1.5s infinite",
-                }}>Loading...</span>
+                }}>{intl.formatMessage(messages.loading)}</span>
               ) : (
                 <AIButton
                   disabled={!editedValues.description?.trim()}
@@ -852,9 +846,9 @@ const PSCourseForm = ({
                   className="mb-2"
                 >
                   <Icon src={Add} className="me-2" />
-                  {isImageUploading ? 'Uploading...' : 'Upload Image'}
+                  {isImageUploading ? intl.formatMessage(messages.uploading) : intl.formatMessage(messages.uploadImage)}
                 </Button>
-                <div className="font-12">Please upload a JPEG or PNG image between 300x300 and 1024x1024 pixels, under 5MB.</div>
+                <div className="font-12">{intl.formatMessage(messages.pleaseUploadAJpegOrPngImage)}</div>
                 <input
                   type="file"
                   id={`${field}Input`}
@@ -891,14 +885,14 @@ const PSCourseForm = ({
   };
 
   const tabList = [
-    !hideGeneralTab && { key: 'general', label: 'General', icon: InfoOutline },
-    { key: 'schedule', label: 'Schedule', icon: Calendar },
-    { key: 'requirements', label: 'Requirements', icon: InfoOutline },
-    { key: 'additional', label: 'Additional', icon: More },
-    { key: 'pricing', label: 'Pricing', icon: Money },
-    { key: 'license', label: 'Course content license', icon: InfoOutline },
-    scheduleSettings && { key: 'learningOutcomes', label: 'Learning outcomes', icon: LmsOutline },
-    scheduleSettings && { key: 'instructors', label: 'Instructors', icon: Face3 },
+    !hideGeneralTab && { key: 'general', label: intl.formatMessage(messages.general), icon: InfoOutline },
+    { key: 'schedule', label: intl.formatMessage(messages.schedule), icon: Calendar },
+    { key: 'requirements', label: intl.formatMessage(messages.requirements), icon: InfoOutline },
+    { key: 'additional', label: intl.formatMessage(messages.additional), icon: More },
+    { key: 'pricing', label: intl.formatMessage(messages.pricing), icon: Money },
+    { key: 'license', label: intl.formatMessage(messages.courseContentLicense), icon: InfoOutline },
+    scheduleSettings && { key: 'learningOutcomes', label: intl.formatMessage(messages.learningOutcomes), icon: LmsOutline },
+    scheduleSettings && { key: 'instructors', label: intl.formatMessage(messages.instructors), icon: Face3 },
   ].filter(Boolean);
 
   const validateForm = () => {
@@ -907,31 +901,31 @@ const PSCourseForm = ({
     /* Custom error messages */
     // Validate Title field
     if (!editedValues.title || !editedValues.title.trim()) {
-      newErrors.title = 'Title is required.';
+      newErrors.title = intl.formatMessage(messages.titleIsRequired);
     }
     // Validate shortDescription field
     if (!editedValues.shortDescription || !editedValues.shortDescription.trim()) {
-      newErrors.shortDescription = 'Short Description is required.';
+      newErrors.shortDescription = intl.formatMessage(messages.shortDescriptionIsRequired);
     }
     // Validate Organization field
     if (!editedValues.organization || !editedValues.organization.trim()) {
-      newErrors.organization = 'Organization is required.';
+      newErrors.organization = intl.formatMessage(messages.organizationIsRequired);
     }
     // Validate Course Number field
     if (!editedValues.courseNumber || !editedValues.courseNumber.trim()) {
-      newErrors.courseNumber = 'Course Number is required.';
+      newErrors.courseNumber = intl.formatMessage(messages.courseNumberIsRequired);
     } else if (!/^[a-zA-Z0-9_-]+$/.test(editedValues.courseNumber.trim())) {
       newErrors.courseNumber = 'Course Number can only contain letters, numbers, underscores (_), and hyphens (-).';
     }
     // Validate Course Run field
     if (!editedValues.courseRun || !editedValues.courseRun.trim()) {
-      newErrors.courseRun = 'Course Run is required.';
+      newErrors.courseRun = intl.formatMessage(messages.courseRunIsRequired);
     } else if (!/^[a-zA-Z0-9_-]+$/.test(editedValues.courseRun.trim())) {
       newErrors.courseRun = 'Course Run can only contain letters, numbers, underscores (_), and hyphens (-).';
     }
     // Validate Course start date field
     if (!editedValues.startDate) {
-      newErrors.startDate = 'Course start date is required.';
+      newErrors.startDate = intl.formatMessage(messages.courseStartDateIsRequired);
     }
 
     // Validate that end date is not earlier than start date (only if both dates are provided)
@@ -940,7 +934,7 @@ const PSCourseForm = ({
       const endDate = new Date(editedValues.endDate);
 
       if (endDate < startDate) {
-        newErrors.endDate = 'Course end date cannot be earlier than start date.';
+        newErrors.endDate = intl.formatMessage(messages.courseEndDateCannotBeEarlierThan);
       } else {
         // Clear endDate error if dates are now valid
         delete newErrors.endDate;
@@ -956,7 +950,7 @@ const PSCourseForm = ({
       const enrollmentStartDate = new Date(editedValues.enrollmentStart);
 
       if (startDate <= enrollmentStartDate) {
-        newErrors.startDate = 'Course start date must be later than the enrollment start date.';
+        newErrors.startDate = intl.formatMessage(messages.courseStartDateMustBeLaterThan);
       } else {
         // Clear startDate error if dates are now valid
         delete newErrors.startDate;
@@ -969,9 +963,9 @@ const PSCourseForm = ({
       const enrollmentEndDate = new Date(editedValues.enrollmentEnd);
 
       if (enrollmentStartDate > enrollmentEndDate) {
-        newErrors.enrollmentStart = 'Enrollment start date cannot be later than enrollment end date.';
+        newErrors.enrollmentStart = intl.formatMessage(messages.enrollmentStartDateCannotBeLaterThan);
       } else if (enrollmentEndDate < enrollmentStartDate) {
-        newErrors.enrollmentEnd = 'Enrollment end date cannot be earlier than enrollment start date.';
+        newErrors.enrollmentEnd = intl.formatMessage(messages.enrollmentEndDateCannotBeEarlierThan);
       } else {
         // Clear both errors if dates are now valid
         delete newErrors.enrollmentStart;
@@ -985,7 +979,7 @@ const PSCourseForm = ({
       const courseStartDate = new Date(editedValues.startDate);
 
       if (enrollmentEndDate < courseStartDate) {
-        newErrors.enrollmentEnd = 'Enrollment end date cannot be earlier than course start date.';
+        newErrors.enrollmentEnd = intl.formatMessage(messages.enrollmentEndDateCannotBeEarlierThan2);
       } else {
         // Clear enrollmentEnd error if dates are now valid
         delete newErrors.enrollmentEnd;
@@ -998,7 +992,7 @@ const PSCourseForm = ({
       const courseEndDate = new Date(editedValues.endDate);
 
       if (enrollmentEndDate > courseEndDate) {
-        newErrors.enrollmentEnd = 'Enrollment end date cannot be later than course end date.';
+        newErrors.enrollmentEnd = intl.formatMessage(messages.enrollmentEndDateCannotBeLaterThan);
       } else {
         // Clear enrollmentEnd error if dates are now valid
         delete newErrors.enrollmentEnd;
@@ -1042,7 +1036,7 @@ const PSCourseForm = ({
             <AlertMessage
               variant="success"
               icon={CheckCircle}
-              title="Course has been created successfully"
+              title={intl.formatMessage(messages.courseHasBeenCreatedSuccessfully)}
               className="success-alert"
               aria-hidden="true"
             />
@@ -1051,21 +1045,21 @@ const PSCourseForm = ({
 
         <ModalNotification
           isOpen={showErrorModal}
-          title="Course Creation Failed"
+          title={intl.formatMessage(messages.courseCreationFailed)}
           message={errorMessage}
           handleCancel={handleErrorModalClose}
           handleAction={handleErrorModalClose}
           cancelButtonText=""
-          actionButtonText="OK"
+          actionButtonText={intl.formatMessage(messages.ok)}
           variant="danger"
           icon={Warning}
         />
-        <Container size="xl" className="pl-3">
-          <Row>
-            <Col xs={12} className="pr-0 pb-0">
+        <Container size="xl" className="px-0">
+          <Row className="mx-0">
+            <Col xs={12} className="px-0 pb-0">
               <Form className="course-form" onSubmit={handleSubmit}>
                 <Row>
-                  <Col xs={12} md={8} className="col-cs">
+                  <Col xs={12} md={8} className="col-cs px-0 pr-md-3">
                     <div>
                       {children}
                     </div>
@@ -1073,14 +1067,14 @@ const PSCourseForm = ({
                       {!hideTitleField && (
                         <Form.Group className="mb-2">
                           <div className="d-flex justify-content-between align-items-center">
-                            <Form.Label className="mb-0 d-flex justify-content-between align-items-center"><>Title <span className="required-asterisk">*</span></>
+                            <Form.Label className="mb-0 d-flex justify-content-between align-items-center"><>{intl.formatMessage(messages.title)} <span className="required-asterisk">*</span></>
                               {showCopilotIcon &&<div className="aibutton">
                                 {aiLoading.title ? (
                                   <span style={{
                                     fontSize: "0.875rem",
                                     color: "var(--primary)",
                                     animation: "pulse 1.5s infinite",
-                                  }}>Loading...</span>
+                                  }}>{intl.formatMessage(messages.loading)}</span>
                                 ) : (
                                   <AIButton
                                     disabled={!editedValues.title?.trim()}
@@ -1109,14 +1103,14 @@ const PSCourseForm = ({
                       )}
                       <Form.Group className="mb-1">
                         <div className="d-flex justify-content-between align-items-center">
-                          <Form.Label className="mb-0 d-flex justify-content-between align-items-center"><>Short Description <span className="required-asterisk">*</span></>
+                          <Form.Label className="mb-0 d-flex justify-content-between align-items-center"><>{intl.formatMessage(messages.shortDescription)} <span className="required-asterisk">*</span></>
                             {showCopilotIcon && <div className="aibutton">
                               {aiLoading.shortDescription ? (
                                 <span style={{
                                   fontSize: "0.875rem",
                                   color: "var(--primary)",
                                   animation: "pulse 1.5s infinite",
-                                }}>Loading...</span>
+                                }}>{intl.formatMessage(messages.loading)}</span>
                               ) : (
                                 <AIButton
                                   disabled={!editedValues.title?.trim()}
@@ -1139,7 +1133,7 @@ const PSCourseForm = ({
                           isInvalid={!!errors.shortDescription && touched.shortDescription}
                           className="short-description"
                         />
-                        <Form.Text>A short description that will be displayed on the course card. Limit to 150 characters.</Form.Text>
+                        <Form.Text>{intl.formatMessage(messages.aShortDescriptionThatWillBeDisplayed)}</Form.Text>
                         {errors.shortDescription && touched.shortDescription && (
                           <Form.Control.Feedback type="invalid">
                             {errors.shortDescription}
@@ -1149,14 +1143,14 @@ const PSCourseForm = ({
 
                       <Form.Group className={scheduleSettings ? 'mb-1' : 'mb-3'}>
                         <div className="d-flex justify-content-between align-items-center">
-                          <Form.Label className="mb-0 d-flex justify-content-between align-items-center"><>Description</>
+                          <Form.Label className="mb-0 d-flex justify-content-between align-items-center"><>{intl.formatMessage(messages.description)}</>
                             {showCopilotIcon && <div className="aibutton">
                               {aiLoading.description ? (
                                 <span style={{
                                   fontSize: "0.875rem",
                                   color: "var(--primary)",
                                   animation: "pulse 1.5s infinite",
-                                }}>Loading...</span>
+                                }}>{intl.formatMessage(messages.loading)}</span>
                               ) : (
                                 <AIButton
                                   disabled={!(editedValues.title?.trim() && editedValues.shortDescription?.trim())}
@@ -1186,13 +1180,13 @@ const PSCourseForm = ({
 
                       {scheduleSettings && (
                         <Form.Group className="mb-3">
-                          <Form.Label><>Course overview</></Form.Label>
+                          <Form.Label><>{intl.formatMessage(messages.courseOverview)}</></Form.Label>
                           <WysiwygEditor
                             initialValue={editedValues.overview || ''}
                             onChange={(value) => handleInputChange('overview', value)}
                           />
                           <Form.Control.Feedback>
-                            Provide a detailed overview of your course content and objectives.
+                            {intl.formatMessage(messages.provideADetailedOverviewOfYourCourse)}
                           </Form.Control.Feedback>
                         </Form.Group>
                       )}
@@ -1226,7 +1220,7 @@ const PSCourseForm = ({
                                 <Row className="custom-padding">
                                   <Col xs={12} md={12}>
                                     <Form.Group>
-                                      <Form.Label><>Organization <span className="required-asterisk">*</span></></Form.Label>
+                                      <Form.Label><>{intl.formatMessage(messages.organization)} <span className="required-asterisk">*</span></></Form.Label>
                                       {canCreateNewOrganization ? (
                                         <CustomTypeaheadDropdown
                                           readOnly={false}
@@ -1234,10 +1228,10 @@ const PSCourseForm = ({
                                           value={editedValues.organization || ''}
                                           controlClassName={errors.organization ? 'is-invalid' : ''}
                                           options={allowedOrganizations}
-                                          placeholder="Select an organization"
+                                          placeholder={intl.formatMessage(messages.selectAnOrganization)}
                                           handleChange={(value) => handleInputChange('organization', value)}
                                           handleBlur={handleCustomBlurForDropdown}
-                                          noOptionsMessage="No organizations available"
+                                          noOptionsMessage={intl.formatMessage(messages.noOrganizationsAvailable)}
                                           required
                                         />
                                       ) : (
@@ -1249,7 +1243,7 @@ const PSCourseForm = ({
                                               className={`form-control ${errors.organization && touched.organization ? 'is-invalid' : ''}`}
                                               onBlur={() => handleBlur('organization')}
                                             >
-                                              {editedValues.organization || 'Select an organization'}
+                                              {editedValues.organization || intl.formatMessage(messages.selectAnOrganization)}
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu>
                                               {allowedOrganizations && allowedOrganizations.length > 0 ? (
@@ -1266,7 +1260,7 @@ const PSCourseForm = ({
                                                 ))
                                               ) : (
                                                 <Dropdown.Item disabled>
-                                                  No Organizations available
+                                                  {intl.formatMessage(messages.noOrganizationsAvailable2)}
                                                 </Dropdown.Item>
                                               )}
                                             </Dropdown.Menu>
@@ -1274,7 +1268,7 @@ const PSCourseForm = ({
                                         </div>
                                       )}
                                       <Form.Text>
-                                        The name of the organization sponsoring the course.
+                                        {intl.formatMessage(messages.theNameOfTheOrganizationSponsoringThe)}
                                       </Form.Text>
                                       {errors.organization && touched.organization && (
                                         <Form.Control.Feedback type="invalid" className="d-block">
@@ -1285,19 +1279,19 @@ const PSCourseForm = ({
                                   </Col>
                                   <Col xs={12} md={12}>
                                     <Form.Group>
-                                      <Form.Label><>Course Number <span className="required-asterisk">*</span></></Form.Label>
+                                      <Form.Label><>{intl.formatMessage(messages.courseNumber)} <span className="required-asterisk">*</span></></Form.Label>
                                       <Form.Control
                                         type="text"
                                         name="courseNumber"
                                         value={editedValues.courseNumber || ''}
                                         onChange={(e) => handleInputChange('courseNumber', e.target.value)}
                                         onBlur={() => handleBlur('courseNumber')}
-                                        placeholder="e.g. CS101"
+                                        placeholder={intl.formatMessage(messages.eGCs101)}
                                         isInvalid={!!errors.courseNumber && touched.courseNumber}
                                         required
                                       />
                                       <Form.Text>
-                                        The unique number that identifies your course within your organization.
+                                        {intl.formatMessage(messages.theUniqueNumberThatIdentifiesYourCourse)}
                                       </Form.Text>
                                       {errors.courseNumber && touched.courseNumber && (
                                         <Form.Control.Feedback type="invalid">
@@ -1310,19 +1304,19 @@ const PSCourseForm = ({
                                 <Row className="pt-0 custom-padding">
                                   <Col xs={12} md={6}>
                                     <Form.Group>
-                                      <Form.Label><>Course Run <span className="required-asterisk">*</span></></Form.Label>
+                                      <Form.Label><>{intl.formatMessage(messages.courseRun)} <span className="required-asterisk">*</span></></Form.Label>
                                       <Form.Control
                                         type="text"
                                         name="courseRun"
                                         value={editedValues.courseRun || ''}
                                         onChange={(e) => handleInputChange('courseRun', e.target.value)}
                                         onBlur={() => handleBlur('courseRun')}
-                                        placeholder="e.g. 2014_T1"
+                                        placeholder={intl.formatMessage(messages.eG2014T1)}
                                         isInvalid={!!errors.courseRun && touched.courseRun}
                                         required
                                       />
                                       <Form.Text>
-                                        The term in which your course will run.
+                                        {intl.formatMessage(messages.theTermInWhichYourCourseWill)}
                                       </Form.Text>
                                       {errors.courseRun && touched.courseRun && (
                                         <Form.Control.Feedback type="invalid">
@@ -1333,7 +1327,7 @@ const PSCourseForm = ({
                                   </Col>
                                   <Col xs={12} md={6}>
                                     <Form.Group>
-                                      <Form.Label>Course Pacing</Form.Label>
+                                      <Form.Label>{intl.formatMessage(messages.coursePacing)}</Form.Label>
                                       <div className="pacing-style">
                                         <label>
                                           <input
@@ -1343,7 +1337,7 @@ const PSCourseForm = ({
                                             checked={editedValues.coursePacing === 'instructor'}
                                             onChange={() => handleInputChange('coursePacing', 'instructor')}
                                           />
-                                          Instructor-paced
+                                          {intl.formatMessage(messages.instructorPaced)}
                                         </label>
                                         <label>
                                           <input
@@ -1353,7 +1347,7 @@ const PSCourseForm = ({
                                             checked={editedValues.coursePacing === 'self'}
                                             onChange={() => handleInputChange('coursePacing', 'self')}
                                           />
-                                          Self-paced
+                                          {intl.formatMessage(messages.selfPaced)}
                                         </label>
                                       </div>
                                     </Form.Group>
@@ -1380,12 +1374,12 @@ const PSCourseForm = ({
                                                 type={DATEPICKER_TYPES.date}
                                                 value={editedValues.startDate || ''}
                                                 label={null}
-                                                helpText="Enter the date when your course will start"
+                                                helpText={intl.formatMessage(messages.enterTheDateWhenYourCourseWill)}
                                                 isInvalid={!!errors.startDate && touched.startDate}
                                                 controlName="start-date"
                                                 onChange={(value) => handleInputChange('startDate', value)}
                                                 onBlur={() => handleBlur('startDate')}
-                                                placeholder="MM/DD/YYYY"
+                                                placeholder={intl.formatMessage(messages.mmDdYyyy)}
                                               />
                                               {errors.startDate && touched.startDate && (
                                                 <Form.Text className="text-danger">
@@ -1396,7 +1390,7 @@ const PSCourseForm = ({
                                           </Col>
                                           <Col xs={12} md={6}>
                                             <div className="time-field">
-                                              <Form.Label>Course start time</Form.Label>
+                                              <Form.Label>{intl.formatMessage(messages.courseStartTime)}</Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.time}
                                                 value={editedValues.startTime || ''}
@@ -1419,17 +1413,17 @@ const PSCourseForm = ({
                                         <Row className="pl-0 pr-0 pb-0 pt-0">
                                           <Col xs={12} md={6}>
                                             <div className="datepicker-control">
-                                              <Form.Label>Course end date</Form.Label>
+                                              <Form.Label>{intl.formatMessage(messages.courseEndDate)}</Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.date}
                                                 value={editedValues.endDate || ''}
                                                 label={null}
-                                                helpText="Enter the date when your course will end"
+                                                helpText={intl.formatMessage(messages.enterTheDateWhenYourCourseWill2)}
                                                 isInvalid={!!errors.endDate}
                                                 controlName="end-date"
                                                 onChange={(value) => handleInputChange('endDate', value)}
                                                 onBlur={() => handleBlur('endDate')}
-                                                placeholder="MM/DD/YYYY"
+                                                placeholder={intl.formatMessage(messages.mmDdYyyy)}
                                               />
                                               {errors.endDate && (
                                                 <Form.Text className="text-danger">
@@ -1440,7 +1434,7 @@ const PSCourseForm = ({
                                           </Col>
                                           <Col xs={12} md={6}>
                                             <div className="time-field">
-                                              <Form.Label>Course end time</Form.Label>
+                                              <Form.Label>{intl.formatMessage(messages.courseEndTime)}</Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.time}
                                                 value={editedValues.endTime || ''}
@@ -1471,12 +1465,12 @@ const PSCourseForm = ({
                                                 type={DATEPICKER_TYPES.date}
                                                 value={editedValues.enrollmentStart || ''}
                                                 label={null}
-                                                helpText="Enter the date when enrollment will start"
+                                                helpText={intl.formatMessage(messages.enterTheDateWhenEnrollmentWillStart)}
                                                 isInvalid={!!errors.enrollmentStart && touched.enrollmentStart}
                                                 controlName="enrollment-start-date"
                                                 onChange={(value) => handleInputChange('enrollmentStart', value)}
                                                 onBlur={() => handleBlur('enrollmentStart')}
-                                                placeholder="MM/DD/YYYY"
+                                                placeholder={intl.formatMessage(messages.mmDdYyyy)}
                                               />
                                               {errors.enrollmentStart && touched.enrollmentStart && (
                                                 <Form.Text className="text-danger">
@@ -1487,7 +1481,7 @@ const PSCourseForm = ({
                                           </Col>
                                           <Col xs={12} md={6}>
                                             <div className="time-field">
-                                              <Form.Label>Enrollment start time</Form.Label>
+                                              <Form.Label>{intl.formatMessage(messages.enrollmentStartTime)}</Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.time}
                                                 value={editedValues.enrollmentStartTime || ''}
@@ -1510,17 +1504,17 @@ const PSCourseForm = ({
                                         <Row className="pl-0 pr-0 pb-0 pt-0">
                                           <Col xs={12} md={6}>
                                             <div className="datepicker-control">
-                                              <Form.Label>Enrollment end date</Form.Label>
+                                              <Form.Label>{intl.formatMessage(messages.enrollmentEndDate)}</Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.date}
                                                 value={editedValues.enrollmentEnd || ''}
                                                 label={null}
-                                                helpText="Enter the date when enrollment will end"
+                                                helpText={intl.formatMessage(messages.enterTheDateWhenEnrollmentWillEnd)}
                                                 isInvalid={!!errors.enrollmentEnd && touched.enrollmentEnd}
                                                 controlName="enrollment-end-date"
                                                 onChange={(value) => handleInputChange('enrollmentEnd', value)}
                                                 onBlur={() => handleBlur('enrollmentEnd')}
-                                                placeholder="MM/DD/YYYY"
+                                                placeholder={intl.formatMessage(messages.mmDdYyyy)}
                                               />
                                               {errors.enrollmentEnd && touched.enrollmentEnd && (
                                                 <Form.Text className="text-danger">
@@ -1531,7 +1525,7 @@ const PSCourseForm = ({
                                           </Col>
                                           <Col xs={12} md={6}>
                                             <div className="time-field">
-                                              <Form.Label>Enrollment end time</Form.Label>
+                                              <Form.Label>{intl.formatMessage(messages.enrollmentEndTime)}</Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.time}
                                                 value={editedValues.enrollmentEndTime || ''}
@@ -1569,7 +1563,7 @@ const PSCourseForm = ({
                                 <Row className="custom-padding">
                                   <Col xs={12} md={6}>
                                     <Form.Group>
-                                      <Form.Label>Hours of effort per week</Form.Label>
+                                      <Form.Label>{intl.formatMessage(messages.hoursOfEffortPerWeek)}</Form.Label>
                                       <Form.Control
                                         type="text"
                                         name="effort"
@@ -1578,22 +1572,22 @@ const PSCourseForm = ({
                                         onBlur={() => handleBlur('effort')}
                                         isInvalid={!!errors.effort && touched.effort}
                                       />
-                                      <Form.Text>Time spent on all course work</Form.Text>
+                                      <Form.Text>{intl.formatMessage(messages.timeSpentOnAllCourseWork)}</Form.Text>
                                     </Form.Group>
                                   </Col>
                                   <Col xs={12} md={6}>
                                     <Form.Group>
-                                      <Form.Label>Prerequisite course</Form.Label>
+                                      <Form.Label>{intl.formatMessage(messages.prerequisiteCourse)}</Form.Label>
                                       <Dropdown>
                                         <Dropdown.Toggle id="prerequisiteDropdown" variant="outline-primary">
-                                          {editedValues.prerequisiteCourse || 'None'}
+                                          {editedValues.prerequisiteCourse || intl.formatMessage(messages.none)}
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
                                           <Dropdown.Item
                                             key="None"
                                             onClick={() => handleInputChange('prerequisiteCourse', '')}
                                           >
-                                            None
+                                            {intl.formatMessage(messages.none)}
                                           </Dropdown.Item>
                                           {possiblePreRequisiteCourses?.map((course) => (
                                             <Dropdown.Item
@@ -1605,18 +1599,18 @@ const PSCourseForm = ({
                                           ))}
                                         </Dropdown.Menu>
                                       </Dropdown>
-                                      <Form.Text>Course that students must complete before beginning this course</Form.Text>
+                                      <Form.Text>{intl.formatMessage(messages.courseThatStudentsMustCompleteBeforeBeginning)}</Form.Text>
                                     </Form.Group>
                                   </Col>
                                 </Row>
                                 <Form.Group className="entrance-exam-group">
-                                  <div className="entrance-exam-label mb-2">Entrance exam</div>
+                                  <div className="entrance-exam-label mb-2">{intl.formatMessage(messages.entranceExam)}</div>
                                   <div className="entrance-exam-card">
                                     <div className="pb-2">
                                       <Form.Check
                                         type="checkbox"
                                         className="entrance-exam-checkbox"
-                                        label={<span className="entrance-exam-checkbox-label">Require students to pass an exam before beginning the course.</span>}
+                                        label={<span className="entrance-exam-checkbox-label">{intl.formatMessage(messages.requireStudentsToPassAnExamBefore)}</span>}
                                         checked={editedValues.entranceExamEnabled === 'true'}
                                         onChange={(e) => handleInputChange('entranceExamEnabled', e.target.checked ? 'true' : 'false')}
                                       />
@@ -1624,7 +1618,7 @@ const PSCourseForm = ({
                                     {editedValues.entranceExamEnabled === 'true' && (
                                       <div className="entrance-exam-content p-1">
                                         <div className="form-group-custom">
-                                          <Form.Label>Grade requirements</Form.Label>
+                                          <Form.Label>{intl.formatMessage(messages.gradeRequirements)}</Form.Label>
                                           <div className="d-flex">
                                             <Form.Control
                                               type="number"
@@ -1638,7 +1632,7 @@ const PSCourseForm = ({
                                             <span className="pgn__form-control-trailing">%</span>
                                           </div>
                                           <div className="form-control-feedback">
-                                            The score student must meet in order to successfully complete the entrance exam.
+                                            {intl.formatMessage(messages.theScoreStudentMustMeetInOrder)}
                                           </div>
                                         </div>
                                       </div>
@@ -1652,7 +1646,7 @@ const PSCourseForm = ({
                             <div className="form-section pl-12-pr-12">
                               <Stack gap={1}>
                                 <Form.Group className="form-group-custom dropdown-language">
-                                  <Form.Label>Language</Form.Label>
+                                  <Form.Label>{intl.formatMessage(messages.language)}</Form.Label>
                                   <Dropdown className="bg-white">
                                     <Dropdown.Toggle variant="outline-primary" id="languageDropdown">
                                       {formattedLanguage()}
@@ -1669,22 +1663,22 @@ const PSCourseForm = ({
                                     </Dropdown.Menu>
                                   </Dropdown>
                                   <Form.Control.Feedback>
-                                    The primary language of your course.
+                                    {intl.formatMessage(messages.thePrimaryLanguageOfYourCourse)}
                                   </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group>
-                                  <Form.Label>Duration</Form.Label>
+                                  <Form.Label>{intl.formatMessage(messages.duration)}</Form.Label>
                                   <Form.Control
                                     type="text"
                                     name="duration"
                                     value={editedValues.duration || ''}
                                     onChange={(e) => handleInputChange('duration', e.target.value)}
                                     onBlur={() => handleBlur('duration')}
-                                    placeholder="e.g. 8 weeks"
+                                    placeholder={intl.formatMessage(messages.eG8Weeks)}
                                     isInvalid={!!errors.duration && touched.duration}
                                   />
                                   <Form.Text>
-                                    The expected duration of your course.
+                                    {intl.formatMessage(messages.theExpectedDurationOfYourCourse)}
                                   </Form.Text>
                                 </Form.Group>
                               </Stack>
@@ -1694,7 +1688,7 @@ const PSCourseForm = ({
                             <div className="form-section pl-12-pr-12">
                               <Stack gap={1}>
                                 <Form.Group>
-                                  <Form.Label>Pricing Model</Form.Label>
+                                  <Form.Label>{intl.formatMessage(messages.pricingModel)}</Form.Label>
                                   <div className="d-flex radio-button-options">
                                     <Form.Radio
                                       name="pricingModel"
@@ -1702,7 +1696,7 @@ const PSCourseForm = ({
                                       checked={editedValues.pricingModel === 'free'}
                                       onChange={() => handleInputChange('pricingModel', 'free')}
                                     >
-                                      Free
+                                      {intl.formatMessage(messages.free)}
                                     </Form.Radio>
                                     <Form.Radio
                                       name="pricingModel"
@@ -1710,25 +1704,25 @@ const PSCourseForm = ({
                                       checked={editedValues.pricingModel === 'paid'}
                                       onChange={() => handleInputChange('pricingModel', 'paid')}
                                     >
-                                      Paid
+                                      {intl.formatMessage(messages.paid)}
                                     </Form.Radio>
                                   </div>
-                                  <Form.Text className="mt-1">Choose whether your course will be free or paid.</Form.Text>
+                                  <Form.Text className="mt-1">{intl.formatMessage(messages.chooseWhetherYourCourseWillBeFree)}</Form.Text>
                                 </Form.Group>
 
                                 {editedValues.pricingModel === 'paid' && (
                                   <Form.Group>
-                                    <Form.Label>Price</Form.Label>
+                                    <Form.Label>{intl.formatMessage(messages.price)}</Form.Label>
                                     <Form.Control
                                       type="number"
                                       value={editedValues.price}
                                       onChange={(e) => handleInputChange('price', e.target.value)}
                                       onBlur={() => handleBlur('price')}
-                                      placeholder="Enter course price"
+                                      placeholder={intl.formatMessage(messages.enterCoursePrice)}
                                       min="0"
                                       step="0.01"
                                     />
-                                    <Form.Text>Set the price for your course in your local currency.</Form.Text>
+                                    <Form.Text>{intl.formatMessage(messages.setThePriceForYourCourseIn)}</Form.Text>
                                   </Form.Group>
                                 )}
                               </Stack>
@@ -1751,9 +1745,9 @@ const PSCourseForm = ({
                                   />
                                 )}
                                 <div>
-                                  <p className="fw-bold mb-1">License display</p>
+                                  <p className="fw-bold mb-1">{intl.formatMessage(messages.licenseDisplay)}</p>
                                   <p className="small text-gray-700 mb-2">
-                                    The following message will be displayed at the bottom of the courseware pages within your course:
+                                    {intl.formatMessage(messages.theFollowingMessageWillBeDisplayedAt)}
                                   </p>
                                   <LicenseIcons
                                     licenseType={licenseType}
@@ -1785,12 +1779,12 @@ const PSCourseForm = ({
                     </div>
                   </Col>
 
-                  <Col xs={12} md={4}>
+                  <Col xs={12} md={4} className="px-0 pl-md-3">
                     <div className="media-section">
                       <Stack gap={1}>
                         {renderImageUploadSection(
                           'courseImageAssetPath',
-                          'Course Card Image',
+                          intl.formatMessage(messages.courseCardImage),
                           cardImagePreview,
                           cardImageFile,
                           hasCardImage,
@@ -1798,7 +1792,7 @@ const PSCourseForm = ({
                         )}
                         {renderImageUploadSection(
                           'bannerImageAssetPath',
-                          'Course Banner Image',
+                          intl.formatMessage(messages.courseBannerImage),
                           bannerImagePreview,
                           bannerImageFile,
                           hasBannerImage,
@@ -1820,7 +1814,7 @@ const PSCourseForm = ({
                 {!hideCreateNewCourseButton && (
                   <div className="ps-courseform-footer-bar">
                     <div className="footer-cancel">
-                      <Button variant="outline-primary" onClick={handleCancel}>Cancel</Button>
+                      <Button variant="outline-primary" onClick={handleCancel}>{intl.formatMessage(messages.cancel)}</Button>
                     </div>
                     <div className="footer-create">
                       <Button
@@ -1836,10 +1830,10 @@ const PSCourseForm = ({
                         {isSubmitting ? (
                           <span>
                             <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
-                            Creating...
+                            {intl.formatMessage(messages.creating)}
                           </span>
                         ) : (
-                          'Create'
+                          intl.formatMessage(messages.create)
                         )}
                       </Button>
                     </div>

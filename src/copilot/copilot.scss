@@ -178,7 +178,7 @@
                     justify-content: center;
                     border: 1px solid var(--border-color);
                     cursor: pointer;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                    box-shadow: var(--pgn-elevation-box-shadow-down-1);
 
                     &.text {
                         display: flex;
@@ -222,7 +222,7 @@
                     &:hover {
                         transform: scale(1.01);
                         z-index: 1000;
-                        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+                        box-shadow: var(--pgn-elevation-box-shadow-down-1);
 
                         .unpin-btn {
                             opacity: 1;
@@ -317,15 +317,10 @@
                             text-align: left;
                             word-break: break-word;
                             // box-shadow:
-                            //     0 2px 6px rgba(0, 0, 0, 0.1),
-                            //     0 1px 3px rgba(0, 0, 0, 0.08);
+                            // var(--pgn-elevation-box-shadow-down-1);
                             backdrop-filter: blur(8px);
                             -webkit-backdrop-filter: blur(8px);
-                            box-shadow:
-                                inset 2px 2px 4px rgba(255, 255, 255, 0.6),
-                                inset -2px -2px 6px rgba(0, 0, 0, 0.05),
-                                0 6px 12px rgba(0, 0, 0, 0.1),
-                                0 2px 4px rgba(0, 0, 0, 0.08);
+                            box-shadow: var(--pgn-elevation-box-shadow-down-2);
                             font-size: 1rem;
                             line-height: 1.4;
                             position: relative;
@@ -347,15 +342,10 @@
                             text-align: left;
                             word-break: break-word;
                             // box-shadow:
-                            //     0 2px 8px rgba(0, 0, 0, 0.1),
-                            //     0 1px 4px rgba(0, 0, 0, 0.08);
+                            // var(--pgn-elevation-box-shadow-down-1);
                             backdrop-filter: blur(4px);
                             -webkit-backdrop-filter: blur(8px);
-                            box-shadow:
-                                inset 2px 2px 4px rgba(255, 255, 255, 0.6),
-                                inset -2px -2px 6px rgba(0, 0, 0, 0.05),
-                                0 6px 12px rgba(0, 0, 0, 0.1),
-                                0 2px 4px rgba(0, 0, 0, 0.08);
+                            box-shadow: var(--pgn-elevation-box-shadow-down-2);
                             font-size: 1rem;
                             line-height: 1.4;
                             position: relative;
@@ -366,7 +356,7 @@
                             border-radius: 12px;
                             overflow: hidden;
                             border: 1px solid var(--border-color);
-                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                            box-shadow: var(--pgn-elevation-box-shadow-down-1);
 
                             img, video {
                                 width: 100%;
@@ -461,7 +451,7 @@
                         &.pgn__btn--primary {
                             background: var(--primary);
                             border-color: var(--primary);
-                            color: var(--text-white);
+                            color: var(--pgn-color-white);
 
                             &:hover {
                                 background: var(--primary-hover);
@@ -513,7 +503,7 @@
                         border-radius: 8px;
                         background: var(--primary);
                         border-color: var(--primary);
-                        color: var(--text-white);
+                        color: var(--pgn-color-white);
 
                         &:hover {
                             background: var(--primary-hover);

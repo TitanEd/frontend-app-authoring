@@ -22,10 +22,7 @@ const CourseAuthoringPage = ({ children }: Props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Only make API calls for new UI to prevent infinite calls in old UI
-    if (localStorage.getItem('oldUI') !== 'true') {
-      dispatch(fetchOnlyStudioHomeData());
-    }
+    dispatch(fetchOnlyStudioHomeData());
   }, []);
 
   const { courseId, courseDetails, courseDetailStatus } = useCourseAuthoringContext();

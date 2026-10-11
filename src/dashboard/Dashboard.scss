@@ -6,7 +6,7 @@
   line-height: 1.2;
   letter-spacing: normal;
   text-align: left;
-  color: #222121;
+  color: var(--pgn-color-text-base);
   margin-bottom: 0.7rem;
 }
 
@@ -65,12 +65,12 @@
   .metric-card {
     flex: 1;
     padding: 1rem;
-    color: var(--text-white);
+    color: var(--pgn-color-white);
 
   }
 
   .overview-section {
-    background: #fff;
+    background: var(--pgn-color-bg-base);
     padding: 1rem;
     border-radius: 18px;
     min-width: 0;
@@ -121,7 +121,7 @@
     }
 
     .overview-card {
-      border: 1px solid #d1d3d8;
+      border: 1px solid var(--pgn-color-light-400);
       border-radius: 14px;
       overflow: hidden;
     }
@@ -149,7 +149,7 @@
 
       .calendar-event {
         background-color: var(--primary);
-        color: white;
+        color: var(--pgn-color-white);
         padding: 0.5rem;
         border-radius: 0.25rem;
 
@@ -174,7 +174,7 @@
       border-radius: 18px;
 
       .card-header {
-        border-bottom: 1px solid white;
+        border-bottom: 1px solid var(--pgn-color-white);
         padding: 1rem 0rem 0rem 1rem !important;
         background-color: var(--bg-surface);
         position: sticky;
@@ -225,7 +225,7 @@
   }
 
   .sidebar-card {
-    border: 1px solid #d1d3d8;
+    border: 1px solid var(--pgn-color-light-400);
     border-radius: 14px;
     margin-bottom: 1rem;
     width: 100%;
@@ -256,11 +256,6 @@
     padding: 0.4rem 0.8rem;
   }
 
-  .nav-button {
-    padding: 3px 6px;
-    font-size: 0.7rem;
-  }
-
   .calendar-view .fc-list-event {
     font-size: 0.85rem;
   }
@@ -287,13 +282,13 @@
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--pgn-elevation-box-shadow-down-1);
     }
 
     &.selected {
       border-color: var(--primary);
       background-color: rgba(var(--primary-rgb), 0.05);
-      box-shadow: 0 0 0 2px #1976d233;
+      box-shadow: 0 0 0 2px var(--pgn-color-primary-light);
     }
 
     .widget-selection-content {
@@ -305,7 +300,7 @@
 
       p {
         margin: 0;
-        color: #666;
+        color: var(--pgn-color-text-muted);
         font-size: 0.875rem;
       }
     }
@@ -320,7 +315,7 @@
 .widget-selection-card.selected {
   border: 2px solid var(--border-color) !important;
   background: var(--primary-light) !important;
-  box-shadow: 0 0 0 2px #1976d233;
+  box-shadow: 0 0 0 2px var(--pgn-color-primary-light);
 }
 
 .temp-flow {
@@ -362,13 +357,13 @@
 .metric-value-modern {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-white);
+  color: var(--pgn-color-white);
   line-height: 1.1;
 }
 
 .metric-label-modern {
   font-size: 1rem;
-  color: var(--text-white);
+  color: var(--pgn-color-white);
   font-weight: 400;
 }
 
@@ -382,7 +377,7 @@
   width: 48px;
   height: 48px;
   opacity: 0.25;
-  color: var(--text-white);
+  color: var(--pgn-color-white);
   transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -412,14 +407,14 @@
 }
 
 .ai-suggestion-item {
-  background: #faf3f6;
+  background: var(--pgn-color-danger-100, var(--pgn-color-light-200));
   border-radius: 8px;
-  border: 1px solid #eec5d6;
+  border: 1px solid var(--pgn-color-light-400);
   padding: 0.25rem 0.75rem;
   margin-bottom: 0;
-  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.06);
+  box-shadow: var(--pgn-elevation-box-shadow-down-1);
   font-size: 0.95rem;
-  color: #4b4b4b;
+  color: var(--pgn-color-text-base);
   display: flex;
   align-items: center;
   min-height: 48px;
@@ -432,28 +427,28 @@
 }
 
 .todo-item {
-  background: #fff;
+  background: var(--pgn-color-bg-base);
   border-radius: 8px;
-  border: 1px solid #928f8f;
+  border: 1px solid var(--pgn-color-gray-500);
   padding: 0.25rem 0.75rem;
   margin-bottom: 0;
-  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.06);
+  box-shadow: var(--pgn-elevation-box-shadow-down-1);
   font-size: 0.95rem;
-  color: #4b4b4b;
+  color: var(--pgn-color-text-base);
   display: flex;
   align-items: center;
   min-height: 48px;
 }
 
 .placeholder-card {
-  border: 2px dashed #ccc;
-  background-color: #fff;
+  border: 2px dashed var(--pgn-color-light-400);
+  background-color: var(--pgn-color-bg-base);
   cursor: default !important;
   transition: all 0.2s ease;
 
   &:hover {
     border-color: var(--primary);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--pgn-elevation-box-shadow-down-1);
   }
 
   .widget-selection-content {
@@ -480,24 +475,6 @@
   background-color: var(--bg-surface);
 }
 
-.nav-button {
-  border: 1px solid var(--primary);
-  background-color: var(--text-white);
-  color: var(--primary);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1.2;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-
-  &:hover {
-    background: var(--primary);
-    color: var(--text-white);
-  }
-}
 
 .sidebar-card {
   .calendar-view {

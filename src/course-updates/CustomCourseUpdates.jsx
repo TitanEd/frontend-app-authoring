@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
   ActionRow,
   Button,
@@ -14,7 +14,6 @@ import { Add as AddIcon, ErrorOutline as ErrorIcon } from '@openedx/paragon/icon
 import { useSelector } from 'react-redux';
 
 // import { useModel } from '../generic/model-store';
-// Verawood migrated the processing notification from the redux store to ToastContext (openedx#2917),
 // so it is now shown globally and the redux selector no longer exists.
 // import { getProcessingNotification } from '../generic/processing-notification/data/selectors';
 import ProcessingNotification from '../generic/processing-notification';
@@ -25,9 +24,10 @@ import { RequestStatus } from '../data/constants';
 import CourseHandouts from './course-handouts/CourseHandouts';
 import CourseUpdate from './course-update/CourseUpdate';
 import DeleteModal from './delete-modal/DeleteModal';
-import UpdateForm from './update-form/UpdateForm';
+import UpdateForm from './update-form/CustomUpdateForm';
 import { REQUEST_TYPES } from './constants';
 import messages from './messages';
+import customMessages from './customMessages';
 import { useCourseUpdates } from './hooks';
 import {
   getErrors,
@@ -165,8 +165,8 @@ const CustomCourseUpdates = ({ courseId }) => {
                           onSelect={setActiveTab}
                           className="course-updates-tabs"
                         >
-                          <Tab eventKey="updates" title={intl.formatMessage(messages.updatesTabTitle)} />
-                          <Tab eventKey="handouts" title={intl.formatMessage(messages.handoutsTabTitle)} />
+                          <Tab eventKey="updates" title={intl.formatMessage(customMessages.updatesTabTitle)} />
+                          <Tab eventKey="handouts" title={intl.formatMessage(customMessages.handoutsTabTitle)} />
                         </Tabs>
                       </div>
                       {activeTab === 'updates' && (
@@ -176,7 +176,7 @@ const CustomCourseUpdates = ({ courseId }) => {
                           size="sm"
                           onClick={() => handleOpenUpdateForm(REQUEST_TYPES.add_new_update)}
                           disabled={isUpdateFormOpen || errors.loadingUpdates}
-                          style={{ borderRadius: '0.5rem', color: '#fff' }}
+                          style={{ borderRadius: '0.5rem', color: 'var(--pgn-color-white)' }}
                         >
                           {intl.formatMessage(messages.newUpdateButton)}
                         </Button>
@@ -208,7 +208,7 @@ const CustomCourseUpdates = ({ courseId }) => {
                           <div className="updates-container">
                             {courseUpdates.length > 0 && (
                               <div className="p-4.5">
-                                <p className="recent-updates">Recent Updates</p>
+                                <p className="recent-updates"><FormattedMessage {...customMessages.recentUpdates} /></p>
                                 {courseUpdates.map((courseUpdate, index) => (
                                   <div
                                     key={courseUpdate.id}

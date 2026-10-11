@@ -163,7 +163,7 @@ body {
 
             &:hover {
                 background-color: var(--primary);
-                color: var(--text-white);
+                color: var(--pgn-color-white);
             }
         }
 
@@ -426,7 +426,7 @@ body {
 
     // Course introduction video styles
     .embed-video-container {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        box-shadow: var(--pgn-elevation-box-shadow-down-1);
         border-radius: 0.1875rem;
 
         .introduction-video {
@@ -497,7 +497,7 @@ body {
     .time-field .pgn__form-label {
         // Or maybe this one
         font: inherit !important;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important; // Re-apply desired stack
+        font-family: var(--pgn-typography-font-family-base); // Re-apply desired stack
         font-size: 14px !important;
         font-weight: 600 !important;
         line-height: 1.5 !important;
@@ -510,7 +510,7 @@ body {
     // Assuming a wrapper class
     .introduction-video-wrapper .form-label {
         font: inherit !important;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+        font-family: var(--pgn-typography-font-family-base);
         font-size: 14px !important;
         font-weight: 500 !important;
         color: var(--text-primary) !important;
@@ -535,9 +535,9 @@ body {
             top: calc(100% + 8px);
             padding: 8px 12px;
             background: var(--text-primary);
-            color: var(--text-white);
+            color: var(--pgn-color-white);
             border-radius: 6px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--pgn-elevation-box-shadow-down-1);
             white-space: normal;
             z-index: 10;
             font-size: 12px;
@@ -730,8 +730,8 @@ body {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: rgba(51, 51, 51, 0.6);
-        color: var(--text-white);
+        background-color: color-mix(in srgb, var(--pgn-color-black) 60%, transparent);
+        color: var(--pgn-color-white);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -753,7 +753,7 @@ body {
         opacity: 1;
     }
     &:hover .pgn__icon{
-        color: var(--text-white);
+        color: var(--pgn-color-white);
     }
 }
 
@@ -834,7 +834,7 @@ body {
                 position: absolute;
                 top: 0.5rem;
                 right: 0.5rem;
-                background: rgba(0, 0, 0, 0.5);
+                background: color-mix(in srgb, var(--pgn-color-black) 50%, transparent);
                 border: none;
                 border-radius: 50%;
                 width: 2rem;
@@ -842,12 +842,12 @@ body {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: var(--text-white);
+                color: var(--pgn-color-white);
                 cursor: pointer;
                 transition: background-color 0.2s ease;
 
                 &:hover {
-                    background: rgba(0, 0, 0, 0.7);
+                    background: color-mix(in srgb, var(--pgn-color-black) 70%, transparent);
                 }
 
                 .pgn__icon {
@@ -1072,7 +1072,7 @@ body {
     border-radius: 16px;
     border: 1px solid lightgray;
     margin-bottom: 1rem;
-    background: #ffffff;
+    background: var(--pgn-color-bg-base);
 }
 
 .font-12 {
@@ -1197,7 +1197,7 @@ body {
         width: 100% !important;
         border-radius: 4px !important;
         border: 1px solid var(--border-color) !important;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: var(--pgn-elevation-box-shadow-down-1) !important;
         background-color: var(--bg-surface) !important;
         margin-top: 0.25rem !important;
         max-height: 300px !important;

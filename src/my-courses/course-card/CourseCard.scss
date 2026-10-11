@@ -1,15 +1,15 @@
 .course-card {
     border-radius: 16px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--pgn-elevation-box-shadow-down-1);
     width: 100%;
     height: 100%;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     margin: 0 auto;
     padding: 10px;
-    border: solid 1px #e0e0e0 !important;
+    border: solid 1px var(--pgn-color-light-400) !important;
 
     &:hover {
-        box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: var(--pgn-elevation-box-shadow-down-1) !important;
     }
 
     .card-content-section {

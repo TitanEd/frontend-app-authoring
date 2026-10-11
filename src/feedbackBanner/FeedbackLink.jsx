@@ -3,7 +3,6 @@ import { Icon } from '@openedx/paragon';
 import { Close } from '@openedx/paragon/icons';
 import './feedbackLink.scss';
 
-
 const FeedbackLink = ({ isOpen, setIsOpen }) => {
     const [bannerShow, setBannerShow] = useState(() => {
         const lastClosed = localStorage.getItem('bannerClosedTimestamp');

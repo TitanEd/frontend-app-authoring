@@ -1,4 +1,6 @@
-
+// Original layout and spacing. Controls are Paragon components (SearchField,
+// Dropdown, IconButton, Button, DataTable, Pagination) and take their colors
+// from the design tokens, so no color overrides for them here.
 .assignment-page {
   background-color: var(--bg-body);
   padding: 20px;
@@ -13,7 +15,6 @@
     .top-row {
       display: flex;
       justify-content: space-between;
-
 
       h2 {
         color: var(--text-primary);
@@ -34,38 +35,8 @@
         display: flex;
       }
 
-      .searchInputItem {
-        .search-bar {
-          max-width: 280px;
-
-          .pgn__form-control {
-            color: var(--text-primary);
-            border-radius: 8px;
-
-            &::placeholder {
-              color: var(--disabled);
-            }
-          }
-
-          .pgn__icon,
-          .pgn__icon-button {
-            color: var(--primary);
-
-            &:hover {
-              color: var(--primary);
-            }
-          }
-
-          .pgn__form-control-decorator-group {
-            .pgn__form-control-decorator {
-              height: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
-          }
-        }
-
+      .searchInputItem .search-bar {
+        max-width: 280px;
       }
 
       .searchInputItem,
@@ -81,62 +52,33 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    gap: 10px;
-
-    .date-presets {
-      display: flex;
-      gap: 8px;
-
-      .pgn__button {
-        background-color: var(--bg-surface);
-        border-color: var(--border-color);
-        color: var(--text-primary);
-
-        &:hover {
-          background-color: var(--bg-hover);
-          border-color: var(--border-color-hover);
-        }
-      }
-    }
-
-    .pgn__icon-button {
-      color: var(--primary);
-
-      &:hover {
-        color: var(--primary-hover);
-      }
-    }
 
     .date-filter-panel {
-      position: absolute;
-      top: 100%;
-      left: 0;
       margin-top: 8px;
       padding: 16px;
-      border: 1px solid var(--border-color);
       border-radius: 12px;
-      background-color: var(--bg-surface);
-      box-shadow: 0 2px 6px var(--border-color);
-      z-index: 50;
     }
 
     .date-presets {
       display: flex;
       gap: 8px;
       margin-top: 12px;
-
-      .pgn__button {
-        background-color: var(--bg-surface);
-        border-color: var(--border-color);
-        color: var(--text-primary);
-
-        &:hover {
-          background-color: var(--bg-hover);
-          border-color: var(--border-color-hover);
-        }
-      }
     }
+  }
+
+  .custom-filter-select-menu {
+    max-width: 250px;
+    max-height: 250px;
+    overflow-y: auto;
+
+    .dropdown-item {
+      white-space: normal;
+      word-break: break-word;
+    }
+  }
+
+  .custom-filter-select-search {
+    padding: 5px;
   }
 
   .table-row {
@@ -149,7 +91,6 @@
     }
 
     .pgn__data-table th {
-      color: var(--text-primary);
       font-weight: 600;
       font-size: 1.02rem;
     }
@@ -196,28 +137,8 @@
       }
     }
 
-    .date-filter {
-      position: relative;
-
-      .date-filter-panel {
-        width: 260px;
-        position: absolute;
-        top: 100%;
-        right: 0;
-        left: auto;
-      }
-    }
-
-    .btn-outline-primary {
-      border-radius: 4px;
-      padding: 4px;
-      font-size: 12px;
-    }
-
-    .btn-outline-secondary {
-      border-radius: 4px;
-      padding: 4px;
-      font-size: 12px;
+    .date-filter .date-filter-panel {
+      width: 260px;
     }
   }
 }
@@ -235,37 +156,10 @@
           margin-left: 0;
         }
       }
-
     }
 
-    .date-filter {
-      position: relative;
-
-      .date-filter-panel {
-        width: 260px;
-        position: absolute;
-        top: 100%;
-        right: 0;
-        left: auto;
-      }
-    }
-
-    .btn-outline-primary {
-      border-radius: 4px;
-      padding: 4px;
-      font-size: 12px;
-    }
-
-    .btn-outline-secondary {
-      border-radius: 4px;
-      padding: 4px;
-      font-size: 12px;
-    }
-
-    .pagination-row {
-      .btn {
-        font-size: 12px;
-      }
+    .date-filter .date-filter-panel {
+      width: 260px;
     }
   }
 }

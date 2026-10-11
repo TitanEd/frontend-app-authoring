@@ -186,9 +186,7 @@ const GradingSettings = () => {
                       title={intl.formatMessage(messages.headingTitle)}
                       subtitle={intl.formatMessage(messages.headingSubtitle)}
                       contentTitle={intl.formatMessage(messages.policy)}
-                      description={intl.formatMessage(
-                        messages.policiesDescription,
-                      )}
+                      description={intl.formatMessage(messages.policiesDescription)}
                     />
                   </PluginSlot>
                   <section>

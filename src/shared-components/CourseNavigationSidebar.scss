@@ -3,7 +3,7 @@
     // width: 220px;
     width: auto;
     padding: 1rem 0;
-    background: #fff;
+    background: var(--pgn-color-surface-base);
     border: 1px solid var(--border-color);
     // height: 100%;
     height: auto;
@@ -32,7 +32,7 @@
     outline: none;
     padding: 12px 24px;
     font-size: 16px;
-    color: #222;
+    color: var(--pgn-color-text-base);
     text-align: left;
     cursor: pointer;
     border-radius: 0 24px 24px 0;
@@ -42,7 +42,7 @@
 .course-sidebar-item.active .course-sidebar-link {
     background: none;
     // font-weight: bold;
-    color: #111;
+    color: var(--pgn-color-text-base);
     border-radius: 0px;
     // border-right: 4px solid var(--primary);
     background-color: var(--primary-light);
@@ -51,7 +51,7 @@
 
 .course-sidebar-link:hover {
     // background: #f0f0f0;
-    color: #111;
+    color: var(--pgn-color-text-base);
 }
 
 .course-sidebar-icon {

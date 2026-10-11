@@ -22,6 +22,7 @@ import CoursesFilters from './courses-filters';
 import CourseCard from './course-card/CourseCard';
 import ContactAdministrator from '../studio-home/tabs-section/courses-tab/contact-administrator';
 import { fetchCourseDetail } from '../data/thunks';
+import customMessages from '../customMessages';
 
 interface Course {
   courseKey: string;
@@ -297,7 +298,7 @@ const MyCourses = () => {
         <div>
           {/* {isShowProcessing && !isEnabledPagination && <ProcessingCourses />} */}
           <div className="d-flex justify-content-between align-items-center mb-3 gap-3 filters-container">
-            <div className="my-courses-title">My Courses</div>
+            <div className="my-courses-title">{intl.formatMessage(customMessages.sidebarMyCoursesTitle)}</div>
             <div className="d-flex align-items-center gap-3">
               <div className="d-flex flex-row my-courses-search-field">
                 <SearchField
@@ -306,7 +307,7 @@ const MyCourses = () => {
                   value={cleanFilters ? '' : inputSearchValue}
                   className="mr-4"
                   data-testid="input-filter-courses-search"
-                  placeholder="Search"
+                  placeholder={intl.formatMessage(customMessages.search)}
                 />
               </div>
               <CoursesFilters
@@ -322,7 +323,7 @@ const MyCourses = () => {
                   data-testid="new-course-button"
                   onClick={() => navigate('/new-course')}
                 >
-                  Create Course
+                  {intl.formatMessage(customMessages.createCourse)}
                 </Button>
               )}
             </div>

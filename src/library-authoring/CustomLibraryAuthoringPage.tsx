@@ -14,6 +14,8 @@ import messages from './messages';
 import LibraryContent from './LibraryContent';
 import { ContentType } from './routes';
 import { LibrarySidebar } from './library-sidebar';
+import customMessages from '../customMessages';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const CustomLibraryAuthoringPage = ({
   libraryData,
@@ -35,15 +37,21 @@ const CustomLibraryAuthoringPage = ({
         <div className="ca-breadcrumb-bg">
           <div className="ca-breadcrumb-container">
             <div className="ca-breadcrumb d-flex align-items-center">
-              <span className="ca-breadcrumb-icon collection-breadcrumb-icon" onClick={() => navigate('/libraries')}>
+              <span
+                className="ca-breadcrumb-icon collection-breadcrumb-icon"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate('/libraries')}
+                onKeyDown={(e) => { if (e.key === 'Enter') { navigate('/libraries'); } }}
+              >
                 <LmsBook className="custom-icon" />
-                Content Libraries
+                <FormattedMessage {...customMessages.contentLibraries} />
               </span>
               <span className="ca-breadcrumb-divider">/</span>
-              <span className="ca-breadcrumb-current">{subHeaderTitle || 'Loading...'}</span>
+              <span className="ca-breadcrumb-current">{subHeaderTitle || <FormattedMessage {...customMessages.loading} />}</span>
             </div>
             <div className="ca-title library-breadcrumb-title">
-              {subHeaderTitle || 'Loading...'}
+              {subHeaderTitle || <FormattedMessage {...customMessages.loading} />}
             </div>
           </div>
         </div>
@@ -62,7 +70,7 @@ const CustomLibraryAuthoringPage = ({
               <SearchKeywordsField className="w-40" />
               {headerActions}
             </div>
-            <hr style={{ border: 'none', borderTop: '1px solid #e5e6e6', margin: '0 0 0 0' }} />
+            <hr style={{ border: 'none', borderTop: '1px solid var(--pgn-color-light-400)', margin: '0 0 0 0' }} />
             <div className="d-flex mt-3 align-items-center">
               <FilterByTags />
               <FilterByBlockType />

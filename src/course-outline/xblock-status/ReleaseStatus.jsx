@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Icon } from '@openedx/paragon';
-import { AccessTime as ClockIcon } from '@openedx/paragon/icons';
-import { convertToLocalTime } from '../../utils';
-import moment from 'moment-timezone';
-
+import {
+  AccessTime as ClockIcon,
+} from '@openedx/paragon/icons';
 
 import messages from './messages';
 
@@ -17,9 +16,11 @@ const ReleaseStatus = ({
 }) => {
   const intl = useIntl();
 
-  // Convert the release date if it's valid
-  const localReleaseDate = releaseDate ? convertToLocalTime(releaseDate) : '';
-  const displayReleaseDate = localReleaseDate === 'Invalid date' ? null : localReleaseDate;
+  const explanatoryMessageDiv = () => (
+    <span data-testid="explanatory-message-span">
+      {explanatoryMessage}
+    </span>
+  );
 
   let releaseLabel = messages.unscheduledLabel;
   if (releasedToStudents) {
@@ -28,30 +29,26 @@ const ReleaseStatus = ({
     releaseLabel = messages.scheduledLabel;
   }
 
-  // If explanatory message exists, display it
-  if (explanatoryMessage) {
-    return (
-      <span data-testid="explanatory-message-span">
-        {explanatoryMessage}
+  const releaseStatusDiv = () => (
+    <div className="d-flex align-items-center" data-testid="release-status-div">
+      <span className="sr-only status-release-label">
+        {intl.formatMessage(messages.releaseStatusScreenReaderTitle)}
       </span>
-    );
+      <Icon className="mr-1" size="sm" src={ClockIcon} />
+      {intl.formatMessage(releaseLabel)}
+      {releaseDate}
+    </div>
+  );
+
+  if (explanatoryMessage) {
+    return explanatoryMessageDiv();
   }
 
-  // If it's instructor-paced, display the release status with the formatted date
   if (isInstructorPaced) {
-    return (
-      <div className="d-flex align-items-center" data-testid="release-status-div">
-        <span className="sr-only status-release-label">
-          {intl.formatMessage(messages.releaseStatusScreenReaderTitle)}
-        </span>
-        <Icon className="mr-1" size="sm" src={ClockIcon} aria-hidden="true" />
-        {intl.formatMessage(releaseLabel)}
-        {displayReleaseDate}
-      </div>
-    );
+    return releaseStatusDiv();
   }
 
-  return null; // Return null if neither explanatory message nor instructor-paced condition is met
+  return null;
 };
 
 ReleaseStatus.defaultProps = {

@@ -41,7 +41,6 @@ const CustomFilesPage = ({
 }) => {
   const dispatch = useDispatch();
   // const courseDetails = useModel('courseDetails', courseId);
-  // Verawood no longer stores 'courseDetails' in the model store; it comes from CourseAuthoringContext.
   const { courseDetails } = useCourseAuthoringContext();
   document.title = getPageHeadTitle(courseDetails?.name, intl.formatMessage(messages.heading));
 
@@ -97,7 +96,7 @@ const CustomFilesPage = ({
 
   const activeColumn = {
     id: 'activeStatus',
-    Header: 'Active',
+    Header: intl.formatMessage(messages.fileActiveColumn),
     accessor: 'activeStatus',
     Cell: ({ row }) => ActiveColumn({ row, pageLoadStatus: loadingStatus }),
     Filter: CheckboxFilter,
@@ -109,7 +108,7 @@ const CustomFilesPage = ({
   };
   const accessColumn = {
     id: 'lockStatus',
-    Header: 'Access',
+    Header: intl.formatMessage(messages.fileAccessColumn),
     accessor: 'lockStatus',
     Cell: ({ row }) => AccessColumn({ row }),
     Filter: CheckboxFilter,
@@ -125,7 +124,7 @@ const CustomFilesPage = ({
   };
   const fileSizeColumn = {
     id: 'fileSize',
-    Header: 'File size',
+    Header: intl.formatMessage(messages.fileSizeColumn),
     accessor: 'fileSize',
     Cell: ({ row }) => {
       const { fileSize } = row.original;
@@ -136,12 +135,12 @@ const CustomFilesPage = ({
   const tableColumns = [
     { ...thumbnailColumn },
     {
-      Header: 'File name',
+      Header: intl.formatMessage(messages.fileNameColumn),
       accessor: 'displayName',
     },
     { ...fileSizeColumn },
     {
-      Header: 'Type',
+      Header: intl.formatMessage(messages.fileTypeColumn),
       accessor: 'wrapperType',
       Filter: CheckboxFilter,
       filter: 'includesValue',

@@ -1,6 +1,6 @@
 .warning-message-card {
-  background-color: #fff8eb !important;
-  border: solid 1px #ffdc9a !important;
+  background-color: var(--pgn-color-warning-100, var(--pgn-color-light-200)) !important;
+  border: solid 1px var(--pgn-color-warning-base) !important;
   border-radius: 8px !important;
 }
 
@@ -14,7 +14,7 @@
 //   height: 28px;
 //   background: #ffb94a;
 //   border-radius: 50%;
-  color: #dd6b20;
+  color: var(--pgn-color-warning-700);
 //   display: flex;
 //   align-items: center;
 //   justify-content: center;
@@ -22,7 +22,7 @@
 }
 
 .warning-message-heading {
-  color: #2d3748;
+  color: var(--pgn-color-text-base);
   font-size: 15px;
   line-height: 1.2;
   font-weight: 500;
@@ -30,7 +30,7 @@
 }
 
 .warning-message-text {
-  color: #2d3748;
+  color: var(--pgn-color-text-base);
   font-size: 14px;
   font-weight: normal;
 //   line-height: normal;

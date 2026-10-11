@@ -16,7 +16,6 @@ import SubHeader from '../generic/sub-header/SubHeader';
 import { useCourseAuthoringContext } from '../CourseAuthoringContext';
 import messages from './messages';
 import ExportSidebar from './export-sidebar/ExportSidebar';
-// Verawood replaced the export page redux store (data/selectors, data/thunks, data/slice)
 // with CourseExportContext; the last-export cookie is also restored by the context now.
 // import {
 //   getCurrentStage, getError, getExportTriggered, getLoadingStatus, getSavingStatus,

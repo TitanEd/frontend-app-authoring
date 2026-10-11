@@ -14,6 +14,7 @@ import { useHelpUrls } from '../../help-urls/hooks';
 import { VIDEO_SHARING_OPTIONS } from '../constants';
 import { useContentTagsCount } from '../../generic/data/apiHooks';
 import messages from './messages';
+import customMessages from './customMessages';
 import { getVideoSharingOptionText } from '../utils';
 
 const StatusBarItem = ({ title, children }) => (
@@ -133,7 +134,7 @@ const CustomStatusBar = ({
             {checkListTitle} {intl.formatMessage(messages.checklistCompleted)}
           </Hyperlink>
         </StatusBarItem>
-        <StatusBarItem title={intl.formatMessage(messages.highlightEmailsTitle)}>
+        <StatusBarItem title={intl.formatMessage(customMessages.highlightEmailsTitle)}>
           <div className="d-flex align-items-center">
             <Form.Check
               type="switch"
@@ -148,7 +149,7 @@ const CustomStatusBar = ({
               target="_blank"
               showLaunchIcon={false}
             >
-              {intl.formatMessage(messages.highlightEmailsLink)}
+              {intl.formatMessage(customMessages.highlightEmailsLink)}
             </Hyperlink>
           </div>
         </StatusBarItem>
@@ -168,14 +169,14 @@ const CustomStatusBar = ({
         </StatusBarItem>
         )}
         {getConfig().ENABLE_TAGGING_TAXONOMY_PAGES === 'true' && (
-        <StatusBarItem title="Export Tags">
+        <StatusBarItem title={intl.formatMessage(customMessages.exportTags)}>
           <Hyperlink
             className="small"
             destination={`${config.STUDIO_BASE_URL}/course/${courseId}#export-tags`}
             // target="_blank"
             showLaunchIcon={false}
           >
-            Export Tags
+            {intl.formatMessage(customMessages.exportTags)}
           </Hyperlink>
         </StatusBarItem>
         )}

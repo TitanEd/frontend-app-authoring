@@ -7,7 +7,6 @@ import { getConfig } from '@edx/frontend-platform';
 const CopilotContext = createContext(null);
 export const useCopilot = () => useContext(CopilotContext);
 
-
 const isValidImageUrl = (url) => {
   return typeof url === 'string' && (
     url.match(/\.(jpeg|jpg|png|gif|webp|bmp|svg)(?=\?|$)/i) ||
@@ -41,7 +40,6 @@ export const CopilotProvider = ({ children, initialConfig = { width: 400, height
     }
     return formatMessage(msg, values);
   };
-
 
   // const STUDIO_BASE = getConfig().STUDIO_BASE_URL?.replace(/\/+$/, '') ?? '';
   const [enabledCopilot, setEnabledCopilot] = useState(false);
@@ -587,7 +585,6 @@ export const CopilotProvider = ({ children, initialConfig = { width: 400, height
     }
   }, [dragging, resizing]);
 
-
   // PERFECT FEEDBACK BANNER + SIDEBAR + NAVBAR DETECTION
   useEffect(() => {
     let banner = document.querySelector('.feedback_banner');
@@ -745,7 +742,6 @@ export const CopilotProvider = ({ children, initialConfig = { width: 400, height
     // ✅ Switch to the correct field
     setFieldData({ name: targetField, value });
 
-
     // const field = fieldData.name;
     const readableName = getReadableFieldName(targetField);
 
@@ -784,8 +780,6 @@ export const CopilotProvider = ({ children, initialConfig = { width: 400, height
       setButtons([]); // Last field → no continue
     }
   };
-
-
 
   const value = {
     isOpen, fieldData, isDocked, isMinimized, size, pos, openCopilot, closeCopilot, toggleMinimize, dock,

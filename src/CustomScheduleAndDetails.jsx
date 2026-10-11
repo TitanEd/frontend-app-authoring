@@ -29,6 +29,7 @@ import { STATEFUL_BUTTON_STATES } from './constants';
 import { RequestStatus } from './data/constants';
 import { videoTranscriptLanguages } from './editors/data/constants/video';
 import './CustomScheduleAndDetails.scss';
+import customMessages from './customMessages';
 import { updateCourseDetailsQuery } from './schedule-and-details/data/thunks';
 import InternetConnectionAlert from './generic/internet-connection-alert';
 import { uploadAssets } from './generic/course-upload-image/data/api';
@@ -36,7 +37,7 @@ import { validateScheduleAndDetails } from './schedule-and-details/utils';
 import PacingSection from './schedule-and-details/pacing-section';
 import BasicSection from './schedule-and-details/basic-section';
 import PSCourseForm from './studio-home/ps-course-form/PSCourseForm';
-import { validateImageFile } from './utils/imageValidation';
+import { formatImageValidationError, imageValidationMessages, validateImageFile } from './utils/imageValidation';
 
 const getImageUrl = (imageObj) => {
   if (!imageObj) {
@@ -82,7 +83,7 @@ const getImageUrl = (imageObj) => {
 
 const validateImage = async (file) => {
   if (!file) {
-    return { isValid: false, error: 'No file selected.' };
+    return { isValid: false, error: { message: imageValidationMessages.noFile } };
   }
 
   try {
@@ -92,7 +93,7 @@ const validateImage = async (file) => {
     console.error('Image validation error:', error);
     return {
       isValid: false,
-      error: 'Error validating image file.',
+      error: { message: imageValidationMessages.failed },
     };
   }
 };
@@ -224,7 +225,7 @@ const CustomScheduleAndDetails = (props) => {
         const errorField = field === 'courseImageAssetPath' ? 'cardImage' : 'bannerImage';
         setImageErrors((prev) => ({
           ...prev,
-          [errorField]: validation.error,
+          [errorField]: formatImageValidationError(intl, validation.error),
         }));
         return;
       }
@@ -479,11 +480,11 @@ const CustomScheduleAndDetails = (props) => {
               scheduleSettings
               possiblePreRequisiteCourses={courseSettings.possiblePreRequisiteCourses}
             >
-              <h2 className="title-class">Schedule & Details</h2>
+              <h2 className="title-class">{intl.formatMessage(customMessages.scheduleDetailsTitle)}</h2>
               <hr
                 style={{
                   border: 'none',
-                  borderTop: '1px solid #e5e6e6',
+                  borderTop: '1px solid var(--pgn-color-light-400)',
                   margin: '0rem -1rem 1rem -1rem',
                 }}
               />

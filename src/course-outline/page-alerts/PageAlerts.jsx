@@ -443,8 +443,8 @@ const PageAlerts = ({
 
   return (
     <>
-      {/* {configurationErrors()} */} {/*We hide this to disable the notification for course re-run TitanEd */}
-      {/*{discussionNotification()}*/} {/*We hide this to disable the notification */}
+      {configurationErrors()}
+      {discussionNotification()}
       {deprecationWarning()}
       {proctoringAlerts()}
       <ErrorAlert hideHeading isError={savingStatus === RequestStatus.FAILED}>

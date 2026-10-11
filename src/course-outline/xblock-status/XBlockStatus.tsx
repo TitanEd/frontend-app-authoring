@@ -1,3 +1,4 @@
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
 import { ShowAnswerTypesKeys } from '@src/editors/data/constants/problem';
 import type { UnitXBlock, XBlock } from '@src/data/types';
 import { COURSE_BLOCK_NAMES } from '../constants';
@@ -91,4 +92,10 @@ const XBlockStatus = ({
   );
 };
 
-export default XBlockStatus;
+const XBlockStatusSlot = (props: XBlockStatusProps) => (
+  <PluginSlot id="xblock_status_plugin_slot" pluginProps={props}>
+    <XBlockStatus {...props} />
+  </PluginSlot>
+);
+
+export default XBlockStatusSlot;

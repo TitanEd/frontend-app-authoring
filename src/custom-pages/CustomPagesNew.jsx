@@ -19,7 +19,6 @@ import {
 } from '@openedx/paragon';
 import { Add, SpinnerSimple } from '@openedx/paragon/icons';
 import Placeholder from '../editors/Placeholder';
-// Verawood moved DraggableList from editors/sharedComponents to generic.
 // import DraggableList, { SortableItem } from '../editors/sharedComponents/DraggableList';
 import DraggableList, { SortableItem } from '../generic/DraggableList';
 import ErrorAlert from '../editors/sharedComponents/ErrorAlerts/ErrorAlert';
@@ -220,11 +219,11 @@ const CustomPagesNew = ({
                       id={page.id}
                       key={page.id}
                       componentStyle={{
-                        background: '#f4f7ff',
+                        background: 'var(--pgn-color-primary-light)',
                         borderRadius: '6px',
                         padding: '24px',
                         marginBottom: '16px',
-                        border: 'solid 1px #e0e0e0',
+                        border: 'solid 1px var(--pgn-color-light-400)',
                       }}
                     >
                       <CustomPageCard

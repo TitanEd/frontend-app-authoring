@@ -232,11 +232,11 @@ const AdvancedSettings = () => {
                         headerContentTitle: intl.formatMessage(messages.policy),
                       }}
                     >
-                      <div className="small warning-msg">
+                      <div className="small">
                         <FormattedMessage
                           id="course-authoring.advanced-settings.policies.description"
                           defaultMessage="{notice} Do not modify these policies unless you are familiar with their purpose."
-                          values={{ notice: <strong style={{ color: '#FFA500' }}>Warning: </strong> }}
+                          values={{ notice: <strong>Warning:</strong> }}
                         />
                       </div>
                       <div className="setting-items-deprecated-setting">

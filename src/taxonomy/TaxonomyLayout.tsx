@@ -23,7 +23,7 @@ export const TaxonomyLayout = () => {
 
   return (
     <TaxonomyContext.Provider value={context}>
-      <div>
+      <div className="bg-light-400">
         <PluginSlot id="header_plugin_slot">
           <Header isHiddenMainMenu />
         </PluginSlot>

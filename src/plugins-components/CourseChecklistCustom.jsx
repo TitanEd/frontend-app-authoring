@@ -27,7 +27,7 @@ const CourseChecklistCustom = ({
       title={headingTitle}
     //   subtitle={headingSubtitle}
     />
-    <hr className="custom-checklist-divider" style={{ border: 'none', borderTop: '1px solid #e5e6e6', margin: '0 0 0 0' }} />
+    <hr className="custom-checklist-divider" style={{ border: 'none', borderTop: '1px solid var(--pgn-color-light-400)', margin: '0 0 0 0' }} />
     <AriaLiveRegion
       {...{
         isCourseLaunchChecklistLoading,

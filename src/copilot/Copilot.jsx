@@ -24,8 +24,15 @@ const isVideoUrl = (url) => {
   );
 };
 
-
 const TAB_WIDTH = 60;
+
+// Keyboard activation (Enter/Space) for clickable non-button elements.
+const onActivateKey = (handler) => (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    handler();
+  }
+};
 
 const Copilot = () => {
   const { formatMessage } = useIntl();
@@ -157,7 +164,7 @@ const Copilot = () => {
     backdropFilter: isFullScreen || !isDocked ? 'blur(0) saturate(180%)' : 'none',
     WebkitBackdropFilter: isFullScreen || !isDocked ? 'blur(0) saturate(180%)' : 'none',
     border: isFullScreen || !isDocked ? '1px solid color-mix(in srgb, var(--border-color) 20%, transparent)' : '1px solid var(--border-color)',
-    boxShadow: isFullScreen || !isDocked ? '0 4px 30px rgba(0, 0, 0, 0.2)' : 'none',
+    boxShadow: isFullScreen || !isDocked ? 'var(--pgn-elevation-box-shadow-down-3)' : 'none',
     borderLeft: isFullScreen ? 'none' : '1px solid var(--border-color)',
     zIndex: isFullScreen ? 2000 : 999,
     overflow: 'hidden',
@@ -187,7 +194,15 @@ const Copilot = () => {
               </Button>
             )}
             {!isMinimized && !isFullScreen && !isFloating && (
-              <div className="drag-handle" onClick={handleFloating} title={t(messages.tooltipDragToMove)}>
+              <div
+                className="drag-handle"
+                role="button"
+                tabIndex={0}
+                onClick={handleFloating}
+                onKeyDown={onActivateKey(handleFloating)}
+                title={t(messages.tooltipDragToMove)}
+                aria-label={t(messages.tooltipDragToMove)}
+              >
                 <div className="dots">
                   <span /><span /><span />
                   <span /><span /><span />
@@ -253,11 +268,14 @@ const Copilot = () => {
                             <div
                               key={`${sug.field}-${sug.value}`}
                               className={`pinned-item ${isImage ? 'image': isVideo ? 'video' : 'text'}`}
+                              role="button"
+                              tabIndex={0}
                               onClick={() => insertPinnedSuggestion(sug)}
+                              onKeyDown={onActivateKey(() => insertPinnedSuggestion(sug))}
                               title={t(messages.tooltipClickToInsert)}
                             >
                               {isImage ? (
-                                <img src={sug.value} alt="Pinned" />
+                                <img src={sug.value} alt={t(messages.pinnedImageAlt)} />
                               ) : isVideo ? (
                                 <video src={sug.value} controls className="pinned-video" />
                               ) :(
@@ -297,7 +315,6 @@ const Copilot = () => {
                       </div>
                     )}
 
-
                     {item.type === 'suggestions' && (
                       item.content.map((sug) => {
                         const isImage = isValidImageUrl(sug.value);
@@ -323,7 +340,11 @@ const Copilot = () => {
                           <div
                             key={`${sug.field}-${sug.value}`}
                             className={`suggestion ${selectedSuggestion === sug ? 'selected' : ''}`}
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={selectedSuggestion === sug}
                             onClick={() => handleSelectSuggestion(sug)}
+                            onKeyDown={onActivateKey(() => handleSelectSuggestion(sug))}
                           >
                             {sug.value}
                           </div>
@@ -368,7 +389,6 @@ const Copilot = () => {
                       </div>
                     )}
 
-
                     {item.type === 'question' && (
                       <div className="message-container ai">
                         <div className="customQuestion">
@@ -379,7 +399,11 @@ const Copilot = () => {
                             <div
                               key={option}
                               className={`suggestion ${selectedSuggestion === option ? 'selected' : ''}`}
+                              role="button"
+                              tabIndex={0}
+                              aria-pressed={selectedSuggestion === option}
                               onClick={() => handleAnswer(option, fieldData.name)}
+                              onKeyDown={onActivateKey(() => handleAnswer(option, fieldData.name))}
                             >
                               {option}
                             </div>

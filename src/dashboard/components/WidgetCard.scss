@@ -7,7 +7,7 @@
   .card-header {
     padding: 1rem 0 0 1rem;
     margin: 0;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--pgn-color-white);
     background-color: var(--bg-surface);
     position: sticky;
     top: 0;
@@ -29,10 +29,10 @@
   .calendar-embed-container {
     flex: 1;
     min-height: 400px;
-    background: #fff;
+    background: var(--pgn-color-surface-base);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--pgn-elevation-box-shadow-down-1);
 
     iframe {
       display: block;
@@ -52,8 +52,8 @@
   }
 
   .calendar-event {
-    background: #03a9f4;
-    color: white;
+    background: var(--pgn-color-primary-base);
+    color: var(--pgn-color-white);
     border-radius: 6px;
     padding: 0.5rem;
     margin-bottom: 8px;
@@ -65,10 +65,10 @@
 }
 
 .widget-card-modern {
-  background: #fff;
+  background: var(--pgn-color-surface-base);
   border-radius: 18px;
-  border: 1px solid #ececec;
-  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.04);
+  border: 1px solid var(--pgn-color-light-400);
+  box-shadow: var(--pgn-elevation-box-shadow-down-1);
   padding: 1rem 1.25rem 1rem 1.25rem;
   min-width: 0;
   display: flex;
@@ -78,7 +78,7 @@
 .widget-card-modern-title {
   font-size: 1.15rem;
   font-weight: 700;
-  color: #22223b;
+  color: var(--pgn-color-text-base);
   margin-bottom: 1rem;
 }
 
@@ -93,10 +93,10 @@
   .video-wrapper {
     position: relative;
     width: 100%;
-    background: #000;
+    background: var(--pgn-color-black);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--pgn-elevation-box-shadow-down-1);
 
     iframe {
       display: block;
@@ -108,12 +108,12 @@
   .video-description {
     margin-top: 1rem;
     padding: 0.5rem;
-    background: #f8f9fa;
+    background: var(--pgn-color-light-200);
     border-radius: 4px;
 
     p {
       margin: 0;
-      color: #666;
+      color: var(--pgn-color-text-muted);
       font-size: 0.9rem;
       line-height: 1.4;
     }
@@ -131,16 +131,16 @@
     gap: 1rem;
 
     .html-item {
-      background: #fff;
+      background: var(--pgn-color-surface-base);
       border-radius: 8px;
       padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      border: 1px solid #e5e7eb;
+      box-shadow: var(--pgn-elevation-box-shadow-down-1);
+      border: 1px solid var(--pgn-color-light-400);
       transition: all 0.2s ease;
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--pgn-elevation-box-shadow-down-1);
       }
 
       .item-header {
@@ -151,7 +151,7 @@
 
         .item-title {
           font-weight: 600;
-          color: #1a1a1a;
+          color: var(--pgn-color-text-base);
           margin: 0;
         }
 
@@ -162,30 +162,30 @@
           font-weight: 500;
 
           &.status-active {
-            background: #e6f4ea;
-            color: #137333;
+            background: var(--pgn-color-success-100, var(--pgn-color-light-200));
+            color: var(--pgn-color-success-base);
           }
 
           &.status-pending {
-            background: #fef7e0;
-            color: #b06000;
+            background: var(--pgn-color-warning-100, var(--pgn-color-light-200));
+            color: var(--pgn-color-warning-700);
           }
 
           &.status-completed {
-            background: #e8f0fe;
-            color: #1a73e8;
+            background: var(--pgn-color-primary-light);
+            color: var(--pgn-color-primary-base);
           }
         }
       }
 
       .item-description {
-        color: #666;
+        color: var(--pgn-color-text-muted);
         font-size: 0.875rem;
         margin-bottom: 0.5rem;
       }
 
       .item-date {
-        color: #888;
+        color: var(--pgn-color-text-muted);
         font-size: 0.75rem;
       }
     }

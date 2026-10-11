@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 import { Button, Container, Hyperlink } from '@openedx/paragon';
 import messages from './messages';
-import DiscussionsSettings from './discussions';
+import DiscussionsSettings from './discussions/CustomDiscussionsSettings';
 
 import PageGrid from './pages/PageGrid';
 import { useModels, useModel } from '../generic/model-store';
@@ -25,7 +25,6 @@ import { AdditionalCourseContentPluginSlot } from '../plugin-slots/AdditionalCou
 
 const CustomPagesAndResources = ({ courseId, intl }) => {
   // const courseDetails = useModel('courseDetails', courseId);
-  // Verawood no longer stores 'courseDetails' in the model store; it comes from CourseAuthoringContext.
   const { courseDetails } = useCourseAuthoringContext();
   document.title = getPageHeadTitle(courseDetails?.name, intl.formatMessage(messages.heading));
 
@@ -99,7 +98,6 @@ const CustomPagesAndResources = ({ courseId, intl }) => {
           </Routes>
 
           {/* <PageGrid pages={pages} pluginSlotId="additional_course_plugin" /> */}
-          {/* Verawood's PageGrid takes the plugin slot as a component instead of `pluginSlotId`. */}
           <PageGrid pages={pages} pluginSlotComponent={<AdditionalCoursePluginSlot />} courseId={courseId} />
           {
           (contentPermissionsPages.length > 0 || hasAdditionalCoursePlugin)

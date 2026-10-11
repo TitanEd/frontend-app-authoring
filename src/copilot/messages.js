@@ -156,6 +156,11 @@ const messages = defineMessages({
     defaultMessage: 'Coming Soon',
     description: 'Message shown when Copilot is loading or not yet available',
   },
+  pinnedImageAlt: {
+    id: 'copilot.pinned.image.alt',
+    defaultMessage: 'Pinned',
+    description: 'Alt text of a pinned image suggestion',
+  },
 });
 
 export default messages;
