@@ -9,7 +9,14 @@ import { Check } from '@openedx/paragon/icons';
  * dropdown design tokens.
  */
 const CustomFilterSelect = ({
-  id, value, onChange, options, showSearch, searchPlaceholder, noResultsText, className,
+  id,
+  value,
+  onChange,
+  options,
+  showSearch,
+  searchPlaceholder,
+  noResultsText,
+  className,
 }) => {
   const [searchText, setSearchText] = useState('');
   const selected = options.find((option) => option.value === value);
@@ -38,13 +45,13 @@ const CustomFilterSelect = ({
             />
           </div>
         )}
-        {visibleOptions.length > 0 ? visibleOptions.map((option) => (
-          <Dropdown.Item key={option.value} onClick={() => onChange(option.value)}>
-            {option.label} {option.value === value && <Icon src={Check} className="ml-2" />}
-          </Dropdown.Item>
-        )) : (
-          <Dropdown.ItemText>{noResultsText}</Dropdown.ItemText>
-        )}
+        {visibleOptions.length > 0 ?
+          visibleOptions.map((option) => (
+            <Dropdown.Item key={option.value} onClick={() => onChange(option.value)}>
+              {option.label} {option.value === value && <Icon src={Check} className="ml-2" />}
+            </Dropdown.Item>
+          )) :
+          <Dropdown.ItemText>{noResultsText}</Dropdown.ItemText>}
       </Dropdown.Menu>
     </Dropdown>
   );

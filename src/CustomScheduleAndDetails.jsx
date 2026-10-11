@@ -2,7 +2,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 import {
-  useState, useEffect, useRef, useCallback, useMemo,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -102,7 +106,8 @@ const parseYoutubeId = (src) => {
   if (!src) {
     return null;
   }
-  const youtubeRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/;
+  const youtubeRegex =
+    /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/;
   const match = src.match(youtubeRegex);
   if (!match) {
     return null;
@@ -474,9 +479,7 @@ const CustomScheduleAndDetails = (props) => {
               messages={messages}
               touched={touched}
               onFieldBlur={(field) => setTouched((prev) => ({ ...prev, [field]: true }))}
-              allowedImageTypes={
-                    props.allowedImageTypes || ['image/jpeg', 'image/png']
-                  }
+              allowedImageTypes={props.allowedImageTypes || ['image/jpeg', 'image/png']}
               scheduleSettings
               possiblePreRequisiteCourses={courseSettings.possiblePreRequisiteCourses}
             >
@@ -542,18 +545,14 @@ const CustomScheduleAndDetails = (props) => {
             <StatefulButton
               key="save-button"
               onClick={handleSaveChanges}
-              disabled={
-                hasErrors
+              disabled={hasErrors
                 || !hasUnsavedChanges
                 || !isEditableState
                 || isImageUploading
-                || hasImageErrors
-              }
-              state={
-                isQueryPending
-                  ? STATEFUL_BUTTON_STATES.pending
-                  : STATEFUL_BUTTON_STATES.default
-              }
+                || hasImageErrors}
+              state={isQueryPending
+                ? STATEFUL_BUTTON_STATES.pending
+                : STATEFUL_BUTTON_STATES.default}
               {...updateValuesButtonState}
             />,
           ].filter(Boolean)}

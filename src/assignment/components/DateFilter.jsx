@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Button, Dropdown, Form, Icon, IconButton,
+  Button,
+  Dropdown,
+  Form,
+  Icon,
+  IconButton,
 } from '@openedx/paragon';
 import { Calendar, Close } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';

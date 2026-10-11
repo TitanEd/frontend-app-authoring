@@ -109,7 +109,7 @@ const messages = defineMessages({
   },
   continueBannerImage: {
     id: 'copilot.continue.bannerImage',
-    defaultMessage: 'Create a Banner Image. Click Continue.'
+    defaultMessage: 'Create a Banner Image. Click Continue.',
   },
   continueIntroVideo: {
     id: 'copilot.continue.introVideo',

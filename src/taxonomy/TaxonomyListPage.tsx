@@ -258,6 +258,5 @@ export const TaxonomyListPage = () => {
         </div>
       </>
     </PluginSlot>
-
   );
 };

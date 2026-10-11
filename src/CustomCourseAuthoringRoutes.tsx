@@ -47,14 +47,16 @@ import CustomCreateNewCourseFormJsx from './studio-home/ps-course-form/CustomCre
 import customMessages from './customMessages';
 
 // CustomCreateNewCourseForm is a JSX component whose propTypes don't match how it is used here.
-const CustomCreateNewCourseForm = CustomCreateNewCourseFormJsx as unknown as React.ComponentType<Record<string, unknown>>;
+const CustomCreateNewCourseForm = CustomCreateNewCourseFormJsx as unknown as React.ComponentType<
+  Record<string, unknown>
+>;
 
 interface SidebarItem {
   label: string;
   path: string;
 }
 
-const MobileCourseNavigation = ({ items }: { items: SidebarItem[] }) => {
+const MobileCourseNavigation = ({ items }: { items: SidebarItem[]; }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -87,7 +89,10 @@ interface CoursePageLayoutProps {
 }
 
 const CoursePageLayout = ({
-  children, courseId, courseName: courseNameProp, sidebarItems,
+  children,
+  courseId,
+  courseName: courseNameProp,
+  sidebarItems,
 }: CoursePageLayoutProps) => {
   const navigate = useNavigate();
   const intl = useIntl();
@@ -176,7 +181,10 @@ const CustomCourseAuthoringRoutes = () => {
     { label: intl.formatMessage(customMessages.navCourseTeam), path: `/course/${courseId}/course_team` },
     { label: intl.formatMessage(customMessages.navCertificates), path: `/course/${courseId}/certificates` },
     { label: intl.formatMessage(customMessages.navUpdates), path: `/course/${courseId}/course_info` },
-    { label: intl.formatMessage(customMessages.navGroupConfigurations), path: `/course/${courseId}/group_configurations` },
+    {
+      label: intl.formatMessage(customMessages.navGroupConfigurations),
+      path: `/course/${courseId}/group_configurations`,
+    },
     { label: intl.formatMessage(customMessages.navAdvancedSettings), path: `/course/${courseId}/settings/advanced` },
     { label: intl.formatMessage(customMessages.navImport), path: `/course/${courseId}/import` },
     { label: intl.formatMessage(customMessages.navExport), path: `/course/${courseId}/export` },

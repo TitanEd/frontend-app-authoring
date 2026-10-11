@@ -1,12 +1,12 @@
 .dropdownMenu {
-  padding: 0.5rem 0;
+  padding: .5rem 0;
   background: var(--pgn-color-surface-base);
-  border-radius: 0.5rem;
+  border-radius: .5rem;
   box-shadow: var(--pgn-elevation-box-shadow-down-3);
   min-width: 200px;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem; /* Optional: space between items */
+  gap: .25rem; /* Optional: space between items */
 }
 
 .dropdownMenuItem {

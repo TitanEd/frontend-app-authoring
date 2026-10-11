@@ -22,9 +22,7 @@ const MainLayout = ({ courseId, showHeaderButtons, children }) => {
   return (
     <>
       <Container size="xl" className="certificates px-4">
-        <PluginSlot
-          id="certificates_header_hide_plugin_slot"
-        >
+        <PluginSlot id="certificates_header_hide_plugin_slot">
           <div className="mt-5" />
           <SubHeader
             hideBorder

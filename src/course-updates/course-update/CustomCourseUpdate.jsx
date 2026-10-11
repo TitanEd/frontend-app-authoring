@@ -50,9 +50,7 @@ const CustomCourseUpdate = ({
         )}
       </div>
       <span className="vert-bar" />
-      <div
-        className="course-update-header__action"
-      >
+      <div className="course-update-header__action">
         <IconButtonWithTooltip
           tooltipContent={intl.formatMessage(messages.editButton)}
           src={EditOutline}

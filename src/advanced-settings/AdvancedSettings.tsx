@@ -208,9 +208,7 @@ const AdvancedSettings = () => {
             xl={[{ span: 9 }, { span: 3 }]}
           >
             <Layout.Element>
-              <PluginSlot
-                id="advanced_settings_header_removal_plugin_slot"
-              >
+              <PluginSlot id="advanced_settings_header_removal_plugin_slot">
                 <SubHeader
                   subtitle={intl.formatMessage(messages.headingSubtitle)}
                   title={intl.formatMessage(messages.headingTitle)}
@@ -290,7 +288,6 @@ const AdvancedSettings = () => {
                               setIsEditableState={setIsEditableState}
                             />
                           </PluginSlot>
-
                         );
                       })}
                     </ul>

@@ -11,7 +11,10 @@ import AIButton from '../../../studio-home/ps-course-form/AIButton';
 import { useCopilot } from '../../../copilot/CopilotContext';
 
 const IntroductionVideo = ({
-  introVideo, isEditable = true, onChange, editedValues,
+  introVideo,
+  isEditable = true,
+  onChange,
+  editedValues,
 }) => {
   const intl = useIntl();
   // const embedVideoUrl = introVideo
@@ -19,7 +22,7 @@ const IntroductionVideo = ({
   //   : '';
 
   const isYouTubeUrl = (value) => {
-    if (!value) return false;
+    if (!value) { return false; }
     return (
       value.includes('youtube.com') ||
       value.includes('youtu.be') ||
@@ -38,8 +41,7 @@ const IntroductionVideo = ({
     return match ? `https://www.youtube.com/embed/${match[1]}` : '';
   };
 
-  const isDirectVideoUrl = (value) =>
-    /\.(mp4|webm|ogg)$/i.test(value);
+  const isDirectVideoUrl = (value) => /\.(mp4|webm|ogg)$/i.test(value);
 
   const {
     handleAIButtonClick,
@@ -52,37 +54,47 @@ const IntroductionVideo = ({
   return (
     <Form.Group className="form-group-custom">
       <div className="mb-2">
-        <Form.Label className='video-title'>
+        <Form.Label className="video-title">
           {intl.formatMessage(messages.courseIntroductionVideoLabel)}
-          {showCopilotIcon &&<div className="aibutton">
-            {aiLoading.introVideo ?(
-              <span style={{
-                fontSize: "0.875rem",
-                color: "var(--primary)",
-                animation: "pulse 1.5s infinite",
-              }}>{intl.formatMessage(customMessages.loading)}</span>
-            ) : (
-              <AIButton
-                disabled={!editedValues.description?.trim()}
-                onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
-                fieldName="introVideo"
-                fieldValue={introVideo || ''}
-              />
-            )}
-          </div>}
+          {showCopilotIcon && (
+            <div className="aibutton">
+              {aiLoading.introVideo ?
+                (
+                  <span
+                    style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--primary)',
+                      animation: 'pulse 1.5s infinite',
+                    }}
+                  >
+                    {intl.formatMessage(customMessages.loading)}
+                  </span>
+                ) :
+                (
+                  <AIButton
+                    disabled={!editedValues.description?.trim()}
+                    onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
+                    fieldName="introVideo"
+                    fieldValue={introVideo || ''}
+                  />
+                )}
+            </div>
+          )}
         </Form.Label>
       </div>
       <Card>
         <Card.Body className="embed-video-container">
           <div className="introduction-video">
-            {/* <iframe
+            {
+              /* <iframe
               title={intl.formatMessage(messages.courseIntroductionVideoLabel)}
               width="618"
               height="350"
               src={embedVideoUrl}
               frameBorder="0"
               allowFullScreen
-            /> */}
+            /> */
+            }
 
             {isYouTubeUrl(introVideo) && (
               <iframe

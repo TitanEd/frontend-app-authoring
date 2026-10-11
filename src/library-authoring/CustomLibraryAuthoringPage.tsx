@@ -8,7 +8,12 @@ import { LmsBook } from '@openedx/paragon/icons';
 import { useNavigate } from 'react-router-dom';
 // import SubHeader from '../generic/sub-header/SubHeader';
 import {
-  ClearFiltersButton, FilterByBlockType, FilterByTags, SearchContextProvider, SearchKeywordsField, SearchSortWidget,
+  ClearFiltersButton,
+  FilterByBlockType,
+  FilterByTags,
+  SearchContextProvider,
+  SearchKeywordsField,
+  SearchSortWidget,
 } from '../search-manager';
 import messages from './messages';
 import LibraryContent from './LibraryContent';
@@ -28,7 +33,7 @@ const CustomLibraryAuthoringPage = ({
   activeKey,
   handleTabChange,
   sidebarComponentInfo,
-//   libraryId,
+  //   libraryId,
 }) => {
   const navigate = useNavigate();
   return (
@@ -42,30 +47,38 @@ const CustomLibraryAuthoringPage = ({
                 role="link"
                 tabIndex={0}
                 onClick={() => navigate('/libraries')}
-                onKeyDown={(e) => { if (e.key === 'Enter') { navigate('/libraries'); } }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') { navigate('/libraries'); }
+                }}
               >
                 <LmsBook className="custom-icon" />
                 <FormattedMessage {...customMessages.contentLibraries} />
               </span>
               <span className="ca-breadcrumb-divider">/</span>
-              <span className="ca-breadcrumb-current">{subHeaderTitle || <FormattedMessage {...customMessages.loading} />}</span>
+              <span className="ca-breadcrumb-current">
+                {subHeaderTitle || <FormattedMessage {...customMessages.loading} />}
+              </span>
             </div>
             <div className="ca-title library-breadcrumb-title">
               {subHeaderTitle || <FormattedMessage {...customMessages.loading} />}
             </div>
           </div>
         </div>
-        <Helmet><title>{libraryData.title} | {process.env.SITE_NAME}</title></Helmet>
+        <Helmet>
+          <title>{libraryData.title} | {process.env.SITE_NAME}</title>
+        </Helmet>
         <Container className="library-authoring-page">
           <SearchContextProvider
             extraFilter={extraFilter}
           >
-            {/* <SubHeader
+            {
+              /* <SubHeader
               title={subHeaderTitle}
               subtitle={!componentPickerMode ? intl.formatMessage(messages.headingSubtitle) : undefined}
               breadcrumbs={breadcumbs}
               headerActions={headerActions}
-            /> */}
+            /> */
+            }
             <div className="sub-header-container d-flex justify-content-between align-items-center">
               <SearchKeywordsField className="w-40" />
               {headerActions}
@@ -93,9 +106,9 @@ const CustomLibraryAuthoringPage = ({
         </Container>
       </div>
       {!!sidebarComponentInfo?.type && (
-      <div className="library-authoring-sidebar box-shadow-left-1 bg-white" data-testid="library-sidebar">
-        <LibrarySidebar />
-      </div>
+        <div className="library-authoring-sidebar box-shadow-left-1 bg-white" data-testid="library-sidebar">
+          <LibrarySidebar />
+        </div>
       )}
     </div>
   );

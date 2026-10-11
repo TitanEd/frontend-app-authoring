@@ -15,23 +15,24 @@ import TextbookForm from './textbook-form/TextbookForm';
 import { getTextbookFormInitialValues } from './utils';
 import messages from './messages';
 
-const CustomTextbooks = ({ courseId,
-  textbooks,
-  isLoading,
-  isTextbookFormOpen,
-  openTextbookForm,
-  closeTextbookForm,
-  handleTextbookFormSubmit,
-  handleSavingStatusDispatch,
-  handleTextbookEditFormSubmit,
-  handleTextbookDeleteSubmit,
-}) => {
+const CustomTextbooks = (
+  {
+    courseId,
+    textbooks,
+    isTextbookFormOpen,
+    openTextbookForm,
+    closeTextbookForm,
+    handleTextbookFormSubmit,
+    handleSavingStatusDispatch,
+    handleTextbookEditFormSubmit,
+    handleTextbookDeleteSubmit,
+  },
+) => {
   const intl = useIntl();
 
   return (
     <Container size="xl" className="px-4 textbook-card">
       <section className="setting-items mb-4">
-
         <Layout
           lg={[{ span: 9 }, { span: 3 }]}
           md={[{ span: 9 }, { span: 3 }]}
@@ -43,7 +44,7 @@ const CustomTextbooks = ({ courseId,
             <article>
               <SubHeader
                 title={intl.formatMessage(messages.headingTitle)}
-                headerActions={(
+                headerActions={
                   <Button
                     iconBefore={AddIcon}
                     onClick={openTextbookForm}
@@ -51,32 +52,34 @@ const CustomTextbooks = ({ courseId,
                   >
                     {intl.formatMessage(messages.newTextbookButton)}
                   </Button>
-            )}
+                }
               />
               <span className="pages_bar" />
               <section className="textbook-section">
                 <div>
-                  {textbooks.length ? textbooks.map((textbook, index) => (
-                    <TextbookCard
-                      key={textbook.id}
-                      textbook={textbook}
-                      courseId={courseId}
-                      handleSavingStatusDispatch={handleSavingStatusDispatch}
-                      onEditSubmit={handleTextbookEditFormSubmit}
-                      onDeleteSubmit={handleTextbookDeleteSubmit}
-                      textbookIndex={index}
-                    />
-                  )) : (
-                    !isTextbookFormOpen && <EmptyPlaceholder onCreateNewTextbook={openTextbookForm} />
-                  )}
+                  {textbooks.length ?
+                    textbooks.map((textbook, index) => (
+                      <TextbookCard
+                        key={textbook.id}
+                        textbook={textbook}
+                        courseId={courseId}
+                        handleSavingStatusDispatch={handleSavingStatusDispatch}
+                        onEditSubmit={handleTextbookEditFormSubmit}
+                        onDeleteSubmit={handleTextbookDeleteSubmit}
+                        textbookIndex={index}
+                      />
+                    )) :
+                    (
+                      !isTextbookFormOpen && <EmptyPlaceholder onCreateNewTextbook={openTextbookForm} />
+                    )}
                   {isTextbookFormOpen && (
-                  <TextbookForm
-                    closeTextbookForm={closeTextbookForm}
-                    initialFormValues={getTextbookFormInitialValues()}
-                    onSubmit={handleTextbookFormSubmit}
-                    onSavingStatus={handleSavingStatusDispatch}
-                    courseId={courseId}
-                  />
+                    <TextbookForm
+                      closeTextbookForm={closeTextbookForm}
+                      initialFormValues={getTextbookFormInitialValues()}
+                      onSubmit={handleTextbookFormSubmit}
+                      onSavingStatus={handleSavingStatusDispatch}
+                      courseId={courseId}
+                    />
                   )}
                 </div>
               </section>

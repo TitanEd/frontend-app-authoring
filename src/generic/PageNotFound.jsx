@@ -25,7 +25,7 @@ const PageNotFound = () => {
               <div className="error-code">
                 <h1 className="display-1 fw-bold">404</h1>
               </div>
-              
+
               {/* Error Message */}
               <div className="error-message mb-4">
                 <h2 className="h3 mb-3">
@@ -66,7 +66,8 @@ const PageNotFound = () => {
         </Row>
       </Container>
 
-      <style jsx>{`
+      <style jsx>
+        {`
         .page-not-found {
           min-height: 100vh;
           background: linear-gradient(135deg, var(--pgn-color-light-200) 0%, var(--pgn-color-light-300) 100%);
@@ -120,7 +121,8 @@ const PageNotFound = () => {
             margin-bottom: 0;
           }
         }
-      `}</style>
+      `}
+      </style>
     </div>
   );
 };

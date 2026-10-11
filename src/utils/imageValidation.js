@@ -18,12 +18,14 @@ export const imageValidationMessages = defineMessages({
   },
   tooSmallDimensions: {
     id: 'course-authoring.custom.image-validation.too-small',
-    defaultMessage: 'Image dimensions are too small. Minimum size is {minWidth}x{minHeight} pixels. Current size is {width}x{height} pixels.',
+    defaultMessage:
+      'Image dimensions are too small. Minimum size is {minWidth}x{minHeight} pixels. Current size is {width}x{height} pixels.',
     description: 'Image upload error: the image is too small',
   },
   tooLargeDimensions: {
     id: 'course-authoring.custom.image-validation.too-large',
-    defaultMessage: 'Image dimensions are too large. Maximum size is {maxWidth}x{maxHeight} pixels. Current size is {width}x{height} pixels.',
+    defaultMessage:
+      'Image dimensions are too large. Maximum size is {maxWidth}x{maxHeight} pixels. Current size is {width}x{height} pixels.',
     description: 'Image upload error: the image is too large',
   },
   unreadable: {
@@ -86,7 +88,12 @@ export async function validateImageFile(
     const img = new Image();
     img.onload = () => {
       const values = {
-        minWidth, minHeight, maxWidth, maxHeight, width: img.width, height: img.height,
+        minWidth,
+        minHeight,
+        maxWidth,
+        maxHeight,
+        width: img.width,
+        height: img.height,
       };
       if (img.width < minWidth || img.height < minHeight) {
         resolve(invalid(imageValidationMessages.tooSmallDimensions, values));

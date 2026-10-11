@@ -18,7 +18,9 @@ export async function getMyCoursesData() {
 
 /** Get list of courses from the deprecated non-paginated API */
 export async function getStudioHomeCourses(search) {
-  const { data } = await getAuthenticatedHttpClient().get(`${getApiBaseUrl()}/api/contentstore/v1/home/courses${search}`);
+  const { data } = await getAuthenticatedHttpClient().get(
+    `${getApiBaseUrl()}/api/contentstore/v1/home/courses${search}`,
+  );
   return camelCaseObject(data);
 }
 /**
@@ -32,7 +34,10 @@ export async function getStudioHomeCourses(search) {
  */
 export async function getMyCoursesV2(search, customParams) {
   const customParamsFormat = snakeCaseObject(customParams);
-  const { data } = await getAuthenticatedHttpClient().get(`${getApiBaseUrl()}/api/contentstore/v2/home/courses${search}`, { params: customParamsFormat });
+  const { data } = await getAuthenticatedHttpClient().get(
+    `${getApiBaseUrl()}/api/contentstore/v2/home/courses${search}`,
+    { params: customParamsFormat },
+  );
   return camelCaseObject(data);
 }
 
@@ -45,7 +50,7 @@ export async function getStudioHomeLibraries() {
  * Handle course notification requests.
  * @param {string} url
  * @returns {Promise<Object>}
-*/
+ */
 export async function handleCourseNotification(url) {
   const { data } = await getAuthenticatedHttpClient().delete(getCourseNotificationUrl(url));
   return camelCaseObject(data);

@@ -5,7 +5,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s ease;
+  transition: opacity .2s ease;
   
   .ai-button-icon {
     width: 20px;
@@ -18,13 +18,13 @@
     cursor: pointer;
 
     &:hover {
-      opacity: 0.8; /* subtle feedback */
+      opacity: .8; /* subtle feedback */
     }
   }
 
   /* Disabled state */
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: .5;
   }
 }

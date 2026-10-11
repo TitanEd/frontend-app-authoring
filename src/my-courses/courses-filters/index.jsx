@@ -17,7 +17,6 @@ const CoursesFilters = ({
   dispatch,
   locationValue,
   // onSubmitSearchField,
-  isLoading,
 }) => {
   const myCoursesParams = useSelector(getMyCoursesParams);
   const {

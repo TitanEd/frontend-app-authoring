@@ -1,6 +1,14 @@
 import { useRef, useEffect } from 'react';
 import { Button, Icon, Form } from '@openedx/paragon';
-import { ChevronLeft, ChevronRight, Close, ArrowForward, Fullscreen, FullscreenExit, Send } from '@openedx/paragon/icons';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Close,
+  ArrowForward,
+  Fullscreen,
+  FullscreenExit,
+  Send,
+} from '@openedx/paragon/icons';
 import { Bookmark, BookmarkBorder } from '@openedx/paragon/icons';
 import { useCopilot } from './CopilotContext';
 import { useIntl } from '@edx/frontend-platform/i18n';
@@ -84,7 +92,7 @@ const Copilot = () => {
   useEffect(() => {
     const panel = panelRef.current;
     const chat = chatContainerRef.current;
-    if (!panel || !chat) return;
+    if (!panel || !chat) { return; }
 
     let rafId = null;
 
@@ -98,7 +106,7 @@ const Copilot = () => {
     };
 
     const scheduleUpdate = () => {
-      if (!rafId) rafId = requestAnimationFrame(updateChatHeight);
+      if (!rafId) { rafId = requestAnimationFrame(updateChatHeight); }
     };
 
     // Initial
@@ -114,7 +122,7 @@ const Copilot = () => {
     return () => {
       observer.disconnect();
       window.removeEventListener('resize', scheduleUpdate);
-      if (rafId) cancelAnimationFrame(rafId);
+      if (rafId) { cancelAnimationFrame(rafId); }
     };
   }, [isOpen, isFullScreen, size, pos, isDocked, isMinimized]);
 
@@ -129,12 +137,12 @@ const Copilot = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTo({
         top: chatContainerRef.current.scrollHeight,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   }, [chatHistory, questions, currentQuestionIndex]);
   useEffect(() => {
-    if (!pinnedContainerRef.current || pinnedSuggestions.length === 0) return;
+    if (!pinnedContainerRef.current || pinnedSuggestions.length === 0) { return; }
 
     const lastPinned = pinnedSuggestions[pinnedSuggestions.length - 1];
     const fieldGroup = pinnedContainerRef.current.querySelector(`[data-field="${lastPinned.field}"]`);
@@ -145,13 +153,13 @@ const Copilot = () => {
       } else {
         pinnedContainerRef.current.scrollTo({
           top: pinnedContainerRef.current.scrollHeight,
-          behavior: 'smooth'
+          behavior: 'smooth',
         });
       }
     });
   }, [pinnedSuggestions]);
 
-  if (!isOpen) return null;
+  if (!isOpen) { return null; }
 
   const panelStyle = {
     position: isFullScreen ? 'fixed' : (isDocked ? 'relative' : 'fixed'),
@@ -159,11 +167,17 @@ const Copilot = () => {
     left: isFullScreen ? `calc(${sidebarWidth + 20}px)` : (isDocked ? 'auto' : `${pos.x}px`),
     top: isFullScreen ? `calc(${feedbackBannerHeight + navbarHeight + 15}px)` : (isDocked ? '0' : `${pos.y}px`),
     width: isFullScreen ? `calc(100vw - ${sidebarWidth + 40}px)` : (isMinimized ? `${TAB_WIDTH}px` : `${size.w}px`),
-    height: isFullScreen ? `calc(100vh - ${feedbackBannerHeight + navbarHeight + 16}px)` : (isDocked ? '83vh' : `${size.h}px`),
-    backgroundColor: isFullScreen || !isDocked ? 'color-mix(in srgb, var(--bg-surface) 80%, transparent)' : 'var(--bg-surface)',
+    height: isFullScreen
+      ? `calc(100vh - ${feedbackBannerHeight + navbarHeight + 16}px)`
+      : (isDocked ? '83vh' : `${size.h}px`),
+    backgroundColor: isFullScreen || !isDocked
+      ? 'color-mix(in srgb, var(--bg-surface) 80%, transparent)'
+      : 'var(--bg-surface)',
     backdropFilter: isFullScreen || !isDocked ? 'blur(0) saturate(180%)' : 'none',
     WebkitBackdropFilter: isFullScreen || !isDocked ? 'blur(0) saturate(180%)' : 'none',
-    border: isFullScreen || !isDocked ? '1px solid color-mix(in srgb, var(--border-color) 20%, transparent)' : '1px solid var(--border-color)',
+    border: isFullScreen || !isDocked
+      ? '1px solid color-mix(in srgb, var(--border-color) 20%, transparent)'
+      : '1px solid var(--border-color)',
     boxShadow: isFullScreen || !isDocked ? 'var(--pgn-elevation-box-shadow-down-3)' : 'none',
     borderLeft: isFullScreen ? 'none' : '1px solid var(--border-color)',
     zIndex: isFullScreen ? 2000 : 999,
@@ -177,11 +191,14 @@ const Copilot = () => {
 
   return (
     <div className={`copilot-wrapper ${isDocked ? 'docked' : 'inline'}`}>
-      <div ref={(el) => {
-        ref.current = el;
-        panelRef.current = el;
-      }} style={panelStyle} className={`copilot-panel ${isFullScreen ? 'fullscreen' : ''} ${(isDocked && !isFullScreen) ? 'isDocked' : ''}`}>
-
+      <div
+        ref={(el) => {
+          ref.current = el;
+          panelRef.current = el;
+        }}
+        style={panelStyle}
+        className={`copilot-panel ${isFullScreen ? 'fullscreen' : ''} ${(isDocked && !isFullScreen) ? 'isDocked' : ''}`}
+      >
         <div className="copilot-header">
           <div className="header-left" style={{ display: isMinimized && !isFullScreen ? 'none' : 'flex' }}>
             <span className="title">{t(messages.copilotTitle)}</span>
@@ -204,8 +221,12 @@ const Copilot = () => {
                 aria-label={t(messages.tooltipDragToMove)}
               >
                 <div className="dots">
-                  <span /><span /><span />
-                  <span /><span /><span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
                 </div>
               </div>
             )}
@@ -232,267 +253,285 @@ const Copilot = () => {
             )}
           </div>
         </div>
-        {enabledCopilot ? (
-          <>
-            <div className="copilot-content" style={contentStyle}>
-              <div ref={ref => {
-                pinnedContainerRef.current = ref;
-              }} className={`${pinnedSuggestions.length === 0 ? 'none' : 'pined-suggestion'}`}>
-                {(() => {
-                  const sorted = getSortedPinnedSuggestions();
-                  const grouped = {};
-                  sorted.forEach(sug => {
-                    if (!grouped[sug.field]) grouped[sug.field] = [];
-                    grouped[sug.field].push(sug);
-                  });
+        {enabledCopilot ?
+          (
+            <>
+              <div className="copilot-content" style={contentStyle}>
+                <div
+                  ref={ref => {
+                    pinnedContainerRef.current = ref;
+                  }}
+                  className={`${pinnedSuggestions.length === 0 ? 'none' : 'pined-suggestion'}`}
+                >
+                  {(() => {
+                    const sorted = getSortedPinnedSuggestions();
+                    const grouped = {};
+                    sorted.forEach(sug => {
+                      if (!grouped[sug.field]) { grouped[sug.field] = []; }
+                      grouped[sug.field].push(sug);
+                    });
 
-                  const fieldLabels = {
-                    title: t(messages.fieldTitle),
-                    shortDescription: t(messages.fieldShortDescription),
-                    description: t(messages.fieldDescription),
-                    cardImage: t(messages.fieldCardImage),
-                    bannerImage: t(messages.fieldBannerImage),
-                    introVideo: t(messages.fieldIntroVideo),
-                  };
+                    const fieldLabels = {
+                      title: t(messages.fieldTitle),
+                      shortDescription: t(messages.fieldShortDescription),
+                      description: t(messages.fieldDescription),
+                      cardImage: t(messages.fieldCardImage),
+                      bannerImage: t(messages.fieldBannerImage),
+                      introVideo: t(messages.fieldIntroVideo),
+                    };
 
-                  return Object.keys(grouped).map(field => (
-                    <div key={field} className="pinned-group" data-field={field}>
-                      <div className="pinned-group-label">
-                        {fieldLabels[field] || field}
+                    return Object.keys(grouped).map(field => (
+                      <div key={field} className="pinned-group" data-field={field}>
+                        <div className="pinned-group-label">
+                          {fieldLabels[field] || field}
+                        </div>
+                        <div className="pinned-group-items">
+                          {grouped[field].map((sug) => {
+                            const isImage = isValidImageUrl(sug.value);
+                            const isVideo = isVideoUrl(sug.value);
+                            return (
+                              <div
+                                key={`${sug.field}-${sug.value}`}
+                                className={`pinned-item ${isImage ? 'image' : isVideo ? 'video' : 'text'}`}
+                                role="button"
+                                tabIndex={0}
+                                onClick={() => insertPinnedSuggestion(sug)}
+                                onKeyDown={onActivateKey(() =>
+                                  insertPinnedSuggestion(sug)
+                                )}
+                                title={t(messages.tooltipClickToInsert)}
+                              >
+                                {isImage ?
+                                  <img src={sug.value} alt={t(messages.pinnedImageAlt)} /> :
+                                  isVideo ?
+                                  <video src={sug.value} controls className="pinned-video" /> :
+                                  <div>{sug.value}</div>}
+                                <button
+                                  className="unpin-btn"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    unpinSuggestion(sug);
+                                  }}
+                                  title={t(messages.tooltipRemovePinned)}
+                                >
+                                  <Icon src={Close} />
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
-                      <div className="pinned-group-items">
-                        {grouped[field].map((sug) => {
+                    ));
+                  })()}
+                </div>
+
+                <div className="chat-messages" ref={chatContainerRef}>
+                  {chatHistory.map((item, index) => (
+                    <div key={index} className={`message-container ${item.sender}`}>
+                      {item.type === 'text' && <div className="message">{item.content}</div>}
+                      {item.type === 'error' && (
+                        <div className="message error">
+                          <div>{item.content}</div>
+                          <Button onClick={item.retryAction || retryLastAction} size="sm" variant="outline-danger">
+                            {t(messages.retry)}
+                          </Button>
+                        </div>
+                      )}
+
+                      {item.type === 'suggestions' && (
+                        item.content.map((sug) => {
                           const isImage = isValidImageUrl(sug.value);
                           const isVideo = isVideoUrl(sug.value);
+                          const isPinned = pinnedSuggestions.some(p => p.value === sug.value && p.field === sug.field);
+
+                          const suggestionEl = isImage ?
+                            (
+                              <img
+                                key={`${sug.field}-${sug.value}`}
+                                src={sug.value}
+                                alt={t(messages.altSuggestionImage)}
+                                className={`suggestion image-suggestion ${
+                                  selectedSuggestion === sug.value ? 'selected' : ''
+                                }`}
+                                onClick={() => handleSelectSuggestion(sug)}
+                              />
+                            ) :
+                            isVideo ?
+                            (
+                              <video
+                                src={sug.value}
+                                controls
+                                className={`suggestion video-suggestion ${
+                                  selectedSuggestion === sug.value ? 'selected' : ''
+                                }`}
+                                onClick={() => handleSelectSuggestion(sug)}
+                              />
+                            ) :
+                            (
+                              <div
+                                key={`${sug.field}-${sug.value}`}
+                                className={`suggestion ${selectedSuggestion === sug ? 'selected' : ''}`}
+                                role="button"
+                                tabIndex={0}
+                                aria-pressed={selectedSuggestion === sug}
+                                onClick={() => handleSelectSuggestion(sug)}
+                                onKeyDown={onActivateKey(() => handleSelectSuggestion(sug))}
+                              >
+                                {sug.value}
+                              </div>
+                            );
+
                           return (
-                            <div
-                              key={`${sug.field}-${sug.value}`}
-                              className={`pinned-item ${isImage ? 'image': isVideo ? 'video' : 'text'}`}
-                              role="button"
-                              tabIndex={0}
-                              onClick={() => insertPinnedSuggestion(sug)}
-                              onKeyDown={onActivateKey(() => insertPinnedSuggestion(sug))}
-                              title={t(messages.tooltipClickToInsert)}
-                            >
-                              {isImage ? (
-                                <img src={sug.value} alt={t(messages.pinnedImageAlt)} />
-                              ) : isVideo ? (
-                                <video src={sug.value} controls className="pinned-video" />
-                              ) :(
-                                <div>{sug.value}</div>
-                              )}
+                            <div key={`${sug.field}-${sug.value}`} className="suggestion-wrapper">
+                              {suggestionEl}
                               <button
-                                className="unpin-btn"
+                                className={`pin-btn ${isPinned ? 'pinned' : ''}`}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  unpinSuggestion(sug);
+                                  if (isPinned) {
+                                    unpinSuggestion(sug);
+                                  } else {
+                                    pinSuggestion(sug);
+                                  }
                                 }}
-                                title={t(messages.tooltipRemovePinned)}
+                                title={isPinned ? t(messages.tooltipUnpin) : t(messages.tooltipPin)}
                               >
-                                <Icon src={Close} />
+                                <Icon src={isPinned ? Bookmark : BookmarkBorder} />
                               </button>
                             </div>
                           );
-                        })}
-                      </div>
-                    </div>
-                  ));
-                })()}
-              </div>
-
-              <div className="chat-messages" ref={chatContainerRef}>
-                {chatHistory.map((item, index) => (
-                  <div key={index} className={`message-container ${item.sender}`}>
-                    {item.type === 'text' && (
-                      <div className="message">{item.content}</div>
-                    )}
-                    {item.type === 'error' && (
-                      <div className="message error">
-                        <div>{item.content}</div>
-                        <Button onClick={item.retryAction || retryLastAction} size="sm" variant="outline-danger">
-                          {t(messages.retry)}
-                        </Button>
-                      </div>
-                    )}
-
-                    {item.type === 'suggestions' && (
-                      item.content.map((sug) => {
-                        const isImage = isValidImageUrl(sug.value);
-                        const isVideo = isVideoUrl(sug.value);
-                        const isPinned = pinnedSuggestions.some(p => p.value === sug.value && p.field === sug.field);
-
-                        const suggestionEl = isImage ? (
+                        })
+                      )}
+                      {item.type === 'image' && (
+                        <div className="message-container video">
                           <img
-                            key={`${sug.field}-${sug.value}`}
-                            src={sug.value}
-                            alt={t(messages.altSuggestionImage)}
-                            className={`suggestion image-suggestion ${selectedSuggestion === sug.value ? 'selected' : ''}`}
-                            onClick={() => handleSelectSuggestion(sug)}
+                            src={item.content?.value || item.content}
+                            alt={t(messages.altSelectedImage)}
+                            className="image-message"
                           />
-                        ) : isVideo ? (
-                            <video
-                              src={sug.value}
-                              controls
-                              className={`suggestion video-suggestion ${selectedSuggestion === sug.value ? 'selected' : ''}`}
-                              onClick={() => handleSelectSuggestion(sug)}
-                            />
-                          ) : (
-                          <div
-                            key={`${sug.field}-${sug.value}`}
-                            className={`suggestion ${selectedSuggestion === sug ? 'selected' : ''}`}
-                            role="button"
-                            tabIndex={0}
-                            aria-pressed={selectedSuggestion === sug}
-                            onClick={() => handleSelectSuggestion(sug)}
-                            onKeyDown={onActivateKey(() => handleSelectSuggestion(sug))}
-                          >
-                            {sug.value}
-                          </div>
-                        );
-
-                        return (
-                          <div key={`${sug.field}-${sug.value}`} className="suggestion-wrapper">
-                            {suggestionEl}
-                            <button
-                              className={`pin-btn ${isPinned ? 'pinned' : ''}`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                isPinned ? unpinSuggestion(sug) : pinSuggestion(sug);
-                              }}
-                              title={isPinned ? t(messages.tooltipUnpin) : t(messages.tooltipPin)}
-                            >
-                              <Icon src={isPinned ? Bookmark : BookmarkBorder} />
-                            </button>
-                          </div>
-                        );
-                      })
-                    )}
-                    {item.type === 'image' && (
-                      <div className="message-container video">
-                        <img
-                          src={item.content?.value || item.content}
-                          alt={t(messages.altSelectedImage)}
-                          className="image-message"
-                        />
-                      </div>
-                    )}
-
-                    {item.type === "video" && (
-                      <div className="message-container user">
-                        <video src={item.content?.value || item.content} controls className="video-message" />
-                      </div>
-                    )}
-
-                    {item.type === 'customize' && (
-                      <div className="message">
-                        {item.content}
-                      </div>
-                    )}
-
-                    {item.type === 'question' && (
-                      <div className="message-container ai">
-                        <div className="customQuestion">
-                          {t(messages.questionCounter, { current: item.questionIndex, total: item.totalQuestions })} {item.content}
                         </div>
-                        {item.options ? (
-                          item.options.map((option) => (
-                            <div
-                              key={option}
-                              className={`suggestion ${selectedSuggestion === option ? 'selected' : ''}`}
-                              role="button"
-                              tabIndex={0}
-                              aria-pressed={selectedSuggestion === option}
-                              onClick={() => handleAnswer(option, fieldData.name)}
-                              onKeyDown={onActivateKey(() => handleAnswer(option, fieldData.name))}
-                            >
-                              {option}
-                            </div>
-                          ))
-                        ) : null}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                      )}
 
-              </div>
-              <div className="copilot-content-bottom">
-                <div className="copilot-content-bottom-button">
-                  {buttons.map((button) => (
-                    <Button
-                      key={button.id}
-                      variant={button.status === 'active' ? 'primary' : 'outline-primary'}
-                      onClick={() => handleButtonAction(button.id)}
-                      size="sm"
-                    >
-                      {button.label}
-                    </Button>
+                      {item.type === 'video' && (
+                        <div className="message-container user">
+                          <video src={item.content?.value || item.content} controls className="video-message" />
+                        </div>
+                      )}
+
+                      {item.type === 'customize' && (
+                        <div className="message">
+                          {item.content}
+                        </div>
+                      )}
+
+                      {item.type === 'question' && (
+                        <div className="message-container ai">
+                          <div className="customQuestion">
+                            {t(messages.questionCounter, { current: item.questionIndex, total: item.totalQuestions })}
+                            {' '}
+                            {item.content}
+                          </div>
+                          {item.options ?
+                            (
+                              item.options.map((option) => (
+                                <div
+                                  key={option}
+                                  className={`suggestion ${selectedSuggestion === option ? 'selected' : ''}`}
+                                  role="button"
+                                  tabIndex={0}
+                                  aria-pressed={selectedSuggestion === option}
+                                  onClick={() => handleAnswer(option, fieldData.name)}
+                                  onKeyDown={onActivateKey(() => handleAnswer(option, fieldData.name))}
+                                >
+                                  {option}
+                                </div>
+                              ))
+                            ) :
+                            null}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
-                <div className="input-container">
-                  <Form.Control
-                    type="text"
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    placeholder={
-                      questions.length > 0 && currentQuestionIndex >= 0 && !questions[currentQuestionIndex]?.options
+                <div className="copilot-content-bottom">
+                  <div className="copilot-content-bottom-button">
+                    {buttons.map((button) => (
+                      <Button
+                        key={button.id}
+                        variant={button.status === 'active' ? 'primary' : 'outline-primary'}
+                        onClick={() => handleButtonAction(button.id)}
+                        size="sm"
+                      >
+                        {button.label}
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="input-container">
+                    <Form.Control
+                      type="text"
+                      value={prompt}
+                      onChange={(e) => setPrompt(e.target.value)}
+                      placeholder={questions.length > 0 && currentQuestionIndex >= 0 &&
+                          !questions[currentQuestionIndex]?.options
                         ? t(messages.placeholderAnswer)
-                        : t(messages.placeholderMessage)
-                    }
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        if (questions.length > 0 && currentQuestionIndex >= 0 && !questions[currentQuestionIndex].options) {
+                        : t(messages.placeholderMessage)}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          if (
+                            questions.length > 0 && currentQuestionIndex >= 0 &&
+                            !questions[currentQuestionIndex].options
+                          ) {
+                            handleSendAnswer();
+                          } else {
+                            sendPrompt();
+                          }
+                        }
+                      }}
+                    />
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => {
+                        if (
+                          questions.length > 0 && currentQuestionIndex >= 0 && !questions[currentQuestionIndex].options
+                        ) {
                           handleSendAnswer();
                         } else {
                           sendPrompt();
                         }
-                      }
-                    }}
-                  />
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => {
-                      if (questions.length > 0 && currentQuestionIndex >= 0 && !questions[currentQuestionIndex].options) {
-                        handleSendAnswer();
-                      } else {
-                        sendPrompt();
-                      }
-                    }}
-                  >
-                    <Icon src={Send} />
-                  </Button>
+                      }}
+                    >
+                      <Icon src={Send} />
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </>
-        ) : (
-          <div className="copilot-loading">{!isMinimized && (<span>{t(messages.loadingcopilot)}</span>)}</div>
-        )
-        }
+            </>
+          ) :
+          <div className="copilot-loading">{!isMinimized && <span>{t(messages.loadingcopilot)}</span>}</div>}
         {/* Resizers and indicators moved here, inside .copilot-panel */}
         {!isFullScreen && !isMinimized && (
           <>
-            {isDocked ? (
-              <div className="resize-indicator left-indicator" title={t(messages.tooltipResize)}></div>
-            ) : (
-              <div className="resize-indicator bottom-right-indicator" title={t(messages.tooltipResize)}></div>
-            )}
+            {isDocked ?
+              <div className="resize-indicator left-indicator" title={t(messages.tooltipResize)}></div> :
+              <div className="resize-indicator bottom-right-indicator" title={t(messages.tooltipResize)}></div>}
           </>
         )}
         {!isFullScreen && (
-          isDocked ? (
-            <div
-              className="resizer resizer-left"
-              onMouseDown={(e) => handleMouseDownResize('width')(e)}
-            />
-          ) : (
-            <div
-              className="resizer resizer-bottom-right"
-              onMouseDown={(e) => handleMouseDownResize('both')(e)}
-            />
-          )
+          isDocked ?
+            (
+              <div
+                className="resizer resizer-left"
+                onMouseDown={(e) => handleMouseDownResize('width')(e)}
+              />
+            ) :
+            (
+              <div
+                className="resizer resizer-bottom-right"
+                onMouseDown={(e) => handleMouseDownResize('both')(e)}
+              />
+            )
         )}
-
       </div>
     </div>
   );

@@ -194,7 +194,7 @@ const CustomCreateNewCourseForm = ({
               imageErrors={imageErrors}
               onSubmit={handleCreateNewCourse}
               onResetForm={resetForm}
-            //   scheduleSettings
+              //   scheduleSettings
             />
           </Col>
         </Row>
@@ -215,7 +215,7 @@ CustomCreateNewCourseForm.propTypes = {
 };
 
 CustomCreateNewCourseForm.defaultProps = {
-  handleValuesChange: () => { },
+  handleValuesChange: () => {},
 };
 
 export default CustomCreateNewCourseForm;

@@ -16,7 +16,9 @@ const CustomExportSidebar = ({ intl, courseId }) => {
   return (
     <HelpSidebar courseId={courseId} className="export-sidebar">
       <h4 className="help-sidebar-about-title">{intl.formatMessage(messages.title1)}</h4>
-      <p className="help-sidebar-about-descriptions">{intl.formatMessage(messages.description1, { studioShortName: getConfig().STUDIO_SHORT_NAME })}</p>
+      <p className="help-sidebar-about-descriptions">
+        {intl.formatMessage(messages.description1, { studioShortName: getConfig().STUDIO_SHORT_NAME })}
+      </p>
       <hr />
       <h4 className="help-sidebar-about-title">{intl.formatMessage(messages.exportedContent)}</h4>
       <div className="help-sidebar-about-descriptions">
@@ -40,7 +42,9 @@ const CustomExportSidebar = ({ intl, courseId }) => {
       <h4 className="help-sidebar-about-title">{intl.formatMessage(messages.openDownloadFile)}</h4>
       <p className="help-sidebar-about-descriptions">{intl.formatMessage(messages.openDownloadFileDescription)}</p>
       <hr />
-      <Hyperlink className="small" href={exportLearnMoreUrl} target="_blank" variant="outline-primary">{intl.formatMessage(messages.learnMoreButtonTitle)}</Hyperlink>
+      <Hyperlink className="small" href={exportLearnMoreUrl} target="_blank" variant="outline-primary">
+        {intl.formatMessage(messages.learnMoreButtonTitle)}
+      </Hyperlink>
     </HelpSidebar>
   );
 };

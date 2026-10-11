@@ -198,7 +198,6 @@ const ScheduleAndDetails = () => {
 
   return (
     <>
-
       <PluginSlot id="schedule_and_details_plugin_slot" pluginProps={{ courseId, intl }}>
         <Container size="xl" className="schedule-and-details px-4">
           <div className="mt-5">

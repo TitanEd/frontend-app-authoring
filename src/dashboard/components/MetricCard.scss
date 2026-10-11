@@ -2,7 +2,7 @@
   border-radius: 18px !important;
   border: none;
   box-shadow: none;
-  padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+  padding: 1.5rem 1.5rem 1.25rem;
   min-width: 220px;
   min-height: 150px;
   display: flex;
@@ -26,6 +26,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 18px;
+
   svg {
     width: 24px;
     height: 24px;
@@ -43,20 +44,21 @@
   font-size: 2rem;
   font-weight: 700;
   color: var(--pgn-color-text-base);
-  margin-bottom: 0.25rem;
+  margin-bottom: .25rem;
 }
 
 .metric-card-visual-label {
   font-size: 1.05rem;
   color: var(--pgn-color-text-base);
   font-weight: 400;
-  opacity: 0.85;
+  opacity: .85;
 }
 
 // Type-specific backgrounds (high specificity, at the bottom)
 .metric-card-visual.metric-card-courses {
   background: var(--pgn-color-danger-100, var(--pgn-color-light-200)) !important;
 }
+
 .metric-card-visual.metric-card-courses .metric-card-visual-icon {
   background: var(--pgn-color-danger-base) !important;
 }
@@ -64,6 +66,7 @@
 .metric-card-visual.metric-card-students {
   background: var(--pgn-color-warning-100, var(--pgn-color-light-200)) !important;
 }
+
 .metric-card-visual.metric-card-students .metric-card-visual-icon {
   background: var(--pgn-color-warning-base) !important;
 }
@@ -71,6 +74,7 @@
 .metric-card-visual.metric-card-enrollments {
   background: var(--pgn-color-success-100, var(--pgn-color-light-200)) !important;
 }
+
 .metric-card-visual.metric-card-enrollments .metric-card-visual-icon {
   background: var(--pgn-color-success-base) !important;
 }
@@ -78,6 +82,7 @@
 .metric-card-visual.metric-card-submissions {
   background: var(--pgn-color-primary-light) !important;
 }
+
 .metric-card-visual.metric-card-submissions .metric-card-visual-icon {
   background: var(--pgn-color-primary-base) !important;
 }

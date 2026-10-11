@@ -35,13 +35,13 @@ const CustomAdvancedSettingsHeader = (props) => (
 
     <div className="warning-message-container">
       <WarningMessage
-        message={(
+        message={
           <FormattedMessage
             id="course-authoring.advanced-settings.custom.policies-warning"
             defaultMessage="Do not modify these policies unless you are familiar with their purpose."
             description="Warning shown above the advanced settings policies"
           />
-        )}
+        }
       />
     </div>
   </div>

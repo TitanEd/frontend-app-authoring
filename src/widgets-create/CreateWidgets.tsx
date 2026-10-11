@@ -191,7 +191,9 @@ const CreateWidgets = () => {
   // Data series handlers
   const addDataSeries = () => {
     const isTimeSeries = isTimeSeriesChart;
-    const refLen = isTimeSeries && formData.content.referenceLabels ? formData.content.referenceLabels.length : DEFAULT_LABELS.length;
+    const refLen = isTimeSeries && formData.content.referenceLabels
+      ? formData.content.referenceLabels.length
+      : DEFAULT_LABELS.length;
     setFormData(prev => ({
       ...prev,
       content: {
@@ -223,9 +225,7 @@ const CreateWidgets = () => {
       ...prev,
       content: {
         ...prev.content,
-        data: prev.content.data.map(series =>
-          series.id === id ? { ...series, [field]: value } : series
-        ),
+        data: prev.content.data.map(series => series.id === id ? { ...series, [field]: value } : series),
       },
     }));
   };
@@ -262,7 +262,9 @@ const CreateWidgets = () => {
 
         {isTimeSeriesChart && (
           <Form.Group controlId="referenceLabels">
-            <div className="mb-2"><b>Reference Labels</b></div>
+            <div className="mb-2">
+              <b>Reference Labels</b>
+            </div>
             <Row className="g-2 align-items-center">
               {referenceLabels.map((labelObj, idx) => (
                 <Col key={labelObj.id} xs={12} md={4} lg={3} className="mb-2">
@@ -325,39 +327,43 @@ const CreateWidgets = () => {
                   </div>
                 </Col>
               </Row>
-              {isTimeSeriesChart ? (
-                <Row className="mt-2">
-                  {referenceLabels.map((labelObj, valueIndex) => (
-                    <Col key={labelObj.id} xs={6} md={4} lg={2}>
+              {isTimeSeriesChart ?
+                (
+                  <Row className="mt-2">
+                    {referenceLabels.map((labelObj, valueIndex) => (
+                      <Col key={labelObj.id} xs={6} md={4} lg={2}>
+                        <Form.Group>
+                          <Form.Control
+                            type="number"
+                            floatingLabel={`Value ${valueIndex + 1}`}
+                            value={Array.isArray(series.value) ? series.value[valueIndex] : 0}
+                            onChange={(e) => {
+                              const newValues = Array.isArray(series.value)
+                                ? [...series.value]
+                                : Array(referenceLabels.length).fill(0);
+                              newValues[valueIndex] = Number(e.target.value);
+                              updateDataSeries(series.id, 'value', newValues);
+                            }}
+                          />
+                        </Form.Group>
+                      </Col>
+                    ))}
+                  </Row>
+                ) :
+                (
+                  <Row className="mt-2">
+                    <Col>
                       <Form.Group>
                         <Form.Control
                           type="number"
-                          floatingLabel={`Value ${valueIndex + 1}`}
-                          value={Array.isArray(series.value) ? series.value[valueIndex] : 0}
-                          onChange={(e) => {
-                            const newValues = Array.isArray(series.value) ? [...series.value] : Array(referenceLabels.length).fill(0);
-                            newValues[valueIndex] = Number(e.target.value);
-                            updateDataSeries(series.id, 'value', newValues);
-                          }}
+                          floatingLabel="Value"
+                          value={typeof series.value === 'number' ? series.value : 0}
+                          onChange={(e) => updateDataSeries(series.id, 'value', Number(e.target.value))}
                         />
                       </Form.Group>
                     </Col>
-                  ))}
-                </Row>
-              ) : (
-                <Row className="mt-2">
-                  <Col>
-                    <Form.Group>
-                      <Form.Control
-                        type="number"
-                        floatingLabel="Value"
-                        value={typeof series.value === 'number' ? series.value : 0}
-                        onChange={(e) => updateDataSeries(series.id, 'value', Number(e.target.value))}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-              )}
+                  </Row>
+                )}
             </div>
           ))}
           <Button

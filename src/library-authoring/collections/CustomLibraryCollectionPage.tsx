@@ -6,20 +6,23 @@ import { LmsBook } from '@openedx/paragon/icons';
 import { useNavigate } from 'react-router-dom';
 // import SubHeader from '../../generic/sub-header/SubHeader';
 import {
-  ClearFiltersButton, FilterByBlockType, FilterByTags, SearchContextProvider, SearchKeywordsField,
+  ClearFiltersButton,
+  FilterByBlockType,
+  FilterByTags,
+  SearchContextProvider,
+  SearchKeywordsField,
   SearchSortWidget,
 } from '../../search-manager';
 import { LibrarySidebar } from '../library-sidebar';
 // import Header from '../../header';
 import LibraryCollectionComponents from './LibraryCollectionComponents';
-import messages from './messages';
 import customMessages from './customMessages';
 import rootCustomMessages from '../../customMessages';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const CustomLibraryCollectionPage = ({
-//   componentPickerMode,
-//   libraryData,
+  //   componentPickerMode,
+  //   libraryData,
   extraFilter,
   subHeaderTitle,
   //   breadcumbs,
@@ -41,13 +44,17 @@ const CustomLibraryCollectionPage = ({
                 role="link"
                 tabIndex={0}
                 onClick={() => navigate(`/library/${libraryId}`)}
-                onKeyDown={(e) => { if (e.key === 'Enter') { navigate(`/library/${libraryId}`); } }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') { navigate(`/library/${libraryId}`); }
+                }}
               >
                 <LmsBook className="custom-icon" />
                 {breadcrumbTitle || <FormattedMessage {...rootCustomMessages.loading} />}
               </span>
               <span className="ca-breadcrumb-divider">/</span>
-              <span className="ca-breadcrumb-current"><FormattedMessage {...customMessages.allCollections} /></span>
+              <span className="ca-breadcrumb-current">
+                <FormattedMessage {...customMessages.allCollections} />
+              </span>
             </div>
             <div className="ca-title library-breadcrumb-title">
               {subHeaderTitle || <FormattedMessage {...rootCustomMessages.loading} />}
@@ -58,13 +65,18 @@ const CustomLibraryCollectionPage = ({
           <SearchContextProvider
             extraFilter={extraFilter}
           >
-            {/* <SubHeader
+            {
+              /* <SubHeader
               title={subHeaderTitle}
               breadcrumbs={breadcumbs}
               headerActions={headerActions}
-            /> */}
+            /> */
+            }
             <div className="sub-header-container d-flex justify-content-between align-items-center">
-              <SearchKeywordsField className="w-40" placeholder={intl.formatMessage(customMessages.searchPlaceholder)} />
+              <SearchKeywordsField
+                className="w-40"
+                placeholder={intl.formatMessage(customMessages.searchPlaceholder)}
+              />
               {headerActions}
             </div>
             <hr style={{ border: 'none', borderTop: '1px solid var(--pgn-color-light-400)', margin: '0 0 0 0' }} />

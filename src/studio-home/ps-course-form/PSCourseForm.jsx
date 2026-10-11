@@ -25,7 +25,14 @@ import {
   Nav,
 } from '@openedx/paragon';
 import {
-  Calendar, Money, More, Add, Close, InfoOutline, Warning, CheckCircle,
+  Calendar,
+  Money,
+  More,
+  Add,
+  Close,
+  InfoOutline,
+  Warning,
+  CheckCircle,
   Photo,
   LmsOutline,
   Face3,
@@ -107,7 +114,6 @@ const PSCourseForm = ({
   onImageValidationErrorChange,
   onResetForm,
   scheduleSettings = false,
-  courseSettings,
 }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -184,7 +190,7 @@ const PSCourseForm = ({
     }
   }, [introVideo, editedValues.introVideo]);
 
-    // Auto-scroll and highlight any field updated by Copilot
+  // Auto-scroll and highlight any field updated by Copilot
   useEffect(() => {
     // Helper to find the closest form group or section for a field
     const scrollToField = (fieldName, valueFromCopilot, currentFormValue) => {
@@ -216,8 +222,8 @@ const PSCourseForm = ({
         case 'introVideo':
           // Introduction video section (last form group in media-section)
           targetElement = document.querySelector('.media-section .form-group:last-child')
-                         || document.querySelector('.introduction-video')
-                         || document.querySelector('.embed-video-container');
+            || document.querySelector('.introduction-video')
+            || document.querySelector('.embed-video-container');
           break;
 
         default:
@@ -228,7 +234,7 @@ const PSCourseForm = ({
         targetElement.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
-          inline: 'nearest'
+          inline: 'nearest',
         });
 
         // Gentle highlight feedback
@@ -252,19 +258,29 @@ const PSCourseForm = ({
     scrollToField('bannerImageAssetPath', bannerImage, editedValues.bannerImageAssetPath);
     scrollToField('introVideo', introVideo, editedValues.introVideo);
   }, [
-    title, shortDescription, description,
-    cardImage, bannerImage, introVideo,
-    editedValues.title, editedValues.shortDescription, editedValues.description,
-    editedValues.courseImageAssetPath, editedValues.bannerImageAssetPath, editedValues.introVideo
+    title,
+    shortDescription,
+    description,
+    cardImage,
+    bannerImage,
+    introVideo,
+    editedValues.title,
+    editedValues.shortDescription,
+    editedValues.description,
+    editedValues.courseImageAssetPath,
+    editedValues.bannerImageAssetPath,
+    editedValues.introVideo,
   ]);
-  //end
+  // end
 
   //   const { allowedOrganizations } = useSelector(getStudioHomeData);
   useEffect(() => {
     const fetchOrganizations = async () => {
       try {
         // const response = await getAuthenticatedHttpClient().get(`${getConfig().STUDIO_BASE_URL}/organizations`);
-        const response = await getAuthenticatedHttpClient().get(`${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`);
+        const response = await getAuthenticatedHttpClient().get(
+          `${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`,
+        );
         console.log('allowedOrganizations response', response);
         // Transform the response to match the expected format
         const organizations = response.data || [];
@@ -406,7 +422,7 @@ const PSCourseForm = ({
         updateCardImage(value);
       } else if (field === 'bannerImageAssetPath') {
         updateBannerImage(value);
-      }else if (field === 'introVideo') {
+      } else if (field === 'introVideo') {
         updateIntroVideo(value);
       }
     }
@@ -660,7 +676,10 @@ const PSCourseForm = ({
       setShowErrorModal(false); // Hide any previous error modals
       const apiPayload = transformFormDataToApiPayload(editedValues);
       console.log('API Payload:', apiPayload);
-      const response = await getAuthenticatedHttpClient().post(`${getConfig().STUDIO_BASE_URL}/titaned/api/v1/create-course`, apiPayload);
+      const response = await getAuthenticatedHttpClient().post(
+        `${getConfig().STUDIO_BASE_URL}/titaned/api/v1/create-course`,
+        apiPayload,
+      );
       // for local api fetch
       // const response = await getAuthenticatedHttpClient().post('STUDIO_API_DOMAIN/titaned/api/v1/create-course', apiPayload);
 
@@ -762,9 +781,10 @@ const PSCourseForm = ({
   };
 
   const languageOptions = useMemo(
-    () => Object.entries(videoTranscriptLanguages)
-      .filter(([code]) => code !== 'placeholder')
-      .map(([code, label]) => [code, label]),
+    () =>
+      Object.entries(videoTranscriptLanguages)
+        .filter(([code]) => code !== 'placeholder')
+        .map(([code, label]) => [code, label]),
     [],
   );
 
@@ -779,106 +799,117 @@ const PSCourseForm = ({
 
     // Added AIButton-related logic
     const isCardImage = field === 'courseImageAssetPath';
-    const hasTitle = !!editedValues.title?.trim();
-    const disabled = field === 'courseImageAssetPath' ? !hasTitle : !hasTitle;
 
     let previewSrc = editedValues[field] || preview || '';
     const hasPreviewImage = isValidImageUrl(previewSrc);
 
     return (
-      <Form.Group className="mb-4 custom-image-upload-section-ps-form" >
+      <Form.Group className="mb-4 custom-image-upload-section-ps-form">
         <div className="d-flex justify-content-between align-items-center mb-2">
-          <Form.Label className="mb-0 d-flex justify-content-between align-items-center">{label}
-            {showCopilotIcon && <div className="aibutton">
-              {aiLoading[isCardImage ? 'cardImage' : 'bannerImage'] ? (
-                <span style={{
-                  fontSize: "0.875rem",
-                  color: "var(--primary)",
-                  animation: "pulse 1.5s infinite",
-                }}>{intl.formatMessage(messages.loading)}</span>
-              ) : (
-                <AIButton
-                  disabled={!editedValues.description?.trim()}
-                  onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
-                  fieldName={isCardImage ? 'cardImage' : 'bannerImage'}
-                  fieldValue={editedValues.title || ''}
-                />
-              )}
-            </div>}
+          <Form.Label className="mb-0 d-flex justify-content-between align-items-center">
+            {label}
+            {showCopilotIcon && (
+              <div className="aibutton">
+                {aiLoading[isCardImage ? 'cardImage' : 'bannerImage'] ?
+                  (
+                    <span
+                      style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--primary)',
+                        animation: 'pulse 1.5s infinite',
+                      }}
+                    >
+                      {intl.formatMessage(messages.loading)}
+                    </span>
+                  ) :
+                  (
+                    <AIButton
+                      disabled={!editedValues.description?.trim()}
+                      onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
+                      fieldName={isCardImage ? 'cardImage' : 'bannerImage'}
+                      fieldValue={editedValues.title || ''}
+                    />
+                  )}
+              </div>
+            )}
           </Form.Label>
         </div>
         <div
           className={`upload-box border rounded${error ? ' border-danger' : ''}`}
         >
-          {hasPreviewImage ? (
-            <div className="image-preview-container">
-              <Image
-                src={previewSrc}
-                className="preview-image"
-                fluid
-              />
-              <Button
-                variant="icon"
-                className="remove-image-overlay"
-                onClick={() => {
-                  onRemoveImage(field)
-                  handleInputChange(field, ''); // Clear the field
-                  if (isCardImage) updateCardImage('');
-                  else updateBannerImage('');
-                }}
-                aria-label={`Remove ${label.toLowerCase()}`}
-              >
-                <Icon src={Close} />
-              </Button>
-            </div>
-          ) : (
-            <div className="p-3 text-center">
-              <div className="d-flex flex-column align-items-center">
-                <Icon
-                  src={Photo}
-                  className="mb-2"
-                  style={{ fontSize: '2rem' }}
+          {hasPreviewImage ?
+            (
+              <div className="image-preview-container">
+                <Image
+                  src={previewSrc}
+                  className="preview-image"
+                  fluid
                 />
                 <Button
-                  variant="outline-primary"
-                  onClick={() => document.getElementById(`${field}Input`).click()}
-                  disabled={isImageUploading}
-                  className="mb-2"
+                  variant="icon"
+                  className="remove-image-overlay"
+                  onClick={() => {
+                    onRemoveImage(field);
+                    handleInputChange(field, ''); // Clear the field
+                    if (isCardImage) { updateCardImage(''); }
+                    else { updateBannerImage(''); }
+                  }}
+                  aria-label={`Remove ${label.toLowerCase()}`}
                 >
-                  <Icon src={Add} className="me-2" />
-                  {isImageUploading ? intl.formatMessage(messages.uploading) : intl.formatMessage(messages.uploadImage)}
+                  <Icon src={Close} />
                 </Button>
-                <div className="font-12">{intl.formatMessage(messages.pleaseUploadAJpegOrPngImage)}</div>
-                <input
-                  type="file"
-                  id={`${field}Input`}
-                  accept={allowedImageTypes.join(',')}
-                  className="d-none"
-                  onChange={(e) => onUpload(field, e)}
-                />
-                {isImageUploading && uploadProgress > 0 && (
-                  <div className="progress mt-2 w-100">
-                    <div
-                      className="progress-bar"
-                      role="progressbar"
-                      style={{ width: `${uploadProgress}%` }}
-                      aria-valuenow={uploadProgress}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      {uploadProgress}%
-                    </div>
-                  </div>
-                )}
-                {error && (
-                  <div className="text-danger mt-2 d-flex align-items-center font-small">
-                    <Icon src={Warning} className="me-1" />
-                    <span>{error}</span>
-                  </div>
-                )}
               </div>
-            </div>
-          )}
+            ) :
+            (
+              <div className="p-3 text-center">
+                <div className="d-flex flex-column align-items-center">
+                  <Icon
+                    src={Photo}
+                    className="mb-2"
+                    style={{ fontSize: '2rem' }}
+                  />
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => document.getElementById(`${field}Input`).click()}
+                    disabled={isImageUploading}
+                    className="mb-2"
+                  >
+                    <Icon src={Add} className="me-2" />
+                    {isImageUploading
+                      ? intl.formatMessage(messages.uploading)
+                      : intl.formatMessage(messages.uploadImage)}
+                  </Button>
+                  <div className="font-12">{intl.formatMessage(messages.pleaseUploadAJpegOrPngImage)}</div>
+                  <input
+                    type="file"
+                    id={`${field}Input`}
+                    accept={allowedImageTypes.join(',')}
+                    className="d-none"
+                    onChange={(e) => onUpload(field, e)}
+                  />
+                  {isImageUploading && uploadProgress > 0 && (
+                    <div className="progress mt-2 w-100">
+                      <div
+                        className="progress-bar"
+                        role="progressbar"
+                        style={{ width: `${uploadProgress}%` }}
+                        aria-valuenow={uploadProgress}
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        {uploadProgress}%
+                      </div>
+                    </div>
+                  )}
+                  {error && (
+                    <div className="text-danger mt-2 d-flex align-items-center font-small">
+                      <Icon src={Warning} className="me-1" />
+                      <span>{error}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
         </div>
       </Form.Group>
     );
@@ -891,7 +922,8 @@ const PSCourseForm = ({
     { key: 'additional', label: intl.formatMessage(messages.additional), icon: More },
     { key: 'pricing', label: intl.formatMessage(messages.pricing), icon: Money },
     { key: 'license', label: intl.formatMessage(messages.courseContentLicense), icon: InfoOutline },
-    scheduleSettings && { key: 'learningOutcomes', label: intl.formatMessage(messages.learningOutcomes), icon: LmsOutline },
+    scheduleSettings &&
+    { key: 'learningOutcomes', label: intl.formatMessage(messages.learningOutcomes), icon: LmsOutline },
     scheduleSettings && { key: 'instructors', label: intl.formatMessage(messages.instructors), icon: Face3 },
   ].filter(Boolean);
 
@@ -1029,8 +1061,7 @@ const PSCourseForm = ({
 
   return (
     <div className="coursepage">
-      <div className="ps-course-form" >
-
+      <div className="ps-course-form">
         {showSuccessAlert && (
           <div className="alert-container mb-4">
             <AlertMessage
@@ -1067,23 +1098,34 @@ const PSCourseForm = ({
                       {!hideTitleField && (
                         <Form.Group className="mb-2">
                           <div className="d-flex justify-content-between align-items-center">
-                            <Form.Label className="mb-0 d-flex justify-content-between align-items-center"><>{intl.formatMessage(messages.title)} <span className="required-asterisk">*</span></>
-                              {showCopilotIcon &&<div className="aibutton">
-                                {aiLoading.title ? (
-                                  <span style={{
-                                    fontSize: "0.875rem",
-                                    color: "var(--primary)",
-                                    animation: "pulse 1.5s infinite",
-                                  }}>{intl.formatMessage(messages.loading)}</span>
-                                ) : (
-                                  <AIButton
-                                    disabled={!editedValues.title?.trim()}
-                                    onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
-                                    fieldName="title"
-                                    fieldValue={editedValues.title || ''}
-                                  />
-                                )}
-                              </div>}
+                            <Form.Label className="mb-0 d-flex justify-content-between align-items-center">
+                              <>
+                                {intl.formatMessage(messages.title)} <span className="required-asterisk">*</span>
+                              </>
+                              {showCopilotIcon && (
+                                <div className="aibutton">
+                                  {aiLoading.title ?
+                                    (
+                                      <span
+                                        style={{
+                                          fontSize: '0.875rem',
+                                          color: 'var(--primary)',
+                                          animation: 'pulse 1.5s infinite',
+                                        }}
+                                      >
+                                        {intl.formatMessage(messages.loading)}
+                                      </span>
+                                    ) :
+                                    (
+                                      <AIButton
+                                        disabled={!editedValues.title?.trim()}
+                                        onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
+                                        fieldName="title"
+                                        fieldValue={editedValues.title || ''}
+                                      />
+                                    )}
+                                </div>
+                              )}
                             </Form.Label>
                           </div>
                           <Form.Control
@@ -1103,23 +1145,35 @@ const PSCourseForm = ({
                       )}
                       <Form.Group className="mb-1">
                         <div className="d-flex justify-content-between align-items-center">
-                          <Form.Label className="mb-0 d-flex justify-content-between align-items-center"><>{intl.formatMessage(messages.shortDescription)} <span className="required-asterisk">*</span></>
-                            {showCopilotIcon && <div className="aibutton">
-                              {aiLoading.shortDescription ? (
-                                <span style={{
-                                  fontSize: "0.875rem",
-                                  color: "var(--primary)",
-                                  animation: "pulse 1.5s infinite",
-                                }}>{intl.formatMessage(messages.loading)}</span>
-                              ) : (
-                                <AIButton
-                                  disabled={!editedValues.title?.trim()}
-                                  onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
-                                  fieldName="shortDescription"
-                                  fieldValue={editedValues.shortDescription || ''}
-                                />
-                              )}
-                            </div>}
+                          <Form.Label className="mb-0 d-flex justify-content-between align-items-center">
+                            <>
+                              {intl.formatMessage(messages.shortDescription)}{' '}
+                              <span className="required-asterisk">*</span>
+                            </>
+                            {showCopilotIcon && (
+                              <div className="aibutton">
+                                {aiLoading.shortDescription ?
+                                  (
+                                    <span
+                                      style={{
+                                        fontSize: '0.875rem',
+                                        color: 'var(--primary)',
+                                        animation: 'pulse 1.5s infinite',
+                                      }}
+                                    >
+                                      {intl.formatMessage(messages.loading)}
+                                    </span>
+                                  ) :
+                                  (
+                                    <AIButton
+                                      disabled={!editedValues.title?.trim()}
+                                      onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
+                                      fieldName="shortDescription"
+                                      fieldValue={editedValues.shortDescription || ''}
+                                    />
+                                  )}
+                              </div>
+                            )}
                           </Form.Label>
                         </div>
                         <Form.Control
@@ -1143,23 +1197,32 @@ const PSCourseForm = ({
 
                       <Form.Group className={scheduleSettings ? 'mb-1' : 'mb-3'}>
                         <div className="d-flex justify-content-between align-items-center">
-                          <Form.Label className="mb-0 d-flex justify-content-between align-items-center"><>{intl.formatMessage(messages.description)}</>
-                            {showCopilotIcon && <div className="aibutton">
-                              {aiLoading.description ? (
-                                <span style={{
-                                  fontSize: "0.875rem",
-                                  color: "var(--primary)",
-                                  animation: "pulse 1.5s infinite",
-                                }}>{intl.formatMessage(messages.loading)}</span>
-                              ) : (
-                                <AIButton
-                                  disabled={!(editedValues.title?.trim() && editedValues.shortDescription?.trim())}
-                                  onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
-                                  fieldName="description"
-                                  fieldValue={editedValues.description || ''}
-                                />
-                              )}
-                            </div>}
+                          <Form.Label className="mb-0 d-flex justify-content-between align-items-center">
+                            <>{intl.formatMessage(messages.description)}</>
+                            {showCopilotIcon && (
+                              <div className="aibutton">
+                                {aiLoading.description ?
+                                  (
+                                    <span
+                                      style={{
+                                        fontSize: '0.875rem',
+                                        color: 'var(--primary)',
+                                        animation: 'pulse 1.5s infinite',
+                                      }}
+                                    >
+                                      {intl.formatMessage(messages.loading)}
+                                    </span>
+                                  ) :
+                                  (
+                                    <AIButton
+                                      disabled={!(editedValues.title?.trim() && editedValues.shortDescription?.trim())}
+                                      onClick={enabledCopilot ? handleAIButtonClick : openCopilotReview}
+                                      fieldName="description"
+                                      fieldValue={editedValues.description || ''}
+                                    />
+                                  )}
+                              </div>
+                            )}
                           </Form.Label>
                         </div>
                         <Form.Control
@@ -1180,7 +1243,9 @@ const PSCourseForm = ({
 
                       {scheduleSettings && (
                         <Form.Group className="mb-3">
-                          <Form.Label><>{intl.formatMessage(messages.courseOverview)}</></Form.Label>
+                          <Form.Label>
+                            <>{intl.formatMessage(messages.courseOverview)}</>
+                          </Form.Label>
                           <WysiwygEditor
                             initialValue={editedValues.overview || ''}
                             onChange={(value) => handleInputChange('overview', value)}
@@ -1190,7 +1255,6 @@ const PSCourseForm = ({
                           </Form.Control.Feedback>
                         </Form.Group>
                       )}
-
                     </div>
                     <div className="options-container">
                       <Row>
@@ -1220,53 +1284,65 @@ const PSCourseForm = ({
                                 <Row className="custom-padding">
                                   <Col xs={12} md={12}>
                                     <Form.Group>
-                                      <Form.Label><>{intl.formatMessage(messages.organization)} <span className="required-asterisk">*</span></></Form.Label>
-                                      {canCreateNewOrganization ? (
-                                        <CustomTypeaheadDropdown
-                                          readOnly={false}
-                                          name="organization"
-                                          value={editedValues.organization || ''}
-                                          controlClassName={errors.organization ? 'is-invalid' : ''}
-                                          options={allowedOrganizations}
-                                          placeholder={intl.formatMessage(messages.selectAnOrganization)}
-                                          handleChange={(value) => handleInputChange('organization', value)}
-                                          handleBlur={handleCustomBlurForDropdown}
-                                          noOptionsMessage={intl.formatMessage(messages.noOrganizationsAvailable)}
-                                          required
-                                        />
-                                      ) : (
-                                        <div className="read-only-organization-dropdown">
-                                          <Dropdown>
-                                            <Dropdown.Toggle
-                                              id="organization-dropdown"
-                                              variant="outline-primary"
-                                              className={`form-control ${errors.organization && touched.organization ? 'is-invalid' : ''}`}
-                                              onBlur={() => handleBlur('organization')}
-                                            >
-                                              {editedValues.organization || intl.formatMessage(messages.selectAnOrganization)}
-                                            </Dropdown.Toggle>
-                                            <Dropdown.Menu>
-                                              {allowedOrganizations && allowedOrganizations.length > 0 ? (
-                                                allowedOrganizations.map((org) => (
-                                                  <Dropdown.Item
-                                                    key={org}
-                                                    onClick={() => {
-                                                      handleInputChange('organization', org);
-                                                      handleBlur('organization');
-                                                    }}
-                                                  >
-                                                    {org}
-                                                  </Dropdown.Item>
-                                                ))
-                                              ) : (
-                                                <Dropdown.Item disabled>
-                                                  {intl.formatMessage(messages.noOrganizationsAvailable2)}
-                                                </Dropdown.Item>
-                                              )}
-                                            </Dropdown.Menu>
-                                          </Dropdown>
-                                        </div>
-                                      )}
+                                      <Form.Label>
+                                        <>
+                                          {intl.formatMessage(messages.organization)}{' '}
+                                          <span className="required-asterisk">*</span>
+                                        </>
+                                      </Form.Label>
+                                      {canCreateNewOrganization ?
+                                        (
+                                          <CustomTypeaheadDropdown
+                                            readOnly={false}
+                                            name="organization"
+                                            value={editedValues.organization || ''}
+                                            controlClassName={errors.organization ? 'is-invalid' : ''}
+                                            options={allowedOrganizations}
+                                            placeholder={intl.formatMessage(messages.selectAnOrganization)}
+                                            handleChange={(value) => handleInputChange('organization', value)}
+                                            handleBlur={handleCustomBlurForDropdown}
+                                            noOptionsMessage={intl.formatMessage(messages.noOrganizationsAvailable)}
+                                            required
+                                          />
+                                        ) :
+                                        (
+                                          <div className="read-only-organization-dropdown">
+                                            <Dropdown>
+                                              <Dropdown.Toggle
+                                                id="organization-dropdown"
+                                                variant="outline-primary"
+                                                className={`form-control ${
+                                                  errors.organization && touched.organization ? 'is-invalid' : ''
+                                                }`}
+                                                onBlur={() => handleBlur('organization')}
+                                              >
+                                                {editedValues.organization ||
+                                                  intl.formatMessage(messages.selectAnOrganization)}
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu>
+                                                {allowedOrganizations && allowedOrganizations.length > 0 ?
+                                                  (
+                                                    allowedOrganizations.map((org) => (
+                                                      <Dropdown.Item
+                                                        key={org}
+                                                        onClick={() => {
+                                                          handleInputChange('organization', org);
+                                                          handleBlur('organization');
+                                                        }}
+                                                      >
+                                                        {org}
+                                                      </Dropdown.Item>
+                                                    ))
+                                                  ) :
+                                                  (
+                                                    <Dropdown.Item disabled>
+                                                      {intl.formatMessage(messages.noOrganizationsAvailable2)}
+                                                    </Dropdown.Item>
+                                                  )}
+                                              </Dropdown.Menu>
+                                            </Dropdown>
+                                          </div>
+                                        )}
                                       <Form.Text>
                                         {intl.formatMessage(messages.theNameOfTheOrganizationSponsoringThe)}
                                       </Form.Text>
@@ -1279,7 +1355,12 @@ const PSCourseForm = ({
                                   </Col>
                                   <Col xs={12} md={12}>
                                     <Form.Group>
-                                      <Form.Label><>{intl.formatMessage(messages.courseNumber)} <span className="required-asterisk">*</span></></Form.Label>
+                                      <Form.Label>
+                                        <>
+                                          {intl.formatMessage(messages.courseNumber)}{' '}
+                                          <span className="required-asterisk">*</span>
+                                        </>
+                                      </Form.Label>
                                       <Form.Control
                                         type="text"
                                         name="courseNumber"
@@ -1304,7 +1385,12 @@ const PSCourseForm = ({
                                 <Row className="pt-0 custom-padding">
                                   <Col xs={12} md={6}>
                                     <Form.Group>
-                                      <Form.Label><>{intl.formatMessage(messages.courseRun)} <span className="required-asterisk">*</span></></Form.Label>
+                                      <Form.Label>
+                                        <>
+                                          {intl.formatMessage(messages.courseRun)}{' '}
+                                          <span className="required-asterisk">*</span>
+                                        </>
+                                      </Form.Label>
                                       <Form.Control
                                         type="text"
                                         name="courseRun"
@@ -1367,8 +1453,7 @@ const PSCourseForm = ({
                                           <Col xs={12} md={6}>
                                             <div className="datepicker-control">
                                               <Form.Label>
-                                                Course start date{' '}
-                                                <span className="required-asterisk">*</span>
+                                                Course start date <span className="required-asterisk">*</span>
                                               </Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.date}
@@ -1465,7 +1550,9 @@ const PSCourseForm = ({
                                                 type={DATEPICKER_TYPES.date}
                                                 value={editedValues.enrollmentStart || ''}
                                                 label={null}
-                                                helpText={intl.formatMessage(messages.enterTheDateWhenEnrollmentWillStart)}
+                                                helpText={intl.formatMessage(
+                                                  messages.enterTheDateWhenEnrollmentWillStart,
+                                                )}
                                                 isInvalid={!!errors.enrollmentStart && touched.enrollmentStart}
                                                 controlName="enrollment-start-date"
                                                 onChange={(value) => handleInputChange('enrollmentStart', value)}
@@ -1481,7 +1568,9 @@ const PSCourseForm = ({
                                           </Col>
                                           <Col xs={12} md={6}>
                                             <div className="time-field">
-                                              <Form.Label>{intl.formatMessage(messages.enrollmentStartTime)}</Form.Label>
+                                              <Form.Label>
+                                                {intl.formatMessage(messages.enrollmentStartTime)}
+                                              </Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.time}
                                                 value={editedValues.enrollmentStartTime || ''}
@@ -1509,7 +1598,9 @@ const PSCourseForm = ({
                                                 type={DATEPICKER_TYPES.date}
                                                 value={editedValues.enrollmentEnd || ''}
                                                 label={null}
-                                                helpText={intl.formatMessage(messages.enterTheDateWhenEnrollmentWillEnd)}
+                                                helpText={intl.formatMessage(
+                                                  messages.enterTheDateWhenEnrollmentWillEnd,
+                                                )}
                                                 isInvalid={!!errors.enrollmentEnd && touched.enrollmentEnd}
                                                 controlName="enrollment-end-date"
                                                 onChange={(value) => handleInputChange('enrollmentEnd', value)}
@@ -1599,20 +1690,29 @@ const PSCourseForm = ({
                                           ))}
                                         </Dropdown.Menu>
                                       </Dropdown>
-                                      <Form.Text>{intl.formatMessage(messages.courseThatStudentsMustCompleteBeforeBeginning)}</Form.Text>
+                                      <Form.Text>
+                                        {intl.formatMessage(messages.courseThatStudentsMustCompleteBeforeBeginning)}
+                                      </Form.Text>
                                     </Form.Group>
                                   </Col>
                                 </Row>
                                 <Form.Group className="entrance-exam-group">
-                                  <div className="entrance-exam-label mb-2">{intl.formatMessage(messages.entranceExam)}</div>
+                                  <div className="entrance-exam-label mb-2">
+                                    {intl.formatMessage(messages.entranceExam)}
+                                  </div>
                                   <div className="entrance-exam-card">
                                     <div className="pb-2">
                                       <Form.Check
                                         type="checkbox"
                                         className="entrance-exam-checkbox"
-                                        label={<span className="entrance-exam-checkbox-label">{intl.formatMessage(messages.requireStudentsToPassAnExamBefore)}</span>}
+                                        label={
+                                          <span className="entrance-exam-checkbox-label">
+                                            {intl.formatMessage(messages.requireStudentsToPassAnExamBefore)}
+                                          </span>
+                                        }
                                         checked={editedValues.entranceExamEnabled === 'true'}
-                                        onChange={(e) => handleInputChange('entranceExamEnabled', e.target.checked ? 'true' : 'false')}
+                                        onChange={(e) =>
+                                          handleInputChange('entranceExamEnabled', e.target.checked ? 'true' : 'false')}
                                       />
                                     </div>
                                     {editedValues.entranceExamEnabled === 'true' && (
@@ -1626,7 +1726,8 @@ const PSCourseForm = ({
                                               max={100}
                                               className=""
                                               value={editedValues.entranceExamMinimumScorePct || 40}
-                                              onChange={(e) => handleInputChange('entranceExamMinimumScorePct', e.target.value)}
+                                              onChange={(e) =>
+                                                handleInputChange('entranceExamMinimumScorePct', e.target.value)}
                                               onBlur={() => handleBlur('entranceExamMinimumScorePct')}
                                             />
                                             <span className="pgn__form-control-trailing">%</span>
@@ -1707,7 +1808,9 @@ const PSCourseForm = ({
                                       {intl.formatMessage(messages.paid)}
                                     </Form.Radio>
                                   </div>
-                                  <Form.Text className="mt-1">{intl.formatMessage(messages.chooseWhetherYourCourseWillBeFree)}</Form.Text>
+                                  <Form.Text className="mt-1">
+                                    {intl.formatMessage(messages.chooseWhetherYourCourseWillBeFree)}
+                                  </Form.Text>
                                 </Form.Group>
 
                                 {editedValues.pricingModel === 'paid' && (
@@ -1814,27 +1917,33 @@ const PSCourseForm = ({
                 {!hideCreateNewCourseButton && (
                   <div className="ps-courseform-footer-bar">
                     <div className="footer-cancel">
-                      <Button variant="outline-primary" onClick={handleCancel}>{intl.formatMessage(messages.cancel)}</Button>
+                      <Button variant="outline-primary" onClick={handleCancel}>
+                        {intl.formatMessage(messages.cancel)}
+                      </Button>
                     </div>
                     <div className="footer-create">
                       <Button
                         variant="primary"
                         type="submit"
-                        disabled={
-                          isSubmitting
+                        disabled={isSubmitting
                           || Object.keys(errors).length > 0
                           || !!imageErrors.cardImage
-                          || !!imageErrors.bannerImage
-                        }
+                          || !!imageErrors.bannerImage}
                       >
-                        {isSubmitting ? (
-                          <span>
-                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
-                            {intl.formatMessage(messages.creating)}
-                          </span>
-                        ) : (
-                          intl.formatMessage(messages.create)
-                        )}
+                        {isSubmitting ?
+                          (
+                            <span>
+                              <span
+                                className="spinner-border spinner-border-sm me-2"
+                                role="status"
+                                aria-hidden="true"
+                              />
+                              {intl.formatMessage(messages.creating)}
+                            </span>
+                          ) :
+                          (
+                            intl.formatMessage(messages.create)
+                          )}
                       </Button>
                     </div>
                   </div>
@@ -1843,8 +1952,7 @@ const PSCourseForm = ({
             </Col>
           </Row>
         </Container>
-
-      </div >
+      </div>
       <div className="copilot">
         {isOpen && <Copilot />}
       </div>
@@ -1886,7 +1994,7 @@ PSCourseForm.defaultProps = {
   hideGeneralTab: false,
   hideTitleField: false,
   hideCreateNewCourseButton: false,
-  onFieldChange: () => { },
+  onFieldChange: () => {},
   cardImagePreview: '',
   bannerImagePreview: '',
   hasCardImage: false,
@@ -1899,8 +2007,8 @@ PSCourseForm.defaultProps = {
   possiblePreRequisiteCourses: [],
   allowedImageTypes: ['image/jpeg', 'image/png'],
   onSubmit: undefined,
-  onImageValidationErrorChange: () => { },
-  onResetForm: () => { },
+  onImageValidationErrorChange: () => {},
+  onResetForm: () => {},
   scheduleSettings: false,
   courseSettings: {},
 };

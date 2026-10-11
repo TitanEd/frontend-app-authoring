@@ -13,7 +13,9 @@ import { tokenColor, tokenPalette } from '../../utils/tokenColor';
 import messages from '../messages';
 
 const WidgetCard = ({
-  title, content, type,
+  title,
+  content,
+  type,
 }) => {
   const intl = useIntl();
   // Series colors come from the design tokens (utils/tokenColor.js).
@@ -26,11 +28,15 @@ const WidgetCard = ({
       // where value is an array of numbers, then we have multiple series.
       // If content.data is an array of objects where value is a single number, it's for pie/donut.
       const isMultiSeries = content.data.every(item => Array.isArray(item.value));
-      const { solidColors } = generateColors(isMultiSeries ? content.data.length : (content.data[0]?.value?.length || dataLength));
+      const { solidColors } = generateColors(
+        isMultiSeries ? content.data.length : (content.data[0]?.value?.length || dataLength),
+      );
 
       const commonOptions = {
         chart: {
-          type: content.chartType === 'donut' ? 'donut' : (content.chartType === 'horizontalbar' ? 'bar' : content.chartType),
+          type: content.chartType === 'donut'
+            ? 'donut'
+            : (content.chartType === 'horizontalbar' ? 'bar' : content.chartType),
           height: 300,
           zoom: {
             enabled: false,
@@ -57,7 +63,10 @@ const WidgetCard = ({
         colors: solidColors,
       };
 
-      if (content.chartType === 'bar' || content.chartType === 'horizontalbar' || content.chartType === 'line' || content.chartType === 'area') {
+      if (
+        content.chartType === 'bar' || content.chartType === 'horizontalbar' || content.chartType === 'line' ||
+        content.chartType === 'area'
+      ) {
         const series = content.data.map(item => ({
           name: item.label,
           data: item.value,
@@ -173,7 +182,15 @@ const WidgetCard = ({
   const purifyConfig = {
     ADD_TAGS: ['iframe'],
     ADD_ATTR: [
-      'allow', 'allowfullscreen', 'frameborder', 'scrolling', 'src', 'title', 'width', 'height', 'referrerpolicy',
+      'allow',
+      'allowfullscreen',
+      'frameborder',
+      'scrolling',
+      'src',
+      'title',
+      'width',
+      'height',
+      'referrerpolicy',
     ],
   };
 
@@ -184,55 +201,59 @@ const WidgetCard = ({
         {(type === 'text' || type === 'html') && (
           <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content, purifyConfig) }} />
         )}
-        {/* {type === 'html' && content && (
+        {
+          /* {type === 'html' && content && (
           <div className="html-widget-container">
             <div
               className="html-content"
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.html) }}
             />
           </div>
-        )} */}
+        )} */
+        }
         {type === 'chart' && content && content.data && (
           <div className="chart-widget-container">
-            {(content.chartType === 'pie' || content.chartType === 'donut' || content.chartType === 'bar' || content.chartType === 'horizontalbar' || content.chartType === 'line' || content.chartType === 'area') && (
-              <ReactApexChart
-                options={{
-                  ...chartOptions,
-                  grid: {
-                    borderColor: tokenColor('--pgn-color-light-400', '#e5e7eb'),
-                    strokeDashArray: 4,
-                  },
-                  legend: {
-                    ...chartOptions.legend,
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    labels: { colors: [tokenColor('--pgn-color-text-base', '#22223b')] },
-                  },
-                  plotOptions: {
-                    ...chartOptions.plotOptions,
-                    bar: {
-                      ...((chartOptions.plotOptions && chartOptions.plotOptions.bar) || {}),
-                      borderRadius: 6,
-                      columnWidth: '80%',
+            {(content.chartType === 'pie' || content.chartType === 'donut' || content.chartType === 'bar' ||
+              content.chartType === 'horizontalbar' || content.chartType === 'line' || content.chartType === 'area') &&
+              (
+                <ReactApexChart
+                  options={{
+                    ...chartOptions,
+                    grid: {
+                      borderColor: tokenColor('--pgn-color-light-400', '#e5e7eb'),
+                      strokeDashArray: 4,
                     },
-                  },
-                  chart: {
-                    ...chartOptions.chart,
-                    animations: {
-                      enabled: true,
-                      easing: 'easeinout',
-                      speed: 800,
-                      animateGradually: { enabled: true, delay: 150 },
-                      dynamicAnimation: { enabled: true, speed: 350 },
+                    legend: {
+                      ...chartOptions.legend,
+                      fontSize: '14px',
+                      fontWeight: 500,
+                      labels: { colors: [tokenColor('--pgn-color-text-base', '#22223b')] },
                     },
-                  },
-                }}
-                series={chartSeries}
-                type={chartOptions.chart.type}
-                height={chartOptions.chart.height || 380}
-                width="100%"
-              />
-            )}
+                    plotOptions: {
+                      ...chartOptions.plotOptions,
+                      bar: {
+                        ...((chartOptions.plotOptions && chartOptions.plotOptions.bar) || {}),
+                        borderRadius: 6,
+                        columnWidth: '80%',
+                      },
+                    },
+                    chart: {
+                      ...chartOptions.chart,
+                      animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800,
+                        animateGradually: { enabled: true, delay: 150 },
+                        dynamicAnimation: { enabled: true, speed: 350 },
+                      },
+                    },
+                  }}
+                  series={chartSeries}
+                  type={chartOptions.chart.type}
+                  height={chartOptions.chart.height || 380}
+                  width="100%"
+                />
+              )}
           </div>
         )}
         {type === 'youtube' && content && content.videoId && (
@@ -258,7 +279,8 @@ const WidgetCard = ({
             )}
           </div>
         )}
-        {/* {type === 'calendar' && content && (
+        {
+          /* {type === 'calendar' && content && (
           <div className="calendar-widget">
             {content.embedUrl ? (
               <div className="calendar-embed-container">
@@ -297,7 +319,8 @@ const WidgetCard = ({
               </>
             )}
           </div>
-        )} */}
+        )} */
+        }
       </Card.Section>
     </Card>
   );

@@ -44,9 +44,7 @@ const CourseRerun = () => {
 
   return (
     <>
-      <PluginSlot
-        id="course_rerun_header_plugin_slot"
-      >
+      <PluginSlot id="course_rerun_header_plugin_slot">
         <Header isHiddenMainMenu />
       </PluginSlot>
       <PluginSlot
@@ -108,9 +106,7 @@ const CourseRerun = () => {
           isQueryPending={savingStatus === RequestStatus.PENDING}
         />
       </div>
-      <PluginSlot
-        id="course_rerun_footer_plugin_slot"
-      >
+      <PluginSlot id="course_rerun_footer_plugin_slot">
         <StudioFooterSlot />
       </PluginSlot>
     </>

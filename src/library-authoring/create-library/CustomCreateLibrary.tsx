@@ -1,5 +1,9 @@
 import {
-  ActionRow, Button, Container, Form, StatefulButton,
+  ActionRow,
+  Button,
+  Container,
+  Form,
+  StatefulButton,
 } from '@openedx/paragon';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -41,25 +45,23 @@ const CustomCreateLibrary = ({
         org: '',
         slug: '',
       }}
-      validationSchema={
-            Yup.object().shape({
-              title: Yup.string()
-                .required(formatMessage(messages.requiredFieldError)),
-              org: Yup.string()
-                .required(formatMessage(messages.requiredFieldError))
-                .matches(
-                  specialCharsRule,
-                  formatMessage(messages.disallowedCharsError),
-                )
-                .matches(noSpaceRule, formatMessage(messages.noSpaceError)),
-              slug: Yup.string()
-                .required(formatMessage(messages.requiredFieldError))
-                .matches(
-                  validSlugIdRegex,
-                  formatMessage(messages.invalidSlugError),
-                ),
-            })
-          }
+      validationSchema={Yup.object().shape({
+        title: Yup.string()
+          .required(formatMessage(messages.requiredFieldError)),
+        org: Yup.string()
+          .required(formatMessage(messages.requiredFieldError))
+          .matches(
+            specialCharsRule,
+            formatMessage(messages.disallowedCharsError),
+          )
+          .matches(noSpaceRule, formatMessage(messages.noSpaceError)),
+        slug: Yup.string()
+          .required(formatMessage(messages.requiredFieldError))
+          .matches(
+            validSlugIdRegex,
+            formatMessage(messages.invalidSlugError),
+          ),
+      })}
       onSubmit={(values) => mutate(values)}
     >
       {(formikProps) => (
@@ -81,9 +83,11 @@ const CustomCreateLibrary = ({
               onChange={(event) => formikProps.setFieldValue('org', event.selectionId)}
               placeholder={formatMessage(messages.orgPlaceholder)}
             >
-              {organizationListData ? organizationListData.map((org) => (
-                <Form.AutosuggestOption key={org} id={org}>{org}</Form.AutosuggestOption>
-              )) : []}
+              {organizationListData ?
+                organizationListData.map((org) => (
+                  <Form.AutosuggestOption key={org} id={org}>{org}</Form.AutosuggestOption>
+                )) :
+                []}
             </Form.Autosuggest>
             <FormikErrorFeedback name="org">
               <Form.Text>{formatMessage(messages.orgHelp)}</Form.Text>
@@ -120,7 +124,7 @@ const CustomCreateLibrary = ({
         </Form>
       )}
     </Formik>
-    {isError && (<AlertError error={error} />)}
+    {isError && <AlertError error={error} />}
   </Container>
 );
 

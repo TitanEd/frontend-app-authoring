@@ -3,7 +3,11 @@ import './Footer.scss';
 import { FooterProps } from '../interfaces/components';
 
 const Footer: React.FC<FooterProps> = ({
-  contactInfo, quickLinks, exploreLinks, logoUrl, copyrights,
+  contactInfo,
+  quickLinks,
+  exploreLinks,
+  logoUrl,
+  copyrights,
 }) => {
   // Use class names directly now
   const getAlignClass = (align: string | undefined) => align ?? 'left'; // default to 'left' class if not provided
@@ -28,7 +32,9 @@ const Footer: React.FC<FooterProps> = ({
           <ul>
             <h3>Quick Links</h3>
             {quickLinks.content.map((link, index) => (
-              <li key={index}><a href={link.link}>{link.label}</a></li>
+              <li key={index}>
+                <a href={link.link}>{link.label}</a>
+              </li>
             ))}
           </ul>
         </div>
@@ -37,7 +43,9 @@ const Footer: React.FC<FooterProps> = ({
           <ul>
             <h3>Explore</h3>
             {exploreLinks.content.map((link, index) => (
-              <li key={index}><a href={link.link}>{link.label}</a></li>
+              <li key={index}>
+                <a href={link.link}>{link.label}</a>
+              </li>
             ))}
           </ul>
         </div>

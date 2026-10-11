@@ -12,7 +12,10 @@ import { useCalendarContext } from '../context/CalendarContext';
 // tokens in src/styles/styles-overrides.scss.
 const CalendarView = () => {
   const {
-    filteredEvents, setCurrentDateTitle, currentDate, currentView,
+    filteredEvents,
+    setCurrentDateTitle,
+    currentDate,
+    currentView,
   } = useCalendarContext();
   const containerRef = useRef(null);
   const calendarRef = useRef(null);

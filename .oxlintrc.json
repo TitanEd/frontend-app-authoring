@@ -28,6 +28,7 @@
   "ignorePatterns": [
     "webpack.dev-tutor.config.js",
     // TitanEd: Tutor (Python) plugin file kept with a .jsx extension, not JavaScript.
-    "server.config.plugin.jsx"
+    "server.config.plugin.jsx",
+    "server.env.config.plugin.jsx"
   ]
 }

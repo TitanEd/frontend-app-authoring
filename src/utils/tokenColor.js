@@ -7,7 +7,7 @@ export const tokenColor = (name, fallback = '') => {
   try {
     const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     return value || fallback;
-  } catch (e) {
+  } catch {
     return fallback;
   }
 };
@@ -24,9 +24,10 @@ const PALETTE_TOKENS = [
   ['--pgn-color-brand-base', '#9D0054'],
 ];
 
-export const tokenPalette = (count) => Array.from(
-  { length: Math.max(count, 1) },
-  (_, i) => tokenColor(...PALETTE_TOKENS[i % PALETTE_TOKENS.length]),
-);
+export const tokenPalette = (count) =>
+  Array.from(
+    { length: Math.max(count, 1) },
+    (_, i) => tokenColor(...PALETTE_TOKENS[i % PALETTE_TOKENS.length]),
+  );
 
 export default tokenColor;

@@ -98,9 +98,7 @@ const SortableItem = ({
           {...listeners}
         >
           <span className="btn-icon__icon-container">
-            <PluginSlot
-              id="drag_indicator_icon_plugin_slot"
-            >
+            <PluginSlot id="drag_indicator_icon_plugin_slot">
               <Icon src={DragIndicator} />
             </PluginSlot>
           </span>

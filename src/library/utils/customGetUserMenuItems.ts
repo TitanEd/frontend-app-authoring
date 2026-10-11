@@ -40,7 +40,7 @@ const customGetUserMenuItems = ({
   userMenuItemsFromAPI,
 }: UserMenuItemsParams) => {
   if (Array.isArray(userMenuItemsFromAPI?.menu_items) && userMenuItemsFromAPI.menu_items.length) {
-    return userMenuItemsFromAPI.menu_items.map((item: { label: string; url: string }) => ({
+    return userMenuItemsFromAPI.menu_items.map((item: { label: string; url: string; }) => ({
       href: item.url,
       title: item.label,
     }));
@@ -53,10 +53,12 @@ const customGetUserMenuItems = ({
       href: `${STUDIO_BASE_URL}`,
       title: intl.formatMessage(messages.studioHome),
     },
-    ...(isAdmin ? [{
-      href: `${STUDIO_BASE_URL}/maintenance`,
-      title: intl.formatMessage(messages.maintenance),
-    }] : []),
+    ...(isAdmin ?
+      [{
+        href: `${STUDIO_BASE_URL}/maintenance`,
+        title: intl.formatMessage(messages.maintenance),
+      }] :
+      []),
     {
       href: logoutUrl || LOGOUT_URL,
       title: intl.formatMessage(messages.logout),

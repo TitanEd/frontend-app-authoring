@@ -34,13 +34,17 @@ const CustomTaxonomyDetailPage = ({
                 role="link"
                 tabIndex={0}
                 onClick={() => navigate('/taxonomies')}
-                onKeyDown={(e) => { if (e.key === 'Enter') { navigate('/taxonomies'); } }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') { navigate('/taxonomies'); }
+                }}
               >
                 <LmsBook className="custom-icon" />
                 {intl.formatMessage(taxonomyMessages.headerTitle)}
               </span>
               <span className="ca-breadcrumb-divider">/</span>
-              <span className="ca-breadcrumb-current">{taxonomy.name || intl.formatMessage(customMessages.loading)}</span>
+              <span className="ca-breadcrumb-current">
+                {taxonomy.name || intl.formatMessage(customMessages.loading)}
+              </span>
             </div>
             <div className="ca-title library-breadcrumb-title">
               <div>

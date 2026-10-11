@@ -6,7 +6,12 @@ import CustomFilterSelect from '../../generic/custom-filter-select/CustomFilterS
 import messages from '../data/messages';
 
 const CustomFilterDropdown = ({
-  id, value, onChange, options, allLabelMessage, showSearch,
+  id,
+  value,
+  onChange,
+  options,
+  allLabelMessage,
+  showSearch,
 }) => {
   const intl = useIntl();
   const selectOptions = options.map((option) => {

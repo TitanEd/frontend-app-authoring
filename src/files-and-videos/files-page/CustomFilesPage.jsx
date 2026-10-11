@@ -6,7 +6,7 @@ import { CheckboxFilter, Container } from '@openedx/paragon';
 import Placeholder from '../../editors/Placeholder';
 
 import { RequestStatus } from '../../data/constants';
-import { useModels, useModel } from '../../generic/model-store';
+import { useModels } from '../../generic/model-store';
 import {
   addAssetFile,
   deleteAssetFile,
@@ -79,10 +79,11 @@ const CustomFilesPage = ({
   };
 
   const thumbnailPreview = (props) => FileThumbnail(props);
-  const infoModalSidebar = (asset) => FileInfoModalSidebar({
-    asset,
-    handleLockedAsset: handleLockFile,
-  });
+  const infoModalSidebar = (asset) =>
+    FileInfoModalSidebar({
+      asset,
+      handleLockedAsset: handleLockFile,
+    });
 
   const assets = useModels('assets', assetIds);
   const data = {
@@ -195,27 +196,27 @@ const CustomFilesPage = ({
             <FormattedMessage {...messages.heading} />
           </div>
           {loadingStatus !== RequestStatus.FAILED && (
-          <>
-            <FileTable
-              {...{
-                courseId,
-                data,
-                handleAddFile,
-                handleDeleteFile,
-                handleDownloadFile,
-                handleLockFile,
-                handleUsagePaths,
-                handleErrorReset,
-                handleFileOrder,
-                tableColumns,
-                maxFileSize,
-                thumbnailPreview,
-                infoModalSidebar,
-                files: assets,
-              }}
-            />
-            <FileValidationModal {...{ handleFileOverwrite }} />
-          </>
+            <>
+              <FileTable
+                {...{
+                  courseId,
+                  data,
+                  handleAddFile,
+                  handleDeleteFile,
+                  handleDownloadFile,
+                  handleLockFile,
+                  handleUsagePaths,
+                  handleErrorReset,
+                  handleFileOrder,
+                  tableColumns,
+                  maxFileSize,
+                  thumbnailPreview,
+                  infoModalSidebar,
+                  files: assets,
+                }}
+              />
+              <FileValidationModal {...{ handleFileOverwrite }} />
+            </>
           )}
         </div>
       </Container>

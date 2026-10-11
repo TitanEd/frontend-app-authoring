@@ -23,7 +23,7 @@ export const AssignmentProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const validateDateRange = (from, to) => {
-    if (!from || !to) return true;
+    if (!from || !to) { return true; }
     const fromTime = new Date(from).getTime();
     const toTime = new Date(to).getTime();
     const threeMonths = 3 * 30 * 24 * 60 * 60 * 1000;
@@ -40,16 +40,15 @@ export const AssignmentProvider = ({ children }) => {
         return;
       }
       try {
-        const { data, total, totalPages, courseOptions, statusOptions } =
-          await fetchAssignments({
-            page: currentPage,
-            pageSize,
-            fromDate,
-            toDate,
-            course: courseFilter,
-            status: statusFilter,
-            searchQuery,
-          });
+        const { data, total, totalPages, courseOptions, statusOptions } = await fetchAssignments({
+          page: currentPage,
+          pageSize,
+          fromDate,
+          toDate,
+          course: courseFilter,
+          status: statusFilter,
+          searchQuery,
+        });
 
         setAssignments(data);
         setTotalAssignments(total);
@@ -57,7 +56,7 @@ export const AssignmentProvider = ({ children }) => {
         setCourseOptions(courseOptions);
         setStatusOptions(statusOptions);
         setError(null);
-      } catch (err) {
+      } catch {
         setError(messages.errorLoad);
         setAssignments([]);
         setTotalAssignments(0);

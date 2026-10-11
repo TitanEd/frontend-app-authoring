@@ -93,7 +93,7 @@ const GradingTypeAndDueDate = ({
       <>
         <div className="d-flex align-items-center">
           {gradingTypeDiv()}
-          {dueDateDiv()}  {/* Display the local due date */}
+          {dueDateDiv()} {/* Display the local due date */}
         </div>
         {showRelativeWeeks && (selfPacedRelativeDueWeeksDiv())}
       </>

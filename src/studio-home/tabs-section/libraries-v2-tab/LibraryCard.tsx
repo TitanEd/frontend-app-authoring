@@ -9,7 +9,10 @@ interface LibraryCardProps {
 }
 
 const LibraryCard: React.FC<LibraryCardProps> = ({
-  title, org, id, path,
+  title,
+  org,
+  id,
+  path,
 }) => (
   <Link to={path} style={{ textDecoration: 'none' }}>
     <div className="library-card-container">

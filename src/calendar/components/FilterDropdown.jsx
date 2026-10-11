@@ -6,7 +6,11 @@ import Dropdown from './Dropdown';
 
 const FilterDropdown = ({ types }) => {
   const {
-    filterByType, filteredEvents, filterType, nextEvent, prevEvent,
+    filterByType,
+    filteredEvents,
+    filterType,
+    nextEvent,
+    prevEvent,
   } = useCalendarContext();
 
   const filterOptions = [

@@ -7,7 +7,7 @@
   letter-spacing: normal;
   text-align: left;
   color: var(--pgn-color-text-base);
-  margin-bottom: 0.7rem;
+  margin-bottom: .7rem;
 }
 
 .custom-card {
@@ -15,7 +15,7 @@
 }
 
 .custom-card-header {
-  padding: 0.5rem 2rem 0.5rem 1rem;
+  padding: .5rem 2rem .5rem 1rem;
 }
 
 .content-wrapper {
@@ -27,7 +27,7 @@
 
 .dashboard-main-content {
   flex: 1;
-  padding: 0.8rem 0.5rem 0.8rem 0.4rem;
+  padding: .8rem .5rem .8rem .4rem;
   padding-top: 0;
   box-sizing: border-box;
   overflow: auto;
@@ -44,8 +44,8 @@
 
 .dashboard-wrapper {
   display: flex;
-  padding: 0.8rem;
-  gap: 0.5rem;
+  padding: .8rem;
+  gap: .5rem;
   background-color: var(--bg-body);
   min-height: 100%;
   box-sizing: border-box;
@@ -135,7 +135,7 @@
     .card-list {
       padding-left: 1rem;
       list-style-type: disc;
-      font-size: 0.875rem;
+      font-size: .875rem;
     }
 
     .text-muted {
@@ -145,16 +145,16 @@
     .calendar-events {
       display: grid;
       gap: 1rem;
-      margin-top: 0.75rem;
+      margin-top: .75rem;
 
       .calendar-event {
         background-color: var(--primary);
         color: var(--pgn-color-white);
-        padding: 0.5rem;
-        border-radius: 0.25rem;
+        padding: .5rem;
+        border-radius: .25rem;
 
         .event-time {
-          font-size: 0.75rem;
+          font-size: .75rem;
         }
       }
     }
@@ -175,7 +175,7 @@
 
       .card-header {
         border-bottom: 1px solid var(--pgn-color-white);
-        padding: 1rem 0rem 0rem 1rem !important;
+        padding: 1rem 0 0 1rem !important;
         background-color: var(--bg-surface);
         position: sticky;
         top: 0;
@@ -185,7 +185,7 @@
 
     .card-list {
       list-style-type: disc;
-      font-size: 0.875rem;
+      font-size: .875rem;
     }
 
     .text-muted {
@@ -199,7 +199,7 @@
 }
 
 // Responsive styles
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .dashboard-wrapper {
     flex-direction: column;
 
@@ -213,7 +213,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .dashboard-wrapper {
     flex-direction: column;
     align-items: stretch;
@@ -253,15 +253,15 @@
   }
 
   .calendar-nav {
-    padding: 0.4rem 0.8rem;
+    padding: .4rem .8rem;
   }
 
   .calendar-view .fc-list-event {
-    font-size: 0.85rem;
+    font-size: .85rem;
   }
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .overview-section .overview-grid {
     grid-template-columns: 1fr;
   }
@@ -277,7 +277,7 @@
 
   .widget-selection-card {
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all .3s ease;
     border: 2px solid transparent;
 
     &:hover {
@@ -287,7 +287,7 @@
 
     &.selected {
       border-color: var(--primary);
-      background-color: rgba(var(--primary-rgb), 0.05);
+      background-color: rgb(var(--primary-rgb) .05);
       box-shadow: 0 0 0 2px var(--pgn-color-primary-light);
     }
 
@@ -295,13 +295,13 @@
       padding: 1rem;
 
       h4 {
-        margin-bottom: 0.5rem;
+        margin-bottom: .5rem;
       }
 
       p {
         margin: 0;
         color: var(--pgn-color-text-muted);
-        font-size: 0.875rem;
+        font-size: .875rem;
       }
     }
   }
@@ -376,9 +376,9 @@
 .metric-icon-modern .pgn__icon {
   width: 48px;
   height: 48px;
-  opacity: 0.25;
+  opacity: .25;
   color: var(--pgn-color-white);
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity .3s cubic-bezier(.4, 0, .2, 1);
 }
 
 .modal-widgets-grid {
@@ -394,7 +394,7 @@
   gap: 1rem;
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .modal-widgets-grid {
     grid-template-columns: 1fr;
   }
@@ -403,17 +403,17 @@
 .ai-suggestion-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: .75rem;
 }
 
 .ai-suggestion-item {
   background: var(--pgn-color-danger-100, var(--pgn-color-light-200));
   border-radius: 8px;
   border: 1px solid var(--pgn-color-light-400);
-  padding: 0.25rem 0.75rem;
+  padding: .25rem .75rem;
   margin-bottom: 0;
   box-shadow: var(--pgn-elevation-box-shadow-down-1);
-  font-size: 0.95rem;
+  font-size: .95rem;
   color: var(--pgn-color-text-base);
   display: flex;
   align-items: center;
@@ -423,17 +423,17 @@
 .todo-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: .75rem;
 }
 
 .todo-item {
   background: var(--pgn-color-bg-base);
   border-radius: 8px;
   border: 1px solid var(--pgn-color-gray-500);
-  padding: 0.25rem 0.75rem;
+  padding: .25rem .75rem;
   margin-bottom: 0;
   box-shadow: var(--pgn-elevation-box-shadow-down-1);
-  font-size: 0.95rem;
+  font-size: .95rem;
   color: var(--pgn-color-text-base);
   display: flex;
   align-items: center;
@@ -444,7 +444,7 @@
   border: 2px dashed var(--pgn-color-light-400);
   background-color: var(--pgn-color-bg-base);
   cursor: default !important;
-  transition: all 0.2s ease;
+  transition: all .2s ease;
 
   &:hover {
     border-color: var(--primary);
@@ -468,8 +468,8 @@
 
 .calendar-nav {
   display: flex;
-  gap: 0.5rem;
-  padding: 0.8rem 1rem;
+  gap: .5rem;
+  padding: .8rem 1rem;
   justify-content: left;
   align-items: center;
   background-color: var(--bg-surface);
@@ -478,9 +478,8 @@
 
 .sidebar-card {
   .calendar-view {
-    margin: 0 1rem 0.8rem 1rem;
-    overflow-y: auto;
-    overflow-x: hidden;
+    margin: 0 1rem .8rem;
+    overflow: hidden auto;
     scrollbar-width: thin;
 
     .fc {
@@ -495,7 +494,7 @@
     }
 
     .fc-list {
-      font-size: 0.75rem;
+      font-size: .75rem;
       color: var(--text-light);
     }
 

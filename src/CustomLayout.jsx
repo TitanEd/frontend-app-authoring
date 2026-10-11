@@ -16,7 +16,7 @@ import * as ParagonIcons from '@openedx/paragon/icons';
 //   LmsBook,
 // } from '@openedx/paragon/icons';
 // import Sidebar from 'library/Sidebar/Sidebar';
-import { MainHeader, Sidebar, SidebarProvider, AnnouncementBanner} from 'titaned-frontend-library';
+import { MainHeader, Sidebar, SidebarProvider, AnnouncementBanner } from 'titaned-frontend-library';
 import customGetUserMenuItems from '@src/library/utils/customGetUserMenuItems';
 // import MainHeader from 'library/Header/MainHeader';
 // import { SidebarProvider } from 'library/providers/SidebarProvider';
@@ -24,7 +24,6 @@ import customGetUserMenuItems from '@src/library/utils/customGetUserMenuItems';
 import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import messages from './messages';
 import customMessages from './customMessages';
 import { useContentSearchConnection } from './search-manager/data/apiHooks';
 import { SearchContextProvider } from './search-manager';
@@ -35,8 +34,6 @@ import { LoadingSpinner } from './generic/Loading';
 import('titaned-frontend-library/dist/index.css');
 import('./styles/styles-overrides.scss');
 import('./styles/custom-layout.scss');
-
-
 
 // Design tokens for the custom UI are scoped to this class
 // (tels-brand-openedx paragon/custom_authoring.scss).
@@ -60,7 +57,9 @@ const CUSTOM_UI_CLASS = 'tels-custom-authoring';
 // API to fetch sidebar items
 const fetchNavigationItems = async () => {
   try {
-    const response = await getAuthenticatedHttpClient().get(`${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`);
+    const response = await getAuthenticatedHttpClient().get(
+      `${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`,
+    );
     // for local api fetch
     // const response = await getAuthenticatedHttpClient().get(
     //   'LMS_API_DOMAIN/titaned/api/v1/menu-config/'
@@ -109,13 +108,15 @@ const CustomLayout = () => {
   const [userMenuItemsFromAPI, setUserMenuItemsFromAPI] = useState({});
 
   const { authenticatedUser, config } = useContext(AppContext);
-  const { STUDIO_BASE_URL, LOGOUT_URL } = config;
+  const { LOGOUT_URL } = config;
   const userIsAdmin = authenticatedUser.administrator;
 
   useEffect(() => {
     const fetchUserMenuItemsFromAPI = async () => {
       try {
-        const response = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v1/user-dropdown-menu/`);
+        const response = await getAuthenticatedHttpClient().get(
+          `${getConfig().LMS_BASE_URL}/titaned/api/v1/user-dropdown-menu/`,
+        );
         // const response = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/user-dropdown-menu/');
         const { data } = response;
         if (data) {
@@ -152,11 +153,15 @@ const CustomLayout = () => {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const systemResponse = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v1/system/alerts/`);
+        const systemResponse = await getAuthenticatedHttpClient().get(
+          `${getConfig().LMS_BASE_URL}/titaned/api/v1/system/alerts/`,
+        );
         // const systemResponse = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/system/alerts/');
 
-        const userResponse = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v1/user/alerts/`);
-        // for local api fetch 
+        const userResponse = await getAuthenticatedHttpClient().get(
+          `${getConfig().LMS_BASE_URL}/titaned/api/v1/user/alerts/`,
+        );
+        // for local api fetch
         // const userResponse = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/user/alerts/');
 
         if (systemResponse?.data) {
@@ -288,7 +293,7 @@ const CustomLayout = () => {
               path: '/assignments',
               icon: <ParagonIcons.Assignment />,
               isVisible: menuConfig.enable_assignments || false,
-            }
+            },
           ];
 
           // Filter visible items and remove the isVisible property
@@ -312,7 +317,7 @@ const CustomLayout = () => {
             setLanguageSelectorList(menuConfig.enabled_languages);
           }
         }
-      } catch (error) {
+      } catch {
         // Fallback to always-visible items when API fails
         const fallbackItems = [
           {
@@ -590,17 +595,19 @@ const CustomLayout = () => {
         {/* Sidebar and Main Content */}
         <div className="content-wrapper">
           <div className="sidebar-container">
-            {loadingSidebar ? (
-              <div className="d-flex justify-content-center align-items-center p-4">
-                <LoadingSpinner />
-              </div>
-            ) : (
-              <Sidebar
-                buttons={sidebarItems}
-                onNavigate={handleNavigate}
-                presentPath={presentPath}
-              />
-            )}
+            {loadingSidebar ?
+              (
+                <div className="d-flex justify-content-center align-items-center p-4">
+                  <LoadingSpinner />
+                </div>
+              ) :
+              (
+                <Sidebar
+                  buttons={sidebarItems}
+                  onNavigate={handleNavigate}
+                  presentPath={presentPath}
+                />
+              )}
           </div>
           <div className="main-content">
             <div className="page-content">
@@ -608,7 +615,8 @@ const CustomLayout = () => {
             </div>
           </div>
         </div>
-        {/* <div>
+        {
+          /* <div>
           <div className="footer-container">
             <Footer
               contactInfo={contactInfo}
@@ -618,18 +626,21 @@ const CustomLayout = () => {
               copyrights="Copyright © 2025 All Rights Reserved by TitanEd"
             />
           </div>
-        </div> */}
+        </div> */
+        }
       </SidebarProvider>
       {/* <FeedbackComponent isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} /> */}
     </div>
   );
 
-  return isSearchEnabled ? (
-    <SearchContextProvider>
-      {renderContent()}
-    </SearchContextProvider>
-  ) : (
-    renderContent()
-  );
+  return isSearchEnabled ?
+    (
+      <SearchContextProvider>
+        {renderContent()}
+      </SearchContextProvider>
+    ) :
+    (
+      renderContent()
+    );
 };
 export default CustomLayout;

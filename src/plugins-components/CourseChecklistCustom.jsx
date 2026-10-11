@@ -6,7 +6,7 @@ import SubHeader from '../generic/sub-header/SubHeader';
 
 const CourseChecklistCustom = ({
   courseId,
-//   courseDetails,
+  //   courseDetails,
   enableQuality,
   updateLinks,
   //   loadingStatus,
@@ -25,9 +25,12 @@ const CourseChecklistCustom = ({
   <Container size="xl" className="custom-checklist-container">
     <SubHeader
       title={headingTitle}
-    //   subtitle={headingSubtitle}
+      //   subtitle={headingSubtitle}
     />
-    <hr className="custom-checklist-divider" style={{ border: 'none', borderTop: '1px solid var(--pgn-color-light-400)', margin: '0 0 0 0' }} />
+    <hr
+      className="custom-checklist-divider"
+      style={{ border: 'none', borderTop: '1px solid var(--pgn-color-light-400)', margin: '0 0 0 0' }}
+    />
     <AriaLiveRegion
       {...{
         isCourseLaunchChecklistLoading,

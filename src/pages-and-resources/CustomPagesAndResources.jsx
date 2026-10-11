@@ -12,7 +12,7 @@ import messages from './messages';
 import DiscussionsSettings from './discussions/CustomDiscussionsSettings';
 
 import PageGrid from './pages/PageGrid';
-import { useModels, useModel } from '../generic/model-store';
+import { useModels } from '../generic/model-store';
 import { getCourseAppsApiStatus, getLoadingStatus } from './data/selectors';
 import PagesAndResourcesProvider from './PagesAndResourcesProvider';
 import { RequestStatus } from '../data/constants';
@@ -64,9 +64,7 @@ const CustomPagesAndResources = ({ courseId, intl }) => {
   }
 
   if (courseAppsApiStatus === RequestStatus.DENIED) {
-    return (
-      <PermissionDeniedAlert />
-    );
+    return <PermissionDeniedAlert />;
   }
 
   const hasAdditionalCoursePlugin = getConfig()?.pluginSlots?.additional_course_plugin != null;
@@ -84,23 +82,52 @@ const CustomPagesAndResources = ({ courseId, intl }) => {
               showLaunchIcon={false}
               className="view_live_button"
             >
-              <Button className="p-2"> {intl.formatMessage(messages.viewLiveButton)}</Button>
+              <Button className="p-2">{intl.formatMessage(messages.viewLiveButton)}</Button>
             </Hyperlink>
           </div>
 
           <span className="pages_bar" />
 
           <Routes>
-            <Route path="discussion/configure/:appId" element={<PageWrap><DiscussionsSettings courseId={courseId} /></PageWrap>} />
-            <Route path="discussion" element={<PageWrap><DiscussionsSettings courseId={courseId} /></PageWrap>} />
-            <Route path="discussion/settings" element={<PageWrap><DiscussionsSettings courseId={courseId} /></PageWrap>} />
-            <Route path=":appId/settings" element={<PageWrap><Suspense fallback="..."><SettingsComponent url={redirectUrl} /></Suspense></PageWrap>} />
+            <Route
+              path="discussion/configure/:appId"
+              element={
+                <PageWrap>
+                  <DiscussionsSettings courseId={courseId} />
+                </PageWrap>
+              }
+            />
+            <Route
+              path="discussion"
+              element={
+                <PageWrap>
+                  <DiscussionsSettings courseId={courseId} />
+                </PageWrap>
+              }
+            />
+            <Route
+              path="discussion/settings"
+              element={
+                <PageWrap>
+                  <DiscussionsSettings courseId={courseId} />
+                </PageWrap>
+              }
+            />
+            <Route
+              path=":appId/settings"
+              element={
+                <PageWrap>
+                  <Suspense fallback="...">
+                    <SettingsComponent url={redirectUrl} />
+                  </Suspense>
+                </PageWrap>
+              }
+            />
           </Routes>
 
           {/* <PageGrid pages={pages} pluginSlotId="additional_course_plugin" /> */}
           <PageGrid pages={pages} pluginSlotComponent={<AdditionalCoursePluginSlot />} courseId={courseId} />
-          {
-          (contentPermissionsPages.length > 0 || hasAdditionalCoursePlugin)
+          {(contentPermissionsPages.length > 0 || hasAdditionalCoursePlugin)
             && (
               <>
                 <div className="d-flex justify-content-between my-4 my-md-5 align-items-center">
@@ -109,8 +136,7 @@ const CustomPagesAndResources = ({ courseId, intl }) => {
                 {/* <PageGrid pages={contentPermissionsPages} pluginSlotId="additional_course_content_plugin" /> */}
                 <PageGrid pages={contentPermissionsPages} pluginSlotComponent={<AdditionalCourseContentPluginSlot />} />
               </>
-            )
-        }
+            )}
         </main>
       </Container>
     </PagesAndResourcesProvider>

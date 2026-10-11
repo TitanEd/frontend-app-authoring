@@ -36,14 +36,13 @@
     text-align: left;
     cursor: pointer;
     border-radius: 0 24px 24px 0;
-    transition: background 0.2s, color 0.2s;
+    transition: background .2s, color .2s;
 }
 
 .course-sidebar-item.active .course-sidebar-link {
     background: none;
     // font-weight: bold;
     color: var(--pgn-color-text-base);
-    border-radius: 0px;
     // border-right: 4px solid var(--primary);
     background-color: var(--primary-light);
     border-radius: 16px;

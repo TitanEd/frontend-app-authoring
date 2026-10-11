@@ -31,21 +31,23 @@ const UserMenu: React.FC<UserMenuProps> = ({
   // isAdmin,
   menuItems,
 }) => {
-  const avatar = authenticatedUserAvatar ? (
-    <img
-      className="d-block w-100 h-100"
-      src={authenticatedUserAvatar}
-      alt={username}
-      data-testid="avatar-image"
-    />
-  ) : (
-    <Avatar
-      size="sm"
-      className="mr-2"
-      alt={'avatar'}
-      data-testid="avatar-icon"
-    />
-  );
+  const avatar = authenticatedUserAvatar ?
+    (
+      <img
+        className="d-block w-100 h-100"
+        src={authenticatedUserAvatar}
+        alt={username}
+        data-testid="avatar-image"
+      />
+    ) :
+    (
+      <Avatar
+        size="sm"
+        className="mr-2"
+        alt={'avatar'}
+        data-testid="avatar-icon"
+      />
+    );
   const title = isMobile ? avatar : <>{username} &nbsp; {avatar}</>;
 
   return (

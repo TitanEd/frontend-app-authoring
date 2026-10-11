@@ -39,7 +39,7 @@ export const CalendarProvider = ({ children }) => {
       result = result.filter(
         (ev) =>
           (ev.title && ev.title.toLowerCase().includes(q)) ||
-          (ev.type && ev.type.toLowerCase().includes(q))
+          (ev.type && ev.type.toLowerCase().includes(q)),
       );
     }
     setFilteredEvents(result);
@@ -117,9 +117,7 @@ export const CalendarProvider = ({ children }) => {
   };
 
   const nextEvent = () => {
-    setCurrentEventIndex((prev) =>
-      filteredEvents.length ? (prev + 1) % filteredEvents.length : 0
-    );
+    setCurrentEventIndex((prev) => filteredEvents.length ? (prev + 1) % filteredEvents.length : 0);
     setError(null);
   };
 

@@ -26,6 +26,7 @@
     "**/coverage",
     "jest.config.js",
     "env.config.*",
+    "server.env.config.*",
     "example.env.config.*",
     "module.config.js",
     "**/messages.{ts,js}"

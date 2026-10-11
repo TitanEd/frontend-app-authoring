@@ -85,71 +85,71 @@ const Textbooks = () => {
           handleTextbookDeleteSubmit,
         }}
       >
-      <Container size="xl" className="px-4">
-        <section className="mb-4 mt-5">
-          <SubHeader
-            title={intl.formatMessage(messages.headingTitle)}
-            breadcrumbs={
-              <Breadcrumb
-                linkAs={Link}
-                ariaLabel={intl.formatMessage(messages.breadcrumbAriaLabel)}
-                links={breadcrumbs}
-              />
-            }
-            headerActions={
-              <Button
-                iconBefore={AddIcon}
-                onClick={openTextbookForm}
-                disabled={isTextbookFormOpen}
-              >
-                {intl.formatMessage(messages.newTextbookButton)}
-              </Button>
-            }
-          />
-          <Layout
-            lg={[{ span: 9 }, { span: 3 }]}
-            md={[{ span: 9 }, { span: 3 }]}
-            sm={[{ span: 12 }, { span: 12 }]}
-            xs={[{ span: 12 }, { span: 12 }]}
-            xl={[{ span: 9 }, { span: 3 }]}
-          >
-            <Layout.Element>
-              <article>
-                <section className="textbook-section">
-                  <div className="pt-4">
-                    {textbooks.length ?
-                      textbooks.map((textbook, index) => (
-                        <TextbookCard
-                          key={textbook.id}
-                          textbook={textbook}
-                          courseId={courseId}
-                          handleSavingStatusDispatch={handleSavingStatusDispatch}
-                          onEditSubmit={handleTextbookEditFormSubmit}
-                          onDeleteSubmit={handleTextbookDeleteSubmit}
-                          textbookIndex={index}
+        <Container size="xl" className="px-4">
+          <section className="mb-4 mt-5">
+            <SubHeader
+              title={intl.formatMessage(messages.headingTitle)}
+              breadcrumbs={
+                <Breadcrumb
+                  linkAs={Link}
+                  ariaLabel={intl.formatMessage(messages.breadcrumbAriaLabel)}
+                  links={breadcrumbs}
+                />
+              }
+              headerActions={
+                <Button
+                  iconBefore={AddIcon}
+                  onClick={openTextbookForm}
+                  disabled={isTextbookFormOpen}
+                >
+                  {intl.formatMessage(messages.newTextbookButton)}
+                </Button>
+              }
+            />
+            <Layout
+              lg={[{ span: 9 }, { span: 3 }]}
+              md={[{ span: 9 }, { span: 3 }]}
+              sm={[{ span: 12 }, { span: 12 }]}
+              xs={[{ span: 12 }, { span: 12 }]}
+              xl={[{ span: 9 }, { span: 3 }]}
+            >
+              <Layout.Element>
+                <article>
+                  <section className="textbook-section">
+                    <div className="pt-4">
+                      {textbooks.length ?
+                        textbooks.map((textbook, index) => (
+                          <TextbookCard
+                            key={textbook.id}
+                            textbook={textbook}
+                            courseId={courseId}
+                            handleSavingStatusDispatch={handleSavingStatusDispatch}
+                            onEditSubmit={handleTextbookEditFormSubmit}
+                            onDeleteSubmit={handleTextbookDeleteSubmit}
+                            textbookIndex={index}
+                          />
+                        )) :
+                        (
+                          !isTextbookFormOpen && <EmptyPlaceholder onCreateNewTextbook={openTextbookForm} />
+                        )}
+                      {isTextbookFormOpen && (
+                        <TextbookForm
+                          closeTextbookForm={closeTextbookForm}
+                          initialFormValues={getTextbookFormInitialValues()}
+                          onSubmit={handleTextbookFormSubmit}
+                          onSavingStatus={handleSavingStatusDispatch}
                         />
-                      )) :
-                      (
-                        !isTextbookFormOpen && <EmptyPlaceholder onCreateNewTextbook={openTextbookForm} />
                       )}
-                    {isTextbookFormOpen && (
-                      <TextbookForm
-                        closeTextbookForm={closeTextbookForm}
-                        initialFormValues={getTextbookFormInitialValues()}
-                        onSubmit={handleTextbookFormSubmit}
-                        onSavingStatus={handleSavingStatusDispatch}
-                      />
-                    )}
-                  </div>
-                </section>
-              </article>
-            </Layout.Element>
-            <Layout.Element>
-              <TextbookSidebar courseId={courseId} />
-            </Layout.Element>
-          </Layout>
-        </section>
-      </Container>
+                    </div>
+                  </section>
+                </article>
+              </Layout.Element>
+              <Layout.Element>
+                <TextbookSidebar courseId={courseId} />
+              </Layout.Element>
+            </Layout>
+          </section>
+        </Container>
       </PluginSlot>
       <div className="alert-toast">
         <SavingErrorAlert

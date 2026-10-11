@@ -5,7 +5,7 @@ import { PLUGIN_OPERATIONS, DIRECT_PLUGIN } from '@openedx/frontend-plugin-frame
 import CourseNavigationSidebar from './src/shared-components/CourseNavigationSidebar';
 import CustomScheduleAndDetails from './src/CustomScheduleAndDetails';
 import messages from './src/schedule-and-details/messages';
-import { Settings, DragHandle, SettingsApplications } from '@openedx/paragon/icons';
+import { Settings, DragHandle } from '@openedx/paragon/icons';
 import {
     Icon,
     IconButton,
@@ -17,14 +17,12 @@ import {
     ActionRow,
     Layout
 } from '@openedx/paragon';
-import FormSwitchGroup from './src/generic/FormSwitchGroup';
 import StatusBarContent from './src/course-outline/status-bar/StatusBarContent'
 import CustomStatusBar from './src/course-outline/status-bar/CustomStatusBar';
 import SubHeader from './src/generic/sub-header/SubHeader';
 import CustomCourseUpdates from './src/course-updates/CustomCourseUpdates';
 import CustomCourseExportPage from './src/export-page/CustomCourseExportPage'
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import WarningMessage from './src/generic/warning-message/WarningMessage';
 import SettingCard from './src/advanced-settings/setting-card/SettingCard';
 import CustomExportSidebar from '/src/export-page/export-sidebar/CustomExportSidebar';
 import CourseChecklistCustom from './src/plugins-components/CourseChecklistCustom';
@@ -35,7 +33,6 @@ import CustomGalleryCard from './src/files-and-videos/generic/table-components/C
 import CustomPagesAndResources from './src/pages-and-resources/CustomPagesAndResources';
 import CustomTextbooks from './src/textbooks/CustomTextbooks';
 import CustomPagesNew from './src/custom-pages/CustomPagesNew';
-import EditorPage from './src/editors/EditorPage';
 import CustomImportSidebar from '/src/import-page/import-sidebar/CustomImportSidebar';
 import CustomCourseUpdate from './src/course-updates/course-update/CustomCourseUpdate';
 import CourseRerunForm from './src/course-rerun/course-rerun-form';
@@ -742,7 +739,7 @@ return {
                         id: "course-content",
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: (props) => (
+                        RenderWidget: () => (
                             <h2 className='courseOutlineh2'>
                                 <FormattedMessage
                                     id="course-authoring.course-outline.custom.heading"
@@ -784,7 +781,7 @@ return {
                     id: "export_footer",
                     type: DIRECT_PLUGIN,
                     priority: 1,
-                    RenderWidget: (props) => 
+                    RenderWidget: () => 
                         <CustomExportSidebar />
                     },
                 },
@@ -883,7 +880,7 @@ return {
                     id: "import_sidebar",
                     type: DIRECT_PLUGIN,
                     priority: 1,
-                    RenderWidget: (props) =>
+                    RenderWidget: () =>
                         <CustomImportSidebar />
                     },
                 },

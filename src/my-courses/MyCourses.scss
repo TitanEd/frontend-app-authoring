@@ -1,7 +1,6 @@
 .course-card-container {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     gap: 4rem; /* Space between cards */
     margin-bottom: 20px; /* Space below the last card */
 }
@@ -14,19 +13,19 @@
     max-width: 1800px;
     margin: 0 auto;
 
-    @media (min-width: 768px) {
+    @media (width >= 768px) {
         grid-template-columns: repeat(2, minmax(280px, 1fr));
     }
 
-    @media (min-width: 992px) {
+    @media (width >= 992px) {
         grid-template-columns: repeat(3, minmax(280px, 1fr));
     }
 
-    @media (min-width: 1200px) {
+    @media (width >= 1200px) {
         grid-template-columns: repeat(4, minmax(280px, 1fr));
     }
 
-    @media (min-width: 1600px) {
+    @media (width >= 1600px) {
         grid-template-columns: repeat(5, minmax(260px, 1fr));
         gap: 1.5rem;
     }

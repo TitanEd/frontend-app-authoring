@@ -8,7 +8,11 @@ import messages from '../data/messages';
 // Paragon Dropdown (same as the My Courses filters) for the calendar view and
 // event type selectors.
 const Dropdown = ({
-  id, options, onChange, value, className,
+  id,
+  options,
+  onChange,
+  value,
+  className,
 }) => {
   const intl = useIntl();
   const selectOptions = options.map((option) => ({

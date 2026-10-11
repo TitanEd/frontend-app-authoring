@@ -8,10 +8,10 @@
       "ignoreUnits": ["\\.5"]
     }],
     "property-no-vendor-prefix": [true, {
-      "ignoreProperties": ["animation", "filter", "transform", "transition"]
+      "ignoreProperties": ["animation", "backdrop-filter", "background-clip", "filter", "transform", "transition"]
     }],
     "value-no-vendor-prefix": [true, {
-      "ignoreValues": ["fill-available"]
+      "ignoreValues": ["box", "fill-available"]
     }],
     "function-no-unknown": null,
     "number-leading-zero": "never",

@@ -431,7 +431,6 @@ const LibraryAuthoringPage = ({
         )}
       </div>
     </PluginSlot>
-
   );
 };
 

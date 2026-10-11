@@ -4,7 +4,6 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { Icon } from '@openedx/paragon';
 import { AccessTime as ClockIcon } from '@openedx/paragon/icons';
 import { convertToLocalTime } from '../../utils/customDateUtils';
-import moment from 'moment-timezone';
 
 import messages from './messages';
 

@@ -24,9 +24,7 @@ const StatusBarContent = ({
         <span className="small text-gray-700">{description}</span>
       </header>
     )}
-    {instruction && (
-      <p className="sub-header-instructions mb-4">{instruction}</p>
-    )}
+    {instruction && <p className="sub-header-instructions mb-4">{instruction}</p>}
   </div>
 );
 
@@ -64,4 +62,3 @@ StatusBarContent.propTypes = {
   withSubHeaderContent: PropTypes.bool,
 };
 export default StatusBarContent;
-

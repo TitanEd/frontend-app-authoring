@@ -50,66 +50,67 @@ const CustomAppRoutes = () => {
     initCustomSentry();
   }, []);
 
-  const router = useMemo(() => createBrowserRouter(
-    createRoutesFromElements(
-      <Route element={<CustomLayout />}>
-        <Route path="/home" element={<Dashboard />} />
-        <Route path="/my-courses" element={<MyCourses />} />
-        <Route path="/libraries" element={<LibrariesV2Tab />} />
-        <Route path="/libraries-v1" element={<StudioHome />} />
-        <Route path="/libraries-v1/migrate" element={<LegacyLibMigrationPage />} />
-        <Route path="/libraries-v1/create" element={<CreateLegacyLibrary />} />
-        <Route path="/library/create" element={<CreateLibrary />} />
-        <Route path="/library/:libraryId/*" element={<LibraryLayout />} />
-        <Route
-          path="/component-picker"
-          element={(
-            <LibraryAndComponentPicker
-              extraFilter={['NOT block_type = "unit"', 'NOT block_type = "section"', 'NOT block_type = "subsection"']}
-              visibleTabs={[ContentType.home, ContentType.components, ContentType.collections]}
-            />
+  const router = useMemo(() =>
+    createBrowserRouter(
+      createRoutesFromElements(
+        <Route element={<CustomLayout />}>
+          <Route path="/home" element={<Dashboard />} />
+          <Route path="/my-courses" element={<MyCourses />} />
+          <Route path="/libraries" element={<LibrariesV2Tab />} />
+          <Route path="/libraries-v1" element={<StudioHome />} />
+          <Route path="/libraries-v1/migrate" element={<LegacyLibMigrationPage />} />
+          <Route path="/libraries-v1/create" element={<CreateLegacyLibrary />} />
+          <Route path="/library/create" element={<CreateLibrary />} />
+          <Route path="/library/:libraryId/*" element={<LibraryLayout />} />
+          <Route
+            path="/component-picker"
+            element={
+              <LibraryAndComponentPicker
+                extraFilter={['NOT block_type = "unit"', 'NOT block_type = "section"', 'NOT block_type = "subsection"']}
+                visibleTabs={[ContentType.home, ContentType.components, ContentType.collections]}
+              />
+            }
+          />
+          <Route
+            path="/component-picker/multiple"
+            element={
+              <LibraryAndComponentPicker
+                componentPickerMode="multiple"
+                extraFilter={['NOT block_type = "unit"', 'NOT block_type = "section"', 'NOT block_type = "subsection"']}
+                visibleTabs={[ContentType.home, ContentType.components, ContentType.collections]}
+              />
+            }
+          />
+          <Route path="/legacy/preview-changes/:usageKey" element={<PreviewChangesEmbed />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/assignments" element={<AssignmentPage />} />
+          <Route path="/course/:courseId/*" element={<CustomCourseAuthoringRoutes />} />
+          <Route path="/course_rerun/:courseId" element={<CourseRerun />} />
+          <Route path="/new-course" element={<CustomCreateNewCourseForm />} />
+          {getConfig().ENABLE_ACCESSIBILITY_PAGE === 'true' && (
+            <Route path="/accessibility" element={<AccessibilityPage />} />
           )}
-        />
-        <Route
-          path="/component-picker/multiple"
-          element={(
-            <LibraryAndComponentPicker
-              componentPickerMode="multiple"
-              extraFilter={['NOT block_type = "unit"', 'NOT block_type = "section"', 'NOT block_type = "subsection"']}
-              visibleTabs={[ContentType.home, ContentType.components, ContentType.collections]}
-            />
+          {getConfig().ENABLE_TAGGING_TAXONOMY_PAGES === 'true' && (
+            <>
+              <Route path="/taxonomies" element={<TaxonomyLayout />}>
+                <Route index element={<TaxonomyListPage />} />
+              </Route>
+              <Route path="/taxonomy" element={<TaxonomyLayout />}>
+                <Route path="/taxonomy/:taxonomyId" element={<TaxonomyDetailPage />} />
+              </Route>
+              <Route
+                path="/tagging/components/widget/:contentId"
+                element={<ContentTagsDrawer />}
+              />
+            </>
           )}
-        />
-        <Route path="/legacy/preview-changes/:usageKey" element={<PreviewChangesEmbed />} />
-        <Route path="/calendar" element={<Calendar />} />
-        <Route path="/assignments" element={<AssignmentPage />} />
-        <Route path="/course/:courseId/*" element={<CustomCourseAuthoringRoutes />} />
-        <Route path="/course_rerun/:courseId" element={<CourseRerun />} />
-        <Route path="/new-course" element={<CustomCreateNewCourseForm />} />
-        {getConfig().ENABLE_ACCESSIBILITY_PAGE === 'true' && (
-          <Route path="/accessibility" element={<AccessibilityPage />} />
-        )}
-        {getConfig().ENABLE_TAGGING_TAXONOMY_PAGES === 'true' && (
-          <>
-            <Route path="/taxonomies" element={<TaxonomyLayout />}>
-              <Route index element={<TaxonomyListPage />} />
-            </Route>
-            <Route path="/taxonomy" element={<TaxonomyLayout />}>
-              <Route path="/taxonomy/:taxonomyId" element={<TaxonomyDetailPage />} />
-            </Route>
-            <Route
-              path="/tagging/components/widget/:contentId"
-              element={<ContentTagsDrawer />}
-            />
-          </>
-        )}
-        <Route path="*" element={<PageNotFound />} />
-      </Route>
-    ),
-    {
-      basename: getPath(getConfig().PUBLIC_PATH),
-    },
-  ), []);
+          <Route path="*" element={<PageNotFound />} />
+        </Route>,
+      ),
+      {
+        basename: getPath(getConfig().PUBLIC_PATH),
+      },
+    ), []);
 
   return (
     <Provider store={store}>

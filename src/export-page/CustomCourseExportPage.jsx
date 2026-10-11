@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import {
-  Container, Layout, Button, Card,
+  Container,
+  Layout,
+  Button,
+  Card,
 } from '@openedx/paragon';
 import { ArrowCircleDown as ArrowCircleDownIcon } from '@openedx/paragon/icons';
 // import Cookies from 'universal-cookie';
@@ -86,7 +89,9 @@ const CustomCourseExportPage = ({ intl, courseId }) => {
                   title={intl.formatMessage(messages.headingTitle)}
                   subtitle={intl.formatMessage(messages.headingSubtitle)}
                 />
-                <p className="small sub-header-instructions">{intl.formatMessage(messages.description1, { studioShortName: getConfig().STUDIO_SHORT_NAME })}</p>
+                <p className="small sub-header-instructions">
+                  {intl.formatMessage(messages.description1, { studioShortName: getConfig().STUDIO_SHORT_NAME })}
+                </p>
                 <p className="small export-warning">{intl.formatMessage(messages.description2)}</p>
                 <div className="export-card">
                   <Card>
@@ -95,18 +100,18 @@ const CustomCourseExportPage = ({ intl, courseId }) => {
                       title={intl.formatMessage(messages.titleUnderButton)}
                     />
                     {isShowExportButton && (
-                    <Card.Section className="px-3 py-1 course-card-section">
-                      <Button
-                        size="lg"
-                        block
-                        className="mb-3"
-                        // onClick={() => dispatch(startExportingCourse(courseId))}
-                        onClick={handleStartExportingCourse}
-                        iconBefore={ArrowCircleDownIcon}
-                      >
-                        {intl.formatMessage(messages.buttonTitle)}
-                      </Button>
-                    </Card.Section>
+                      <Card.Section className="px-3 py-1 course-card-section">
+                        <Button
+                          size="lg"
+                          block
+                          className="mb-3"
+                          // onClick={() => dispatch(startExportingCourse(courseId))}
+                          onClick={handleStartExportingCourse}
+                          iconBefore={ArrowCircleDownIcon}
+                        >
+                          {intl.formatMessage(messages.buttonTitle)}
+                        </Button>
+                      </Card.Section>
                     )}
                   </Card>
                   {exportTriggered && <ExportStepper courseId={courseId} />}

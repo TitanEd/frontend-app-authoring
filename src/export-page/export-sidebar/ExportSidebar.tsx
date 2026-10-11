@@ -14,9 +14,7 @@ const ExportSidebar = () => {
   const { courseId } = useCourseAuthoringContext();
   const { exportCourse: exportLearnMoreUrl } = useHelpUrls(['exportCourse']);
   return (
-    <PluginSlot
-      id="export_sidebar_plugin_slot"
-      // pluginProps={{ courseId }}
+    <PluginSlot id="export_sidebar_plugin_slot" // pluginProps={{ courseId }}
     >
       <HelpSidebar courseId={courseId}>
         <h4 className="help-sidebar-about-title">{intl.formatMessage(messages.title1)}</h4>

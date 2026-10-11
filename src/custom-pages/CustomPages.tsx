@@ -124,168 +124,168 @@ const CustomPages = () => {
       id="custom_pages_plugin_slot"
       pluginProps={{ courseId }}
     >
-    <CustomPagesProvider courseId={courseId}>
-      <Container size="xl" className="p-4 pt-5">
-        <div className="small gray-700">
-          <Breadcrumb
-            ariaLabel="Custom Page breadcrumbs"
-            linkAs={Link}
-            links={[
-              {
-                label: 'Content',
-                to: waffleFlags.useNewCourseOutlinePage
-                  ? `/course/${courseId}`
-                  : `${config.STUDIO_BASE_URL}/course/${courseId}`,
-              },
-              { label: 'Pages and Resources', to: getPagePath(courseId, 'true', 'tabs') },
-            ]}
-          />
-        </div>
-        <ActionRow>
-          <div className="h2">
-            <FormattedMessage {...messages.heading} />
-          </div>
-          <ActionRow.Spacer />
-          <Button
-            iconBefore={Add}
-            onClick={handleAddPage}
-            data-testid="header-add-button"
-          >
-            <FormattedMessage {...messages.addPageHeaderLabel} />
-          </Button>
-          <Hyperlink
-            destination={learningCourseURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            showLaunchIcon={false}
-            data-testid="header-view-live-button"
-          >
-            <Button>
-              <FormattedMessage {...messages.viewLiveLabel} />
-            </Button>
-          </Hyperlink>
-        </ActionRow>
-        <hr />
-        <Layout
-          lg={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
-          md={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
-          sm={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
-          xs={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
-          xl={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
-        >
-          <Layout.Element>
-            <ErrorAlert hideHeading isError={deletePageStatus === RequestStatus.FAILED}>
-              {intl.formatMessage(messages.errorAlertMessage, { actionName: 'delete' })}
-            </ErrorAlert>
-            <ErrorAlert hideHeading isError={addPageStatus === RequestStatus.FAILED}>
-              {intl.formatMessage(messages.errorAlertMessage, { actionName: 'add' })}
-            </ErrorAlert>
-            <ErrorAlert hideHeading isError={savingStatus === RequestStatus.FAILED}>
-              {intl.formatMessage(messages.errorAlertMessage, { actionName: 'save' })}
-            </ErrorAlert>
-            <div className="small gray-700 mb-4">
-              <FormattedMessage {...messages.note} />
-            </div>
-            <DraggableList itemList={orderedPages} setState={setOrderedPages} updateOrder={handleReorder}>
-              {orderedPages.map((page: any) => (
-                <SortableItem
-                  id={page.id}
-                  key={page.id}
-                  componentStyle={{
-                    background: 'white',
-                    borderRadius: '6px',
-                    padding: '24px',
-                    marginBottom: '16px',
-                    boxShadow: '0px 1px 5px #ADADAD',
-                  }}
-                  actions={
-                    <CustomPageCard
-                      {...{
-                        page,
-                        dispatch,
-                        deletePageStatus,
-                        courseId,
-                        setCurrentPage,
-                      }}
-                    />
-                  }
-                />
-              ))}
-            </DraggableList>
-            <StatefulButton
-              data-testid="body-add-button"
-              onClick={handleAddPage}
-              state={addPageStatus}
-              {...addPageStateProps}
+      <CustomPagesProvider courseId={courseId}>
+        <Container size="xl" className="p-4 pt-5">
+          <div className="small gray-700">
+            <Breadcrumb
+              ariaLabel="Custom Page breadcrumbs"
+              linkAs={Link}
+              links={[
+                {
+                  label: 'Content',
+                  to: waffleFlags.useNewCourseOutlinePage
+                    ? `/course/${courseId}`
+                    : `${config.STUDIO_BASE_URL}/course/${courseId}`,
+                },
+                { label: 'Pages and Resources', to: getPagePath(courseId, 'true', 'tabs') },
+              ]}
             />
-          </Layout.Element>
-          <Layout.Element>
-            <div className="h4">
-              <FormattedMessage {...messages.pageExplanationHeader} />
+          </div>
+          <ActionRow>
+            <div className="h2">
+              <FormattedMessage {...messages.heading} />
             </div>
-            <div className="small gray-700">
-              <FormattedMessage {...messages.pageExplanationBody} />
-            </div>
-            <hr />
-            <div className="h4">
-              <FormattedMessage {...messages.customPagesExplanationHeader} />
-            </div>
-            <div className="small gray-700">
-              <FormattedMessage {...messages.customPagesExplanationBody} />
-            </div>
-            <hr />
-            <div className="h4">
-              <FormattedMessage {...messages.studentViewExplanationHeader} />
-            </div>
-            <div className="small gray-700">
-              <FormattedMessage {...messages.studentViewExplanationBody} />
-            </div>
+            <ActionRow.Spacer />
             <Button
-              data-testid="student-view-example-button"
-              variant="link"
-              size="sm"
-              onClick={open}
-              className="pl-0"
+              iconBefore={Add}
+              onClick={handleAddPage}
+              data-testid="header-add-button"
             >
-              <FormattedMessage {...messages.studentViewExampleButton} />
+              <FormattedMessage {...messages.addPageHeaderLabel} />
             </Button>
-          </Layout.Element>
-        </Layout>
-        <ModalDialog
-          isOpen={isOpen}
-          onClose={close}
-          size="lg"
-          title={intl.formatMessage(messages.studentViewModalTitle)}
-          isOverflowVisible={false}
-        >
-          <ModalDialog.Header>
-            <ModalDialog.Title>
-              <FormattedMessage {...messages.studentViewModalTitle} />
-            </ModalDialog.Title>
-          </ModalDialog.Header>
-          <ModalDialog.Body>
-            <Image src={previewLmsStaticPages} fluid className="mb-3" />
-            <div className="small">
-              <FormattedMessage {...messages.studentViewModalBody} />
-            </div>
-          </ModalDialog.Body>
-        </ModalDialog>
-        <Routes>
-          <Route
-            path="/editor"
-            element={currentPage && (
-              <PageWrap>
-                <EditModal
-                  courseId={courseId}
-                  pageId={currentPage}
-                  onClose={handleEditClose}
-                />
-              </PageWrap>
-            )}
-          />
-        </Routes>
-      </Container>
-    </CustomPagesProvider>
+            <Hyperlink
+              destination={learningCourseURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              showLaunchIcon={false}
+              data-testid="header-view-live-button"
+            >
+              <Button>
+                <FormattedMessage {...messages.viewLiveLabel} />
+              </Button>
+            </Hyperlink>
+          </ActionRow>
+          <hr />
+          <Layout
+            lg={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
+            md={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
+            sm={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
+            xs={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
+            xl={[{ span: 9, offset: 0 }, { span: 3, offset: 0 }]}
+          >
+            <Layout.Element>
+              <ErrorAlert hideHeading isError={deletePageStatus === RequestStatus.FAILED}>
+                {intl.formatMessage(messages.errorAlertMessage, { actionName: 'delete' })}
+              </ErrorAlert>
+              <ErrorAlert hideHeading isError={addPageStatus === RequestStatus.FAILED}>
+                {intl.formatMessage(messages.errorAlertMessage, { actionName: 'add' })}
+              </ErrorAlert>
+              <ErrorAlert hideHeading isError={savingStatus === RequestStatus.FAILED}>
+                {intl.formatMessage(messages.errorAlertMessage, { actionName: 'save' })}
+              </ErrorAlert>
+              <div className="small gray-700 mb-4">
+                <FormattedMessage {...messages.note} />
+              </div>
+              <DraggableList itemList={orderedPages} setState={setOrderedPages} updateOrder={handleReorder}>
+                {orderedPages.map((page: any) => (
+                  <SortableItem
+                    id={page.id}
+                    key={page.id}
+                    componentStyle={{
+                      background: 'white',
+                      borderRadius: '6px',
+                      padding: '24px',
+                      marginBottom: '16px',
+                      boxShadow: '0px 1px 5px #ADADAD',
+                    }}
+                    actions={
+                      <CustomPageCard
+                        {...{
+                          page,
+                          dispatch,
+                          deletePageStatus,
+                          courseId,
+                          setCurrentPage,
+                        }}
+                      />
+                    }
+                  />
+                ))}
+              </DraggableList>
+              <StatefulButton
+                data-testid="body-add-button"
+                onClick={handleAddPage}
+                state={addPageStatus}
+                {...addPageStateProps}
+              />
+            </Layout.Element>
+            <Layout.Element>
+              <div className="h4">
+                <FormattedMessage {...messages.pageExplanationHeader} />
+              </div>
+              <div className="small gray-700">
+                <FormattedMessage {...messages.pageExplanationBody} />
+              </div>
+              <hr />
+              <div className="h4">
+                <FormattedMessage {...messages.customPagesExplanationHeader} />
+              </div>
+              <div className="small gray-700">
+                <FormattedMessage {...messages.customPagesExplanationBody} />
+              </div>
+              <hr />
+              <div className="h4">
+                <FormattedMessage {...messages.studentViewExplanationHeader} />
+              </div>
+              <div className="small gray-700">
+                <FormattedMessage {...messages.studentViewExplanationBody} />
+              </div>
+              <Button
+                data-testid="student-view-example-button"
+                variant="link"
+                size="sm"
+                onClick={open}
+                className="pl-0"
+              >
+                <FormattedMessage {...messages.studentViewExampleButton} />
+              </Button>
+            </Layout.Element>
+          </Layout>
+          <ModalDialog
+            isOpen={isOpen}
+            onClose={close}
+            size="lg"
+            title={intl.formatMessage(messages.studentViewModalTitle)}
+            isOverflowVisible={false}
+          >
+            <ModalDialog.Header>
+              <ModalDialog.Title>
+                <FormattedMessage {...messages.studentViewModalTitle} />
+              </ModalDialog.Title>
+            </ModalDialog.Header>
+            <ModalDialog.Body>
+              <Image src={previewLmsStaticPages} fluid className="mb-3" />
+              <div className="small">
+                <FormattedMessage {...messages.studentViewModalBody} />
+              </div>
+            </ModalDialog.Body>
+          </ModalDialog>
+          <Routes>
+            <Route
+              path="/editor"
+              element={currentPage && (
+                <PageWrap>
+                  <EditModal
+                    courseId={courseId}
+                    pageId={currentPage}
+                    onClose={handleEditClose}
+                  />
+                </PageWrap>
+              )}
+            />
+          </Routes>
+        </Container>
+      </CustomPagesProvider>
     </PluginSlot>
   );
 };
