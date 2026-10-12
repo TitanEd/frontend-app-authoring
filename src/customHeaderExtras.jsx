@@ -71,6 +71,26 @@ const messages = defineMessages({
     defaultMessage: 'More',
     description: 'Accessible name of the header button that opens the extra actions on small screens',
   },
+  search: {
+    id: 'tels.header.search.label',
+    defaultMessage: 'Search',
+    description: 'Placeholder and accessible name of the search field and search button in the header',
+  },
+  closeSearch: {
+    id: 'tels.header.search.close',
+    defaultMessage: 'Close search',
+    description: 'Accessible name of the button that closes the search panel of the header',
+  },
+  closeAnnouncement: {
+    id: 'tels.header.announcement.close',
+    defaultMessage: 'Close announcement',
+    description: 'Accessible name of the button that closes the announcement banner above the header',
+  },
+  logoAlt: {
+    id: 'tels.header.logo.named',
+    defaultMessage: '{siteName} logo',
+    description: 'Text alternative of the logo in the header. {siteName} is the name of the platform.',
+  },
 });
 
 // Names frontend-platform (and the earlier Indigo toggle) read the theme variant from.
@@ -201,16 +221,33 @@ const HeaderExtras = () => {
       if (logoImage && darkLogo && currentThemeVariant() === 'dark' && logoImage.getAttribute('src') !== darkLogo) {
         logoImage.setAttribute('src', darkLogo);
       }
-      // The library names these two buttons in English only: give them the translated names.
-      const labels = {
-        '.header-container .toggle-sidebar-icon button': intl.formatMessage(messages.toggleSidebar),
-        '.header-container .navbar-buttons > button.btn-icon': intl.formatMessage(messages.more),
-      };
-      Object.entries(labels).forEach(([selector, text]) => {
-        const button = document.querySelector(selector);
-        if (button && button.getAttribute('aria-label') !== text) {
-          button.setAttribute('aria-label', text);
-        }
+      // The library writes alt="Logo" in English: name the logo after the site, in the page language.
+      const logoAlt = intl.formatMessage(messages.logoAlt, { siteName: getConfig().SITE_NAME });
+      if (logoImage && logoImage.getAttribute('alt') !== logoAlt) {
+        logoImage.setAttribute('alt', logoAlt);
+      }
+      // index.html says lang="en-us" whatever the language: screen readers and the browser's
+      // hyphenation and spell check follow this attribute.
+      if (intl.locale && document.documentElement.lang !== intl.locale) {
+        document.documentElement.lang = intl.locale;
+      }
+      // The library names these controls in English only: give them the translated names.
+      const search = intl.formatMessage(messages.search);
+      const labels = [
+        ['.header-container .toggle-sidebar-icon button', 'aria-label', intl.formatMessage(messages.toggleSidebar)],
+        ['.header-container .navbar-buttons > button.btn-icon', 'aria-label', intl.formatMessage(messages.more)],
+        ['.header-container button[aria-label="Search"]', 'aria-label', search],
+        ['.header-container input[placeholder="Search"]', 'placeholder', search],
+        ['input.search-input[placeholder="Search"], .search-modal input[placeholder="Search"]', 'placeholder', search],
+        ['button.close-search-bar', 'aria-label', intl.formatMessage(messages.closeSearch)],
+        ['button[aria-label="Close announcement banner"]', 'aria-label', intl.formatMessage(messages.closeAnnouncement)],
+      ];
+      labels.forEach(([selector, attribute, text]) => {
+        document.querySelectorAll(selector).forEach((control) => {
+          if (control.getAttribute(attribute) !== text) {
+            control.setAttribute(attribute, text);
+          }
+        });
       });
       // The library draws the logo as a <nav href="/"> element, which is not a link.
       const logo = document.querySelector('.header-container .navbar-brand');
@@ -228,7 +265,9 @@ const HeaderExtras = () => {
     };
     place();
     const observer = new MutationObserver(place);
-    observer.observe(document.querySelector('.header-container') || document.body, { childList: true, subtree: true });
+    // The whole page, not only the header: the announcement banner and the search panel are drawn
+    // outside it, and later than the header.
+    observer.observe(document.body, { childList: true, subtree: true });
     setHost(element);
     return () => {
       observer.disconnect();

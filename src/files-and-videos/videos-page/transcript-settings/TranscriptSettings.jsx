@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import {
   ActionRow,
   Collapsible,
@@ -15,6 +15,7 @@ import { ChevronLeft, ChevronRight, Close } from '@openedx/paragon/icons';
 import { AdditionalTranslationsComponentSlot } from '../../../plugin-slots/AdditionalTranslationsComponentSlot';
 import OrderTranscriptForm from './OrderTranscriptForm';
 import messages from './messages';
+import a11yMessages from '../../generic/a11yMessages';
 import {
   clearAutomatedTranscript,
   resetErrors,
@@ -27,6 +28,7 @@ const TranscriptSettings = ({
   closeTranscriptSettings,
   courseId,
 }) => {
+  const intl = useIntl();
   const dispatch = useDispatch();
   const { errors: errorMessages, pageSettings, transcriptStatus } = useSelector(state => state.videos);
   const {
@@ -71,7 +73,7 @@ const TranscriptSettings = ({
                       iconAs={Icon}
                       src={ChevronLeft}
                       onClick={() => setTranscriptType(null)}
-                      alt="back button to main transcript settings view"
+                      alt={intl.formatMessage(a11yMessages.backToTranscriptSettings)}
                     />
                   ) :
                   (
@@ -81,7 +83,7 @@ const TranscriptSettings = ({
                   )}
               </TransitionReplace>
               <ActionRow.Spacer />
-              <IconButton size="sm" iconAs={Icon} src={Close} onClick={closeTranscriptSettings} alt="close settings" />
+              <IconButton size="sm" iconAs={Icon} src={Close} onClick={closeTranscriptSettings} alt={intl.formatMessage(a11yMessages.closeSettings)} />
             </ActionRow>
             <TransitionReplace>
               {transcriptType ?

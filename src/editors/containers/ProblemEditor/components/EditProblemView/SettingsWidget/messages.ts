@@ -146,6 +146,11 @@ const messages = defineMessages({
     defaultMessage: 'Number of Attempts',
     description: 'Show Answer attempts text input label',
   },
+  showAnswerDefaultOption: {
+    id: 'authoring.problemeditor.settings.showAnswer.defaultOption',
+    defaultMessage: '{option} (Default)',
+    description: 'Option of the Show Answer menu that is the default of the course. {option} is the option name.',
+  },
   showAnswerSettingText: {
     id: 'authoring.problemeditor.settings.showAnswer.text',
     defaultMessage: 'Define when learners can see the correct answer.',

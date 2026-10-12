@@ -1,3 +1,4 @@
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
   useContext,
   useEffect,
@@ -352,7 +353,7 @@ const SectionCard = ({
                   <Bubble className="mr-1">
                     {highlights.length}
                   </Bubble>
-                  <p className="m-0 text-black">{messages.sectionHighlightsBadge.defaultMessage}</p>
+                  <p className="m-0 text-black"><FormattedMessage {...messages.sectionHighlightsBadge} /></p>
                 </Button>
               </div>
               {

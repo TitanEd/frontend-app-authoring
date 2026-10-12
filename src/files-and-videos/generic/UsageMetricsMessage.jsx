@@ -11,6 +11,7 @@ import { ErrorOutline } from '@openedx/paragon/icons';
 import isEmpty from 'lodash/isEmpty';
 import { RequestStatus } from '../../data/constants';
 import messages from './messages';
+import translateError from './translateError';
 
 const UsageMetricsMessage = ({
   usagePathStatus,
@@ -41,7 +42,7 @@ const UsageMetricsMessage = ({
           size="sm"
           src={ErrorOutline}
         />
-        {intl.formatMessage(messages.errorAlertMessage, { message: error })}
+        {intl.formatMessage(messages.errorAlertMessage, { message: translateError(intl, error) })}
       </Row>
     );
   } else {

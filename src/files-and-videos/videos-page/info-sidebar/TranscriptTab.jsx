@@ -17,6 +17,7 @@ import {
 } from '../data/thunks';
 import { RequestStatus } from '../../../data/constants';
 import messages from './messages';
+import translateError from '../../generic/translateError';
 
 const TranscriptTab = ({
   video,
@@ -107,7 +108,7 @@ const TranscriptTab = ({
           <ul className="p-0">
             {errors.transcript.map(message => (
               <li key={`transcript-error-${message}`} style={{ listStyle: 'none' }}>
-                {intl.formatMessage(messages.errorAlertMessage, { message })}
+                {intl.formatMessage(messages.errorAlertMessage, { message: translateError(intl, message) })}
               </li>
             ))}
           </ul>

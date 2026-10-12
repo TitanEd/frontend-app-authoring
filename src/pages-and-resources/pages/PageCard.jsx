@@ -4,6 +4,7 @@ import { Badge, Card } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import React from 'react';
 import messages from '../messages';
+import appMessages from './appMessages';
 import { useIsDesktop } from '../../utils';
 import PageSettingButton from './PageSettingButton';
 import './PageCard.scss';
@@ -40,7 +41,7 @@ const PageCard = ({
       })}
     >
       <Card.Header
-        title={page.name}
+        title={appMessages[`${page.id}.name`] ? formatMessage(appMessages[`${page.id}.name`]) : page.name}
         subtitle={page.enabled && (
           <Badge variant="success" className="mt-1">
             {formatMessage(messages.enabled)}
@@ -51,7 +52,9 @@ const PageCard = ({
       />
       <Card.Body>
         <Card.Section>
-          {page.description}
+          {appMessages[`${page.id}.description`]
+            ? formatMessage(appMessages[`${page.id}.description`])
+            : page.description}
         </Card.Section>
       </Card.Body>
     </Card>

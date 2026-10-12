@@ -5,6 +5,7 @@ import { Alert } from '@openedx/paragon';
 import ErrorAlert from '../../editors/sharedComponents/ErrorAlerts/ErrorAlert';
 import { RequestStatus } from '../../data/constants';
 import messages from './messages';
+import translateError from './translateError';
 
 const EditFileErrors = ({
   resetErrors,
@@ -22,7 +23,7 @@ const EditFileErrors = ({
         dismissError={/* istanbul ignore next */ () => resetErrors({ errorType: 'loading' })}
         isError={loadingStatus === RequestStatus.FAILED || loadingStatus === RequestStatus.PARTIAL_FAILURE}
       >
-        {intl.formatMessage(messages.errorAlertMessage, { message: errorMessages.loading })}
+        {intl.formatMessage(messages.errorAlertMessage, { message: translateError(intl, errorMessages.loading) })}
       </ErrorAlert>
       <ErrorAlert
         hideHeading
@@ -35,7 +36,7 @@ const EditFileErrors = ({
         <ul className="p-0">
           {errorMessages.add.map(message => (
             <li key={`add-error-${message}`} style={{ listStyle: 'none' }}>
-              {intl.formatMessage(messages.errorAlertMessage, { message })}
+              {intl.formatMessage(messages.errorAlertMessage, { message: translateError(intl, message) })}
             </li>
           ))}
         </ul>
@@ -48,7 +49,7 @@ const EditFileErrors = ({
         <ul className="p-0">
           {errorMessages.delete.map(message => (
             <li key={`delete-error-${message}`} style={{ listStyle: 'none' }}>
-              {intl.formatMessage(messages.errorAlertMessage, { message })}
+              {intl.formatMessage(messages.errorAlertMessage, { message: translateError(intl, message) })}
             </li>
           ))}
         </ul>
@@ -61,17 +62,17 @@ const EditFileErrors = ({
         <ul className="p-0">
           {errorMessages.lock?.map(message => (
             <li key={`lock-error-${message}`} style={{ listStyle: 'none' }}>
-              {intl.formatMessage(messages.errorAlertMessage, { message })}
+              {intl.formatMessage(messages.errorAlertMessage, { message: translateError(intl, message) })}
             </li>
           ))}
           {errorMessages.download.map(message => (
             <li key={`download-error-${message}`} style={{ listStyle: 'none' }}>
-              {intl.formatMessage(messages.errorAlertMessage, { message })}
+              {intl.formatMessage(messages.errorAlertMessage, { message: translateError(intl, message) })}
             </li>
           ))}
           {errorMessages.thumbnail?.map(message => (
             <li key={`add-thumbnail-error-${message}`} style={{ listStyle: 'none' }}>
-              {intl.formatMessage(messages.errorAlertMessage, { message })}
+              {intl.formatMessage(messages.errorAlertMessage, { message: translateError(intl, message) })}
             </li>
           ))}
         </ul>

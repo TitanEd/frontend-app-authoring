@@ -13,6 +13,7 @@ import {
 import { MoreHoriz } from '@openedx/paragon/icons';
 
 import messages from '../../messages';
+import a11yMessages from '../../a11yMessages';
 
 const MoreInfoColumn = ({
   row,
@@ -45,7 +46,7 @@ const MoreInfoColumn = ({
         iconAs={Icon}
         onClick={toggle}
         ref={setTarget}
-        alt="More info icon button"
+        alt={intl.formatMessage(a11yMessages.moreInfo)}
       />
       <ModalPopup
         placement="bottom-end"

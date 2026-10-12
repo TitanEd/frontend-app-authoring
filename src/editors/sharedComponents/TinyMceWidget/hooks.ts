@@ -11,6 +11,7 @@ import { isEmpty } from 'lodash';
 import tinyMCEStyles from '../../data/constants/tinyMCEStyles';
 import { StrictDict } from '../../utils';
 import pluginConfig from './pluginConfig';
+import { tinyMceLanguage } from './langs';
 
 import * as tinyMCE from '../../data/constants/tinyMCE';
 import { getRelativeUrl, getStaticUrl, parseAssetName } from './utils';
@@ -464,6 +465,8 @@ export const editorConfig = ({
       max_height: maxHeight,
       contextmenu: 'link table',
       directionality: isLocaleRtl ? 'rtl' as const : 'ltr' as const,
+      // The editor's own interface (tooltips, menus, dialogs) in the language of the page.
+      language: tinyMceLanguage(getLocale()),
       document_base_url: baseURL,
       imagetools_cors_hosts: [removeProtocolFromUrl(lmsEndpointUrl), removeProtocolFromUrl(studioEndpointUrl)],
       imagetools_toolbar: imageToolbar,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import {
   Button,
   Icon,
@@ -13,6 +13,7 @@ import {
 import { MoreHoriz } from '@openedx/paragon/icons';
 
 import messages from './messages';
+import a11yMessages from '../../../generic/a11yMessages';
 
 export const TranscriptActionMenu = ({
   language,
@@ -20,6 +21,7 @@ export const TranscriptActionMenu = ({
   handleTranscript,
   input,
 }) => {
+  const intl = useIntl();
   const [isOpen, , close, toggle] = useToggle();
   const [target, setTarget] = useState(null);
   return (
@@ -29,7 +31,7 @@ export const TranscriptActionMenu = ({
         iconAs={Icon}
         onClick={toggle}
         ref={setTarget}
-        alt="Actions dropdown"
+        alt={intl.formatMessage(a11yMessages.transcriptActions)}
         data-testid={`${language}-transcript-menu`}
       />
       <ModalPopup

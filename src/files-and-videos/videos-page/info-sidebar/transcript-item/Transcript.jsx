@@ -13,6 +13,7 @@ import { isEmpty } from 'lodash';
 import LanguageSelect from './LanguageSelect';
 import TranscriptMenu from './TranscriptMenu';
 import messages from './messages';
+import a11yMessages from '../../../generic/a11yMessages';
 import { FileInput, useFileInput } from '../../../generic';
 
 const Transcript = ({
@@ -98,7 +99,7 @@ const Transcript = ({
                   iconAs={Icon}
                   src={DeleteOutline}
                   onClick={openConfirmation}
-                  alt="delete empty transcript"
+                  alt={intl.formatMessage(a11yMessages.deleteEmptyTranscript)}
                 />
               ) :
               (

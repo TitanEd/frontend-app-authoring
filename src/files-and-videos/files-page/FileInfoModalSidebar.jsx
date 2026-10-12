@@ -14,6 +14,7 @@ import { ContentCopy, InfoOutline } from '@openedx/paragon/icons';
 
 import { getFileSizeToClosestByte } from '../../utils';
 import messages from './messages';
+import a11yMessages from '../generic/a11yMessages';
 import './FileInfoModalSidebar.scss';
 
 const FileInfoModalSidebar = ({
@@ -60,7 +61,7 @@ const FileInfoModalSidebar = ({
         <IconButton
           src={ContentCopy}
           iconAs={Icon}
-          alt={messages.copyStudioUrlTitle.defaultMessage}
+          alt={intl.formatMessage(messages.copyStudioUrlTitle)}
           onClick={() => navigator.clipboard.writeText(asset?.portableUrl)}
         />
       </ActionRow>
@@ -75,7 +76,7 @@ const FileInfoModalSidebar = ({
         <IconButton
           src={ContentCopy}
           iconAs={Icon}
-          alt={messages.copyWebUrlTitle.defaultMessage}
+          alt={intl.formatMessage(messages.copyWebUrlTitle)}
           onClick={() => navigator.clipboard.writeText(asset?.externalUrl)}
         />
       </ActionRow>
@@ -90,14 +91,14 @@ const FileInfoModalSidebar = ({
             tooltipContent={intl.formatMessage(messages.lockFileTooltipContent)}
             src={InfoOutline}
             iconAs={Icon}
-            alt="Info"
+            alt={intl.formatMessage(a11yMessages.info)}
             size="inline"
           />
           <ActionRow.Spacer />
           <CheckboxControl
             checked={lockedState}
             onChange={handleLock}
-            aria-label="Checkbox"
+            aria-label={intl.formatMessage(a11yMessages.lockFile)}
           />
         </ActionRow>
       )}

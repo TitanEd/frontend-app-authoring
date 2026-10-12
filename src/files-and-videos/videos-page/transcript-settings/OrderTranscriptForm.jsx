@@ -8,6 +8,7 @@ import Cielo24Form from './Cielo24Form';
 import ThreePlayMediaForm from './ThreePlayMediaForm';
 import { RequestStatus } from '../../../data/constants';
 import messages from './messages';
+import translateError from '../../generic/translateError';
 import { checkCredentials, checkTranscriptionPlans, validateForm } from '../data/utils';
 
 const OrderTranscriptForm = ({
@@ -96,7 +97,7 @@ const OrderTranscriptForm = ({
         <ul className="p-0">
           {errorMessages.transcript.map(message => (
             <li key={`order-transcript-error-${message}`} style={{ listStyle: 'none' }}>
-              {intl.formatMessage(messages.errorAlertMessage, { message })}
+              {intl.formatMessage(messages.errorAlertMessage, { message: translateError(intl, message) })}
             </li>
           ))}
         </ul>
