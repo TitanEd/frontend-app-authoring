@@ -1,0 +1,155 @@
+// Course re-run page inside the custom layout (CustomCourseRerun.jsx).
+// Paragon design tokens only; logical properties for right-to-left languages.
+
+.tels-course-rerun {
+  --tels-rerun-gap: var(--pgn-spacing-spacer-4);
+  --tels-rerun-border: var(--pgn-size-border-width) solid var(--pgn-color-light-400);
+
+  box-sizing: border-box;
+  max-width: 90rem;
+  min-width: 0;
+  margin-inline: auto;
+  padding: var(--pgn-spacing-spacer-4);
+  color: var(--pgn-color-body-base);
+
+  &__header {
+    margin-bottom: var(--pgn-spacing-spacer-4);
+  }
+
+  &__title {
+    margin: 0 0 var(--pgn-spacing-spacer-1);
+    font-size: var(--pgn-typography-font-size-h3-base);
+    font-weight: var(--pgn-typography-font-weight-bold);
+    line-height: var(--pgn-typography-headings-line-height);
+    overflow-wrap: anywhere;
+  }
+
+  &__lead {
+    margin: 0;
+    font-size: var(--pgn-typography-font-size-sm);
+    color: var(--pgn-color-gray-500);
+  }
+
+  &__course {
+    font-weight: var(--pgn-typography-font-weight-bold);
+    color: var(--pgn-color-body-base);
+    overflow-wrap: anywhere;
+  }
+
+  // Form card and help column share one grid; the help drops below the form on smaller screens.
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--tels-rerun-gap);
+    align-items: start;
+  }
+
+  &__card.pgn__card {
+    margin: 0;
+    border: var(--tels-rerun-border);
+    border-radius: var(--pgn-spacing-spacer-base);
+    background-color: var(--pgn-color-bg-base);
+    box-shadow: none;
+
+    .pgn__card-section {
+      padding: var(--pgn-spacing-spacer-4);
+    }
+  }
+
+  &__aside {
+    min-width: 0;
+
+    .help-sidebar {
+      margin: 0 !important;
+    }
+  }
+
+  // The stock form (CourseRerunForm > CreateOrRerunCourseForm): remove its outer margins,
+  // so that the card padding is the only space around it.
+  &__card .pgn__card-section > div {
+    margin: 0 !important;
+
+    > div:first-child {
+      margin-block: 0 var(--pgn-spacing-spacer-4) !important;
+      font-size: var(--pgn-typography-font-size-sm);
+    }
+  }
+
+  .create-or-rerun-course-form {
+    // The form has no title on this page; its empty heading would only add a gap.
+    > h3:empty {
+      display: none;
+    }
+
+    .alert {
+      margin-bottom: var(--pgn-spacing-spacer-4);
+    }
+
+    .form-group-custom {
+      margin-bottom: var(--pgn-spacing-spacer-4) !important;
+
+      .pgn__form-label {
+        margin-bottom: var(--pgn-spacing-spacer-1);
+        font: inherit;
+        font-size: var(--pgn-typography-font-size-sm);
+        font-weight: var(--pgn-typography-font-weight-bold);
+        color: var(--pgn-color-body-base);
+      }
+
+      .pgn__form-text,
+      .pgn__form-control-description {
+        margin-top: var(--pgn-spacing-spacer-1);
+        font-size: var(--pgn-typography-font-size-sm);
+      }
+
+      // The typeahead organization picker brings its own form group.
+      .pgn__form-group {
+        margin-bottom: 0;
+      }
+
+      // The organization picker spans the field like the text inputs do.
+      .dropdown,
+      .dropdown > .btn {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 !important;
+      }
+
+      .dropdown > .btn {
+        justify-content: space-between;
+        text-align: start;
+        white-space: normal;
+      }
+    }
+
+    .pgn__action-row {
+      flex-wrap: wrap;
+      gap: var(--pgn-spacing-spacer-2) var(--pgn-spacing-spacer-3);
+      margin-top: var(--pgn-spacing-spacer-4);
+      padding-top: var(--pgn-spacing-spacer-3);
+      border-top: var(--tels-rerun-border);
+
+      .btn {
+        margin: 0 !important;
+      }
+    }
+  }
+
+  @media (width >= 992px) {
+    &__layout {
+      grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+    }
+  }
+
+  @media (width <= 575px) {
+    padding: var(--pgn-spacing-spacer-3);
+
+    &__card.pgn__card .pgn__card-section {
+      padding: var(--pgn-spacing-spacer-3);
+    }
+
+    .create-or-rerun-course-form .pgn__action-row .btn {
+      flex: 1 1 auto;
+    }
+  }
+}

@@ -12,10 +12,6 @@ import {
     Dropdown,
     Button,
     ProgressBar,
-    Container,
-    Stack,
-    ActionRow,
-    Layout
 } from '@openedx/paragon';
 import StatusBarContent from './src/course-outline/status-bar/StatusBarContent'
 import CustomStatusBar from './src/course-outline/status-bar/CustomStatusBar';
@@ -35,8 +31,7 @@ import CustomTextbooks from './src/textbooks/CustomTextbooks';
 import CustomPagesNew from './src/custom-pages/CustomPagesNew';
 import CustomImportSidebar from '/src/import-page/import-sidebar/CustomImportSidebar';
 import CustomCourseUpdate from './src/course-updates/course-update/CustomCourseUpdate';
-import CourseRerunForm from './src/course-rerun/course-rerun-form';
-import CourseRerunSideBar from './src/course-rerun/course-rerun-sidebar';
+import CustomCourseRerun from './src/course-rerun/CustomCourseRerun';
 
 // Example custom component for the schedule_and_details_plugin_slot
 import CustomCreateLibrary from './src/library-authoring/create-library/CustomCreateLibrary';
@@ -595,49 +590,7 @@ return {
                         type: DIRECT_PLUGIN,
                         priority: 1,
                         RenderWidget: (props) => (
-                            <Container size="xl" className="small p-4 mt-3">
-                                <section >
-                                    <Layout
-                                        lg={[{ span: 9 }, { span: 3 }]}
-                                        md={[{ span: 9 }, { span: 3 }]}
-                                        sm={[{ span: 9 }, { span: 3 }]}
-                                        xs={[{ span: 9 }, { span: 3 }]}
-                                        xl={[{ span: 9 }, { span: 3 }]}
-                                    >
-                                        <Layout.Element>
-                                            <div className='course-rerun-content'>
-                                                <section>
-                                                    <header className="d-flex">
-                                                        <Stack>
-                                                            <h2>
-                                                                {props.rerunTitle} {props.displayName}
-                                                            </h2>
-                                                            <span className="large">{props.originalCourseData}</span>
-                                                        </Stack>
-                                                        <ActionRow className="ml-auto">
-                                                            <Button variant="outline-primary" size="sm" onClick={props.cancelButtonClick}>
-                                                                {props.cancelButton}
-                                                            </Button>
-                                                        </ActionRow>
-                                                    </header>
-                                                    <hr className='customHr' />
-                                                </section>
-
-                                                <div className='course-rerun-form'>
-                                                    <CourseRerunForm
-                                                        initialFormValues={props.initialFormValues}
-                                                        onClickCancel={props.handleRerunCourseCancel}
-                                                    />
-                                                </div>
-
-                                            </div>
-                                        </Layout.Element>
-                                        <Layout.Element>
-                                            <CourseRerunSideBar />
-                                        </Layout.Element>
-                                    </Layout>
-                                </section>
-                            </Container>
+                            <CustomCourseRerun {...props} />
                         ),
                     }
                 }

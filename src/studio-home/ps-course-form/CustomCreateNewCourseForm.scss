@@ -1,0 +1,356 @@
+// "Create new course" page (CustomCreateNewCourseForm.jsx).
+// Paragon design tokens only, so the light, dark and admin themes all apply.
+// Layout uses logical properties, so it mirrors in right-to-left languages.
+
+.tels-create-course {
+  --tels-cc-gap: var(--pgn-spacing-spacer-4);
+  --tels-cc-radius: var(--pgn-spacing-spacer-base);
+  --tels-cc-border: var(--pgn-size-border-width) solid var(--pgn-color-light-400);
+
+  box-sizing: border-box;
+  max-width: 90rem;
+  min-width: 0;
+  margin-inline: auto;
+  padding: var(--pgn-spacing-spacer-4) var(--pgn-spacing-spacer-4) 0;
+  color: var(--pgn-color-body-base);
+
+  // Page header
+  &__header {
+    margin-bottom: var(--pgn-spacing-spacer-4);
+  }
+
+  &__title {
+    margin: 0 0 var(--pgn-spacing-spacer-1);
+    font-size: var(--pgn-typography-font-size-h3-base);
+    font-weight: var(--pgn-typography-font-weight-bold);
+    line-height: var(--pgn-typography-headings-line-height);
+  }
+
+  &__lead,
+  &__legend {
+    margin: 0;
+    font-size: var(--pgn-typography-font-size-sm);
+    color: var(--pgn-color-gray-500);
+  }
+
+  &__legend {
+    margin-bottom: calc(var(--pgn-spacing-spacer-2) * -1);
+  }
+
+  &__required {
+    color: var(--pgn-color-danger-base);
+    font-weight: var(--pgn-typography-font-weight-bold);
+  }
+
+  &__alerts {
+    scroll-margin-top: var(--pgn-spacing-spacer-3);
+
+    .alert {
+      margin-bottom: var(--pgn-spacing-spacer-4);
+    }
+  }
+
+  &__alert-text {
+    margin-bottom: var(--pgn-spacing-spacer-1);
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+  }
+
+  // Form on the left, preview column on the right (below the form on smaller screens)
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--tels-cc-gap);
+    align-items: start;
+  }
+
+  &__main,
+  &__aside {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--tels-cc-gap);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  // Cards
+  &__card.pgn__card {
+    margin: 0;
+    border: var(--tels-cc-border);
+    border-radius: var(--tels-cc-radius);
+    background-color: var(--pgn-color-bg-base);
+    box-shadow: none;
+
+    .pgn__card-section {
+      padding: var(--pgn-spacing-spacer-4);
+    }
+  }
+
+  &__card-title {
+    margin: 0;
+    font-size: var(--pgn-typography-font-size-h4-base);
+    font-weight: var(--pgn-typography-font-weight-bold);
+    line-height: var(--pgn-typography-headings-line-height);
+  }
+
+  &__card-help {
+    margin: var(--pgn-spacing-spacer-1) 0 0;
+    font-size: var(--pgn-typography-font-size-sm);
+    color: var(--pgn-color-gray-500);
+  }
+
+  &__fields {
+    margin-top: var(--pgn-spacing-spacer-4);
+  }
+
+  // Columns of one row keep the vertical rhythm when they wrap.
+  &__row {
+    row-gap: var(--pgn-spacing-spacer-4);
+  }
+
+  &__nested {
+    margin-top: var(--pgn-spacing-spacer-3);
+  }
+
+  // Fields
+  .pgn__form-group {
+    min-width: 0;
+  }
+
+  .pgn__form-label {
+    margin-bottom: var(--pgn-spacing-spacer-1);
+    font-size: var(--pgn-typography-font-size-sm);
+    font-weight: var(--pgn-typography-font-weight-bold);
+    color: var(--pgn-color-body-base);
+  }
+
+  .pgn__form-text {
+    font-size: var(--pgn-typography-font-size-sm);
+  }
+
+  .form-control {
+    max-width: 100%;
+  }
+
+  textarea.form-control {
+    resize: vertical;
+  }
+
+  &__split-help {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--pgn-spacing-spacer-1) var(--pgn-spacing-spacer-3);
+    width: 100%;
+  }
+
+  &__choices {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--pgn-spacing-spacer-3);
+
+    > .pgn__form-radio,
+    > div {
+      margin: 0;
+      padding: var(--pgn-spacing-spacer-3);
+      border: var(--tels-cc-border);
+      border-radius: var(--pgn-size-border-radius-lg);
+    }
+  }
+
+  &__note {
+    margin: 0;
+    font-size: var(--pgn-typography-font-size-sm);
+    color: var(--pgn-color-gray-500);
+  }
+
+  &__license {
+    display: grid;
+    gap: var(--pgn-spacing-spacer-3);
+    min-width: 0;
+
+    .pgn__form-group {
+      margin: 0;
+      padding: 0 !important;
+    }
+
+    .btn-group {
+      flex-wrap: wrap;
+    }
+  }
+
+  // Images
+  &__image-field {
+    display: grid;
+    gap: var(--pgn-spacing-spacer-2);
+    min-width: 0;
+
+    .pgn__form-label {
+      margin-bottom: 0;
+    }
+  }
+
+  &__image-box,
+  &__preview-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background-color: var(--pgn-color-light-200);
+    color: var(--pgn-color-gray-500);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__image-box {
+    border: var(--pgn-size-border-width) dashed var(--pgn-color-light-400);
+    border-radius: var(--pgn-size-border-radius-lg);
+  }
+
+  &__image-placeholder.pgn__icon {
+    width: var(--pgn-spacing-spacer-5);
+    height: var(--pgn-spacing-spacer-5);
+  }
+
+  &__image-actions {
+    flex-wrap: wrap;
+  }
+
+  // Preview column
+  &__preview {
+    margin-top: var(--pgn-spacing-spacer-3);
+    overflow: hidden;
+    border: var(--tels-cc-border);
+    border-radius: var(--pgn-size-border-radius-lg);
+  }
+
+  &__preview-body {
+    display: grid;
+    gap: var(--pgn-spacing-spacer-1);
+    padding: var(--pgn-spacing-spacer-3);
+
+    p {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__preview-org {
+    font-size: var(--pgn-typography-font-size-sm);
+    color: var(--pgn-color-gray-500);
+  }
+
+  &__preview-title {
+    font-size: var(--pgn-typography-font-size-base);
+    font-weight: var(--pgn-typography-font-weight-bold);
+    line-height: var(--pgn-typography-headings-line-height);
+  }
+
+  &__preview-text {
+    font-size: var(--pgn-typography-font-size-sm);
+  }
+
+  &__preview--empty {
+    color: var(--pgn-color-gray-500);
+  }
+
+  &__preview-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pgn-spacing-spacer-1);
+    margin-top: var(--pgn-spacing-spacer-2);
+  }
+
+  &__ids {
+    margin: var(--pgn-spacing-spacer-3) 0 0;
+
+    dt {
+      font-size: var(--pgn-typography-font-size-sm);
+      font-weight: var(--pgn-typography-font-weight-bold);
+    }
+
+    dd {
+      margin: 0 0 var(--pgn-spacing-spacer-2);
+      font-family: var(--pgn-typography-font-family-monospace);
+      font-size: var(--pgn-typography-font-size-sm);
+      overflow-wrap: anywhere;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__tips {
+    display: grid;
+    gap: var(--pgn-spacing-spacer-2);
+    margin: var(--pgn-spacing-spacer-3) 0 0;
+    padding-inline-start: var(--pgn-spacing-spacer-4);
+    font-size: var(--pgn-typography-font-size-sm);
+  }
+
+  // Action bar: stays in view at the bottom of the scrolling page column.
+  &__actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--pgn-spacing-spacer-2) var(--pgn-spacing-spacer-3);
+    margin-top: var(--tels-cc-gap);
+    margin-inline: calc(var(--pgn-spacing-spacer-4) * -1);
+    padding: var(--pgn-spacing-spacer-3) var(--pgn-spacing-spacer-4);
+    border-top: var(--tels-cc-border);
+    background-color: var(--pgn-color-bg-base);
+  }
+
+  &__actions-status {
+    flex: 1 1 12rem;
+    min-width: 0;
+    margin: 0;
+    font-size: var(--pgn-typography-font-size-sm);
+    color: var(--pgn-color-gray-500);
+    overflow-wrap: anywhere;
+  }
+
+  @media (width >= 1200px) {
+    &__layout {
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+    }
+
+    &__aside {
+      position: sticky;
+      top: var(--pgn-spacing-spacer-4);
+    }
+  }
+
+  @media (width <= 575px) {
+    padding: var(--pgn-spacing-spacer-3) var(--pgn-spacing-spacer-3) 0;
+
+    &__card.pgn__card .pgn__card-section {
+      padding: var(--pgn-spacing-spacer-3);
+    }
+
+    &__actions {
+      margin-inline: calc(var(--pgn-spacing-spacer-3) * -1);
+      padding-inline: var(--pgn-spacing-spacer-3);
+
+      .btn {
+        flex: 1 1 auto;
+      }
+    }
+
+    &__actions-status {
+      flex-basis: 100%;
+    }
+  }
+}
