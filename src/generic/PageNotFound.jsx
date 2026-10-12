@@ -25,7 +25,7 @@ const PageNotFound = () => {
               <div className="error-code">
                 <h1 className="display-1 fw-bold">404</h1>
               </div>
-              
+
               {/* Error Message */}
               <div className="error-message mb-4">
                 <h2 className="h3 mb-3">
@@ -66,10 +66,11 @@ const PageNotFound = () => {
         </Row>
       </Container>
 
-      <style jsx>{`
+      <style jsx>
+        {`
         .page-not-found {
           min-height: 100vh;
-          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+          background: linear-gradient(135deg, var(--pgn-color-light-200) 0%, var(--pgn-color-light-300) 100%);
           display: flex;
           align-items: center;
         }
@@ -78,21 +79,21 @@ const PageNotFound = () => {
           background: white;
           padding: 3rem 2rem;
           border-radius: 1rem;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--pgn-elevation-box-shadow-down-3);
         }
         
         .error-code h1 {
           font-size: 8rem;
           line-height: 1;
           margin-bottom: 0;
-          background: linear-gradient(45deg, #007bff, #0056b3);
+          background: linear-gradient(45deg, var(--pgn-color-primary-base), var(--pgn-color-primary-700));
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
         }
         
         .error-message h2 {
-          color: #495057;
+          color: var(--pgn-color-text-base);
           font-weight: 600;
         }
         
@@ -120,7 +121,8 @@ const PageNotFound = () => {
             margin-bottom: 0;
           }
         }
-      `}</style>
+      `}
+      </style>
     </div>
   );
 };

@@ -9,7 +9,7 @@ export interface FooterProps {
       address1: string;
       address2: string;
       pincode: string;
-      location: { label: string; value: string };
+      location: { label: string; value: string; };
       phonenumber: string;
       facebook: string;
       instagram: string;
@@ -19,11 +19,11 @@ export interface FooterProps {
   };
   quickLinks: {
     align: TextAlign;
-    content: { label: string; link: string }[];
+    content: { label: string; link: string; }[];
   };
   exploreLinks: {
     align: TextAlign;
-    content: { label: string; link: string }[];
+    content: { label: string; link: string; }[];
   };
   logoUrl: string;
 }

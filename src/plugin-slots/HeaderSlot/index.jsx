@@ -1,11 +1,9 @@
 import { PluginSlot } from '@openedx/frontend-plugin-framework';
 
 const HeaderSlot = ({
-    children,
+  children,
 }) => (
-  <PluginSlot
-    id="header_plugin_slot"
-  >
+  <PluginSlot id="header_plugin_slot">
     {children}
   </PluginSlot>
 );

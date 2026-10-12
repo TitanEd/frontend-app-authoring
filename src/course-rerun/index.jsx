@@ -44,9 +44,7 @@ const CourseRerun = () => {
 
   return (
     <>
-      <PluginSlot
-        id="course_rerun_header_plugin_slot"
-      >
+      <PluginSlot id="course_rerun_header_plugin_slot">
         <Header isHiddenMainMenu />
       </PluginSlot>
       <PluginSlot
@@ -67,7 +65,7 @@ const CourseRerun = () => {
               <section>
                 <header className="d-flex">
                   <Stack>
-                    <h2 className="course-rerun-title">
+                    <h2>
                       {intl.formatMessage(messages.rerunTitle)} {displayName}
                     </h2>
                     <span className="large">{originalCourseData}</span>
@@ -108,9 +106,7 @@ const CourseRerun = () => {
           isQueryPending={savingStatus === RequestStatus.PENDING}
         />
       </div>
-      <PluginSlot
-        id="course_rerun_footer_plugin_slot"
-      >
+      <PluginSlot id="course_rerun_footer_plugin_slot">
         <StudioFooterSlot />
       </PluginSlot>
     </>

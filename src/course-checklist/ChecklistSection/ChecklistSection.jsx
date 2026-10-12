@@ -43,9 +43,7 @@ const ChecklistSection = ({
         ) :
         (
           <>
-            <PluginSlot
-              id="course_checklist_section_completion_subheader_plugin_slot"
-            >
+            <PluginSlot id="course_checklist_section_completion_subheader_plugin_slot">
               <div data-testid="completion-subheader">
                 {getCompletionCount(checks, totalCompletedChecks)}
               </div>

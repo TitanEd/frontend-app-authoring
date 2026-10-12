@@ -1,3 +1,5 @@
+// Later blocks intentionally re-open earlier selectors to override them in cascade order.
+/* stylelint-disable no-duplicate-selectors */
 body {
     height: 100%;
     width: 100%;
@@ -16,7 +18,7 @@ body {
     }
 
     50% {
-        opacity: 0.4;
+        opacity: .4;
     }
 
     100% {
@@ -33,7 +35,7 @@ body {
 
 .form-control {
     &[type="time"] {
-        padding-right: 0.5rem;
+        padding-right: .5rem;
     }
 }
 
@@ -45,25 +47,27 @@ body {
 
 .form-text {
     font-size: 12px;
-    margin-top: 0.25rem;
+    margin-top: .25rem;
 }
 
 .ps-course-form {
     height: 84vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow: hidden scroll;
     scrollbar-width: none;
+
     /* Firefox */
     -ms-overflow-style: none;
 
     ::-webkit-scrollbar {
         display: none;
+
         /* Chrome, Safari, Opera */
     }
 
     .aibutton{
         margin-left: 4px;
     }
+
     .pgn__vstack.pgn__stack-gap--1 {
         gap: 2.3rem;
     }
@@ -77,9 +81,9 @@ body {
     .form-control {
         // border: 1px solid #e1e1e1;
         border-radius: 4px;
-        padding: 0.5rem;
+        padding: .5rem;
         // color: #454545;
-        font-size: 0.875rem;
+        font-size: .875rem;
 
         &:focus {
             border-color: var(--primary);
@@ -96,22 +100,22 @@ body {
         font-size: 14px;
         font-weight: 500;
         // color: #454545;
-        margin-bottom: 0.5rem;
+        margin-bottom: .5rem;
     }
 
     // Form text (help text) styles
     .form-text {
         color: var(--text-secondary);
-        font-size: 0.75rem;
-        margin-top: 0.25rem;
+        font-size: .75rem;
+        margin-top: .25rem;
     }
 
 
     // Radio button styles
     .radio-button {
-        margin-right: 0.5rem;
+        margin-right: .5rem;
         color: var(--text-primary);
-        font-size: 0.875rem;
+        font-size: .875rem;
         margin-bottom: 5px;
         display: inline-flex;
         align-items: center;
@@ -130,7 +134,7 @@ body {
         .form-check-input {
             width: 2.5rem;
             height: 1.25rem;
-            margin-top: 0.25rem;
+            margin-top: .25rem;
 
             &:checked {
                 background-color: var(--primary);
@@ -148,7 +152,7 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0.5rem !important;
+        padding: .5rem !important;
 
         &:hover {
             border-color: var(--primary);
@@ -157,13 +161,13 @@ body {
         .btn-outline-primary {
             border-color: var(--primary-light);
             color: var(--primary);
-            font-size: 0.75rem;
+            font-size: .75rem;
             border-radius: 8px;
             background-color: var(--primary-light);
 
             &:hover {
                 background-color: var(--primary);
-                color: var(--text-white);
+                color: var(--pgn-color-white);
             }
         }
 
@@ -176,12 +180,12 @@ body {
     .format-toolbar {
         border: 1px solid var(--border-color);
         border-radius: 4px 4px 0 0;
-        padding: 0.5rem;
+        padding: .5rem;
         background-color: var(--bg-hover);
 
         button {
-            padding: 0.25rem 0.5rem;
-            margin-right: 0.25rem;
+            padding: .25rem .5rem;
+            margin-right: .25rem;
             border: none;
             background: none;
             color: var(--text-primary);
@@ -200,7 +204,7 @@ body {
 
     // Description editor styles
     .description-editor {
-        border-radius: 0.25rem;
+        border-radius: .25rem;
         width: 100%;
         resize: vertical;
     }
@@ -221,12 +225,12 @@ body {
                 border: none;
                 color: var(--text-primary);
                 position: relative;
-                transition: all 0.2s ease;
+                transition: all .2s ease;
                 border-left: 4px solid transparent;
                 display: flex;
                 align-items: center;
-                gap: 0.75rem;
-                font-size: 0.875rem;
+                gap: .75rem;
+                font-size: .875rem;
                 cursor: pointer;
                 border-radius: 0;
 
@@ -304,11 +308,9 @@ body {
                 .nav-item {
                     width: 100%;
                     margin: 0;
-                    width: 100%;
-                    margin: 0;
                     border: 1px solid lightgray;
                     border-radius: 8px;
-                    margin-bottom: 0.5rem;
+                    margin-bottom: .5rem;
 
                     .nav-link {
                         width: 100%;
@@ -317,12 +319,12 @@ body {
                         border: none;
                         color: var(--text-primary);
                         position: relative;
-                        transition: all 0.2s ease;
+                        transition: all .2s ease;
                         border-left: 4px solid transparent;
                         display: flex;
                         align-items: center;
-                        gap: 0.75rem;
-                        font-size: 0.875rem;
+                        gap: .75rem;
+                        font-size: .875rem;
                         cursor: pointer;
                         border-radius: 0;
                         outline: none !important;
@@ -404,7 +406,7 @@ body {
         }
 
         .radio-button {
-            margin-bottom: 0.5rem;
+            margin-bottom: .5rem;
         }
     }
 
@@ -426,11 +428,11 @@ body {
 
     // Course introduction video styles
     .embed-video-container {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-        border-radius: 0.1875rem;
+        box-shadow: var(--pgn-elevation-box-shadow-down-1);
+        border-radius: .1875rem;
 
         .introduction-video {
-            padding: 0.75rem;
+            padding: .75rem;
             height: 150px;
             display: flex;
             align-items: center;
@@ -452,8 +454,8 @@ body {
 
         .btn-link {
             font-size: 12px;
-            padding: 0.25rem 0.5rem;
-            margin-top: 0.5rem;
+            padding: .25rem .5rem;
+            margin-top: .5rem;
         }
     }
 
@@ -480,9 +482,10 @@ body {
     // Style for the inline asterisk span
     .required-asterisk {
         color: var(--danger);
-        margin-left: 0.25rem;
+        margin-left: .25rem;
         font-weight: bold;
     }
+
     .form-group-custom{
         .pgn__form-label{
             display: flex;
@@ -497,11 +500,11 @@ body {
     .time-field .pgn__form-label {
         // Or maybe this one
         font: inherit !important;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important; // Re-apply desired stack
+        font-family: var(--pgn-typography-font-family-base); // Re-apply desired stack
         font-size: 14px !important;
         font-weight: 600 !important;
         line-height: 1.5 !important;
-        margin-bottom: 0rem !important;
+        margin-bottom: 0 !important;
         color: var(--text-primary)
     }
 
@@ -510,12 +513,12 @@ body {
     // Assuming a wrapper class
     .introduction-video-wrapper .form-label {
         font: inherit !important;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+        font-family: var(--pgn-typography-font-family-base);
         font-size: 14px !important;
         font-weight: 500 !important;
         color: var(--text-primary) !important;
         line-height: 1.5 !important;
-        margin-bottom: 0.5rem !important;
+        margin-bottom: .5rem !important;
     }
 
     .cursor-pointer {
@@ -524,7 +527,7 @@ body {
 
     [data-tooltip] {
         position: relative;
-        margin: 0 5px 0 5px;
+        margin: 0 5px;
         height: 20px;
 
         &:hover::after {
@@ -535,9 +538,9 @@ body {
             top: calc(100% + 8px);
             padding: 8px 12px;
             background: var(--text-primary);
-            color: var(--text-white);
+            color: var(--pgn-color-white);
             border-radius: 6px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--pgn-elevation-box-shadow-down-1);
             white-space: normal;
             z-index: 10;
             font-size: 12px;
@@ -577,8 +580,8 @@ body {
                 justify-content: space-between;
                 gap: 1.5rem;
                 border-bottom: none !important;
-                padding-bottom: 0.625rem;
-                margin-bottom: 0.375rem;
+                padding-bottom: .625rem;
+                margin-bottom: .375rem;
 
                 .datepicker-control {
                     position: relative;
@@ -586,11 +589,11 @@ body {
 
                     .form-control {
                         width: 100%;
-                        padding: 0.5rem;
+                        padding: .5rem;
                         border: 1px solid var(--border-color);
                         border-radius: 4px;
                         height: 2.5rem;
-                        font-size: 0.875rem;
+                        font-size: .875rem;
                         color: var(--text-primary);
 
                         &:focus {
@@ -607,7 +610,7 @@ body {
 
                     .form-control {
                         width: 100%;
-                        padding: 0.5rem;
+                        padding: .5rem;
                     }
 
                     .form-label {
@@ -617,9 +620,9 @@ body {
                     }
 
                     .timezone-text {
-                        margin-left: 0.5rem;
+                        margin-left: .5rem;
                         color: var(--text-secondary);
-                        font-size: 0.75rem;
+                        font-size: .75rem;
                     }
                 }
             }
@@ -627,8 +630,8 @@ body {
             .schedule-date-item-error {
                 display: block;
                 color: var(--danger);
-                font-size: 0.875rem;
-                margin-top: 0.25rem;
+                font-size: .875rem;
+                margin-top: .25rem;
             }
         }
     }
@@ -646,7 +649,7 @@ body {
 
     .calendar-icon {
         position: absolute;
-        left: 0.75rem;
+        left: .75rem;
         top: 50%;
         transform: translateY(-50%);
         color: var(--text-secondary);
@@ -674,24 +677,24 @@ body {
 
 
 .pgn__form-group {
-    margin-bottom: 0px !important;
+    margin-bottom: 0 !important;
 }
 
 .radio-button-options {
     gap: 1.5rem;
 
     input {
-        margin-right: 0.5rem;
-        font-size: 0.75rem;
+        margin-right: .5rem;
+        font-size: .75rem;
     }
 
     div {
-        font-size: 0.875rem;
+        font-size: .875rem;
     }
 }
 
 .radio-button .pgn__form-radio-input {
-    margin-right: 0.5rem;
+    margin-right: .5rem;
 }
 
 .pgn__form-label {
@@ -730,13 +733,13 @@ body {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: rgba(51, 51, 51, 0.6);
-        color: var(--text-white);
+        background-color: color-mix(in srgb, var(--pgn-color-black) 60%, transparent);
+        color: var(--pgn-color-white);
         display: flex;
         align-items: center;
         justify-content: center;
         opacity: 0;
-        transition: opacity 0.2s ease-in-out;
+        transition: opacity .2s ease-in-out;
         cursor: pointer;
         border-radius: 50%;
         border: none;
@@ -752,8 +755,9 @@ body {
     &:hover .remove-image-overlay {
         opacity: 1;
     }
+
     &:hover .pgn__icon{
-        color: var(--text-white);
+        color: var(--pgn-color-white);
     }
 }
 
@@ -783,7 +787,7 @@ body {
         align-items: center;
         justify-content: center;
         padding: 1rem;
-        transition: border-color 0.2s ease;
+        transition: border-color .2s ease;
 
         &:hover {
             border-color: var(--primary);
@@ -832,9 +836,9 @@ body {
 
             .remove-image-btn {
                 position: absolute;
-                top: 0.5rem;
-                right: 0.5rem;
-                background: rgba(0, 0, 0, 0.5);
+                top: .5rem;
+                right: .5rem;
+                background: color-mix(in srgb, var(--pgn-color-black) 50%, transparent);
                 border: none;
                 border-radius: 50%;
                 width: 2rem;
@@ -842,12 +846,12 @@ body {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: var(--text-white);
+                color: var(--pgn-color-white);
                 cursor: pointer;
-                transition: background-color 0.2s ease;
+                transition: background-color .2s ease;
 
                 &:hover {
-                    background: rgba(0, 0, 0, 0.7);
+                    background: color-mix(in srgb, var(--pgn-color-black) 70%, transparent);
                 }
 
                 .pgn__icon {
@@ -870,7 +874,7 @@ body {
 }
 
 .form-check-input {
-    margin-top: 0.5rem !important;
+    margin-top: .5rem !important;
 }
 
 .entrance-exam-group {
@@ -901,7 +905,7 @@ body {
 }
 
 .font-small {
-    font-size: 0.75rem;
+    font-size: .75rem;
 }
 
 .pacing-style {
@@ -915,7 +919,7 @@ body {
 }
 
 // Add responsive styles
-@media (max-width: 1200px) {
+@media (width <= 1200px) {
     .ps-course-form {
         .options-container {
             .row {
@@ -936,7 +940,7 @@ body {
     }
 }
 
-@media (max-width: 992px) {
+@media (width <= 992px) {
     .ps-course-form {
         .form-section {
             .row {
@@ -949,12 +953,12 @@ body {
 
         .pacing-style {
             flex-direction: column;
-            gap: 0.5rem;
+            gap: .5rem;
         }
     }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .ps-course-form {
         .container {
             padding-left: 1rem;
@@ -967,8 +971,8 @@ body {
 
         .nav-tabs {
             .nav-link {
-                padding: 0.75rem;
-                font-size: 0.875rem;
+                padding: .75rem;
+                font-size: .875rem;
             }
         }
 
@@ -982,19 +986,19 @@ body {
     }
 }
 
-@media (max-width: 576px) {
+@media (width <= 576px) {
     .ps-course-form {
         .form-label {
-            font-size: 0.875rem;
+            font-size: .875rem;
         }
 
         .form-text {
-            font-size: 0.75rem;
+            font-size: .75rem;
         }
 
         .nav-tabs {
             .nav-link {
-                padding: 0.5rem;
+                padding: .5rem;
 
                 .icon {
                     width: 16px;
@@ -1005,7 +1009,7 @@ body {
 
         .schedule-date-item-container {
             flex-direction: column;
-            gap: 0.75rem;
+            gap: .75rem;
 
             .time-field {
                 max-width: 100%;
@@ -1024,7 +1028,7 @@ body {
     width: 100%;
     grid-column: 1 / -1; // Span all columns in grid layout
     clear: both; // Clear any floating elements
-    margin-left: 0.75rem;
+    margin-left: .75rem;
     margin-right: 0;
 
     .schedule-date-item-container {
@@ -1045,14 +1049,13 @@ body {
 .pacing-style {
     label {
         display: block;
-        margin-bottom: 0.5rem;
+        margin-bottom: .5rem;
     }
 }
 
 // Add styles for better touch targets on mobile
 @media (hover: none) and (pointer: coarse) {
     .ps-course-form {
-
         .nav-link,
         .btn,
         .form-control,
@@ -1072,11 +1075,11 @@ body {
     border-radius: 16px;
     border: 1px solid lightgray;
     margin-bottom: 1rem;
-    background: #ffffff;
+    background: var(--pgn-color-bg-base);
 }
 
 .font-12 {
-    font-size: 0.75rem;
+    font-size: .75rem;
 }
 
 .text-center {
@@ -1113,9 +1116,9 @@ body {
 }
 
 .custom-padding {
-    padding-left: 0px !important;
-    padding-top: 0px !important;
-    padding-right: 0px !important;
+    padding-left: 0 !important;
+    padding-top: 0 !important;
+    padding-right: 0 !important;
 }
 
 .pl-12-pr-12 {
@@ -1142,13 +1145,13 @@ body {
         border-radius: 4px !important;
         background-color: var(--bg-surface) !important;
         color: var(--text-muted) !important;
-        font-size: 0.875rem !important;
+        font-size: .875rem !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
         text-align: left !important;
         position: relative !important;
-        transition: all 0.2s ease !important;
+        transition: all .2s ease !important;
         font-weight: 400 !important;
 
         &:focus {
@@ -1172,7 +1175,7 @@ body {
 
         &::after {
             position: absolute !important;
-            right: 0.75rem !important;
+            right: .75rem !important;
             top: 50% !important;
             transform: translateY(-50%) !important;
             border: none !important;
@@ -1183,7 +1186,7 @@ body {
             border-right: 4px solid transparent !important;
             border-top: 4px solid var(--text-secondary) !important;
             margin: 0 !important;
-            transition: transform 0.2s ease !important;
+            transition: transform .2s ease !important;
         }
 
         &[aria-expanded="true"] {
@@ -1197,9 +1200,9 @@ body {
         width: 100% !important;
         border-radius: 4px !important;
         border: 1px solid var(--border-color) !important;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: var(--pgn-elevation-box-shadow-down-1) !important;
         background-color: var(--bg-surface) !important;
-        margin-top: 0.25rem !important;
+        margin-top: .25rem !important;
         max-height: 300px !important;
         overflow-y: auto !important;
         z-index: 1000 !important;
@@ -1209,15 +1212,15 @@ body {
         }
 
         .dropdown-item {
-            padding: 0.5rem 0.75rem !important;
+            padding: .5rem .75rem !important;
             color: var(--text-primary) !important;
-            font-size: 0.875rem !important;
+            font-size: .875rem !important;
             border: none !important;
             background: none !important;
             text-align: left !important;
             width: 100% !important;
             cursor: pointer !important;
-            transition: background-color 0.2s ease !important;
+            transition: background-color .2s ease !important;
 
             &:hover {
                 background-color: var(--bg-hover) !important;

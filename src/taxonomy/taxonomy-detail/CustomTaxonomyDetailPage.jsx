@@ -7,8 +7,9 @@ import { Container, Layout } from '@openedx/paragon';
 import { useNavigate } from 'react-router-dom';
 import { LmsBook } from '@openedx/paragon/icons';
 import { TagListTable } from '../tag-list';
-import TaxonomyDetailSideCard from './TaxonomyDetailSideCard';
+import TaxonomyDetailSideCard from './CustomTaxonomyDetailSideCard';
 import taxonomyMessages from '../messages';
+import customMessages from '../../customMessages';
 
 const CustomTaxonomyDetailPage = ({
   intl,
@@ -28,16 +29,26 @@ const CustomTaxonomyDetailPage = ({
         <div className="ca-breadcrumb-bg">
           <div className="ca-breadcrumb-container">
             <div className="ca-breadcrumb d-flex align-items-center">
-              <span className="ca-breadcrumb-icon collection-breadcrumb-icon" onClick={() => navigate('/taxonomies')}>
+              <span
+                className="ca-breadcrumb-icon collection-breadcrumb-icon"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate('/taxonomies')}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') { navigate('/taxonomies'); }
+                }}
+              >
                 <LmsBook className="custom-icon" />
                 {intl.formatMessage(taxonomyMessages.headerTitle)}
               </span>
               <span className="ca-breadcrumb-divider">/</span>
-              <span className="ca-breadcrumb-current">{taxonomy.name || 'Loading...'}</span>
+              <span className="ca-breadcrumb-current">
+                {taxonomy.name || intl.formatMessage(customMessages.loading)}
+              </span>
             </div>
             <div className="ca-title library-breadcrumb-title">
               <div>
-                {taxonomy.name || 'Loading...'}
+                {taxonomy.name || intl.formatMessage(customMessages.loading)}
                 {getSystemDefinedBadge()}
               </div>
               <div className="custom-taxonomy-detail-page-header-title-actions">

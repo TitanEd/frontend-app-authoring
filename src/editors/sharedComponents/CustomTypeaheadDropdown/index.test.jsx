@@ -76,13 +76,17 @@ describe('common/OrganizationDropdown.jsx', () => {
     await act(async () => {
       fireEvent.click(screen.getByTestId('expand-more-button'));
     });
-    expect(within(screen.getByTestId('dropdown-container'))
-      .queryAllByRole('button').length).toEqual(newProps.options.length);
+    expect(
+      within(screen.getByTestId('dropdown-container'))
+        .queryAllByRole('button').length,
+    ).toEqual(newProps.options.length);
     await act(async () => {
       fireEvent.click(screen.getByTestId('expand-less-button'));
     });
-    expect(within(screen.getByTestId('dropdown-container'))
-      .queryAllByRole('button').length).toEqual(0);
+    expect(
+      within(screen.getByTestId('dropdown-container'))
+        .queryAllByRole('button').length,
+    ).toEqual(0);
   });
   it('shows options list depends on field value', () => {
     const newProps = { ...defaultProps, options: ['opt1', 'opt2'] };
@@ -90,19 +94,25 @@ describe('common/OrganizationDropdown.jsx', () => {
     const formInput = screen.getByTestId('formControl');
     fireEvent.focus(formInput);
     userEvent.type(formInput, 'opt1');
-    expect(within(screen.getByTestId('dropdown-container'))
-      .queryAllByRole('button').length).toEqual(1);
+    expect(
+      within(screen.getByTestId('dropdown-container'))
+        .queryAllByRole('button').length,
+    ).toEqual(1);
   });
   it('closes options list on click outside', async () => {
     const newProps = { ...defaultProps, options: ['opt1', 'opt2'] };
     renderComponent(newProps);
     const formInput = screen.getByTestId('formControl');
     fireEvent.click(formInput);
-    expect(within(screen.getByTestId('dropdown-container'))
-      .queryAllByRole('button').length).toEqual(2);
+    expect(
+      within(screen.getByTestId('dropdown-container'))
+        .queryAllByRole('button').length,
+    ).toEqual(2);
     userEvent.click(document.body);
-    expect(within(screen.getByTestId('dropdown-container'))
-      .queryAllByRole('button').length).toEqual(0);
+    expect(
+      within(screen.getByTestId('dropdown-container'))
+        .queryAllByRole('button').length,
+    ).toEqual(0);
   });
   describe('empty options list', () => {
     it('shows empty options list depends on field value', () => {

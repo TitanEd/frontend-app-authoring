@@ -8,12 +8,19 @@ import { LmsBook } from '@openedx/paragon/icons';
 import { useNavigate } from 'react-router-dom';
 // import SubHeader from '../generic/sub-header/SubHeader';
 import {
-  ClearFiltersButton, FilterByBlockType, FilterByTags, SearchContextProvider, SearchKeywordsField, SearchSortWidget,
+  ClearFiltersButton,
+  FilterByBlockType,
+  FilterByTags,
+  SearchContextProvider,
+  SearchKeywordsField,
+  SearchSortWidget,
 } from '../search-manager';
 import messages from './messages';
 import LibraryContent from './LibraryContent';
 import { ContentType } from './routes';
 import { LibrarySidebar } from './library-sidebar';
+import customMessages from '../customMessages';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const CustomLibraryAuthoringPage = ({
   libraryData,
@@ -26,7 +33,7 @@ const CustomLibraryAuthoringPage = ({
   activeKey,
   handleTabChange,
   sidebarComponentInfo,
-//   libraryId,
+  //   libraryId,
 }) => {
   const navigate = useNavigate();
   return (
@@ -35,34 +42,48 @@ const CustomLibraryAuthoringPage = ({
         <div className="ca-breadcrumb-bg">
           <div className="ca-breadcrumb-container">
             <div className="ca-breadcrumb d-flex align-items-center">
-              <span className="ca-breadcrumb-icon collection-breadcrumb-icon" onClick={() => navigate('/libraries')}>
+              <span
+                className="ca-breadcrumb-icon collection-breadcrumb-icon"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate('/libraries')}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') { navigate('/libraries'); }
+                }}
+              >
                 <LmsBook className="custom-icon" />
-                Content Libraries
+                <FormattedMessage {...customMessages.contentLibraries} />
               </span>
               <span className="ca-breadcrumb-divider">/</span>
-              <span className="ca-breadcrumb-current">{subHeaderTitle || 'Loading...'}</span>
+              <span className="ca-breadcrumb-current">
+                {subHeaderTitle || <FormattedMessage {...customMessages.loading} />}
+              </span>
             </div>
             <div className="ca-title library-breadcrumb-title">
-              {subHeaderTitle || 'Loading...'}
+              {subHeaderTitle || <FormattedMessage {...customMessages.loading} />}
             </div>
           </div>
         </div>
-        <Helmet><title>{libraryData.title} | {process.env.SITE_NAME}</title></Helmet>
+        <Helmet>
+          <title>{libraryData.title} | {process.env.SITE_NAME}</title>
+        </Helmet>
         <Container className="library-authoring-page">
           <SearchContextProvider
             extraFilter={extraFilter}
           >
-            {/* <SubHeader
+            {
+              /* <SubHeader
               title={subHeaderTitle}
               subtitle={!componentPickerMode ? intl.formatMessage(messages.headingSubtitle) : undefined}
               breadcrumbs={breadcumbs}
               headerActions={headerActions}
-            /> */}
+            /> */
+            }
             <div className="sub-header-container d-flex justify-content-between align-items-center">
               <SearchKeywordsField className="w-40" />
               {headerActions}
             </div>
-            <hr style={{ border: 'none', borderTop: '1px solid #e5e6e6', margin: '0 0 0 0' }} />
+            <hr style={{ border: 'none', borderTop: '1px solid var(--pgn-color-light-400)', margin: '0 0 0 0' }} />
             <div className="d-flex mt-3 align-items-center">
               <FilterByTags />
               <FilterByBlockType />
@@ -85,9 +106,9 @@ const CustomLibraryAuthoringPage = ({
         </Container>
       </div>
       {!!sidebarComponentInfo?.type && (
-      <div className="library-authoring-sidebar box-shadow-left-1 bg-white" data-testid="library-sidebar">
-        <LibrarySidebar />
-      </div>
+        <div className="library-authoring-sidebar box-shadow-left-1 bg-white" data-testid="library-sidebar">
+          <LibrarySidebar />
+        </div>
       )}
     </div>
   );

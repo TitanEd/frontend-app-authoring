@@ -359,7 +359,6 @@ const LibraryAuthoringPage = ({
         componentPickerMode,
         restrictToLibrary,
         showOnlyPublished,
-        // Verawood renamed `sidebarComponentInfo` to `sidebarItemInfo` in the SidebarContext.
         sidebarComponentInfo: sidebarItemInfo,
         extraFilter,
         subHeaderTitle: <SubHeaderTitle title={libraryData?.title} />,
@@ -432,7 +431,6 @@ const LibraryAuthoringPage = ({
         )}
       </div>
     </PluginSlot>
-
   );
 };
 

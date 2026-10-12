@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Helmet } from 'react-helmet';
 import {
-  CardView, Container, DataTable, Spinner,
+  CardView,
+  Container,
+  DataTable,
+  Spinner,
 } from '@openedx/paragon';
 import getPageHeadTitle from '../generic/utils';
 import messages from './messages';

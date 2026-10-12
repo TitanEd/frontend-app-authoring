@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {
   Card,
   Icon,
+  IconButton,
   Button,
   ModalDialog,
 } from '@openedx/paragon';
@@ -30,7 +31,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useIntl, getLocale } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl, getLocale } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform';
 import FullCalendar from '@fullcalendar/react';
@@ -54,6 +55,7 @@ const hasDashboardContent = (data) => (
 );
 // Sortable widget card for modal
 const SortableWidgetCard = ({ widget, isSelected, onClick }) => {
+  const intl = useIntl();
   const {
     attributes,
     listeners,
@@ -68,7 +70,7 @@ const SortableWidgetCard = ({ widget, isSelected, onClick }) => {
     transition,
     cursor: isDragging ? 'grabbing' : 'grab',
     opacity: isDragging ? 0.7 : 1,
-    background: isDragging ? '#f5f5f5' : undefined,
+    background: isDragging ? 'var(--pgn-color-light-200)' : undefined,
   };
 
   // Special styling for placeholder card
@@ -78,10 +80,14 @@ const SortableWidgetCard = ({ widget, isSelected, onClick }) => {
         <Card className="widget-selection-card placeholder-card">
           <Card.Section className="widget-selection-content" style={{ display: 'flex', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <h4 style={{ flex: 1, margin: 0, color: '#666' }}>Placeholder</h4>
+              <h4 style={{ flex: 1, margin: 0, color: 'var(--pgn-color-text-muted)' }}>
+                <FormattedMessage {...messages.placeholderTitle} />
+              </h4>
             </div>
             <div style={{ width: '100%' }}>
-              <p style={{ margin: 0, color: '#666' }}>Drag widgets here</p>
+              <p style={{ margin: 0, color: 'var(--pgn-color-text-muted)' }}>
+                <FormattedMessage {...messages.placeholderText} />
+              </p>
             </div>
           </Card.Section>
         </Card>
@@ -104,18 +110,22 @@ const SortableWidgetCard = ({ widget, isSelected, onClick }) => {
               style={{ display: 'inline-flex', alignItems: 'center', marginLeft: 8 }}
               role="button"
               tabIndex={0}
-              aria-label="Drag to reorder"
+              aria-label={intl.formatMessage(messages.dragToReorder)}
               onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                 }
               }}
             >
-              <DragIndicator style={{ cursor: 'grab', color: '#888' }} />
+              <DragIndicator style={{ cursor: 'grab', color: 'var(--pgn-color-gray-500)' }} />
             </span>
           </div>
           <div style={{ width: '100%' }}>
-            <p style={{ margin: 0 }}>{widget.type === 'chart' ? `Chart type: ${widget.content.chartType}` : 'Text widget'}</p>
+            <p style={{ margin: 0 }}>
+              {widget.type === 'chart'
+                ? intl.formatMessage(messages.chartWidget, { chartType: widget.content.chartType })
+                : intl.formatMessage(messages.textWidget)}
+            </p>
           </div>
         </Card.Section>
       </Card>
@@ -316,8 +326,12 @@ const Dashboard = () => {
       if (!activeWidget || !overWidget) { return items; }
 
       // Get all widgets in the target column (excluding placeholders)
-      const columnItems = items.filter(w => w.position === overWidget.position && w.id !== 'left-placeholder' && w.id !== 'right-placeholder');
-      const otherItems = items.filter(w => w.position !== overWidget.position || w.id === 'left-placeholder' || w.id === 'right-placeholder');
+      const columnItems = items.filter(w =>
+        w.position === overWidget.position && w.id !== 'left-placeholder' && w.id !== 'right-placeholder'
+      );
+      const otherItems = items.filter(w =>
+        w.position !== overWidget.position || w.id === 'left-placeholder' || w.id === 'right-placeholder'
+      );
 
       const oldIndex = columnItems.findIndex(item => item.id === active.id);
       const newIndex = columnItems.findIndex(item => item.id === over.id);
@@ -360,7 +374,9 @@ const Dashboard = () => {
       order: index + 1,
       enabled: tempSelectedWidgets.includes(widget.id),
     }));
-    const savedWidgets = updatedWidgets.filter(widget => widget.id !== 'left-placeholder' && widget.id !== 'right-placeholder');
+    const savedWidgets = updatedWidgets.filter(widget =>
+      widget.id !== 'left-placeholder' && widget.id !== 'right-placeholder'
+    );
     try {
       // Update local state
       setSelectedWidgets(tempSelectedWidgets);
@@ -411,8 +427,10 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchNavigationItems = async () => {
       try {
-        const response = await getAuthenticatedHttpClient().get(`${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`);
-       // for local api fetch
+        const response = await getAuthenticatedHttpClient().get(
+          `${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`,
+        );
+        // for local api fetch
         // const response = await getAuthenticatedHttpClient().get(
         //   'LMS_API_DOMAIN/titaned/api/v1/menu-config/'
         // );
@@ -444,11 +462,19 @@ const Dashboard = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <FormattedMessage {...messages.loading} />
+      </div>
+    );
   }
 
   if (!dashboardData) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <FormattedMessage {...messages.loading} />
+      </div>
+    );
   }
 
   // Provide default suggestions if none are present
@@ -464,15 +490,20 @@ const Dashboard = () => {
     const intl = useIntl();
 
     const {
-      filteredEvents, prev, next, today, currentDate,
+      filteredEvents,
+      prev,
+      next,
+      today,
+      currentDate,
     } = useCalendarContext();
     const responsiveView = 'listWeek';
 
     return (
       <>
-        <h4 className="card-header">{intl && intl.formatMessage
-          ? intl.formatMessage(message.calendarTitle)
-          : message.calendarTitle.defaultMessage}
+        <h4 className="card-header">
+          {intl && intl.formatMessage
+            ? intl.formatMessage(message.calendarTitle)
+            : message.calendarTitle.defaultMessage}
         </h4>
         <div className="calendar-card">
           <div className="calendar-nav">
@@ -519,11 +550,14 @@ const Dashboard = () => {
         {/* Overview Section */}
         <div className="overview-section">
           <div className="overview-header">
-            <h1>Overview</h1>
-            <Icon
+            <h1>
+              <FormattedMessage {...messages.overview} />
+            </h1>
+            <IconButton
               src={FilterList}
-              className="text-primary"
-              style={{ cursor: 'pointer' }}
+              iconAs={Icon}
+              variant="primary"
+              alt={intl.formatMessage(messages.widgetModalTitle)}
               onClick={handleModalOpen}
             />
           </div>
@@ -565,10 +599,11 @@ const Dashboard = () => {
         onClose={handleModalClose}
         size="lg"
         hasCloseButton
+        title={intl.formatMessage(messages.widgetModalTitle)}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>
-            Add/Remove Widgets
+            {intl.formatMessage(messages.widgetModalTitle)}
           </ModalDialog.Title>
         </ModalDialog.Header>
         <ModalDialog.Body>
@@ -625,84 +660,101 @@ const Dashboard = () => {
             variant="outline-primary"
             onClick={handleModalClose}
           >
-            Cancel
+            <FormattedMessage {...messages.cancel} />
           </Button>
           <Button
             variant="primary"
             onClick={handleUpdateWidgets}
           >
-            Update
+            <FormattedMessage {...messages.update} />
           </Button>
         </ModalDialog.Footer>
       </ModalDialog>
 
       {/* Sidebar */}
-      <div className={!isAISuggestionsEnabled && !isTodoListEnabled && !isCalendarWidgetEnabled ? 'dashboard-sidebar-no-display' : 'dashboard-sidebar'}>
-        { isAISuggestionsEnabled && (
-        <Card className="sidebar-card">
-          <h4 className="card-header" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            Titan AI suggestion
-            <img
-              src={customStarsIcon}
-              alt="Custom Stars"
-              style={{ width: '20px', height: '20px' }}
-            />
-          </h4>
-          <Card.Section className="card-section temp-flow">
-            {aiSuggestions.length > 0 ? (
-              <div className="card-list ai-suggestion-list">
-                {aiSuggestions.map((suggestion) => (
-                  <div className="ai-suggestion-item" key={`suggestion-${suggestion}`} style={{ position: 'relative' }}>
-                    {suggestion}
-                    <img
-                      src={customStarsIcon}
-                      alt="Custom Stars"
-                      className="ai-suggestions-icon"
-                    />
+      <div
+        className={!isAISuggestionsEnabled && !isTodoListEnabled && !isCalendarWidgetEnabled
+          ? 'dashboard-sidebar-no-display'
+          : 'dashboard-sidebar'}
+      >
+        {isAISuggestionsEnabled && (
+          <Card className="sidebar-card">
+            <h4 className="card-header" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FormattedMessage {...messages.aiSuggestionTitle} />
+              <img
+                src={customStarsIcon}
+                alt={intl.formatMessage(messages.aiSuggestionIconAlt)}
+                style={{ width: '20px', height: '20px' }}
+              />
+            </h4>
+            <Card.Section className="card-section temp-flow">
+              {aiSuggestions.length > 0 ?
+                (
+                  <div className="card-list ai-suggestion-list">
+                    {aiSuggestions.map((suggestion) => (
+                      <div
+                        className="ai-suggestion-item"
+                        key={`suggestion-${suggestion}`}
+                        style={{ position: 'relative' }}
+                      >
+                        {suggestion}
+                        <img
+                          src={customStarsIcon}
+                          alt={intl.formatMessage(messages.aiSuggestionIconAlt)}
+                          className="ai-suggestions-icon"
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-muted">No suggestions yet.</p>
-            )}
-          </Card.Section>
-        </Card>
+                ) :
+                (
+                  <p className="text-muted">
+                    <FormattedMessage {...messages.noSuggestions} />
+                  </p>
+                )}
+            </Card.Section>
+          </Card>
         )}
-        { isTodoListEnabled && (
-        <Card className="sidebar-card">
-          <h4 className="card-header">Todo List</h4>
-          <Card.Section className="card-section temp-flow">
-            {todoList.length > 0 ? (
-              <div className="card-list todo-list">
-                {todoList.map((todo) => (
-                  <div className="todo-item" key={`todo-${todo}`}>
-                    <Icon
-                      src={RadioButtonUnchecked}
-                      style={{
-                        marginRight: '0.75rem',
-                        color: '#454545',
-                        minWidth: 22,
-                        minHeight: 22,
-                      }}
-                    />
-                    {todo}
+        {isTodoListEnabled && (
+          <Card className="sidebar-card">
+            <h4 className="card-header">
+              <FormattedMessage {...messages.todoListTitle} />
+            </h4>
+            <Card.Section className="card-section temp-flow">
+              {todoList.length > 0 ?
+                (
+                  <div className="card-list todo-list">
+                    {todoList.map((todo) => (
+                      <div className="todo-item" key={`todo-${todo}`}>
+                        <Icon
+                          src={RadioButtonUnchecked}
+                          style={{
+                            marginRight: '0.75rem',
+                            color: 'var(--pgn-color-text-base)',
+                            minWidth: 22,
+                            minHeight: 22,
+                          }}
+                        />
+                        {todo}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-muted">No tasks added.</p>
-            )}
-          </Card.Section>
-        </Card>
+                ) :
+                (
+                  <p className="text-muted">
+                    <FormattedMessage {...messages.noTasks} />
+                  </p>
+                )}
+            </Card.Section>
+          </Card>
         )}
 
-        { isCalendarWidgetEnabled && (
-
-        <Card className="sidebar-card">
-          <CalendarProvider>
-            <CalendarContent />
-          </CalendarProvider>
-        </Card>
+        {isCalendarWidgetEnabled && (
+          <Card className="sidebar-card">
+            <CalendarProvider>
+              <CalendarContent />
+            </CalendarProvider>
+          </Card>
         )}
       </div>
     </div>

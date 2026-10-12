@@ -34,8 +34,10 @@ const Sidebar: React.FC<SidebarProps> = ({ buttons, onNavigate, presentPath }) =
     const handleClickOutside = (event: MouseEvent) => {
       // Check if we are on a non-standard route and the sidebar is NOT collapsed (i.e., expanded overlay state)
       // Also check if the click is outside the sidebar element
-      if (!isStandardRoute && sidebarRef.current
-        && !sidebarRef.current.contains(event.target as Node)) {
+      if (
+        !isStandardRoute && sidebarRef.current
+        && !sidebarRef.current.contains(event.target as Node)
+      ) {
         if (!isCollapsed) {
           setSidebarCollapsed(true);
         }
@@ -60,17 +62,18 @@ const Sidebar: React.FC<SidebarProps> = ({ buttons, onNavigate, presentPath }) =
       >
         <div className="sidebar-buttons">
           {buttons.map((btn) => {
-            const isActive = btn.path === presentPath || (presentPath.includes('/course') && btn.path === '/my-courses');
+            const isActive = btn.path === presentPath ||
+              (presentPath.includes('/course') && btn.path === '/my-courses');
             // Wrap button with OverlayTrigger for tooltip
             return (
               <OverlayTrigger
                 key={btn.path}
                 placement="right" // Tooltip position
-                overlay={(
+                overlay={
                   <Tooltip id={`tooltip-${btn.path}`}>
                     {btn.label}
                   </Tooltip>
-                )}
+                }
                 // Only show tooltip when sidebar is collapsed
                 show={isCollapsed ? undefined : false}
                 // container={sidebarRef.current}
@@ -104,9 +107,7 @@ const Sidebar: React.FC<SidebarProps> = ({ buttons, onNavigate, presentPath }) =
       </div>
 
       {/* The sidebar-extra-space div is for layout purposes if needed, not the overlay panel itself */}
-      {!isStandardRoute && !isCollapsed && (
-        <div className="sidebar-extra-space" />
-      )}
+      {!isStandardRoute && !isCollapsed && <div className="sidebar-extra-space" />}
     </>
   );
 };

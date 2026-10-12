@@ -1,0 +1,9 @@
+// Custom introduction video field: keep YouTube and direct video players 16:9.
+.embed-video-container .introduction-video {
+  iframe,
+  video {
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+  }
+}

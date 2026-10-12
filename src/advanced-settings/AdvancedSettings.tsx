@@ -208,9 +208,7 @@ const AdvancedSettings = () => {
             xl={[{ span: 9 }, { span: 3 }]}
           >
             <Layout.Element>
-              <PluginSlot
-                id="advanced_settings_header_removal_plugin_slot"
-              >
+              <PluginSlot id="advanced_settings_header_removal_plugin_slot">
                 <SubHeader
                   subtitle={intl.formatMessage(messages.headingSubtitle)}
                   title={intl.formatMessage(messages.headingTitle)}
@@ -232,11 +230,11 @@ const AdvancedSettings = () => {
                         headerContentTitle: intl.formatMessage(messages.policy),
                       }}
                     >
-                      <div className="small warning-msg">
+                      <div className="small">
                         <FormattedMessage
                           id="course-authoring.advanced-settings.policies.description"
                           defaultMessage="{notice} Do not modify these policies unless you are familiar with their purpose."
-                          values={{ notice: <strong style={{ color: '#FFA500' }}>Warning: </strong> }}
+                          values={{ notice: <strong>Warning:</strong> }}
                         />
                       </div>
                       <div className="setting-items-deprecated-setting">
@@ -290,7 +288,6 @@ const AdvancedSettings = () => {
                               setIsEditableState={setIsEditableState}
                             />
                           </PluginSlot>
-
                         );
                       })}
                     </ul>

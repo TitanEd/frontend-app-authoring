@@ -1,10 +1,11 @@
+import React from 'react';
 // This file contains configuration for plugins and environment variables.
 
 import { PLUGIN_OPERATIONS, DIRECT_PLUGIN } from '@openedx/frontend-plugin-framework';
 import CourseNavigationSidebar from './src/shared-components/CourseNavigationSidebar';
 import CustomScheduleAndDetails from './src/CustomScheduleAndDetails';
 import messages from './src/schedule-and-details/messages';
-import { Settings, DragHandle, SettingsApplications } from '@openedx/paragon/icons';
+import { Settings, DragHandle } from '@openedx/paragon/icons';
 import {
     Icon,
     IconButton,
@@ -16,14 +17,12 @@ import {
     ActionRow,
     Layout
 } from '@openedx/paragon';
-import FormSwitchGroup from './src/generic/FormSwitchGroup';
 import StatusBarContent from './src/course-outline/status-bar/StatusBarContent'
 import CustomStatusBar from './src/course-outline/status-bar/CustomStatusBar';
 import SubHeader from './src/generic/sub-header/SubHeader';
 import CustomCourseUpdates from './src/course-updates/CustomCourseUpdates';
 import CustomCourseExportPage from './src/export-page/CustomCourseExportPage'
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import WarningMessage from './src/generic/warning-message/WarningMessage';
 import SettingCard from './src/advanced-settings/setting-card/SettingCard';
 import CustomExportSidebar from '/src/export-page/export-sidebar/CustomExportSidebar';
 import CourseChecklistCustom from './src/plugins-components/CourseChecklistCustom';
@@ -34,7 +33,6 @@ import CustomGalleryCard from './src/files-and-videos/generic/table-components/C
 import CustomPagesAndResources from './src/pages-and-resources/CustomPagesAndResources';
 import CustomTextbooks from './src/textbooks/CustomTextbooks';
 import CustomPagesNew from './src/custom-pages/CustomPagesNew';
-import EditorPage from './src/editors/EditorPage';
 import CustomImportSidebar from '/src/import-page/import-sidebar/CustomImportSidebar';
 import CustomCourseUpdate from './src/course-updates/course-update/CustomCourseUpdate';
 import CourseRerunForm from './src/course-rerun/course-rerun-form';
@@ -50,40 +48,117 @@ import CustomTaxonomyDetailPage from './src/taxonomy/taxonomy-detail/CustomTaxon
 import FileSection from './src/import-page/file-section/FileSection';
 import ImportStepper from './src/import-page/import-stepper/ImportStepper';
 import CustomAdvancedSettingsHeader from './src/advanced-settings/CustomAdvancedSettingsHeader';
+import CustomAppRoutes from './src/CustomAppRoutes';
+import CustomXBlockStatus from './src/course-outline/xblock-status/CustomXBlockStatus';
+import CustomBasicTab from './src/generic/configure-modal/CustomBasicTab';
+import CustomOutlineSidebar from './src/course-outline/outline-sidebar/CustomOutlineSidebar';
 
 const getPluginSlots = () => {
-    if (typeof window !== 'undefined' && localStorage.getItem('oldUI') === 'true') {
-        return {};
-    }
-    
-    return {
-        header_plugin_slot: {
+return {
+
+    app_layout_plugin_slot: {
+      keepDefault: false,
+      plugins: [
+        {
+          op: PLUGIN_OPERATIONS.Hide,
+          widgetId: 'default_contents',
+        },
+        {
+          op: PLUGIN_OPERATIONS.Insert,
+          widget: {
+            id: 'custom_app_layout',
+            type: DIRECT_PLUGIN,
+            priority: 1,
+            RenderWidget: () => <CustomAppRoutes />,
+          },
+        },
+      ],
+    },
+        // Stock status bar under the page title: the custom one sits in view_live_button_slot.
+        status_bar_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Hide,
+                    widgetId: 'default_contents',
+                },
+            ],
+        },
+        // Course outline info sidebar: closed by default (custom copy).
+        'org.openedx.frontend.authoring.course_outline_sidebar.v1': {
+            keepDefault: false,
+            plugins: [
+                {
+                    op: PLUGIN_OPERATIONS.Hide,
+                    widgetId: 'default_contents',
+                },
+                {
+                    op: PLUGIN_OPERATIONS.Insert,
                     widget: {
-                        id: 'header_plugin_slot',
+                        id: 'custom_course_outline_sidebar',
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: () => <div>This is Header</div>, // Render "This is Header" text
+                        RenderWidget: () => <CustomOutlineSidebar />,
                     },
+                },
+            ],
+        },
+        xblock_status_plugin_slot: {
+            keepDefault: false,
+            plugins: [
+                {
+                    op: PLUGIN_OPERATIONS.Hide,
+                    widgetId: 'default_contents',
+                },
+                {
+                    op: PLUGIN_OPERATIONS.Insert,
+                    widget: {
+                        id: 'custom_xblock_status',
+                        type: DIRECT_PLUGIN,
+                        priority: 1,
+                        RenderWidget: (props) => <CustomXBlockStatus {...props} />,
+                    },
+                },
+            ],
+        },
+        configure_modal_basic_tab_plugin_slot: {
+            keepDefault: false,
+            plugins: [
+                {
+                    op: PLUGIN_OPERATIONS.Hide,
+                    widgetId: 'default_contents',
+                },
+                {
+                    op: PLUGIN_OPERATIONS.Insert,
+                    widget: {
+                        id: 'custom_basic_tab',
+                        type: DIRECT_PLUGIN,
+                        priority: 1,
+                        RenderWidget: (props) => <CustomBasicTab {...props} />,
+                    },
+                },
+            ],
+        },
+        header_plugin_slot: {
+            keepDefault: false,
+            plugins: [
+                {
+                    op: PLUGIN_OPERATIONS.Hide,
+                    widgetId: 'default_contents',
                 },
             ],
         },
         footer_plugin_slot: { // New slot for the footer
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Hide,
-                    widget: {
-                        id: 'footer-plugin',
-                        type: DIRECT_PLUGIN,
-                        priority: 1,
-                        RenderWidget: () => <div>This is Footer</div>, // Render "This is Footer" text
-                    },
+                    widgetId: 'default_contents',
                 },
             ],
         },
         course_sidebar_plugin_slot: { // Use the standard plugin structure
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert, // Operation to insert the widget
@@ -98,6 +173,7 @@ const getPluginSlots = () => {
             ],
         },
         card_header_menu_icon_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -121,6 +197,7 @@ const getPluginSlots = () => {
             ],
         },
         drag_indicator_icon_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -134,6 +211,7 @@ const getPluginSlots = () => {
             ],
         },
         schedule_and_details_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -146,60 +224,17 @@ const getPluginSlots = () => {
                 },
             ],
         },
-        schedule_and_details_icon_plugin_slot: {
-            plugins: [
-                {
-                    op: PLUGIN_OPERATIONS.Replace,
-                    widget: {
-                        id: 'schedule-details-icon',
-                        type: DIRECT_PLUGIN,
-                        priority: 1,
-                        RenderWidget: (props) => <Icon src={SettingsApplications} {...props} />,
-                    },
-                },
-            ],
-        },
-        course_highlight_emails_toggle_plugin_slot: {
-            plugins: [
-                {
-                    op: PLUGIN_OPERATIONS.Insert,
-                    widget: {
-                        id: 'default-highlight-emails-toggle',
-                        type: DIRECT_PLUGIN,
-                        priority: 1,
-                        RenderWidget: ({
-                            highlightsEnabledForMessaging,
-                            isEnablingHighlights,
-                            handleHighlightEmailsToggle,
-                            intl,
-                        }) => (
-                            <FormSwitchGroup
-                                id="course-highlight-emails-toggle"
-                                label={intl.formatMessage(messages.highlightEmailsTitle)}
-                                helpText={intl.formatMessage(messages.highlightEmailsLink)}
-                                checked={highlightsEnabledForMessaging}
-                                onChange={handleHighlightEmailsToggle}
-                                disabled={isEnablingHighlights}
-                            />
-                        ),
-                    },
-                },
-            ],
-        },
         sub_header_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Hide,
-                    widget: {
-                        id: 'sub_header_plugin_slot',
-                        type: DIRECT_PLUGIN,
-                        priority: 1,
-                        RenderWidget: () => <div>This is Header</div>, // Render "This is Header" text
-                    },
+                    widgetId: 'default_contents',
                 },
             ],
         },
         statusbar_content_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -230,6 +265,7 @@ const getPluginSlots = () => {
             ],
         },
         view_live_button_slot: {
+            keepDefault: false,
             plugins: [{
                 op: PLUGIN_OPERATIONS.Insert,
                 widget: {
@@ -253,6 +289,7 @@ const getPluginSlots = () => {
         },
 
         course_team_header_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -287,6 +324,7 @@ const getPluginSlots = () => {
         },
 
         advanced_settings_header_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -303,6 +341,7 @@ const getPluginSlots = () => {
         },
 
         advanced_settings_card_plugin_slot: {
+            keepDefault: false,
             plugins: [
               {
                 op: PLUGIN_OPERATIONS.Insert,
@@ -314,7 +353,13 @@ const getPluginSlots = () => {
                     <div className={`custom-setting-card ${props.settingData?.deprecated ? 'show-deprecated-style' : ''}`}>
                         <SettingCard {...props} />
                         {props.settingData?.deprecated && (
-                            <span className="deprecated-label">Deprecated</span>
+                            <span className="deprecated-label">
+                                <FormattedMessage
+                                    id="course-authoring.advanced-settings.custom.deprecated-label"
+                                    defaultMessage="Deprecated"
+                                    description="Badge on an advanced setting that is deprecated"
+                                />
+                            </span>
                         )}
                     </div>
                   ),
@@ -324,6 +369,7 @@ const getPluginSlots = () => {
         },
 
         advanced_settings_header_removal_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Hide,
@@ -332,6 +378,7 @@ const getPluginSlots = () => {
         },
 
         certificates_header_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -360,6 +407,7 @@ const getPluginSlots = () => {
         },
 
         certificates_header_hide_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Hide,
@@ -368,6 +416,7 @@ const getPluginSlots = () => {
         },
 
         course_checklist_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -384,6 +433,7 @@ const getPluginSlots = () => {
         },
 
         course_checklist_section_title_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -412,6 +462,7 @@ const getPluginSlots = () => {
         },
 
         course_checklist_section_completion_subheader_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Hide,
@@ -420,6 +471,7 @@ const getPluginSlots = () => {
         },
 
         course_checklist_section_checklist_item_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -446,6 +498,7 @@ const getPluginSlots = () => {
         },
 
         create_library_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -462,6 +515,7 @@ const getPluginSlots = () => {
         },
 
         libraries_v2_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -478,6 +532,7 @@ const getPluginSlots = () => {
         },
 
         library_authoring_page_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -494,6 +549,7 @@ const getPluginSlots = () => {
         },
 
         library_authoring_collection_page_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -510,28 +566,27 @@ const getPluginSlots = () => {
         },
 
         course_rerun_header_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Hide,
-                    widget: {
-                        id: "course-rerun-header-content",
-                    }
+                    widgetId: 'default_contents'
                 }
             ]
         },
 
         course_rerun_footer_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Hide,
-                    widget: {
-                        id: "course-rerun-footer-content",
-                    }
+                    widgetId: 'default_contents'
                 }
             ]
         },
 
         course_rerun_content_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -590,6 +645,7 @@ const getPluginSlots = () => {
         },
 
         taxonomy_list_page_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -606,6 +662,7 @@ const getPluginSlots = () => {
         },
 
         taxonomy_detail_page_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -622,6 +679,7 @@ const getPluginSlots = () => {
         },
 
         grading_header_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                 op: PLUGIN_OPERATIONS.Insert,
@@ -643,6 +701,7 @@ const getPluginSlots = () => {
             ],
         },
         course_updates_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                 op: PLUGIN_OPERATIONS.Insert,
@@ -657,6 +716,7 @@ const getPluginSlots = () => {
             ],
         },
         course_export_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                 op: PLUGIN_OPERATIONS.Insert,
@@ -671,6 +731,7 @@ const getPluginSlots = () => {
             ],
         },
         courseoutline_header_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -678,9 +739,13 @@ const getPluginSlots = () => {
                         id: "course-content",
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: (props) => (
+                        RenderWidget: () => (
                             <h2 className='courseOutlineh2'>
-                                Course Outline
+                                <FormattedMessage
+                                    id="course-authoring.course-outline.custom.heading"
+                                    defaultMessage="Course Outline"
+                                    description="Heading above the course sections in the custom course outline"
+                                />
                             </h2>
                         ),
                     },
@@ -688,6 +753,7 @@ const getPluginSlots = () => {
             ],
         },
         course_export_stepper_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -707,6 +773,7 @@ const getPluginSlots = () => {
             ],
         },
         export_sidebar_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                 op: PLUGIN_OPERATIONS.Insert,
@@ -714,13 +781,14 @@ const getPluginSlots = () => {
                     id: "export_footer",
                     type: DIRECT_PLUGIN,
                     priority: 1,
-                    RenderWidget: (props) => 
+                    RenderWidget: () => 
                         <CustomExportSidebar />
                     },
                 },
             ],
         },
         files_page_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -735,6 +803,7 @@ const getPluginSlots = () => {
             ],
         },
         gallery_card_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -758,6 +827,7 @@ const getPluginSlots = () => {
             ],
         },
         pages_resources_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -772,6 +842,7 @@ const getPluginSlots = () => {
             ],
         },
         textbook_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -786,6 +857,7 @@ const getPluginSlots = () => {
             ],
         },
         custom_pages_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -800,6 +872,7 @@ const getPluginSlots = () => {
             ],
         },
         import_sidebar_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                 op: PLUGIN_OPERATIONS.Insert,
@@ -807,13 +880,14 @@ const getPluginSlots = () => {
                     id: "import_sidebar",
                     type: DIRECT_PLUGIN,
                     priority: 1,
-                    RenderWidget: (props) =>
+                    RenderWidget: () =>
                         <CustomImportSidebar />
                     },
                 },
             ],
         },
         course_update_card_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                 op: PLUGIN_OPERATIONS.Insert,
@@ -826,6 +900,7 @@ const getPluginSlots = () => {
                     },
                 },]},
         group_configurations_hide_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Hide,
@@ -833,6 +908,7 @@ const getPluginSlots = () => {
             ],
         },
         group_config_header_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -861,6 +937,7 @@ const getPluginSlots = () => {
             ],
         },
         course_import_plugin_slot: {
+            keepDefault: false,
             plugins: [
                 {
                     op: PLUGIN_OPERATIONS.Insert,
@@ -889,8 +966,8 @@ const getPluginSlots = () => {
 const config = {
     ...process.env,
     get pluginSlots() {
-        return getPluginSlots();
-    }
+    return getPluginSlots();
+  }
 };
 
 export default config;

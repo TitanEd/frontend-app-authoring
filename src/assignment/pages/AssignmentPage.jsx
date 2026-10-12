@@ -45,6 +45,7 @@ const AssignmentPageContent = () => {
           <div className="inputfilterContainer">
             <div className="customFilterDropdownItem1">
               <CustomFilterDropdown
+                id="assignment-course-filter"
                 value={courseFilter}
                 onChange={(val) => setCourseFilter(val)}
                 options={courseOptions}
@@ -53,6 +54,7 @@ const AssignmentPageContent = () => {
             </div>
             <div className="customFilterDropdownItem2">
               <CustomFilterDropdown
+                id="assignment-status-filter"
                 value={statusFilter}
                 onChange={(val) => setStatusFilter(val)}
                 options={statusOptions}
@@ -63,7 +65,6 @@ const AssignmentPageContent = () => {
           </div>
         </div>
       </div>
-
 
       <div className="table-row">
         <AssignmentTable />

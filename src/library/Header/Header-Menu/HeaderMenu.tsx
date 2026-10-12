@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useState } from 'react';
 import {
-  Button, Menu, MenuItem, ModalPopup, useToggle,
+  Button,
+  Menu,
+  MenuItem,
+  ModalPopup,
+  useToggle,
 } from '@openedx/paragon';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@openedx/paragon/icons';
 import { HeaderMenuProps } from '../../interfaces/components';
@@ -35,7 +39,8 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({ menu }) => {
         placement="bottom-start"
         style={{ zIndex: 9999 }}
       >
-        <div className="dropdownMenu"> {/* ✅ Global class name */}
+        <div className="dropdownMenu">
+          {/* ✅ Global class name */}
           <Menu>
             {(menu?.subMenu ?? []).map((sub, idx) => (
               <div key={idx}>

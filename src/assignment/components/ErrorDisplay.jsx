@@ -7,7 +7,7 @@ const ErrorDisplay = () => {
   const intl = useIntl();
   const { error, clearError } = useAssignmentContext();
 
-  if (!error) return null;
+  if (!error) { return null; }
 
   return (
     <Alert variant="danger" dismissible onClose={clearError}>

@@ -63,7 +63,10 @@ const CourseNavigationSidebar = ({ courseId: propCourseId }) => {
     { label: intl.formatMessage(messages.sidebarUpdates), path: `/course/${courseId}/course_info` }, // Map to course_info route
     // { label: 'Attendance', path: `/course/${courseId}/attendance`, icon: <EventBusy /> }, // Uncomment if needed
     // { label: 'Fee Statistics', path: `/course/${courseId}/statistics`, icon: <QueryStats /> }, // Uncomment if needed
-    { label: intl.formatMessage(messages.sidebarGroupConfigurations), path: `/course/${courseId}/group_configurations` },
+    {
+      label: intl.formatMessage(messages.sidebarGroupConfigurations),
+      path: `/course/${courseId}/group_configurations`,
+    },
     { label: intl.formatMessage(messages.sidebarAdvancedSettings), path: `/course/${courseId}/settings/advanced` },
     { label: intl.formatMessage(messages.sidebarImport), path: `/course/${courseId}/import` },
     { label: intl.formatMessage(messages.sidebarExport), path: `/course/${courseId}/export` },
@@ -72,7 +75,7 @@ const CourseNavigationSidebar = ({ courseId: propCourseId }) => {
     { label: intl.formatMessage(messages.sidebarPagesResources), path: `/course/${courseId}/pages-and-resources` },
     // Add other relevant course authoring pages here
   ];
-    // --- END ADAPT ---
+  // --- END ADAPT ---
 
   const handleNavigate = (path) => {
     navigate(path);

@@ -27,7 +27,7 @@ function fetchMyCoursesData(search, hasHomeData, requestParams = {}, isPaginatio
         const myCoursesData = await getMyCoursesData();
         dispatch(fetchMyCoursesDataSuccess(myCoursesData));
         dispatch(updateLoadingStatuses({ myCoursesLoadingStatus: RequestStatus.SUCCESSFUL }));
-      } catch (error) {
+      } catch {
         dispatch(updateLoadingStatuses({ myCoursesLoadingStatus: RequestStatus.FAILED }));
         return;
       }
@@ -42,7 +42,7 @@ function fetchMyCoursesData(search, hasHomeData, requestParams = {}, isPaginatio
       }
 
       dispatch(updateLoadingStatuses({ courseLoadingStatus: RequestStatus.SUCCESSFUL }));
-    } catch (error) {
+    } catch {
       dispatch(updateLoadingStatuses({ courseLoadingStatus: RequestStatus.FAILED }));
     }
   };
@@ -56,7 +56,7 @@ function fetchLibraryData() {
       const libraryData = await getStudioHomeLibraries();
       dispatch(fetchLibraryDataSuccess(libraryData));
       dispatch(updateLoadingStatuses({ libraryLoadingStatus: RequestStatus.SUCCESSFUL }));
-    } catch (error) {
+    } catch {
       dispatch(updateLoadingStatuses({ libraryLoadingStatus: RequestStatus.FAILED }));
     }
   };
@@ -69,7 +69,7 @@ function handleDeleteNotificationQuery(url) {
     try {
       await handleCourseNotification(url);
       dispatch(updateSavingStatuses({ deleteNotificationSavingStatus: RequestStatus.SUCCESSFUL }));
-    } catch (error) {
+    } catch {
       dispatch(updateSavingStatuses({ deleteNotificationSavingStatus: RequestStatus.FAILED }));
     }
   };
@@ -83,16 +83,11 @@ function requestCourseCreatorQuery() {
       await sendRequestForCourseCreator();
       dispatch(updateSavingStatuses({ courseCreatorSavingStatus: RequestStatus.SUCCESSFUL }));
       return true;
-    } catch (error) {
+    } catch {
       dispatch(updateSavingStatuses({ courseCreatorSavingStatus: RequestStatus.FAILED }));
       return false;
     }
   };
 }
 
-export {
-  fetchMyCoursesData,
-  fetchLibraryData,
-  requestCourseCreatorQuery,
-  handleDeleteNotificationQuery,
-};
+export { fetchMyCoursesData, fetchLibraryData, requestCourseCreatorQuery, handleDeleteNotificationQuery };

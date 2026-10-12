@@ -191,7 +191,7 @@ const CourseOutline = () => {
         <title>{getPageHeadTitle(courseName, intl.formatMessage(messages.headingTitle))}</title>
       </Helmet>
       <Container fluid className="px-3">
-        <section className="course-outline-container mb-4">
+        <section className="course-outline-container mb-4 mt-5">
           <PageAlerts
             courseId={courseId}
             notificationDismissUrl={notificationDismissUrl}
@@ -242,11 +242,20 @@ const CourseOutline = () => {
               }
             />
           </PluginSlot>
+          <PluginSlot id="status_bar_plugin_slot">
+            <StatusBar
+              courseId={courseId}
+              isLoading={isLoading}
+              statusBarData={statusBarData}
+              openEnableHighlightsModal={openEnableHighlightsModal}
+              handleVideoSharingOptionChange={handleVideoSharingOptionChange}
+            />
+          </PluginSlot>
           <hr className="mt-4 mb-0 w-100 text-light-400" />
           <div className="d-flex align-items-start">
             <div className="flex-fill">
               <article>
-                <PluginSlot id="courseoutline_header_plugin_slott" />
+                <PluginSlot id="courseoutline_header_plugin_slot" />
                 <div>
                   <ActionRow className="mt-3">
                     {Boolean(sections.length) && (
@@ -263,7 +272,7 @@ const CourseOutline = () => {
                       </Button>
                     )}
                   </ActionRow>
-                  <section className="course-outline-section custom-outline-section">
+                  <section>
                     <PluginSlot
                       id="view_live_button_slot"
                       pluginProps={{
@@ -273,19 +282,10 @@ const CourseOutline = () => {
                         openEnableHighlightsModal,
                         handleVideoSharingOptionChange,
                       }}
-                    >
-                      <StatusBar
-                        courseId={courseId}
-                        isLoading={isLoading}
-                        statusBarData={statusBarData}
-                        openEnableHighlightsModal={openEnableHighlightsModal}
-                        handleVideoSharingOptionChange={handleVideoSharingOptionChange}
-                      />
-                    </PluginSlot>
+                    />
                     <PluginSlot
                       id="statusbar_content_plugin_slot"
                       pluginProps={{
-                        // `handleNewSectionSubmit` was removed from useCourseOutline in Verawood;
                         // new sections are now added through <OutlineAddChildButtons />.
                         onAddSection: undefined,
                         onCollapseAll: headerNavigationsActions.handleExpandAll,

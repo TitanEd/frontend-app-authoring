@@ -1,11 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useCalendarContext } from '../context/CalendarContext';
 import NavigationButton from './NavigationButton';
 import Dropdown from './Dropdown';
-import messages from '../data/messages';
 
 const FilterDropdown = ({ types }) => {
-  const { filterByType, filteredEvents,filterType, nextEvent, prevEvent } = useCalendarContext();
+  const {
+    filterByType,
+    filteredEvents,
+    filterType,
+    nextEvent,
+    prevEvent,
+  } = useCalendarContext();
 
   const filterOptions = [
     { value: 'all', messageId: 'all' },
@@ -15,6 +21,7 @@ const FilterDropdown = ({ types }) => {
   return (
     <div className="filter-container">
       <Dropdown
+        id="calendar-type-filter"
         options={filterOptions}
         onChange={filterByType}
         value={filterType}
@@ -27,6 +34,10 @@ const FilterDropdown = ({ types }) => {
       )}
     </div>
   );
+};
+
+FilterDropdown.propTypes = {
+  types: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default FilterDropdown;

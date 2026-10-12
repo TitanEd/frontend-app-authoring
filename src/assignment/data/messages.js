@@ -66,6 +66,21 @@ const messages = defineMessages({
     defaultMessage: 'Reset',
     description: 'Button to reset date filter',
   },
+  searchSubmit: {
+    id: 'assignment.searchSubmit',
+    defaultMessage: 'Search',
+    description: 'Screen reader text for the search submit button',
+  },
+  filterSearchPlaceholder: {
+    id: 'assignment.filter.searchPlaceholder',
+    defaultMessage: 'Search...',
+    description: 'Placeholder of the search box inside the course filter menu',
+  },
+  filterNoResults: {
+    id: 'assignment.filter.noResults',
+    defaultMessage: 'No results found',
+    description: 'Shown in a filter menu when no option matches the search',
+  },
   dateFilterToggle: {
     id: 'assignment.dateFilterToggle',
     defaultMessage: 'Toggle date filter',

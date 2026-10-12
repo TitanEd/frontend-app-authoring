@@ -88,7 +88,6 @@ const CourseImportPage = () => {
                   <FileSection />
                   {importTriggered && <ImportStepper />}
                 </PluginSlot>
-
               </article>
             </Layout.Element>
             <Layout.Element>

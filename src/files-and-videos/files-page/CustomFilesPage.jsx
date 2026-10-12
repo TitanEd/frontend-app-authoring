@@ -6,7 +6,7 @@ import { CheckboxFilter, Container } from '@openedx/paragon';
 import Placeholder from '../../editors/Placeholder';
 
 import { RequestStatus } from '../../data/constants';
-import { useModels, useModel } from '../../generic/model-store';
+import { useModels } from '../../generic/model-store';
 import {
   addAssetFile,
   deleteAssetFile,
@@ -41,7 +41,6 @@ const CustomFilesPage = ({
 }) => {
   const dispatch = useDispatch();
   // const courseDetails = useModel('courseDetails', courseId);
-  // Verawood no longer stores 'courseDetails' in the model store; it comes from CourseAuthoringContext.
   const { courseDetails } = useCourseAuthoringContext();
   document.title = getPageHeadTitle(courseDetails?.name, intl.formatMessage(messages.heading));
 
@@ -80,10 +79,11 @@ const CustomFilesPage = ({
   };
 
   const thumbnailPreview = (props) => FileThumbnail(props);
-  const infoModalSidebar = (asset) => FileInfoModalSidebar({
-    asset,
-    handleLockedAsset: handleLockFile,
-  });
+  const infoModalSidebar = (asset) =>
+    FileInfoModalSidebar({
+      asset,
+      handleLockedAsset: handleLockFile,
+    });
 
   const assets = useModels('assets', assetIds);
   const data = {
@@ -97,7 +97,7 @@ const CustomFilesPage = ({
 
   const activeColumn = {
     id: 'activeStatus',
-    Header: 'Active',
+    Header: intl.formatMessage(messages.fileActiveColumn),
     accessor: 'activeStatus',
     Cell: ({ row }) => ActiveColumn({ row, pageLoadStatus: loadingStatus }),
     Filter: CheckboxFilter,
@@ -109,7 +109,7 @@ const CustomFilesPage = ({
   };
   const accessColumn = {
     id: 'lockStatus',
-    Header: 'Access',
+    Header: intl.formatMessage(messages.fileAccessColumn),
     accessor: 'lockStatus',
     Cell: ({ row }) => AccessColumn({ row }),
     Filter: CheckboxFilter,
@@ -125,7 +125,7 @@ const CustomFilesPage = ({
   };
   const fileSizeColumn = {
     id: 'fileSize',
-    Header: 'File size',
+    Header: intl.formatMessage(messages.fileSizeColumn),
     accessor: 'fileSize',
     Cell: ({ row }) => {
       const { fileSize } = row.original;
@@ -136,12 +136,12 @@ const CustomFilesPage = ({
   const tableColumns = [
     { ...thumbnailColumn },
     {
-      Header: 'File name',
+      Header: intl.formatMessage(messages.fileNameColumn),
       accessor: 'displayName',
     },
     { ...fileSizeColumn },
     {
-      Header: 'Type',
+      Header: intl.formatMessage(messages.fileTypeColumn),
       accessor: 'wrapperType',
       Filter: CheckboxFilter,
       filter: 'includesValue',
@@ -196,27 +196,27 @@ const CustomFilesPage = ({
             <FormattedMessage {...messages.heading} />
           </div>
           {loadingStatus !== RequestStatus.FAILED && (
-          <>
-            <FileTable
-              {...{
-                courseId,
-                data,
-                handleAddFile,
-                handleDeleteFile,
-                handleDownloadFile,
-                handleLockFile,
-                handleUsagePaths,
-                handleErrorReset,
-                handleFileOrder,
-                tableColumns,
-                maxFileSize,
-                thumbnailPreview,
-                infoModalSidebar,
-                files: assets,
-              }}
-            />
-            <FileValidationModal {...{ handleFileOverwrite }} />
-          </>
+            <>
+              <FileTable
+                {...{
+                  courseId,
+                  data,
+                  handleAddFile,
+                  handleDeleteFile,
+                  handleDownloadFile,
+                  handleLockFile,
+                  handleUsagePaths,
+                  handleErrorReset,
+                  handleFileOrder,
+                  tableColumns,
+                  maxFileSize,
+                  thumbnailPreview,
+                  infoModalSidebar,
+                  files: assets,
+                }}
+              />
+              <FileValidationModal {...{ handleFileOverwrite }} />
+            </>
           )}
         </div>
       </Container>

@@ -51,6 +51,16 @@ const messages = defineMessages({
     defaultMessage: 'Search events...',
     description: 'Placeholder for search input',
   },
+  searchSubmit: {
+    id: 'calendar.search.submit',
+    defaultMessage: 'Search',
+    description: 'Screen reader text for the calendar search submit button',
+  },
+  searchClear: {
+    id: 'calendar.search.clear',
+    defaultMessage: 'Clear search',
+    description: 'Screen reader text for the calendar search clear button',
+  },
   errorEventsLoad: {
     id: 'calendar.error.eventsLoad',
     defaultMessage: 'Failed to load events. Please try again later.',

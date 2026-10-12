@@ -1,3 +1,5 @@
+// Later blocks intentionally re-open earlier selectors to override them in cascade order.
+/* stylelint-disable no-duplicate-selectors */
 // @import "./global-overrides";
 
 body {
@@ -52,7 +54,7 @@ body {
 }
 
 // Mobile screen responsiveness
-@media (max-width: 414px) {
+@media (width <= 414px) {
   .ca-sidebar {
     display: none;
   }
@@ -88,14 +90,14 @@ body {
   .help-sidebar-about-descriptions,
   .help-sidebar-other-links {
     padding: 7px;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--pgn-color-light-400);
     border-radius: 10px;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: .5rem !important;
   }
 
   .help-sidebar-about-title,
   .help-sidebar-other-title {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: .5rem !important;
   }
 
   hr {
@@ -111,11 +113,11 @@ body {
 
 //Grading Sub Header styles
 .sub-header-content {
-  margin-top: 0rem;
+  margin-top: 0;
 
   .sub-header-content-title {
     font-size: 2rem;
-    color: #000000;
+    color: var(--pgn-color-text-base);
     font-weight: 700;
     line-height: 1.25;
   }
@@ -129,7 +131,7 @@ body {
 .grading-sub-header {
   display: block;
   height: 1px;
-  background-color: #ced4da;
+  background-color: var(--pgn-color-light-400);
   margin: 10px 0;
   margin-left: -1rem !important;
   margin-right: -1rem !important;
@@ -149,7 +151,7 @@ body {
 
   .btn-icon.btn-icon-primary {
     background-color: var(--bg-surface);
-    border: 1.5px solid #ced4da;
+    border: 1.5px solid var(--pgn-color-light-400);
     color: var(--text-secondary);
     width: 2.5rem;
     height: 2.5rem;
@@ -188,7 +190,7 @@ body {
   border: none;
   border-radius: 10px;
 
-  @media (max-width: 414px) {
+  @media (width <= 414px) {
     padding: 2px;
 
     .course-grading-assignment-items {
@@ -201,7 +203,7 @@ body {
 
   // Margin for Alert container
   .mt-5 {
-    margin-top: 0rem !important;
+    margin-top: 0 !important;
   }
 
   // Grading Main container styles
@@ -210,7 +212,7 @@ body {
       background-color: var(--bg-surface);
       padding: 1rem;
       border-radius: 1rem;
-      border: 1px solid #ced4da;
+      border: 1px solid var(--pgn-color-light-400);
       height: 100%;
     }
 
@@ -219,7 +221,7 @@ body {
       display: block;
 
       h2 {
-        margin-bottom: 0rem;
+        margin-bottom: 0;
       }
     }
 
@@ -252,12 +254,12 @@ body {
 }
 
 .sub-header-instructions::after {
-  color: #ced4da !important;
+  color: var(--pgn-color-text-muted) !important;
   font-size: 18px;
   content: "";
   display: block;
   height: 1px;
-  background-color: #ced4da;
+  background-color: var(--pgn-color-light-400);
   margin-top: 8px;
   margin-left: -1rem !important;
   margin-right: -1rem !important;
@@ -273,18 +275,18 @@ body {
 .course-updates-new-wrapper .nav-tabs .nav-link {
   border: none !important;
   border-radius: 2rem !important;
-  margin-right: 0.5rem;
-  color: #111;
+  margin-right: .5rem;
+  color: var(--pgn-color-text-base);
   background: var(--bg-surface);
-  padding: 0.35rem 1.5rem;
+  padding: .35rem 1.5rem;
   font-weight: 500;
-  transition: background 0.2s, color 0.2s;
+  transition: background .2s, color .2s;
 }
 
 .course-updates-new-wrapper .nav-tabs .nav-link.active,
 .course-updates-new-wrapper .nav-tabs .nav-link:focus {
   background: var(--primary-light) !important;
-  color: #111 !important;
+  color: var(--pgn-color-text-base) !important;
   font-weight: 600;
   outline: none !important;
   box-shadow: none !important;
@@ -295,7 +297,7 @@ body {
   padding: 16px;
   border-radius: 12px;
   border: solid 1px var(--border-color);
-  background-color: #f2f5ff;
+  background-color: var(--pgn-color-primary-light);
 }
 
 .updates-container {
@@ -314,12 +316,12 @@ body {
 
   .update-card,
   .update-form {
-    background-color: #f2f5ff !important;
+    background-color: var(--pgn-color-primary-light) !important;
     // border: none !important;
   }
 
   .custom-card-style {
-    background: #f5f5f5;
+    background: var(--pgn-color-light-200);
     border-radius: 1rem;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -331,7 +333,7 @@ body {
   .update-form {
     padding: 1rem;
     border-radius: 12px;
-    background-color: #f2f5ff !important;
+    background-color: var(--pgn-color-primary-light) !important;
     // padding: 1rem !important;
     box-shadow: none !important;
     // border: solid 1px var(--border-color) !important;
@@ -361,7 +363,7 @@ body {
   .update-form {
     box-shadow: none !important;
     border: none !important;
-    background-color: #f2f5ff !important;
+    background-color: var(--pgn-color-primary-light) !important;
     padding: 1rem !important;
   }
 
@@ -373,8 +375,8 @@ body {
 
 .recent-updates,
 .course-handouts .course-handouts-header .course-handouts-header__title {
-  color: #111;
-  font-size: 1.40625rem;
+  color: var(--pgn-color-text-base);
+  font-size: 1.4063rem;
   font-weight: 400;
 }
 
@@ -387,7 +389,7 @@ body {
   .card-content {
     margin-right: 1rem;
 
-    @media (min-width: 1600px) {
+    @media (width >= 1600px) {
       margin-right: 1.5rem;
     }
   }
@@ -396,11 +398,11 @@ body {
     position: absolute;
     top: -1rem;
     bottom: -1rem;
-    left: calc(95% - 0.5px);
+    left: calc(95% - .5px);
     width: 1px;
     background-color: var(--border-color);
 
-    @media (max-width: 414px) {
+    @media (width <= 414px) {
       display: none;
     }
   }
@@ -412,11 +414,11 @@ body {
     background-color: var(--border-color);
     margin: 1rem -1rem 1rem -6px;
 
-    @media (max-width: 414px) {
+    @media (width <= 414px) {
       display: none;
     }
 
-    @media (min-width: 1600px) {
+    @media (width >= 1600px) {
       margin: 1rem -1rem 1rem -22px;
     }
 
@@ -424,9 +426,8 @@ body {
 }
 
 .course-update {
-
   .course-update-header {
-    margin-bottom: 0rem;
+    margin-bottom: 0;
     display: block;
   }
 
@@ -444,13 +445,12 @@ body {
 
 // Course export styles
 .export {
-
   .setting-items {
     article {
       background-color: var(--bg-surface);
       padding: 1rem;
       border-radius: 1rem;
-      border: 1px solid #ced4da;
+      border: 1px solid var(--pgn-color-light-400);
       height: 100%;
     }
   }
@@ -458,8 +458,8 @@ body {
   .export-warning {
     padding: 12px 16px;
     border-radius: 8px;
-    border: solid 1px #ffdc9a;
-    background-color: #fff8eb;
+    border: solid 1px var(--pgn-color-warning-base);
+    background-color: var(--pgn-color-warning-100, var(--pgn-color-light-200));
   }
 
   .export-card {
@@ -468,7 +468,7 @@ body {
     background-color: var(--bg-body);
 
     a {
-      margin-left: 0rem !important;
+      margin-left: 0 !important;
     }
 
     .card,
@@ -481,20 +481,20 @@ body {
     .course-card-header {
       margin-top: -1rem !important;
       margin-bottom: 1rem !important;
-      padding-left: 0rem !important;
-      padding-right: 0rem !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
 
     .course-card-section {
-      padding-left: 0rem !important;
-      padding-right: 0rem !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
 
     .course-card-section::after {
       content: "";
       display: block;
       height: 1px;
-      background-color: #ced4da;
+      background-color: var(--pgn-color-light-400);
       margin-top: 1.5rem;
     }
 
@@ -546,12 +546,12 @@ body {
   }
 
   footer {
-    background-color: #f5f5f5;
-    margin: 0rem;
+    background-color: var(--pgn-color-light-200);
+    margin: 0;
     padding: 1rem;
     border-radius: 1rem;
 
-    @media (max-width: 414px) {
+    @media (width <= 414px) {
       .row {
         flex-direction: column !important;
 
@@ -566,7 +566,7 @@ body {
     }
   }
 
-  @media (max-width: 414px) {
+  @media (width <= 414px) {
     .pgn__card .pgn__card-header .pgn__card-header-content {
       overflow: inherit;
     }
@@ -609,21 +609,20 @@ body {
 .files_and_uploads {
   background-color: var(--bg-surface);
   // padding: 1rem;
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 1rem;
   border-radius: 1rem;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--pgn-color-light-400);
   height: 100%;
   // margin: 0rem 1rem;
 }
 
 .files-table {
-
   .pgn__data-table__selectable-card {
     justify-content: space-evenly;
   }
 
   .pgn__data-table th {
-    background-color: #e7ebfa !important;
+    background-color: var(--pgn-color-primary-light) !important;
 
     .pgn__icon {
       display: none !important;
@@ -635,7 +634,7 @@ body {
   }
 
   hr {
-    margin: 0px -1rem 0px -1rem;
+    margin: 0 -1rem;
   }
 
   .files-card-section {
@@ -676,8 +675,7 @@ body {
     background-color: var(--bg-surface) !important;
   }
 
-  @media (max-width: 414px) {
-
+  @media (width <= 414px) {
     hr {
       .mb-5 {
         margin-bottom: 0;
@@ -689,12 +687,11 @@ body {
     }
 
     .pgn__data-table-wrapper {
-
       .pgn__data-table-card-view .pgn__card-grid__card-item {
         padding: 6px !important;
 
         .pgn__data-table__controlled-select {
-          padding: 1rem 0rem;
+          padding: 1rem 0;
         }
       }
 
@@ -722,7 +719,7 @@ body {
       flex-direction: column;
 
       div {
-        margin: 0.5rem 0;
+        margin: .5rem 0;
       }
     }
 
@@ -740,13 +737,13 @@ body {
 
   }
 
-  @media (min-width: 1200px) {
+  @media (width >= 1200px) {
     .col-xl-2 {
       max-width: 33%;
     }
   }
 
-  @media (min-width: 1400px) {
+  @media (width >= 1400px) {
     .col-xl-2 {
       max-width: 25%;
     }
@@ -755,7 +752,7 @@ body {
   .btn-icon.btn-icon-primary-active,
   .btn-icon:focus {
     background-color: var(--primary) !important;
-    color: white !important;
+    color: var(--pgn-color-white) !important;
   }
 
   .btn-icon.btn-icon-primary-active.focus,
@@ -765,14 +762,14 @@ body {
 }
 
 .ted-card {
-  background-color: #e8edff;
+  background-color: var(--pgn-color-primary-light);
   width: 200px;
 }
 
 .files-card-section {
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem !important;
+  padding: .5rem !important;
 
-  @media (max-width: 414px) {
+  @media (width <= 414px) {
     .justify-content-center {
       justify-content: flex-start !important;
     }
@@ -791,7 +788,7 @@ body {
   // Same inset as the course outline card (article padding: 1rem).
   padding: 1rem 1.25rem 1.5rem;
   border-radius: 1rem;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--pgn-color-light-400);
   height: auto;
   margin-left: 0;
   margin-right: 0;
@@ -800,12 +797,12 @@ body {
     content: "";
     display: block;
     height: 1px;
-    background-color: #ced4da;
-    margin: 1rem -1.25rem 1rem;
+    background-color: var(--pgn-color-light-400);
+    margin: 1rem -1.25rem;
   }
 
   .card {
-    border: 1px solid #ced4da;
+    border: 1px solid var(--pgn-color-light-400);
     display: block !important;
   }
 
@@ -822,36 +819,35 @@ body {
     margin-top: 11px;
   }
 
-  @media (max-width: 414px) {
+  @media (width <= 414px) {
     .pgn__card .pgn__card-header {
-      padding: 0 0.3rem;
+      padding: 0 .3rem;
     }
 
     .pgn__card .pgn__card-section {
-      padding: 0 0.3rem;
+      padding: 0 .3rem;
     }
   }
 }
 
 // Textbooks
 .textbook-card {
-
   .sub-header {
     .sub-header-actions {
       margin-bottom: 1rem;
     }
   }
 
-  padding: 0rem !important;
+  padding: 0 !important;
 
   .setting-items {
     article {
       background-color: var(--bg-surface);
       padding: 1rem;
       border-radius: 1rem;
-      border: 1px solid #ced4da;
+      border: 1px solid var(--pgn-color-light-400);
       height: 100%;
-      margin-right: -0.5rem;
+      margin-right: -.5rem;
     }
   }
 
@@ -859,8 +855,8 @@ body {
     content: "";
     display: block;
     height: 1px;
-    background-color: #ced4da;
-    margin: -1rem -1rem 1rem -1rem;
+    background-color: var(--pgn-color-light-400);
+    margin: -1rem -1rem 1rem;
   }
 
   .textbook-form {
@@ -880,8 +876,8 @@ body {
     }
 
     .button-style {
-      border: 1px solid #ced4da;
-      margin-bottom: 0.5rem;
+      border: 1px solid var(--pgn-color-light-400);
+      margin-bottom: .5rem;
       border-radius: 8px;
       margin-right: 6px;
     }
@@ -892,7 +888,7 @@ body {
     }
   }
 
-  @media (max-width: 414px) {
+  @media (width <= 414px) {
     .sub-header {
       flex-direction: column;
       justify-content: flex-start;
@@ -904,7 +900,7 @@ body {
     }
 
     .textbook-form {
-      padding: 0.5rem;
+      padding: .5rem;
     }
   }
 }
@@ -922,29 +918,29 @@ body {
       background-color: var(--bg-surface);
       padding: 1rem;
       border-radius: 1rem;
-      border: 1px solid #ced4da;
+      border: 1px solid var(--pgn-color-light-400);
       height: 100%;
-      margin-right: -0.5rem;
+      margin-right: -.5rem;
     }
 
     hr {
-      margin: 1rem -1rem 1rem -1rem;
+      margin: 1rem -1rem;
     }
 
     .page-note {
       // @include card-style1;
-      background-color: #f5f5f5;
+      background-color: var(--pgn-color-light-200);
       padding: 1rem;
-      border-radius: 0.5rem;
+      border-radius: .5rem;
       margin-top: 0 !important;
       // border: 1px solid #ced4da;
     }
 
     .card-border {
       padding: 7px;
-      border: 1px solid #ced4da;
+      border: 1px solid var(--pgn-color-light-400);
       border-radius: 10px;
-      margin-bottom: 0.5rem !important;
+      margin-bottom: .5rem !important;
     }
 
     .pgn__modal-header {
@@ -963,20 +959,17 @@ body {
     .edit-modal {
       position: 'relative';
       height: '50%';
-      top: '50%';
-      left: '50%';
-      right: 0;
-      bottom: 0;
+      inset: 0;
       overflow-y: 'scroll';
       background-color: var(--bg-surface);
       z-index: 10;
       transform: 'translate(-50%, -114%)';
-      box-shadow: '0 0 10px rgba(0,0,0,0.3)';
+      box-shadow: var(--pgn-elevation-box-shadow-down-1);
       border-radius: '8px';
     }
   }
 
-  @media (max-width: 414px) {
+  @media (width <= 414px) {
     .pgn__action-row {
       flex-direction: column;
       align-items: flex-start;
@@ -996,7 +989,7 @@ body {
 
     .pgn__hyperlink {
       margin-top: 1rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: .5rem;
     }
   }
 }
@@ -1004,8 +997,7 @@ body {
 // Import page
 
 .import {
-
-  margin-top: 0rem !important;
+  margin-top: 0 !important;
 
   article {
     height: 100%;
@@ -1025,8 +1017,8 @@ body {
     content: "";
     display: block;
     height: 1px;
-    background-color: #ced4da;
-    margin: 2rem -1rem 0rem -1rem;
+    background-color: var(--pgn-color-light-400);
+    margin: 2rem -1rem 0;
   }
 
   .course-stepper .course-stepper__step.done svg,
@@ -1068,7 +1060,6 @@ body {
   }
 
   .import-stepper-area {
-
     .pgn__card .pgn__card-header .pgn__card-header-content {
       margin-top: 1rem !important;
     }
@@ -1100,6 +1091,7 @@ body {
 .course-team {
   article {
     @include card-style1;
+
     padding: 1rem;
     width: 100%;
     height: 100%;
@@ -1127,7 +1119,7 @@ body {
     // align-items: center;
     margin-top: 0 !important;
     height: 3rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem;
 
     span {
       font-size: 20px;
@@ -1162,16 +1154,18 @@ body {
 
   .add-team-member {
     @include card-style3;
+
     background-color: var(--bg-surface) !important;
   }
 
   .add-user-form {
     @include card-style3;
+
     background-color: var(--bg-body) !important;
 
     .form-field {
       padding: 1.25rem !important;
-      padding-bottom: 0.5rem !important;
+      padding-bottom: .5rem !important;
     }
 
     .form-title {
@@ -1197,7 +1191,6 @@ body {
 }
 
 .advanced-settings {
-
   .setting-header {
     margin-top: 0 !important;
   }
@@ -1205,6 +1198,7 @@ body {
   .setting-items {
     article {
       @include card-style1;
+
       padding: 1rem;
 
       .advanced-settings-custom-header {
@@ -1277,8 +1271,8 @@ body {
         }
 
         .custom-setting-card.show-deprecated-style .setting-card {
-          background-color: #ffe3e0 !important;
-          border: solid 1px #e0e0e0 !important;
+          background-color: var(--pgn-color-danger-100, var(--pgn-color-light-200)) !important;
+          border: solid 1px var(--pgn-color-light-400) !important;
 
           .pgn__card-status.pgn__card-status__danger {
             display: none !important;
@@ -1291,10 +1285,12 @@ body {
           .deprecated-label {
             position: absolute;
             left: 1.5rem;
+
             /* aligns with card content padding */
-            bottom: 0.4rem;
+            bottom: .4rem;
+
             /* just above the card's bottom padding */
-            color: #e53e3e;
+            color: var(--pgn-color-danger-base);
             background: none;
             font-size: 13px;
             font-weight: 400;
@@ -1323,10 +1319,10 @@ body {
 .certificates {
   article {
     @include card-style1;
+
     padding: 1rem;
 
     .certificates-custom-sub-header-title {
-
       .border-bottom {
         margin-bottom: 0 !important;
       }
@@ -1334,7 +1330,8 @@ body {
       .sub-header {
         .sub-header-title {
           @include sub-header-title-style1;
-          padding-top: 0.5rem;
+
+          padding-top: .5rem;
         }
 
         .sub-header-actions {
@@ -1342,7 +1339,7 @@ body {
 
           button,
           a {
-            padding: 0.4rem 1.5rem;
+            padding: .4rem 1.5rem;
             font-size: 1rem !important;
           }
         }
@@ -1365,18 +1362,18 @@ body {
 
     .card {
       @include card-style3;
+
       background-color: var(--bg-body) !important;
 
       .pgn__action-row {
         button {
-          padding: 0.4rem 1.5rem;
+          padding: .4rem 1.5rem;
           font-size: 1rem !important;
         }
       }
     }
 
     .certificates-card-form {
-
       .pgn__vstack {
         gap: 0 !important;
       }
@@ -1390,7 +1387,7 @@ body {
       }
 
       .pgn__form-control-description {
-        margin-top: 0rem !important;
+        margin-top: 0 !important;
 
         span {
           font-size: 12px !important;
@@ -1415,7 +1412,8 @@ body {
             @include section-title-style2;
           }
 
-          margin-bottom: 0.5rem !important;
+          margin-bottom: .5rem !important;
+
           @include section-title-style3;
         }
 
@@ -1424,7 +1422,7 @@ body {
 
       .pgn__card-footer {
         button {
-          padding: 0.4rem 1.5rem;
+          padding: .4rem 1.5rem;
           font-size: 1rem !important;
         }
       }
@@ -1437,11 +1435,13 @@ body {
 
       p {
         @include section-title-style3;
+
         color: var(--text-secondary) !important;
       }
 
       .signatory-form {
         @include card-style1;
+
         background-color: var(--bg-surface) !important;
         padding: 1rem !important;
         margin-bottom: 1rem !important;
@@ -1452,15 +1452,15 @@ body {
 
         .pgn__stack-gap--2 {
           button {
-            margin-top: -0.5rem !important;
-            padding: 0.4rem 1.5rem;
+            margin-top: -.5rem !important;
+            padding: .4rem 1.5rem;
             font-size: 1rem !important;
           }
         }
       }
 
       .btn-outline-primary {
-        padding: 0.4rem 1rem;
+        padding: .4rem 1rem;
         font-size: 1rem !important;
         width: fit-content !important;
         margin-top: 0 !important;
@@ -1468,6 +1468,7 @@ body {
 
       .signatory {
         @include card-style1;
+
         background-color: var(--bg-surface) !important;
         margin-bottom: 1rem !important;
 
@@ -1477,6 +1478,7 @@ body {
           }
 
           @include section-title-style3;
+
           color: var(--text-primary) !important;
         }
       }
@@ -1490,12 +1492,14 @@ body {
 
 .custom-checklist-container {
   @include card-style1;
+
   padding: 1rem;
   margin-left: 1rem !important;
   width: 98% !important;
 
   .sub-header-title {
     @include sub-header-title-style1;
+
     margin-bottom: 0 !important;
   }
 
@@ -1506,7 +1510,6 @@ body {
   }
 
   .custom-checklist-sections {
-
     .container-fluid {
       padding-left: 0 !important;
       padding-right: 0 !important;
@@ -1528,10 +1531,10 @@ body {
   }
 
   .custom-checklist-section-progress-bar {
-    margin-top: 0.5rem;
+    margin-top: .5rem;
     height: 1rem;
     border-radius: 24px;
-    background-color: #e0e0e0 !important;
+    background-color: var(--pgn-color-light-300) !important;
     border: none !important;
     margin-bottom: 2rem;
 
@@ -1544,12 +1547,14 @@ body {
 
   .checklist-item-complete {
     @include card-style3;
+
     border: 1px solid var(--border-color) !important;
     background-color: var(--bg-body) !important;
   }
 
   .checklist-item-card {
     @include card-style3;
+
     border: 1px solid var(--border-color) !important;
     background-color: var(--bg-surface);
     // margin-bottom: 1rem !important;
@@ -1558,6 +1563,7 @@ body {
 
 .custom-create-library-container {
   @include card-style1;
+
   padding: 1rem;
   margin-left: 1rem !important;
   width: 97% !important;
@@ -1568,7 +1574,7 @@ body {
   hr {
     margin-left: -1rem !important;
     margin-right: -1rem !important;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: .5rem !important;
   }
 
   .sub-header-title {
@@ -1576,12 +1582,12 @@ body {
   }
 
   .sub-header {
-    margin-bottom: -0.5rem !important;
+    margin-bottom: -.5rem !important;
   }
 
   .bottom-button-container {
     button {
-      padding: 0.5rem 1.5rem;
+      padding: .5rem 1.5rem;
       font-size: 1rem !important;
     }
   }
@@ -1605,7 +1611,7 @@ body {
   }
 
   .sub-header {
-    margin-bottom: -0.5rem !important;
+    margin-bottom: -.5rem !important;
   }
 
   .libraries-header-filters-container {
@@ -1623,7 +1629,7 @@ body {
 
       button:hover {
         background-color: var(--primary) !important;
-        color: white !important;
+        color: var(--pgn-color-white) !important;
       }
     }
 
@@ -1653,23 +1659,23 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
-    padding: 0 0;
+    padding: 0;
     max-width: 1800px;
     margin: 0 auto;
 
-    @media (min-width: 768px) {
+    @media (width >= 768px) {
       grid-template-columns: repeat(2, minmax(280px, 1fr));
     }
 
-    @media (min-width: 992px) {
+    @media (width >= 992px) {
       grid-template-columns: repeat(3, minmax(280px, 1fr));
     }
 
-    @media (min-width: 1200px) {
+    @media (width >= 1200px) {
       grid-template-columns: repeat(4, minmax(280px, 1fr));
     }
 
-    @media (min-width: 1600px) {
+    @media (width >= 1600px) {
       grid-template-columns: repeat(5, minmax(260px, 1fr));
       gap: 1.5rem;
     }
@@ -1678,8 +1684,8 @@ body {
   .library-card-container {
     background: var(--bg-surface);
     border-radius: 12px;
-    // box-shadow: 0 2px 8px rgba(16, 30, 54, 0.08);
-    border: solid 1px #e0e0e0;
+    // box-shadow: var(--pgn-elevation-box-shadow-down-1);
+    border: solid 1px var(--pgn-color-light-400);
     padding: 24px;
     width: 300px;
     height: 11rem;
@@ -1691,7 +1697,7 @@ body {
     overflow: hidden;
 
     &:hover {
-      box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+      box-shadow: var(--pgn-elevation-box-shadow-down-1) !important;
     }
   }
 
@@ -1712,11 +1718,11 @@ body {
   .library-card-info-container {
     display: flex;
     gap: 3rem;
-    margin-top: 0.5rem;
+    margin-top: .5rem;
   }
 
   .library-card-info-label {
-    font-size: 0.8rem;
+    font-size: .8rem;
     color: var(--text-secondary);
     letter-spacing: 1;
     font-weight: 500;
@@ -1775,14 +1781,12 @@ body {
 
   .library-authoring-page {
     @include card-style1;
+
     padding: 1rem;
     // margin: 0 1rem;
 
     hr {
-      margin-left: -1rem !important;
-      margin-right: -1rem !important;
-      margin-top: 0.9rem !important;
-      margin-bottom: 1rem !important;
+      margin: .9rem -1rem 1rem !important;
     }
 
     .library-component-card {
@@ -1790,13 +1794,13 @@ body {
         border: 1px solid var(--border-color) !important;
         border-radius: 12px !important;
         background-color: var(--bg-surface) !important;
-        box-shadow: 0 2px 4px -2px rgba(10, 13, 18, 0.06), 0 4px 8px -2px rgba(10, 13, 18, 0.1) !important;
+        box-shadow: var(--pgn-elevation-box-shadow-down-1) !important;
 
         .library-component-header {
           background-color: var(--primary-light) !important;
 
           .pgn__card-header-content {
-            margin-top: 0.3rem !important;
+            margin-top: .3rem !important;
           }
 
           .library-component-header-icon {
@@ -1843,7 +1847,6 @@ body {
 
     .sub-header-container {
       .pgn__searchfield {
-        border: none !important;
         border-radius: 8px !important;
         border: 1px solid var(--border-color) !important;
       }
@@ -1873,15 +1876,16 @@ body {
 }
 
 .custom-taxonomy-list-page-container {
-  padding: 1.5rem;
-  padding-top: 1rem;
+  // L/R padding comes from the page column (tels-content-width).
+  padding: 1rem 0 1.5rem !important;
 
   .custom-taxonomy-list-page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    padding: 0 1rem;
+    // L/R padding comes from the page column (tels-content-width).
+    padding: 0;
 
     .custom-taxonomy-list-page-header-actions {
       display: flex;
@@ -1891,14 +1895,14 @@ body {
   }
 
   .custom-taxonomy-list-page-content {
-    background-color: var(--bg-body);
+    background-color: transparent;
 
     .custom-taxonomy-list-page-content-container {
       padding: 0 !important;
     }
 
     .pgn__data-table-wrapper {
-      background-color: var(--bg-body) !important;
+      background-color: transparent !important;
     }
 
     .taxonomy-card {
@@ -1908,7 +1912,7 @@ body {
       border-radius: 8px !important;
       // border: solid 1px var(--border-color) !important;
       background-color: var(--bg-surface) !important;
-      // box-shadow: 0 2px 4px -2px rgba(10, 13, 18, 0.06), 0 4px 8px -2px rgba(10, 13, 18, 0.1) !important;
+      // box-shadow: var(--pgn-elevation-box-shadow-down-1) !important;
 
 
 
@@ -1960,7 +1964,7 @@ body {
     }
 
     .taxonomy-card:hover {
-      box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+      box-shadow: var(--pgn-elevation-box-shadow-down-1) !important;
     }
 
     .pgn__card.clickable:focus::before {
@@ -2013,7 +2017,7 @@ body {
 
     .custom-taxonomy-detail-page-header-title-actions {
       .btn-primary:focus {
-        color: var(--text-white) !important;
+        color: var(--pgn-color-white) !important;
         background-color: var(--primary) !important;
       }
     }
@@ -2021,7 +2025,6 @@ body {
 
   .custom-taxonomy-detail-page-content {
     .tag-list-table {
-
       .pgn__data-table {
         border-radius: 16px !important;
       }
@@ -2082,7 +2085,7 @@ body {
     .custom-taxonomy-detail-page-side-card {
       .pgn__card {
         border-radius: 12px !important;
-        box-shadow: 0 1px 2px 0 rgba(10, 13, 18, 0.06), 0 1px 3px 0 rgba(10, 13, 18, 0.1) !important;
+        box-shadow: var(--pgn-elevation-box-shadow-down-1) !important;
 
         .pgn__card-header {
           padding: 0 1rem !important;
@@ -2116,6 +2119,7 @@ body {
 
 .course-rerun-content {
   @include card-style1;
+
   padding: 1rem;
 
   .course-rerun-title {
@@ -2125,6 +2129,7 @@ body {
 
 .course-rerun-form {
   @include card-style2;
+
   background-color: var(--bg-body) !important;
   padding: 1rem;
 
@@ -2152,7 +2157,9 @@ body {
 
   .error-actions {
     gap: 1rem !important;
+
     /* margin-inline: 1rem; */
+
     /* margin-right: 1rem; */
     display: flex;
     justify-content: center;
@@ -2197,7 +2204,7 @@ select.form-control {
 
   // Responsive adjustments for different screen sizes
   // Small laptops (768px - 1024px)
-  @media (min-width: 768px) and (max-width: 1024px) {
+  @media (width >= 768px) and (width <= 1024px) {
     .tox-tinymce--toolbar-sticky-on, .tox-tinymce--toolbar-sticky-off {
       .tox-editor-header {
         top: 11rem !important;
@@ -2209,7 +2216,7 @@ select.form-control {
   }
 
   // Medium laptops (1024px - 1366px)
-  @media (min-width: 1024px) and (max-width: 1366px) {
+  @media (width >= 1024px) and (width <= 1366px) {
     .tox-tinymce--toolbar-sticky-on, .tox-tinymce--toolbar-sticky-off {
       .tox-editor-header {
         top: 11rem !important;
@@ -2221,7 +2228,7 @@ select.form-control {
   }
 
   // Large laptops (1366px - 1440px)
-  @media (min-width: 1366px) and (max-width: 1440px) {
+  @media (width >= 1366px) and (width <= 1440px) {
     .tox-tinymce--toolbar-sticky-on, .tox-tinymce--toolbar-sticky-off {
       .tox-editor-header {
         top: 11rem !important;
@@ -2233,7 +2240,7 @@ select.form-control {
   }
 
   // Desktop monitors (1440px - 1600px)
-  @media (min-width: 1440px) and (max-width: 1600px) {
+  @media (width >= 1440px) and (width <= 1600px) {
     .tox-tinymce--toolbar-sticky-on, .tox-tinymce--toolbar-sticky-off {
       .tox-editor-header {
         top: 12rem !important;
@@ -2245,7 +2252,7 @@ select.form-control {
   }
 
   // Large monitors (1600px - 1920px)
-  @media (min-width: 1600px) and (max-width: 1920px) {
+  @media (width >= 1600px) and (width <= 1920px) {
     .tox-tinymce--toolbar-sticky-on, .tox-tinymce--toolbar-sticky-off {
       .tox-editor-header {
         top: 12rem !important;
@@ -2257,7 +2264,7 @@ select.form-control {
   }
 
   // Ultra-wide monitors (1920px+)
-  @media (min-width: 1920px) {
+  @media (width >= 1920px) {
     .tox-tinymce--toolbar-sticky-on, .tox-tinymce--toolbar-sticky-off {
       .tox-editor-header {
         top: 12.5rem !important;
@@ -2278,8 +2285,8 @@ select.form-control {
 // N Styles Start
 .group-configurations {
   .row:first-child {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .configuration-card .configuration-card-header .configuration-card-header__button:hover {
@@ -2287,7 +2294,7 @@ select.form-control {
   }
 
   .row>div:first-child {
-    background-color: var(--text-white);
+    background-color: var(--pgn-color-bg-base);
     padding: 1rem;
     border-radius: 1rem;
     border: solid 1px var(--border-color);
@@ -2307,16 +2314,16 @@ select.form-control {
 
   .configuration-card .configuration-card-header .configuration-card-header__badge {
     border-radius: 12px;
-    background-color: #e5fbff !important;
+    background-color: var(--pgn-color-primary-light) !important;
   }
 
   .configuration-card .configuration-card-header .configuration-card-header__badge span:last-child {
-    color: #0c83f2;
+    color: var(--pgn-color-primary-base);
   }
 
   .configuration-card {
     border-radius: 8px;
-    box-shadow: 0 2px 4px 0 rgba(24, 29, 38, 0.08), 0 0 1px 0 rgba(24, 29, 38, 0.24);
+    box-shadow: var(--pgn-elevation-box-shadow-down-1);
     background-color: var(--bg-body);
   }
 
@@ -2331,7 +2338,7 @@ select.form-control {
   }
 
   .certificates-custom-sub-header-title .sub-header-title {
-    color: #222121;
+    color: var(--pgn-color-text-base);
   }
 
   .configuration-card .pgn__action-row {
@@ -2345,7 +2352,7 @@ select.form-control {
   .configuration-card-header h3 {
     font-size: 14px;
     font-weight: normal;
-    color: #222121;
+    color: var(--pgn-color-text-base);
   }
 
   .configuration-card .pgn__action-row .btn-tertiary {
@@ -2378,24 +2385,24 @@ select.form-control {
   }
 
   [role="status"] {
-    padding: 0.3rem 0.65rem !important;
-    column-gap: 0.35rem;
+    padding: .3rem .65rem !important;
+    column-gap: .35rem;
     flex-shrink: 0;
   }
 
   article {
-    background-color: var(--text-white);
+    background-color: var(--pgn-color-bg-base);
     padding: 1rem;
     border-radius: 1rem;
     border: solid 1px var(--border-color);
   }
 
   .help-sidebar {
-    background-color: var(--text-white);
+    background-color: var(--pgn-color-bg-base);
     padding: 1rem;
     border-radius: 1rem;
     border: solid 1px var(--border-color);
-    margin-top: 0px !important;
+    margin-top: 0 !important;
 
     .outline-sidebar-section {
       // border: 1px solid var(--border-color);
@@ -2429,7 +2436,7 @@ select.form-control {
     border-top: 1px solid var(--border-color);
     margin-left: -1rem !important;
     margin-right: -1rem !important;
-    padding: 1rem 1rem 0.75rem;
+    padding: 1rem 1rem .75rem;
   }
 
   .section-card .section-card__subsections .btn-outline-primary {
@@ -2457,11 +2464,11 @@ select.form-control {
   }
 
   .pt-4 .mx-0 {
-    background-color: #f2f5ff !important;
+    background-color: var(--pgn-color-primary-light) !important;
   }
 }
 
-@media (max-width: 576px) {
+@media (width <= 576px) {
   .course-outline-container .outline-status-bar {
     flex-direction: column;
   }
@@ -2493,20 +2500,20 @@ select.form-control {
   }
 
   .lead {
-    margin-bottom: 0rem;
+    margin-bottom: 0;
     font-size: 1rem;
     margin-left: 1rem;
   }
 
   .section-sub-header span {
-    font-size: 0.9rem;
+    font-size: .9rem;
     margin-left: 1rem;
   }
 
   .course-form .row .col-cs {
     border-radius: 16px;
     border: solid 1px var(--border-color);
-    background-color: var(--text-white);
+    background-color: var(--pgn-color-bg-base);
     padding: 1rem;
   }
 
@@ -2528,8 +2535,8 @@ select.form-control {
   }
 
   .pacing-section .pgn__form-group .pgn__form-control-set {
-    padding-left: 0rem;
-    padding-top: 0rem;
+    padding-left: 0;
+    padding-top: 0;
   }
 }
 
@@ -2556,7 +2563,7 @@ select.form-control {
 }
 
 .viewLiveCustom {
-  font-size: 0.75rem;
+  font-size: .75rem;
 }
 
 .customFooterTextAlign {
@@ -2564,8 +2571,8 @@ select.form-control {
 }
 
 .create-new-course-form .row:first-child {
-  margin-left: 0px;
-  margin-right: 0px;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 // .scrollable-sidebar-content {
@@ -2583,7 +2590,7 @@ select.form-control {
 
 
 .pgn__form-text-invalid {
-  color: #C32D3A !important;
+  color: var(--pgn-color-danger-base) !important;
   font-size: 87.5% !important;
 }
 
@@ -2624,7 +2631,7 @@ select.form-control {
   height: 18px;
 }
 
-@media (min-width: 576px) {
+@media (width >= 576px) {
   .pgn__form-control-decorator-group {
     margin-inline-end: 0;
   }
@@ -2667,6 +2674,7 @@ select.form-control {
 li.react-datepicker__time-list-item--selected{
    background-color: var(--primary) !important;
 }
+
 .pgn__menu .pgn__menu-item{
   &:hover{
     background-color: var(--primary-light);
@@ -2676,17 +2684,21 @@ li.react-datepicker__time-list-item--selected{
 .badge-info{
   background-color: var(--primary);
 }
+
 .btn-primary.disabled{
   background-color: var(--disabled) !important;
   border: var(--border-color) !important;
 }
+
 option{
   &:hover{
     background-color: var(--primary-light);
   }
 }
+
 a{
   color: var(--primary);
+
   &:hover{
     color: var(--primary-light);
     cursor: pointer;
@@ -2724,7 +2736,7 @@ a{
 // menu, the page grows past the window and scrolls sideways, which clips the
 // course title and the course menu on the left. The outline column is the piece
 // that shrinks. The info sidebar keeps its width and stays fully visible.
-body.new-ui {
+body.tels-custom-authoring {
   .main-content {
     min-width: 0;
   }
@@ -2783,7 +2795,7 @@ body.new-ui {
       min-height: 0;
       max-height: none;
       align-self: flex-start;
-      margin-left: 0.75rem;
+      margin-left: .75rem;
       overflow: hidden;
       position: sticky;
       // Same stop as `.ca-sidebar` (`top: 32px`) so both columns line up on scroll.
@@ -2805,17 +2817,17 @@ body.new-ui {
         max-width: 100% !important;
         min-width: 0;
         align-items: stretch !important;
-        background-color: var(--text-white, #fff);
-        border: 1px solid var(--border-color, #e5e6e6);
+        background-color: var(--pgn-color-bg-base);
+        border: 1px solid var(--border-color, var(--pgn-color-light-400));
         border-radius: 1rem;
 
         // The left edge is the resize grip. It stays visible and follows the corner.
         &:has(.resizable) {
-          border-left: 4px solid var(--pgn-color-primary-base, #0a3055);
+          border-left: 4px solid var(--pgn-color-primary-base, var(--pgn-color-primary-base));
         }
 
         &:has(.resizable-handle:hover) {
-          border-left-color: var(--pgn-color-primary-dark, #061e36);
+          border-left-color: var(--pgn-color-primary-dark, var(--pgn-color-primary-700));
         }
       }
 
@@ -2856,14 +2868,13 @@ body.new-ui {
         max-width: 100%;
         height: auto;
         max-height: calc(100vh - 8rem);
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: hidden auto;
         border: 0;
-        border-right: 1px solid var(--border-color, #e5e6e6);
+        border-right: 1px solid var(--border-color, var(--pgn-color-light-400));
         border-radius: 0;
 
         .dropdown-toggle {
-          padding: 0.375rem 0.75rem !important;
+          padding: .375rem .75rem !important;
         }
 
         // Course content summary chips: wrap with even padding and gaps.
@@ -2871,11 +2882,11 @@ body.new-ui {
           display: flex;
           flex-wrap: wrap;
           align-items: center;
-          gap: 0.5rem;
+          gap: .5rem;
 
           > .d-inline-flex {
             margin-right: 0;
-            padding: 0.3rem 0.55rem !important;
+            padding: .3rem .55rem !important;
           }
         }
       }
@@ -2910,7 +2921,7 @@ body.new-ui {
 
   .outline-status-bar {
     flex-wrap: wrap;
-    row-gap: 0.75rem;
+    row-gap: .75rem;
     max-width: 100%;
     min-width: 0;
   }
@@ -2918,7 +2929,7 @@ body.new-ui {
   .course-outline-container .sub-header-actions .pgn__hstack,
   .course-unit-container .sub-header-actions .pgn__hstack {
     flex-wrap: wrap !important;
-    row-gap: 0.75rem;
+    row-gap: .75rem;
     max-width: 100%;
     min-width: 0;
   }
@@ -2971,9 +2982,281 @@ body.new-ui {
     }
   }
 
-  @media (max-width: 767px) {
+  @media (width <= 767px) {
     .header-container .navbarContainer {
       flex-wrap: wrap !important;
+    }
+  }
+}
+
+// Taxonomy pages in the custom shell.
+// The stock TaxonomyLayout wraps every taxonomy page in .bg-light-400 (grey
+// band); the custom pages sit on the page background instead.
+.bg-light-400:has(.custom-taxonomy-list-page-container),
+.bg-light-400:has(.custom-taxonomy-detail-page-container) {
+  // .bg-light-400 is a Bootstrap utility (!important).
+  background: none !important;
+}
+
+// Card grid sits in its own box, distinct from the page background.
+.custom-taxonomy-list-page-container .custom-taxonomy-list-page-content .pgn__data-table-layout-main {
+  background-color: var(--bg-surface, var(--pgn-color-white)) !important;
+  border: 1px solid var(--border-color, var(--pgn-color-light-400));
+  border-radius: 8px;
+}
+
+// Paragon gives the card grid no top/bottom padding, so the cards touched the
+// top edge of the panel.
+.custom-taxonomy-list-page-container .custom-taxonomy-list-page-card-view {
+  padding: var(--pgn-spacing-spacer-3) !important;
+
+  .row {
+    row-gap: var(--pgn-spacing-spacer-3);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// FullCalendar (calendar page + dashboard widget) themed with design tokens.
+.fc {
+  --fc-border-color: var(--pgn-color-light-400);
+  --fc-page-bg-color: var(--pgn-color-bg-base);
+  --fc-neutral-bg-color: var(--pgn-color-light-200);
+  --fc-neutral-text-color: var(--pgn-color-text-light);
+  --fc-today-bg-color: var(--pgn-color-primary-light);
+  --fc-highlight-color: color-mix(in srgb, var(--pgn-color-primary-base) 15%, transparent);
+  --fc-event-bg-color: var(--pgn-color-primary-base);
+  --fc-event-border-color: var(--pgn-color-primary-base);
+  --fc-event-text-color: var(--pgn-color-white);
+  --fc-event-selected-overlay-color: color-mix(in srgb, var(--pgn-color-black) 20%, transparent);
+  --fc-list-event-hover-bg-color: var(--pgn-color-primary-light);
+  --fc-now-indicator-color: var(--pgn-color-danger-base);
+
+  color: var(--pgn-color-text-base);
+  font-family: var(--pgn-typography-font-family-base);
+
+  // Calendar anchors are not links visually: override the brand's global
+  // a:not(.btn)… link color rule.
+  &.fc a:not(.btn),
+  &.fc a:not(.btn):hover {
+    color: inherit !important;
+    text-decoration: none;
+  }
+
+  &.fc .fc-col-header-cell-cushion,
+  &.fc .fc-daygrid-day-number,
+  &.fc .fc-list-day-text,
+  &.fc .fc-list-day-side-text {
+    color: var(--pgn-color-text-base) !important;
+  }
+
+  &.fc .fc-day-today .fc-daygrid-day-number {
+    color: var(--pgn-color-primary-base) !important;
+    font-weight: var(--pgn-typography-font-weight-bold);
+  }
+
+  &.fc .fc-daygrid-event-dot,
+  &.fc .fc-list-event-dot {
+    border-color: var(--pgn-color-primary-base);
+  }
+
+  &.fc .fc-daygrid-dot-event:hover {
+    background-color: var(--pgn-color-primary-light);
+  }
+
+  &.fc .fc-daygrid-more-link {
+    color: var(--pgn-color-primary-base) !important;
+  }
+}
+
+// titaned-frontend-library colors table headers with --secondary; use the
+// Paragon data-table header token instead.
+.pgn__data-table th {
+  color: var(--pgn-color-data-table-header-text);
+}
+
+// ---------------------------------------------------------------------------
+// Custom UI shapes and sizes from the design tokens (--pgn-*).
+.tels-custom-authoring {
+  // Shapes and sizes: titaned-frontend-library hardcodes these for Paragon /
+  // Bootstrap components (e.g. 1rem radios against Paragon's 20px min-width,
+  // which drew them as ovals). Use the design tokens instead.
+  .pgn__form-checkbox-input,
+  .pgn__form-radio-input {
+    width: var(--pgn-size-form-control-indicator-base);
+    height: var(--pgn-size-form-control-indicator-base);
+    min-width: var(--pgn-size-form-control-indicator-base);
+    min-height: var(--pgn-size-form-control-indicator-base);
+    flex-shrink: 0;
+  }
+
+  .pgn__form-radio-input {
+    border-radius: 50%;
+  }
+
+  // Focused/selected Paragon Menu item: brand tint from the existing
+  // primary-light token (the menu token keeps its Paragon default).
+  .pgn__menu-item:focus {
+    background-color: var(--pgn-color-primary-light);
+  }
+
+  // Indicator centered on its label (Paragon offsets it with a fixed
+  // margin-top, which drifts when the label font/line-height changes).
+  // Options with a description keep the top alignment.
+  .pgn__form-checkbox:not(:has(.pgn__form-control-description)),
+  .pgn__form-radio:not(:has(.pgn__form-control-description)) {
+    display: flex;
+    align-items: center;
+
+    > .pgn__form-checkbox-input,
+    > .pgn__form-radio-input {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .pgn__form-label {
+      margin-bottom: 0;
+    }
+  }
+
+  // Page content and modals only: the header/sidebar keep their own shapes
+  // (pill language selector, user menu).
+  .main-content,
+  .pgn__modal-layer {
+    .btn:not(.btn-icon) {
+      border-radius: var(--pgn-size-btn-border-radius-base) !important;
+    }
+
+    .btn-sm:not(.btn-icon) {
+      border-radius: var(--pgn-size-btn-border-radius-sm) !important;
+    }
+
+    .btn-lg:not(.btn-icon) {
+      border-radius: var(--pgn-size-btn-border-radius-lg) !important;
+    }
+
+    // Button groups stay joined (only the outer corners are rounded).
+    .btn-group > .btn:not(:last-child, .dropdown-toggle, .btn-icon),
+    .btn-group > .btn-group:not(:last-child) > .btn:not(.btn-icon) {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
+
+    .btn-group > .btn:not(:first-child, .btn-icon),
+    .btn-group > .btn-group:not(:first-child) > .btn:not(.btn-icon) {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+    }
+
+    .form-control,
+    .pgn__form-control-decorator-group .form-control {
+      border-radius: var(--pgn-size-form-input-radius-border-base);
+    }
+
+    .card,
+    .pgn__card {
+      border-radius: var(--pgn-size-card-border-radius-base);
+    }
+
+    .badge {
+      border-radius: var(--pgn-size-badge-border-radius-base);
+    }
+
+    .alert {
+      border-radius: var(--pgn-size-alert-border-radius);
+    }
+
+    .dropdown-menu {
+      border-radius: var(--pgn-size-dropdown-border-radius-base);
+    }
+
+    .modal-content,
+    .pgn__modal {
+      border-radius: var(--pgn-size-modal-content-border-radius);
+    }
+
+    .pgn__selectable_box {
+      border-radius: var(--pgn-size-border-radius-base);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Course pages (custom shell): the page content starts level with the course
+// menu. Stock pages add their own top margins (e.g. Course Outline `mt-5`,
+// Schedule & Details `-24px`); the course layout already provides the spacing.
+body.tels-custom-authoring .ca-main-content {
+  > *,
+  > * > :first-child {
+    margin-top: 0 !important;
+  }
+}
+
+// Empty alert holders (e.g. Schedule & Details .schedule-alert-msg) must not
+// push the page down; when an alert is shown the margin applies as usual.
+body.tels-custom-authoring .ca-main-content .alert-container:empty {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+// ---------------------------------------------------------------------------
+// Course pages layout (custom shell).
+body.tels-custom-authoring {
+  // Course menu flush with the content column (library adds 16px left/top).
+  .ca-sidebar {
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  // Menu ↔ page ↔ info rail: one gap (half grid gutter = 12px).
+  .ca-main-layout {
+    column-gap: calc(var(--pgn-spacing-grid-gutter-width) * .5) !important;
+  }
+
+  // Outline info sidebar icon rail: p-3 (spacer-3) instead of p-1.
+  .sidebar .sidebar-toggle {
+    padding: var(--pgn-spacing-spacer-3) !important;
+  }
+
+  // Course Outline: heading and "Collapse all" on one line.
+  .course-outline-container article:has(> .courseOutlineh2) {
+    position: relative;
+
+    > .courseOutlineh2 {
+      margin-bottom: var(--pgn-spacing-spacer-3);
+      padding-right: 12rem; // room for the button
+    }
+
+    > .courseOutlineh2 + div > .pgn__action-row:first-child {
+      position: absolute;
+      // Same top inset as the article (pt), so it lines up with the heading.
+      top: var(--pgn-spacing-spacer-3);
+      // Same right inset as the card padding.
+      right: var(--pgn-spacing-spacer-3);
+      margin-top: 0 !important;
+    }
+  }
+
+  // Header action buttons: no extra space below (stock 1.75rem).
+  .sub-header .sub-header-actions {
+    margin-bottom: 0 !important;
+  }
+}
+
+// Course pages: menu, page card and info rail start on the same top line,
+// each with the same spacer-3 inner inset.
+body.tels-custom-authoring {
+  .ca-main-content {
+    padding-top: 0 !important;
+  }
+
+  // Course Outline: tighter space under the header action buttons.
+  .course-outline-container {
+    .border-bottom:has(> .sub-header) {
+      margin-bottom: 0 !important;
+    }
+
+    .border-bottom:has(> .sub-header) + .pt-4 {
+      padding-top: var(--pgn-spacing-spacer-3) !important;
     }
   }
 }

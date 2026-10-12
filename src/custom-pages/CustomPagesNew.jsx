@@ -6,7 +6,6 @@ import { AppContext, PageWrap } from '@edx/frontend-platform/react';
 import { injectIntl, FormattedMessage, intlShape } from '@edx/frontend-platform/i18n';
 import {
   ActionRow,
-  Breadcrumb,
   Button,
   Layout,
   Hyperlink,
@@ -19,7 +18,6 @@ import {
 } from '@openedx/paragon';
 import { Add, SpinnerSimple } from '@openedx/paragon/icons';
 import Placeholder from '../editors/Placeholder';
-// Verawood moved DraggableList from editors/sharedComponents to generic.
 // import DraggableList, { SortableItem } from '../editors/sharedComponents/DraggableList';
 import DraggableList, { SortableItem } from '../generic/DraggableList';
 import ErrorAlert from '../editors/sharedComponents/ErrorAlerts/ErrorAlert';
@@ -29,7 +27,6 @@ import { useModels } from '../generic/model-store';
 import { getLoadingStatus, getSavingStatus } from './data/selectors';
 import {
   addSingleCustomPage,
-  fetchCustomPages,
   updatePageOrder,
   updateSingleCustomPage,
 } from './data/thunks';
@@ -40,7 +37,6 @@ import messages from './messages';
 import CustomPagesProvider from './CustomPagesProvider';
 import EditModal from './EditModal';
 import getPageHeadTitle from '../generic/utils';
-import { getPagePath } from '../utils';
 import { useCourseAuthoringContext } from '../CourseAuthoringContext';
 
 const CustomPagesNew = ({
@@ -73,7 +69,9 @@ const CustomPagesNew = ({
 
   const pages = useModels('customPages', customPagesIds);
 
-  const handleAddPage = () => { dispatch(addSingleCustomPage(courseId)); };
+  const handleAddPage = () => {
+    dispatch(addSingleCustomPage(courseId));
+  };
   const handleReorder = () => (newPageOrder) => {
     dispatch(updatePageOrder(courseId, newPageOrder));
   };
@@ -101,10 +99,12 @@ const CustomPagesNew = ({
     },
     disabledStates: ['pending'],
   };
-  useEffect(() => { setOrderedPages(pages); }, [customPagesIds, savingStatus]);
+  useEffect(() => {
+    setOrderedPages(pages);
+  }, [customPagesIds, savingStatus]);
   if (loadingStatus === RequestStatus.IN_PROGRESS) {
     // eslint-disable-next-line react/jsx-no-useless-fragment
-    return (<></>);
+    return <></>;
   }
   if (loadingStatus === RequestStatus.DENIED) {
     return (
@@ -142,7 +142,8 @@ const CustomPagesNew = ({
           >
             <Layout.Element>
               <article>
-                {/* <div className="small gray-700">
+                {
+                  /* <div className="small gray-700">
                   <Breadcrumb
                     ariaLabel="Custom Page breadcrumbs"
                     links={[
@@ -156,7 +157,8 @@ const CustomPagesNew = ({
                       },
                     ]}
                   />
-                </div> */}
+                </div> */
+                }
                 <ActionRow>
                   <div className="h2">
                     <FormattedMessage {...messages.heading} />
@@ -220,11 +222,11 @@ const CustomPagesNew = ({
                       id={page.id}
                       key={page.id}
                       componentStyle={{
-                        background: '#f4f7ff',
+                        background: 'var(--pgn-color-primary-light)',
                         borderRadius: '6px',
                         padding: '24px',
                         marginBottom: '16px',
-                        border: 'solid 1px #e0e0e0',
+                        border: 'solid 1px var(--pgn-color-light-400)',
                       }}
                     >
                       <CustomPageCard

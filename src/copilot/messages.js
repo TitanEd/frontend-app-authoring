@@ -109,7 +109,7 @@ const messages = defineMessages({
   },
   continueBannerImage: {
     id: 'copilot.continue.bannerImage',
-    defaultMessage: 'Create a Banner Image. Click Continue.'
+    defaultMessage: 'Create a Banner Image. Click Continue.',
   },
   continueIntroVideo: {
     id: 'copilot.continue.introVideo',
@@ -155,6 +155,11 @@ const messages = defineMessages({
     id: 'copilot.loadingcopilot',
     defaultMessage: 'Coming Soon',
     description: 'Message shown when Copilot is loading or not yet available',
+  },
+  pinnedImageAlt: {
+    id: 'copilot.pinned.image.alt',
+    defaultMessage: 'Pinned',
+    description: 'Alt text of a pinned image suggestion',
   },
 });
 

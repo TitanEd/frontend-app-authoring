@@ -51,8 +51,7 @@ const DatepickerControl = ({
         {label}
         {showUTC && (
           <span className="h6 font-weight-normal text-gray-500 mb-0">
-            {/* This will show the user's timezone with offset */}
-            ({intl.formatMessage(messages.datepickerCustom)})
+            ({intl.formatMessage(messages.datepickerUTC)})
           </span>
         )}
       </Form.Label>

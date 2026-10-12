@@ -15,6 +15,7 @@
     padding: 0;
     overflow: hidden;
     max-height: 26px;
+
     .message_wrape{
         display: flex;
         align-items: center;
@@ -23,11 +24,11 @@
     }
 
     &.showBanner {
-        animation: expandHeight 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation: expand-height 1s cubic-bezier(.4, 0, .2, 1) forwards;
     }
 
     &.hideBanner {
-        animation: collapseHeight 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation: collapse-height 1s cubic-bezier(.4, 0, .2, 1) forwards;
     }
 
     .feedback_banner_button {
@@ -49,7 +50,7 @@
 }
 
 
-@keyframes expandHeight {
+@keyframes expand-height {
     from {
         max-height: 0;
         opacity: 0;
@@ -61,7 +62,7 @@
     }
 }
 
-@keyframes collapseHeight {
+@keyframes collapse-height {
     from {
         max-height: 26px;
         opacity: 1;
@@ -73,7 +74,7 @@
     }
 }
 
-@media only screen and (max-width : 900px) {
+@media only screen and (width <= 900px) {
     .feedback_banner {
         .desktopview {
             display: none;
@@ -81,11 +82,11 @@
     }
 }
 
-@media only screen and (max-width : 650px) {
+@media only screen and (width <= 650px) {
     .feedback_banner {
         height: 40px;
         max-height: 40px;
-        font-size: 0.8rem;
+        font-size: .8rem;
         flex-direction: row;
 
         .message_wrape{
@@ -93,18 +94,19 @@
             line-height: 1.25;
             margin-right: 18px;
         }
+
         &.showBanner {
-            animation: expandHeightPhone 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: expand-height-phone 1s cubic-bezier(.4, 0, .2, 1) forwards;
         }
 
         &.hideBanner {
-            animation: collapseHeightPhone 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: collapse-height-phone 1s cubic-bezier(.4, 0, .2, 1) forwards;
         }
     }
 }
 
 
-@keyframes expandHeightPhone {
+@keyframes expand-height-phone {
     from {
         max-height: 0;
         opacity: 0;
@@ -116,7 +118,7 @@
     }
 }
 
-@keyframes collapseHeightPhone {
+@keyframes collapse-height-phone {
     from {
         max-height: 40px;
         opacity: 1;

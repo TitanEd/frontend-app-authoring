@@ -1,10 +1,11 @@
 import React from 'react';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Card, Icon } from '@openedx/paragon';
 import { WarningFilled } from '@openedx/paragon/icons';
 import './WarningMessage.scss';
 
 interface WarningMessageProps {
-  message: string;
+  message: React.ReactNode;
 }
 
 const WarningMessage: React.FC<WarningMessageProps> = ({ message }) => (
@@ -14,7 +15,13 @@ const WarningMessage: React.FC<WarningMessageProps> = ({ message }) => (
         <Icon src={WarningFilled} size="md" />
       </span>
       <div>
-        <span className="warning-message-heading font-weight-bold d-block mb-0">Warning</span>
+        <span className="warning-message-heading font-weight-bold d-block mb-0">
+          <FormattedMessage
+            id="course-authoring.custom.warning-message.heading"
+            defaultMessage="Warning"
+            description="Heading of the warning message card"
+          />
+        </span>
         <span className="warning-message-text">{message}</span>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DataTable, IconButton, Icon } from '@openedx/paragon';
-import { OpenInNew } from '@openedx/paragon/icons'; 
+import { OpenInNew } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { useAssignmentContext } from '../context/AssignmentContext';
 import messages from '../data/messages';
@@ -22,13 +22,12 @@ const AssignmentTable = () => {
       accessor: 'review',
       Cell: ({ value }) => (
         <IconButton
-          iconAs={Icon} 
+          iconAs={Icon}
           src={OpenInNew}
-          title={intl.formatMessage(messages.openReview)}
-          aria-label={intl.formatMessage(messages.openReview)}
+          alt={intl.formatMessage(messages.openReview)}
           size="sm"
-          variant="tertiary"
-          onClick={() => window.open(value, '_blank')} 
+          variant="primary"
+          onClick={() => window.open(value, '_blank', 'noopener,noreferrer')}
         />
       ),
     },

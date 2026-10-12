@@ -1,0 +1,167 @@
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIntl } from '@edx/frontend-platform/i18n';
+import {
+  Alert,
+  Button,
+  ModalDialog,
+  Stepper,
+} from '@openedx/paragon';
+
+import { useCourseAuthoringContext } from '@src/CourseAuthoringContext';
+import ConnectionErrorAlert from '@src/generic/ConnectionErrorAlert';
+import PermissionDeniedAlert from '@src/generic/PermissionDeniedAlert';
+import Loading from '@src/generic/Loading';
+
+import messages from './messages';
+import DiscussionsProvider from './DiscussionsProvider';
+import { fetchProviders } from './data/thunks';
+import AppList from './app-list';
+import AppConfigForm from './app-config-form';
+import { DENIED, FAILED } from './data/slice';
+import { PagesAndResourcesContext } from '../PagesAndResourcesProvider';
+
+const SELECTION_STEP = 'selection';
+const SETTINGS_STEP = 'settings';
+
+const DiscussionsSettings = () => {
+  const intl = useIntl();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { path: pagesAndResourcesPath } = useContext(PagesAndResourcesContext);
+  const { status, hasValidationError } = useSelector(state => state.discussions);
+  const { courseId, courseDetails, canChangeProviders } = useCourseAuthoringContext();
+
+  useEffect(() => {
+    dispatch(fetchProviders(courseId));
+  }, [courseId]);
+
+  const discussionsPath = `${pagesAndResourcesPath}/discussion`;
+  const { appId } = useParams();
+
+  const startStep = appId ? SETTINGS_STEP : SELECTION_STEP;
+  const [currentStep, setCurrentStep] = useState(startStep);
+
+  useEffect(() => {
+    setCurrentStep(appId ? SETTINGS_STEP : SELECTION_STEP);
+  }, [appId]);
+
+  const handleClose = useCallback(() => {
+    navigate(pagesAndResourcesPath);
+  }, [pagesAndResourcesPath]);
+
+  const handleBack = useCallback(() => {
+    navigate(discussionsPath);
+  }, [discussionsPath]);
+
+  if (!courseDetails) {
+    return <Loading />;
+  }
+
+  if (status === FAILED) {
+    return (
+      <ModalDialog
+        className="bg-light-200"
+        onClose={handleClose}
+        isOpen
+      >
+        <ModalDialog.Header>
+          <ModalDialog.Title>
+            {intl.formatMessage(messages.configure)}
+          </ModalDialog.Title>
+        </ModalDialog.Header>
+        <ModalDialog.Body>
+          <ConnectionErrorAlert />
+        </ModalDialog.Body>
+      </ModalDialog>
+    );
+  }
+
+  if (status === DENIED) {
+    return (
+      <ModalDialog
+        className="bg-light-200"
+        onClose={handleClose}
+        isOpen
+      >
+        <ModalDialog.Header>
+          <ModalDialog.Title>
+            {intl.formatMessage(messages.configure)}
+          </ModalDialog.Title>
+        </ModalDialog.Header>
+        <ModalDialog.Body>
+          <PermissionDeniedAlert />
+        </ModalDialog.Body>
+      </ModalDialog>
+    );
+  }
+
+  return (
+    <DiscussionsProvider path={discussionsPath}>
+      <AppConfigForm.Provider>
+        <Stepper activeKey={currentStep}>
+          <ModalDialog
+            className="bg-light-200"
+            onClose={handleClose}
+            isOpen
+            size="xl"
+          >
+            <ModalDialog.Header>
+              <ModalDialog.Title>
+                {intl.formatMessage(messages.configure)}
+              </ModalDialog.Title>
+              <Stepper.Header className="border-bottom border-light" />
+            </ModalDialog.Header>
+            <ModalDialog.Body className="px-sm-4">
+              <Stepper.Step
+                eventKey={SELECTION_STEP}
+                title={intl.formatMessage(messages.providerSelection)}
+              >
+                {!canChangeProviders && (
+                  <Alert variant="warning">
+                    {intl.formatMessage(messages.noProviderSwitchAfterCourseStarted)}
+                  </Alert>
+                )}
+                <AppList />
+              </Stepper.Step>
+              <Stepper.Step
+                eventKey={SETTINGS_STEP}
+                title={intl.formatMessage(messages.settings)}
+                description={hasValidationError ? intl.formatMessage(messages.Incomplete) : ''}
+                hasError={hasValidationError}
+              >
+                <AppConfigForm
+                  courseId={courseId}
+                />
+              </Stepper.Step>
+            </ModalDialog.Body>
+            <ModalDialog.Footer>
+              <Stepper.ActionRow eventKey={SELECTION_STEP}>
+                <AppList.NextButton />
+              </Stepper.ActionRow>
+              <Stepper.ActionRow eventKey={SETTINGS_STEP}>
+                <div className="d-flex w-100 justify-content-between">
+                  <Button
+                    variant="outline-primary"
+                    onClick={handleBack}
+                  >
+                    {intl.formatMessage(messages.backButton)}
+                  </Button>
+                  <AppConfigForm.SaveButton />
+                </div>
+              </Stepper.ActionRow>
+            </ModalDialog.Footer>
+          </ModalDialog>
+        </Stepper>
+      </AppConfigForm.Provider>
+    </DiscussionsProvider>
+  );
+};
+
+export default DiscussionsSettings;

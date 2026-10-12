@@ -1,6 +1,12 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import {
-  Alert, Button, Container, Icon, Pagination, Row, SearchField,
+  Alert,
+  Button,
+  Container,
+  Icon,
+  Pagination,
+  Row,
+  SearchField,
 } from '@openedx/paragon';
 import './MyCourses.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +28,7 @@ import CoursesFilters from './courses-filters';
 import CourseCard from './course-card/CourseCard';
 import ContactAdministrator from '../studio-home/tabs-section/courses-tab/contact-administrator';
 import { fetchCourseDetail } from '../data/thunks';
+import customMessages from '../customMessages';
 
 interface Course {
   courseKey: string;
@@ -47,7 +54,13 @@ const MyCourses = () => {
 
   const myCoursesParams = useSelector(getMyCoursesParams);
   const {
-    currentPage, isFiltered, search, order, archivedOnly, activeOnly, cleanFilters,
+    currentPage,
+    isFiltered,
+    search,
+    order,
+    archivedOnly,
+    activeOnly,
+    cleanFilters,
   } = myCoursesParams;
 
   const locationValue = location.search ?? '';
@@ -67,10 +80,16 @@ const MyCourses = () => {
 
   const handlePageSelected = useCallback((page: number) => {
     const {
-      search: searchParam, order: orderParam, archivedOnly: archivedOnlyParam, activeOnly: activeOnlyParam,
+      search: searchParam,
+      order: orderParam,
+      archivedOnly: archivedOnlyParam,
+      activeOnly: activeOnlyParam,
     } = myCoursesParams;
     const customParams = {
-      search: searchParam, order: orderParam, archivedOnly: archivedOnlyParam, activeOnly: activeOnlyParam,
+      search: searchParam,
+      order: orderParam,
+      archivedOnly: archivedOnlyParam,
+      activeOnly: activeOnlyParam,
     };
 
     dispatch(fetchMyCoursesData(locationValue, false, { page, ...customParams }, true));
@@ -130,8 +149,10 @@ const MyCourses = () => {
   useEffect(() => {
     const fetchNavigationItems = async () => {
       try {
-        const response = await getAuthenticatedHttpClient().get(`${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`);
-       // for local api fetch
+        const response = await getAuthenticatedHttpClient().get(
+          `${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`,
+        );
+        // for local api fetch
         // const response = await getAuthenticatedHttpClient().get(
         //   'LMS_API_DOMAIN/titaned/api/v1/menu-config/',
         // );
@@ -207,14 +228,14 @@ const MyCourses = () => {
   const renderErrorState = () => (
     <AlertMessage
       variant="danger"
-      description={(
+      description={
         <Row className="m-0 align-items-center">
           <Icon src={Error} className="text-danger-500 mr-1" />
           <span data-testid="error-failed-message">
             {intl.formatMessage(messages.courseTabErrorMessage)}
           </span>
         </Row>
-      )}
+      }
     />
   );
 
@@ -261,26 +282,29 @@ const MyCourses = () => {
   );
 
   const renderNoCoursesFoundAlert = () => (
-    showNoResultsAlert ? (
-      <Alert className="mt-4">
-        <Alert.Heading>
-          {intl.formatMessage(messages.coursesTabCourseNotFoundAlertTitle)}
-        </Alert.Heading>
-        <p data-testid="courses-not-found-alert">
-          {intl.formatMessage(messages.coursesTabCourseNotFoundAlertMessage)}
-        </p>
-        <Button variant="primary" onClick={handleCleanFilters}>
-          {intl.formatMessage(messages.coursesTabCourseNotFoundAlertCleanFiltersButton)}
-        </Button>
-      </Alert>
-    ) : null
+    showNoResultsAlert ?
+      (
+        <Alert className="mt-4">
+          <Alert.Heading>
+            {intl.formatMessage(messages.coursesTabCourseNotFoundAlertTitle)}
+          </Alert.Heading>
+          <p data-testid="courses-not-found-alert">
+            {intl.formatMessage(messages.coursesTabCourseNotFoundAlertMessage)}
+          </p>
+          <Button variant="primary" onClick={handleCleanFilters}>
+            {intl.formatMessage(messages.coursesTabCourseNotFoundAlertCleanFiltersButton)}
+          </Button>
+        </Alert>
+      ) :
+      null
   );
 
   return (
     <Container className="my-courses-page mt-4">
       {/* Add the filters at the top */}
       {/* <CoursesFilter dispatch={dispatch} locationValue="/my-courses" /> */}
-      {/* <CourseFilter
+      {
+        /* <CourseFilter
         coursesDataItems={courses}
         showNewCourseContainer
         // onClickNewCourse={onClickNewCourse}
@@ -290,55 +314,60 @@ const MyCourses = () => {
         numPages={numPages}
         coursesCount={coursesCount}
         isEnabledPagination
-      /> */}
-      {isFailedCoursesPage && !isFiltered ? (
-        renderErrorState()
-      ) : (
-        <div>
-          {/* {isShowProcessing && !isEnabledPagination && <ProcessingCourses />} */}
-          <div className="d-flex justify-content-between align-items-center mb-3 gap-3 filters-container">
-            <div className="my-courses-title">My Courses</div>
-            <div className="d-flex align-items-center gap-3">
-              <div className="d-flex flex-row my-courses-search-field">
-                <SearchField
-                  onSubmit={handleSearchCourses}
-                  onChange={handleSearchCoursesDebounced}
-                  value={cleanFilters ? '' : inputSearchValue}
-                  className="mr-4"
-                  data-testid="input-filter-courses-search"
-                  placeholder="Search"
+      /> */
+      }
+      {isFailedCoursesPage && !isFiltered ?
+        (
+          renderErrorState()
+        ) :
+        (
+          <div>
+            {/* {isShowProcessing && !isEnabledPagination && <ProcessingCourses />} */}
+            <div className="d-flex justify-content-between align-items-center mb-3 gap-3 filters-container">
+              <div className="my-courses-title">{intl.formatMessage(customMessages.sidebarMyCoursesTitle)}</div>
+              <div className="d-flex align-items-center gap-3">
+                <div className="d-flex flex-row my-courses-search-field">
+                  <SearchField
+                    onSubmit={handleSearchCourses}
+                    onChange={handleSearchCoursesDebounced}
+                    value={cleanFilters ? '' : inputSearchValue}
+                    className="mr-4"
+                    data-testid="input-filter-courses-search"
+                    placeholder={intl.formatMessage(customMessages.search)}
+                  />
+                </div>
+                <CoursesFilters
+                  dispatch={dispatch}
+                  locationValue={locationValue}
+                  isLoading={isLoadingCourses}
                 />
+                {hasAbilityToCreateNewCourse && (
+                  <Button
+                    variant="outline-primary"
+                    iconBefore={Add}
+                    size="sm"
+                    data-testid="new-course-button"
+                    onClick={() => navigate('/new-course')}
+                  >
+                    {intl.formatMessage(customMessages.createCourse)}
+                  </Button>
+                )}
               </div>
-              <CoursesFilters
-                dispatch={dispatch}
-                locationValue={locationValue}
-                isLoading={isLoadingCourses}
-              />
-              {hasAbilityToCreateNewCourse && (
-                <Button
-                  variant="outline-primary"
-                  iconBefore={Add}
-                  size="sm"
-                  data-testid="new-course-button"
-                  onClick={() => navigate('/new-course')}
-                >
-                  Create Course
-                </Button>
-              )}
             </div>
+            {isLoadingCourses && isFiltered ?
+              (
+                <Row className="m-0 mt-4 justify-content-center">
+                  <LoadingSpinner />
+                </Row>
+              ) :
+              (
+                <>
+                  {hasCourses ? renderCourseGrid() : renderEmptyState()}
+                  {renderNoCoursesFoundAlert()}
+                </>
+              )}
           </div>
-          {isLoadingCourses && isFiltered ? (
-            <Row className="m-0 mt-4 justify-content-center">
-              <LoadingSpinner />
-            </Row>
-          ) : (
-            <>
-              {hasCourses ? renderCourseGrid() : renderEmptyState()}
-              {renderNoCoursesFoundAlert()}
-            </>
-          )}
-        </div>
-      )}
+        )}
     </Container>
   );
 };

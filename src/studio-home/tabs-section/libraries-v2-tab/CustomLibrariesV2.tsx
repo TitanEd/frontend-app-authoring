@@ -3,7 +3,11 @@ import AlertMessage from '@src/generic/alert-message';
 // import React from 'react';
 // import CardItem from 'studio-home/card-item';
 import {
-  Alert, Button, Icon, Pagination, Row,
+  Alert,
+  Button,
+  Icon,
+  Pagination,
+  Row,
 } from '@openedx/paragon';
 import { Add, Error } from '@openedx/paragon/icons';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +15,8 @@ import LibrariesV2Filters from './libraries-v2-filters';
 import messages from '../messages';
 import LibraryCard from './LibraryCard';
 import { useStudioHome } from '../../hooks';
+import customMessages from '../../../customMessages';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const CustomLibrariesV2 = ({
   isError,
@@ -39,79 +45,85 @@ const CustomLibrariesV2 = ({
   } = studioHomeData;
   return (
     <div className="custom-libraries-container">
-      {isError ? (
-        <AlertMessage
-          variant="danger"
-          description={(
-            <Row className="m-0 align-items-center">
-              <Icon src={Error} className="text-danger-500 mr-1" />
-              <span>{intl.formatMessage(messages.librariesTabErrorMessage)}</span>
-            </Row>
-          )}
-        />
-      ) : (
-        <div className="libraries-tab-container">
-          <div className="d-flex flex-row justify-content-between align-items-center my-2 mb-4">
-            <div className="my-courses-title">Content Libraries</div>
-            <div className="d-flex flex-row gap-3 libraries-header-filters-container">
-              <LibrariesV2Filters
-                isPending={isLoading}
-                isFiltered={isFiltered}
-                filterParams={filterParams}
-                setFilterParams={setFilterParams}
-                setCurrentPage={setCurrentPage}
-              />
-              {showNewLibraryV2Button && (
-              <Button variant="primary" iconBefore={Add} size="sm" onClick={handleNewLibrary}>
-                New Library
-              </Button>
-              )}
-            </div>
-          </div>
-
-          { hasV2Libraries
-            ? (
-              <div className="library-cards-grid">
-                {data!.results.map(({
-                  id, org, slug, title,
-                }) => (
-                  <LibraryCard
-                    key={`${org}+${slug}`}
-                    title={title}
-                    org={org}
-                    id={slug}
-                    path={`/library/${id}`}
-                  />
-                ))}
+      {isError ?
+        (
+          <AlertMessage
+            variant="danger"
+            description={
+              <Row className="m-0 align-items-center">
+                <Icon src={Error} className="text-danger-500 mr-1" />
+                <span>{intl.formatMessage(messages.librariesTabErrorMessage)}</span>
+              </Row>
+            }
+          />
+        ) :
+        (
+          <div className="libraries-tab-container">
+            <div className="d-flex flex-row justify-content-between align-items-center my-2 mb-4">
+              <div className="my-courses-title">
+                <FormattedMessage {...customMessages.contentLibraries} />
               </div>
-            ) : isFiltered && !isLoading && (
-              <Alert className="mt-4 alert-message-container">
-                <Alert.Heading>
-                  {intl.formatMessage(messages.librariesV2TabLibraryNotFoundAlertTitle)}
-                </Alert.Heading>
-                <p>
-                  {intl.formatMessage(messages.librariesV2TabLibraryNotFoundAlertMessage)}
-                </p>
-                <Button variant="primary" onClick={handleClearFilters}>
-                  {intl.formatMessage(messages.coursesTabCourseNotFoundAlertCleanFiltersButton)}
-                </Button>
-              </Alert>
-            )}
+              <div className="d-flex flex-row gap-3 libraries-header-filters-container">
+                <LibrariesV2Filters
+                  isPending={isLoading}
+                  isFiltered={isFiltered}
+                  filterParams={filterParams}
+                  setFilterParams={setFilterParams}
+                  setCurrentPage={setCurrentPage}
+                />
+                {showNewLibraryV2Button && (
+                  <Button variant="primary" iconBefore={Add} size="sm" onClick={handleNewLibrary}>
+                    <FormattedMessage {...customMessages.newLibrary} />
+                  </Button>
+                )}
+              </div>
+            </div>
 
-          {
-            hasV2Libraries && (data!.numPages || 0) > 1
-            && (
-              <Pagination
-                className="d-flex justify-content-end"
-                paginationLabel="pagination navigation"
-                pageCount={data!.numPages}
-                currentPage={currentPage}
-                onPageSelect={handlePageSelect}
-              />
-            )
-          }
-        </div>
-      )}
+            {hasV2Libraries
+              ? (
+                <div className="library-cards-grid">
+                  {data!.results.map(({
+                    id,
+                    org,
+                    slug,
+                    title,
+                  }) => (
+                    <LibraryCard
+                      key={`${org}+${slug}`}
+                      title={title}
+                      org={org}
+                      id={slug}
+                      path={`/library/${id}`}
+                    />
+                  ))}
+                </div>
+              ) :
+              isFiltered && !isLoading && (
+                <Alert className="mt-4 alert-message-container">
+                  <Alert.Heading>
+                    {intl.formatMessage(messages.librariesV2TabLibraryNotFoundAlertTitle)}
+                  </Alert.Heading>
+                  <p>
+                    {intl.formatMessage(messages.librariesV2TabLibraryNotFoundAlertMessage)}
+                  </p>
+                  <Button variant="primary" onClick={handleClearFilters}>
+                    {intl.formatMessage(messages.coursesTabCourseNotFoundAlertCleanFiltersButton)}
+                  </Button>
+                </Alert>
+              )}
+
+            {hasV2Libraries && (data!.numPages || 0) > 1
+              && (
+                <Pagination
+                  className="d-flex justify-content-end"
+                  paginationLabel="pagination navigation"
+                  pageCount={data!.numPages}
+                  currentPage={currentPage}
+                  onPageSelect={handlePageSelect}
+                />
+              )}
+          </div>
+        )}
     </div>
   );
 };

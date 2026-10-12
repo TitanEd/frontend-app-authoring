@@ -1,18 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import messages from '../data/messages';
 
 const NavigationButton = ({ type, onClick, className }) => {
-  const  intl  = useIntl();
+  const intl = useIntl();
 
   return (
-    <button
+    <Button
+      size="sm"
+      variant="outline-primary"
       onClick={onClick}
       className={`nav-button ${className || ''}`}
     >
-      {intl && intl.formatMessage ? intl.formatMessage(messages[type]) : messages[type].defaultMessage}
-    </button>
+      {intl.formatMessage(messages[type])}
+    </Button>
   );
 };
 

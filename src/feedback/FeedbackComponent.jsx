@@ -18,10 +18,34 @@ const FeedbackComponent = ({ isOpen, setIsOpen }) => {
   const [submitStatus, setSubmitStatus] = useState(null);
 
   const moods = [
-    { value: 'not_good', label: 'Not good', emoji: <img src={emoji1} alt="Not good" />, rating: 1, question: 'What didn’t work for you?' },
-    { value: 'okay', label: 'Okay', emoji: <img src={emoji2} alt="Okay" />, rating: 2, question: 'What can we improve?' },
-    { value: 'good', label: 'Good', emoji: <img src={emoji3} alt="Good" />, rating: 3, question: 'What excited you most?' },
-    { value: 'love_it', label: 'Love it', emoji: <img src={emoji4} alt="Love it" />, rating: 4, question: 'What excited you most?' },
+    {
+      value: 'not_good',
+      label: 'Not good',
+      emoji: <img src={emoji1} alt="Not good" />,
+      rating: 1,
+      question: 'What didn’t work for you?',
+    },
+    {
+      value: 'okay',
+      label: 'Okay',
+      emoji: <img src={emoji2} alt="Okay" />,
+      rating: 2,
+      question: 'What can we improve?',
+    },
+    {
+      value: 'good',
+      label: 'Good',
+      emoji: <img src={emoji3} alt="Good" />,
+      rating: 3,
+      question: 'What excited you most?',
+    },
+    {
+      value: 'love_it',
+      label: 'Love it',
+      emoji: <img src={emoji4} alt="Love it" />,
+      rating: 4,
+      question: 'What excited you most?',
+    },
   ];
 
   useEffect(() => {
@@ -43,7 +67,7 @@ const FeedbackComponent = ({ isOpen, setIsOpen }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.mood) return;
+    if (!formData.mood) { return; }
 
     setIsSubmitting(true);
     try {
@@ -66,7 +90,7 @@ const FeedbackComponent = ({ isOpen, setIsOpen }) => {
       };
 
       const response = await httpClient.post(apiUrl, payload);
-      if (response.status !== 200) throw new Error('API error');
+      if (response.status !== 200) { throw new Error('API error'); }
 
       setSubmitStatus('success');
       setTimeout(() => {
@@ -96,95 +120,105 @@ const FeedbackComponent = ({ isOpen, setIsOpen }) => {
       {isOpen && (
         <div className="feedback-form-container">
           <div className="feedback-body">
-            {submitStatus === 'success' ? (
-              <div className="success-message">
-                <Check className="check-icon" />
-                <p>Thank you! Your feedback helps us make your experience even better.</p>
-              </div>
-            ) : submitStatus === 'error' ? (
-              <div className="error-message">
-                <p>Something went wrong. Please try again.</p>
-              </div>
-            ) : (
-              <>
-                <div className="feedback-question">How's your experience with the new Studio?</div>
-                <form onSubmit={handleSubmit}>
-                  <div className="form-group">
-                    <div className="mood-rating">
-                      {moods.map((mood) => (
-                        <div className="mood-icon-wrapper" key={mood.value}>
-                          <span
-                            className={`mood-icon ${formData.mood === mood.value ? 'selected' : ''}`}
-                            onClick={() => handleMoodClick(mood.value)}
-                            role="button"
-                            tabIndex={0}
-                            aria-label={mood.label}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter' || e.key === ' ') {
-                                handleMoodClick(mood.value);
-                              }
-                            }}
-                          >
-                            {mood.emoji}
-                          </span>
-                          <span className="mood-tooltip">{mood.label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <div className="radio-group">
-                      {['Feedback is about this page', 'Feedback is about the new Studio experience'].map((option) => (
-                        <label key={option} className="radio-label">
-                          <input
-                            type="radio"
-                            name="feedbackType"
-                            value={option}
-                            checked={formData.feedbackType === option}
-                            onChange={handleInputChange}
-                            className="radio-input"
-                          />
-                          {option === 'Feedback is about this page' ? 'Feedback is about this page' : 'Feedback is about the new Studio experience'}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  {formData.mood && (
-                    <>
-                      <div className="form-group">
-                        <label className="form-label">
-                          {moods.find((m) => m.value === formData.mood).question}
-                        </label>
-                        <textarea
-                          name="description"
-                          value={formData.description}
-                          onChange={handleInputChange}
-                          className="form-textarea"
-                          placeholder="Please share your thoughts"
-                        />
+            {submitStatus === 'success' ?
+              (
+                <div className="success-message">
+                  <Check className="check-icon" />
+                  <p>Thank you! Your feedback helps us make your experience even better.</p>
+                </div>
+              ) :
+              submitStatus === 'error' ?
+              (
+                <div className="error-message">
+                  <p>Something went wrong. Please try again.</p>
+                </div>
+              ) :
+              (
+                <>
+                  <div className="feedback-question">How's your experience with the new Studio?</div>
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                      <div className="mood-rating">
+                        {moods.map((mood) => (
+                          <div className="mood-icon-wrapper" key={mood.value}>
+                            <span
+                              className={`mood-icon ${formData.mood === mood.value ? 'selected' : ''}`}
+                              onClick={() => handleMoodClick(mood.value)}
+                              role="button"
+                              tabIndex={0}
+                              aria-label={mood.label}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  handleMoodClick(mood.value);
+                                }
+                              }}
+                            >
+                              {mood.emoji}
+                            </span>
+                            <span className="mood-tooltip">{mood.label}</span>
+                          </div>
+                        ))}
                       </div>
+                    </div>
 
-                      <button
-                        type="submit"
-                        className="submit-button"
-                        disabled={isSubmitting || !formData.mood}
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <span className="spinner"></span>
-                            Submitting...
-                          </>
-                        ) : (
-                          'Submit'
-                        )}
-                      </button>
-                    </>
-                  )}
-                </form>
-              </>
-            )}
+                    <div className="form-group">
+                      <div className="radio-group">
+                        {['Feedback is about this page', 'Feedback is about the new Studio experience'].map((
+                          option,
+                        ) => (
+                          <label key={option} className="radio-label">
+                            <input
+                              type="radio"
+                              name="feedbackType"
+                              value={option}
+                              checked={formData.feedbackType === option}
+                              onChange={handleInputChange}
+                              className="radio-input"
+                            />
+                            {option === 'Feedback is about this page'
+                              ? 'Feedback is about this page'
+                              : 'Feedback is about the new Studio experience'}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {formData.mood && (
+                      <>
+                        <div className="form-group">
+                          <label className="form-label">
+                            {moods.find((m) => m.value === formData.mood).question}
+                          </label>
+                          <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleInputChange}
+                            className="form-textarea"
+                            placeholder="Please share your thoughts"
+                          />
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="submit-button"
+                          disabled={isSubmitting || !formData.mood}
+                        >
+                          {isSubmitting ?
+                            (
+                              <>
+                                <span className="spinner"></span>
+                                Submitting...
+                              </>
+                            ) :
+                            (
+                              'Submit'
+                            )}
+                        </button>
+                      </>
+                    )}
+                  </form>
+                </>
+              )}
           </div>
         </div>
       )}

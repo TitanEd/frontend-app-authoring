@@ -2,8 +2,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '@edx/frontend-platform/react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-// import { fetchTemplateData } from 'utils/themeService';
-import './index.scss';
 import * as ParagonIcons from '@openedx/paragon/icons';
 // import {
 //   Analytics,
@@ -18,22 +16,30 @@ import * as ParagonIcons from '@openedx/paragon/icons';
 //   LmsBook,
 // } from '@openedx/paragon/icons';
 // import Sidebar from 'library/Sidebar/Sidebar';
-import { MainHeader, Sidebar, SidebarProvider, AnnouncementBanner} from 'titaned-frontend-library';
-import getUserMenuItems from '@src/library/utils/getUserMenuItems';
+import { MainHeader, Sidebar, SidebarProvider, AnnouncementBanner } from 'titaned-frontend-library';
+import customGetUserMenuItems from '@src/library/utils/customGetUserMenuItems';
 // import MainHeader from 'library/Header/MainHeader';
 // import { SidebarProvider } from 'library/providers/SidebarProvider';
 // import { FooterProps } './studio-home/interfaces/components';
 import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import messages from './messages';
+import customMessages from './customMessages';
 import { useContentSearchConnection } from './search-manager/data/apiHooks';
 import { SearchContextProvider } from './search-manager';
 import { LoadingSpinner } from './generic/Loading';
-import { setUIPreference } from './services/uiPreferenceService';
+
+// Custom UI styles load after the stock Verawood styles (as in the previous
+// version), so on equal specificity the custom rules win.
+import('titaned-frontend-library/dist/index.css');
+import('./styles/styles-overrides.scss');
+import('./styles/custom-layout.scss');
+
+// Design tokens for the custom UI are scoped to this class
+// (tels-brand-openedx paragon/custom_authoring.scss).
+const CUSTOM_UI_CLASS = 'tels-custom-authoring';
 // import FeedbackComponent from './feedback/FeedbackComponent';
 // import FeedbackLink from './feedbackBanner/FeedbackLink';
-
 
 // Icon mapping for API icon names
 // const iconMap = {
@@ -51,7 +57,9 @@ import { setUIPreference } from './services/uiPreferenceService';
 // API to fetch sidebar items
 const fetchNavigationItems = async () => {
   try {
-    const response = await getAuthenticatedHttpClient().get(`${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`);
+    const response = await getAuthenticatedHttpClient().get(
+      `${getConfig().STUDIO_BASE_URL}/titaned/api/v1/menu-config/`,
+    );
     // for local api fetch
     // const response = await getAuthenticatedHttpClient().get(
     //   'LMS_API_DOMAIN/titaned/api/v1/menu-config/'
@@ -82,7 +90,17 @@ const fetchNavigationItems = async () => {
   }
 };
 
-const Layout = () => {
+const CustomLayout = () => {
+  const intl = useIntl();
+  useEffect(() => {
+    document.documentElement.classList.add(CUSTOM_UI_CLASS);
+    document.body.classList.add(CUSTOM_UI_CLASS);
+    return () => {
+      document.documentElement.classList.remove(CUSTOM_UI_CLASS);
+      document.body.classList.remove(CUSTOM_UI_CLASS);
+    };
+  }, []);
+
   // const [templateData, setTemplateData] = useState<TemplateData | undefined>(undefined)
   // const [headerData, setHeaderData] = useState(undefined);
   // const [footerData, setFooterData] = useState(undefined);
@@ -90,13 +108,15 @@ const Layout = () => {
   const [userMenuItemsFromAPI, setUserMenuItemsFromAPI] = useState({});
 
   const { authenticatedUser, config } = useContext(AppContext);
-  const { STUDIO_BASE_URL, LOGOUT_URL } = config;
+  const { LOGOUT_URL } = config;
   const userIsAdmin = authenticatedUser.administrator;
 
   useEffect(() => {
     const fetchUserMenuItemsFromAPI = async () => {
       try {
-        const response = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v1/user-dropdown-menu/`);
+        const response = await getAuthenticatedHttpClient().get(
+          `${getConfig().LMS_BASE_URL}/titaned/api/v1/user-dropdown-menu/`,
+        );
         // const response = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/user-dropdown-menu/');
         const { data } = response;
         if (data) {
@@ -112,8 +132,6 @@ const Layout = () => {
     fetchUserMenuItemsFromAPI();
   }, []);
 
-  console.log('userMenuItemsFromAPI', userMenuItemsFromAPI);
-
   const updatedAuthenticatedUser = {
     ...authenticatedUser,
     username: userMenuItemsFromAPI?.username || authenticatedUser?.username,
@@ -122,18 +140,12 @@ const Layout = () => {
       : authenticatedUser?.avatar,
   };
 
-  console.log('updatedAuthenticatedUser', updatedAuthenticatedUser);
-
-  const userMenuItems = getUserMenuItems({
-    studioBaseUrl: STUDIO_BASE_URL,
+  const userMenuItems = customGetUserMenuItems({
+    intl,
     logoutUrl: LOGOUT_URL,
-    authenticatedUser: updatedAuthenticatedUser,
     userMenuItemsFromAPI,
     isAdmin: userIsAdmin,
   });
-  console.log('config', config);
-
-  const intl = useIntl();
 
   const [systemAlert, setSystemAlert] = useState(null);
   const [userAlert, setUserAlert] = useState(null);
@@ -141,14 +153,16 @@ const Layout = () => {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const systemResponse = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v1/system/alerts/`);
+        const systemResponse = await getAuthenticatedHttpClient().get(
+          `${getConfig().LMS_BASE_URL}/titaned/api/v1/system/alerts/`,
+        );
         // const systemResponse = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/system/alerts/');
 
-
-        const userResponse = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v1/user/alerts/`);
-        // for local api fetch 
+        const userResponse = await getAuthenticatedHttpClient().get(
+          `${getConfig().LMS_BASE_URL}/titaned/api/v1/user/alerts/`,
+        );
+        // for local api fetch
         // const userResponse = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/user/alerts/');
-
 
         if (systemResponse?.data) {
           setSystemAlert(systemResponse.data.alert);
@@ -173,7 +187,7 @@ const Layout = () => {
   // Sidebar items state
   const [sidebarItems, setSidebarItems] = useState([
     {
-      label: intl.formatMessage(messages.sidebarDashboardTitle),
+      label: intl.formatMessage(customMessages.sidebarDashboardTitle),
       path: '/home',
       icon: <ParagonIcons.Home />,
     },
@@ -215,76 +229,70 @@ const Layout = () => {
           // Define all sidebar items with their visibility conditions
           const sidebarItemsConfig = [
             {
-              label: intl.formatMessage(messages.sidebarDashboardTitle),
+              label: intl.formatMessage(customMessages.sidebarDashboardTitle),
               path: '/home',
               icon: <ParagonIcons.Home />,
               isVisible: true, // Always visible
             },
             {
-              label: intl.formatMessage(messages.sidebarCreateNewCourseTitle),
+              label: intl.formatMessage(customMessages.sidebarCreateNewCourseTitle),
               path: '/new-course',
               icon: <ParagonIcons.LibraryAdd />,
               isVisible: menuConfig.allow_to_create_new_course || false,
             },
             {
-              label: intl.formatMessage(messages.sidebarMyCoursesTitle),
+              label: intl.formatMessage(customMessages.sidebarMyCoursesTitle),
               path: '/my-courses',
               icon: <ParagonIcons.LmsBook />,
               isVisible: true, // Always visible
             },
             {
-              label: intl.formatMessage(messages.sidebarContentLibrariesTitle),
+              label: intl.formatMessage(customMessages.sidebarContentLibrariesTitle),
               path: '/libraries',
               icon: <ParagonIcons.LibraryBooks />,
               isVisible: true, // Always visible
             },
             {
-              label: intl.formatMessage(messages.sidebarCalendarTitle),
+              label: intl.formatMessage(customMessages.sidebarCalendarTitle),
               path: '/calendar',
               icon: <ParagonIcons.Calendar />,
               isVisible: menuConfig.enable_calendar || false,
             },
             {
-              label: intl.formatMessage(messages.sidebarClassPlannerTitle),
+              label: intl.formatMessage(customMessages.sidebarClassPlannerTitle),
               path: '/class-planner',
               icon: <ParagonIcons.Analytics />,
               isVisible: menuConfig.show_class_planner || false,
             },
             {
-              label: intl.formatMessage(messages.sidebarInsightsReportsTitle),
+              label: intl.formatMessage(customMessages.sidebarInsightsReportsTitle),
               path: '/reports',
               icon: <ParagonIcons.Lightbulb />,
               isVisible: menuConfig.show_insights_and_reports || false,
             },
             {
-              label: intl.formatMessage(messages.sidebarTitanAITitle),
+              label: intl.formatMessage(customMessages.sidebarTitanAITitle),
               path: '/ai-assistant',
               icon: <ParagonIcons.Assistant />,
               isVisible: menuConfig.assistant_is_enabled || false,
             },
             {
-              label: intl.formatMessage(messages.sidebarSharedResourcesTitle),
+              label: intl.formatMessage(customMessages.sidebarSharedResourcesTitle),
               path: '/shared-resources',
               icon: <ParagonIcons.FolderShared />,
               isVisible: menuConfig.resources_is_enabled || false,
             },
             {
-              label: intl.formatMessage(messages.sidebarTaxonomiesTitle),
+              label: intl.formatMessage(customMessages.sidebarTaxonomiesTitle),
               path: '/taxonomies',
               icon: <ParagonIcons.Assignment />,
               isVisible: true, // Always visible
             },
             {
-              label: intl.formatMessage(messages.sidebarAssignmentsTitle),
+              label: intl.formatMessage(customMessages.sidebarAssignmentsTitle),
               path: '/assignments',
               icon: <ParagonIcons.Assignment />,
               isVisible: menuConfig.enable_assignments || false,
-            },
-            {
-              label: 'Switch to Old View',
-              path: 'switch-to-old-view',
-              icon: <ParagonIcons.FolderShared />,
-              isVisible: true,
             },
           ];
 
@@ -309,71 +317,71 @@ const Layout = () => {
             setLanguageSelectorList(menuConfig.enabled_languages);
           }
         }
-      } catch (error) {
+      } catch {
         // Fallback to always-visible items when API fails
         const fallbackItems = [
           {
-            label: intl.formatMessage(messages.sidebarDashboardTitle),
+            label: intl.formatMessage(customMessages.sidebarDashboardTitle),
             path: '/home',
             icon: <ParagonIcons.Home />,
             isVisible: true,
           },
           {
-            label: intl.formatMessage(messages.sidebarCreateNewCourseTitle),
+            label: intl.formatMessage(customMessages.sidebarCreateNewCourseTitle),
             path: '/new-course',
             icon: <ParagonIcons.LibraryAdd />,
             isVisible: false, // Hide when API fails
           },
           {
-            label: intl.formatMessage(messages.sidebarMyCoursesTitle),
+            label: intl.formatMessage(customMessages.sidebarMyCoursesTitle),
             path: '/my-courses',
             icon: <ParagonIcons.LmsBook />,
             isVisible: true,
           },
           {
-            label: intl.formatMessage(messages.sidebarContentLibrariesTitle),
+            label: intl.formatMessage(customMessages.sidebarContentLibrariesTitle),
             path: '/libraries',
             icon: <ParagonIcons.LibraryBooks />,
             isVisible: true,
           },
           {
-            label: intl.formatMessage(messages.sidebarCalendarTitle),
+            label: intl.formatMessage(customMessages.sidebarCalendarTitle),
             path: '/calendar',
             icon: <ParagonIcons.Calendar />,
             isVisible: false,
           },
           {
-            label: intl.formatMessage(messages.sidebarClassPlannerTitle),
+            label: intl.formatMessage(customMessages.sidebarClassPlannerTitle),
             path: '/class-planner',
             icon: <ParagonIcons.Analytics />,
             isVisible: false, // Hide when API fails
           },
           {
-            label: intl.formatMessage(messages.sidebarInsightsReportsTitle),
+            label: intl.formatMessage(customMessages.sidebarInsightsReportsTitle),
             path: '/reports',
             icon: <ParagonIcons.Lightbulb />,
             isVisible: false, // Hide when API fails
           },
           {
-            label: intl.formatMessage(messages.sidebarTitanAITitle),
+            label: intl.formatMessage(customMessages.sidebarTitanAITitle),
             path: '/ai-assistant',
             icon: <ParagonIcons.Assistant />,
             isVisible: false, // Hide when API fails
           },
           {
-            label: intl.formatMessage(messages.sidebarSharedResourcesTitle),
+            label: intl.formatMessage(customMessages.sidebarSharedResourcesTitle),
             path: '/shared-resources',
             icon: <ParagonIcons.FolderShared />,
             isVisible: false, // Hide when API fails
           },
           {
-            label: intl.formatMessage(messages.sidebarTaxonomiesTitle),
+            label: intl.formatMessage(customMessages.sidebarTaxonomiesTitle),
             path: '/taxonomies',
             icon: <ParagonIcons.Assignment />,
             isVisible: true,
           },
           {
-            label: intl.formatMessage(messages.sidebarAssignmentsTitle),
+            label: intl.formatMessage(customMessages.sidebarAssignmentsTitle),
             path: '/assignments',
             icon: <ParagonIcons.Assignment />,
             isVisible: true,
@@ -410,26 +418,8 @@ const Layout = () => {
     };
   }, []);
 
-  const handleNavigate = async (path) => {
-    if (path === 'switch-to-old-view') {
-      try {
-        console.log('Switching to old UI...');
-        const success = await setUIPreference(false);
-        if (success) {
-          console.log('Successfully switched to old UI, reloading page...');
-          // localStorage.removeItem('bannerClosedTimestamp');
-          localStorage.removeItem('systemAlert');
-          localStorage.removeItem('userAlert');
-          window.location.href = '/authoring/home';
-        } else {
-          console.error('Failed to switch to old UI');
-        }
-      } catch (error) {
-        console.error('Error switching to old UI:', error);
-      }
-    } else {
-      navigate(path);
-    }
+  const handleNavigate = (path) => {
+    navigate(path);
   };
 
   // useEffect(() => {
@@ -449,17 +439,17 @@ const Layout = () => {
   // }, []);
 
   // const sidebarItems = [
-  //   { label: intl.formatMessage(messages.sidebarDashboardTitle), path: '/home', icon: <Home /> },
-  //   { label: intl.formatMessage(messages.sidebarCreateNewCourseTitle), path: '/new-course', icon: <LibraryAdd /> },
-  //   { label: intl.formatMessage(messages.sidebarMyCoursesTitle), path: '/my-courses', icon: <LmsBook /> },
-  //   { label: intl.formatMessage(messages.sidebarContentLibrariesTitle), path: '/libraries', icon: <LibraryBooks /> },
-  //   { label: intl.formatMessage(messages.sidebarCalendarTitle), path: '/calendar', icon: <Calendar /> },
-  //   { label: intl.formatMessage(messages.sidebarClassPlannerTitle), path: '/class-planner', icon: <Analytics /> },
-  //   { label: intl.formatMessage(messages.sidebarInsightsReportsTitle), path: '/reports', icon: <Lightbulb /> },
-  //   { label: intl.formatMessage(messages.sidebarTitanAITitle), path: '/ai-assistant', icon: <Assistant /> },
-  //   { label: intl.formatMessage(messages.sidebarSharedResourcesTitle),
+  //   { label: intl.formatMessage(customMessages.sidebarDashboardTitle), path: '/home', icon: <Home /> },
+  //   { label: intl.formatMessage(customMessages.sidebarCreateNewCourseTitle), path: '/new-course', icon: <LibraryAdd /> },
+  //   { label: intl.formatMessage(customMessages.sidebarMyCoursesTitle), path: '/my-courses', icon: <LmsBook /> },
+  //   { label: intl.formatMessage(customMessages.sidebarContentLibrariesTitle), path: '/libraries', icon: <LibraryBooks /> },
+  //   { label: intl.formatMessage(customMessages.sidebarCalendarTitle), path: '/calendar', icon: <Calendar /> },
+  //   { label: intl.formatMessage(customMessages.sidebarClassPlannerTitle), path: '/class-planner', icon: <Analytics /> },
+  //   { label: intl.formatMessage(customMessages.sidebarInsightsReportsTitle), path: '/reports', icon: <Lightbulb /> },
+  //   { label: intl.formatMessage(customMessages.sidebarTitanAITitle), path: '/ai-assistant', icon: <Assistant /> },
+  //   { label: intl.formatMessage(customMessages.sidebarSharedResourcesTitle),
   //     path: '/shared-resources', icon: <FolderShared /> },
-  //   { label: intl.formatMessage(messages.sidebarTaxonomiesTitle), path: '/taxonomies', icon: <Assignment /> },
+  //   { label: intl.formatMessage(customMessages.sidebarTaxonomiesTitle), path: '/taxonomies', icon: <Assignment /> },
   // ];
 
   // const contactInfo = {
@@ -543,9 +533,7 @@ const Layout = () => {
   // };
 
   const handleLanguageChange = () => {
-    const { pathname } = location;
-    const cleanPath = pathname.replace('/authoring', '');
-    window.location.href = `/authoring${cleanPath}`;
+    window.location.reload();
   };
 
   const { client, indexName } = useContentSearchConnection();
@@ -556,12 +544,9 @@ const Layout = () => {
     indexName,
     client, // 🔑 This is the key addition - pass the complete client
   };
-  console.log('meiliSearchConfig', meiliSearchConfig);
-  console.log('client', client);
 
   // Don't render SearchContextProvider if MeiliSearch is not ready and search is enabled
   if (isSearchEnabled && (!client || !indexName)) {
-    console.log('MeiliSearch not ready, rendering without SearchContextProvider');
     return (
       <div className="d-flex justify-content-center align-items-center flex-column vh-100">
         <LoadingSpinner />
@@ -570,12 +555,12 @@ const Layout = () => {
   }
 
   const renderContent = () => (
-    <div className="app-container">
+    <div className={`app-container ${CUSTOM_UI_CLASS}`}>
       {systemAlert && (
         <AnnouncementBanner
           announcementType="systemAlert"
           data={systemAlert}
-          backgroundColor= "#F0F1FA"
+          backgroundColor="var(--pgn-color-primary-light)"
         />
       )}
 
@@ -583,7 +568,7 @@ const Layout = () => {
         <AnnouncementBanner
           announcementType="userAlert"
           data={userAlert}
-          backgroundColor= "#FEF8F0"
+          backgroundColor="var(--pgn-color-warning-100, var(--pgn-color-light-200))"
         />
       )}
       {/* <p>This is header</p> */}
@@ -610,17 +595,19 @@ const Layout = () => {
         {/* Sidebar and Main Content */}
         <div className="content-wrapper">
           <div className="sidebar-container">
-            {loadingSidebar ? (
-              <div className="d-flex justify-content-center align-items-center p-4">
-                <LoadingSpinner />
-              </div>
-            ) : (
-              <Sidebar
-                buttons={sidebarItems}
-                onNavigate={handleNavigate}
-                presentPath={presentPath}
-              />
-            )}
+            {loadingSidebar ?
+              (
+                <div className="d-flex justify-content-center align-items-center p-4">
+                  <LoadingSpinner />
+                </div>
+              ) :
+              (
+                <Sidebar
+                  buttons={sidebarItems}
+                  onNavigate={handleNavigate}
+                  presentPath={presentPath}
+                />
+              )}
           </div>
           <div className="main-content">
             <div className="page-content">
@@ -628,7 +615,8 @@ const Layout = () => {
             </div>
           </div>
         </div>
-        {/* <div>
+        {
+          /* <div>
           <div className="footer-container">
             <Footer
               contactInfo={contactInfo}
@@ -638,18 +626,21 @@ const Layout = () => {
               copyrights="Copyright © 2025 All Rights Reserved by TitanEd"
             />
           </div>
-        </div> */}
+        </div> */
+        }
       </SidebarProvider>
       {/* <FeedbackComponent isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} /> */}
     </div>
   );
 
-  return isSearchEnabled ? (
-    <SearchContextProvider>
-      {renderContent()}
-    </SearchContextProvider>
-  ) : (
-    renderContent()
-  );
+  return isSearchEnabled ?
+    (
+      <SearchContextProvider>
+        {renderContent()}
+      </SearchContextProvider>
+    ) :
+    (
+      renderContent()
+    );
 };
-export default Layout;
+export default CustomLayout;

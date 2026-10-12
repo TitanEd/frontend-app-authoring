@@ -30,7 +30,7 @@ export interface AlertComponentProps {
 
 export interface Menu {
   label: string;
-  subMenu?: { label: string; value: string }[];
+  subMenu?: { label: string; value: string; }[];
 }
 
 export interface TemplateData {
@@ -45,14 +45,20 @@ export interface TemplateData {
 export interface MainHeaderProps {
   logoUrl: string;
   menuAlignment: 'right' | 'left' | 'center';
-  menuList: { label: string; subMenu?: { label: string; value: string; }[] }[];
+  menuList: { label: string; subMenu?: { label: string; value: string; }[]; }[];
   loginSignupButtons: boolean;
+  authenticatedUser?: {
+    username: string;
+    avatar?: string | null;
+    administrator?: boolean;
+  } | null;
+  userMenuItems: { href: string; title: string; }[];
 }
 
 export interface HeaderMenuProps {
   menu: {
     label: string;
-    subMenu?: { label: string; value: string }[];
+    subMenu?: { label: string; value: string; }[];
   };
 }
 
@@ -60,7 +66,7 @@ export interface MenuComponentProps {
   anchorEl: HTMLElement | null;
   open: boolean;
   onClose: () => void;
-  menuItems: { label: string; value: string }[];
+  menuItems: { label: string; value: string; }[];
   onSelect?: (value: string) => void;
 }
 
@@ -74,7 +80,7 @@ export interface FooterProps {
       address1: string;
       address2: string;
       pincode: string;
-      location: { label: string; value: string };
+      location: { label: string; value: string; };
       phonenumber: string;
       facebook: string;
       instagram: string;
@@ -84,11 +90,11 @@ export interface FooterProps {
   };
   quickLinks: {
     align: TextAlign;
-    content: { label: string; link: string }[];
+    content: { label: string; link: string; }[];
   };
   exploreLinks: {
     align: TextAlign;
-    content: { label: string; link: string }[];
+    content: { label: string; link: string; }[];
   };
   logoUrl: string;
   copyrights: string;

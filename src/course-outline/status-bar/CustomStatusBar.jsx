@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { FormattedDate, useIntl } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform/config';
 import {
-  Hyperlink, Form, Stack, useToggle,
+  Hyperlink,
+  Form,
+  Stack,
+  useToggle,
 } from '@openedx/paragon';
 import { AppContext } from '@edx/frontend-platform/react';
 
@@ -14,6 +17,7 @@ import { useHelpUrls } from '../../help-urls/hooks';
 import { VIDEO_SHARING_OPTIONS } from '../constants';
 import { useContentTagsCount } from '../../generic/data/apiHooks';
 import messages from './messages';
+import customMessages from './customMessages';
 import { getVideoSharingOptionText } from '../utils';
 
 const StatusBarItem = ({ title, children }) => (
@@ -40,7 +44,6 @@ const CustomStatusBar = ({
   courseId,
   openEnableHighlightsModal,
   handleVideoSharingOptionChange,
-  renderViewLiveButton,
 }) => {
   const intl = useIntl();
   const { config } = useContext(AppContext);
@@ -62,7 +65,9 @@ const CustomStatusBar = ({
   } = checklist;
 
   const courseReleaseDateObj = moment.utc(courseReleaseDate, 'MMM DD, YYYY at HH:mm UTC', true);
-  const checkListTitle = `${completedCourseLaunchChecks + completedCourseBestPracticesChecks}/${totalCourseLaunchChecks + totalCourseBestPracticesChecks}`;
+  const checkListTitle = `${completedCourseLaunchChecks + completedCourseBestPracticesChecks}/${
+    totalCourseLaunchChecks + totalCourseBestPracticesChecks
+  }`;
   const checklistDestination = () => new URL(`checklists/${courseId}`, config.STUDIO_BASE_URL).href;
   const scheduleDestination = () => new URL(`settings/details/${courseId}#schedule`, config.STUDIO_BASE_URL).href;
 
@@ -98,23 +103,30 @@ const CustomStatusBar = ({
 
   return (
     <>
-      <Stack direction="horizontal" gap={3.5} className="d-flex align-items-stretch outline-status-bar" data-testid="outline-status-bar">
+      <Stack
+        direction="horizontal"
+        gap={3.5}
+        className="d-flex align-items-stretch outline-status-bar"
+        data-testid="outline-status-bar"
+      >
         <StatusBarItem title={intl.formatMessage(messages.startDateTitle)}>
           <Hyperlink
             className="small"
             destination={scheduleDestination()}
             showLaunchIcon={false}
           >
-            {courseReleaseDateObj.isValid() ? (
-              <FormattedDate
-                value={courseReleaseDateObj}
-                year="numeric"
-                month="short"
-                day="2-digit"
-                hour="numeric"
-                minute="numeric"
-              />
-            ) : courseReleaseDate}
+            {courseReleaseDateObj.isValid() ?
+              (
+                <FormattedDate
+                  value={courseReleaseDateObj}
+                  year="numeric"
+                  month="short"
+                  day="2-digit"
+                  hour="numeric"
+                  minute="numeric"
+                />
+              ) :
+              courseReleaseDate}
           </Hyperlink>
         </StatusBarItem>
         <StatusBarItem title={intl.formatMessage(messages.pacingTypeTitle)}>
@@ -133,7 +145,7 @@ const CustomStatusBar = ({
             {checkListTitle} {intl.formatMessage(messages.checklistCompleted)}
           </Hyperlink>
         </StatusBarItem>
-        <StatusBarItem title={intl.formatMessage(messages.highlightEmailsTitle)}>
+        <StatusBarItem title={intl.formatMessage(customMessages.highlightEmailsTitle)}>
           <div className="d-flex align-items-center">
             <Form.Check
               type="switch"
@@ -148,72 +160,68 @@ const CustomStatusBar = ({
               target="_blank"
               showLaunchIcon={false}
             >
-              {intl.formatMessage(messages.highlightEmailsLink)}
+              {intl.formatMessage(customMessages.highlightEmailsLink)}
             </Hyperlink>
           </div>
         </StatusBarItem>
         {getConfig().ENABLE_TAGGING_TAXONOMY_PAGES === 'true' && (
-        <StatusBarItem title={intl.formatMessage(messages.courseTagsTitle)}>
-          <div className="d-flex align-items-center">
-            <TagCount count={courseTagCount} />
-            { /* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a
-              className="small ml-2"
-              href="#"
-              onClick={openManageTagsDrawer}
-            >
-              {intl.formatMessage(messages.courseManageTagsLink)}
-            </a>
-          </div>
-        </StatusBarItem>
+          <StatusBarItem title={intl.formatMessage(messages.courseTagsTitle)}>
+            <div className="d-flex align-items-center">
+              <TagCount count={courseTagCount} />
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a
+                className="small ml-2"
+                href="#"
+                onClick={openManageTagsDrawer}
+              >
+                {intl.formatMessage(messages.courseManageTagsLink)}
+              </a>
+            </div>
+          </StatusBarItem>
         )}
         {getConfig().ENABLE_TAGGING_TAXONOMY_PAGES === 'true' && (
-        <StatusBarItem title="Export Tags">
-          <Hyperlink
-            className="small"
-            destination={`${config.STUDIO_BASE_URL}/course/${courseId}#export-tags`}
-            // target="_blank"
-            showLaunchIcon={false}
-          >
-            Export Tags
-          </Hyperlink>
-        </StatusBarItem>
-        )}
-        {videoSharingEnabled && (
-        <Form.Group
-          size="sm"
-          className="d-flex flex-column justify-content-between m-0"
-        >
-          <Form.Label
-            className="h5"
-          >{intl.formatMessage(messages.videoSharingTitle)}
-          </Form.Label>
-          <div className="d-flex align-items-center">
-            <Form.Control
-              as="select"
-              defaultValue={videoSharingOptions}
-              onChange={(e) => handleVideoSharingOptionChange(e.target.value)}
-            >
-              {Object.values(VIDEO_SHARING_OPTIONS).map((option) => (
-                <option
-                  key={option}
-                  value={option}
-                >
-                  {getVideoSharingOptionText(option, messages, intl)}
-                </option>
-              ))}
-            </Form.Control>
+          <StatusBarItem title={intl.formatMessage(customMessages.exportTags)}>
             <Hyperlink
               className="small"
-              destination={socialSharingUrl}
-              target="_blank"
+              destination={`${config.STUDIO_BASE_URL}/course/${courseId}#export-tags`}
+              // target="_blank"
               showLaunchIcon={false}
             >
-              {intl.formatMessage(messages.videoSharingLink)}
+              {intl.formatMessage(customMessages.exportTags)}
             </Hyperlink>
-          </div>
-        </Form.Group>
-
+          </StatusBarItem>
+        )}
+        {videoSharingEnabled && (
+          <Form.Group
+            size="sm"
+            className="d-flex flex-column justify-content-between m-0"
+          >
+            <Form.Label className="h5">{intl.formatMessage(messages.videoSharingTitle)}</Form.Label>
+            <div className="d-flex align-items-center">
+              <Form.Control
+                as="select"
+                defaultValue={videoSharingOptions}
+                onChange={(e) => handleVideoSharingOptionChange(e.target.value)}
+              >
+                {Object.values(VIDEO_SHARING_OPTIONS).map((option) => (
+                  <option
+                    key={option}
+                    value={option}
+                  >
+                    {getVideoSharingOptionText(option, messages, intl)}
+                  </option>
+                ))}
+              </Form.Control>
+              <Hyperlink
+                className="small"
+                destination={socialSharingUrl}
+                target="_blank"
+                showLaunchIcon={false}
+              >
+                {intl.formatMessage(messages.videoSharingLink)}
+              </Hyperlink>
+            </div>
+          </Form.Group>
         )}
         {/* {renderViewLiveButton && renderViewLiveButton()} */}
       </Stack>

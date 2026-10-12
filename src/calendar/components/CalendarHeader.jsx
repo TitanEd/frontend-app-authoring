@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
+import { SearchField } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { useCalendarContext } from '../context/CalendarContext';
 import FilterDropdown from './FilterDropdown';
@@ -7,7 +8,7 @@ import Dropdown from './Dropdown';
 import messages from '../data/messages';
 
 const CalendarHeader = () => {
-  const  intl  = useIntl();
+  const intl = useIntl();
   const {
     events,
     prev,
@@ -18,18 +19,11 @@ const CalendarHeader = () => {
     searchEvents,
     currentView,
   } = useCalendarContext();
-  const [searchText, setSearchText] = useState('');
 
   const types = useMemo(() => {
     const s = new Set(events.map((e) => e.type));
     return Array.from(s).filter(Boolean);
   }, [events]);
-
-  const onSearchKeyDown = (e) => {
-    if (e.keyCode === 13) {
-      searchEvents(searchText);
-    }
-  };
 
   const viewOptions = [
     { value: 'dayGridMonth', messageId: 'month' },
@@ -41,11 +35,7 @@ const CalendarHeader = () => {
   return (
     <div className="calendar-header">
       <div className="top-row">
-        <h2>
-          {intl && intl.formatMessage
-            ? intl.formatMessage(messages.calendarTitle)
-            : messages.calendarTitle.defaultMessage}
-        </h2>
+        <h2>{intl.formatMessage(messages.calendarTitle)}</h2>
       </div>
       <div className="controls-row">
         <div className="left-controls">
@@ -53,6 +43,7 @@ const CalendarHeader = () => {
           <NavigationButton type="today" onClick={today} />
           <NavigationButton type="next" onClick={next} />
           <Dropdown
+            id="calendar-view-select"
             className="view-select"
             options={viewOptions}
             value={currentView}
@@ -61,17 +52,16 @@ const CalendarHeader = () => {
         </div>
         <div className="center-title">{currentDateTitle}</div>
         <div className="right-controls">
-          <input
+          <SearchField
             className="search-input"
-            placeholder={
-              intl && intl.formatMessage
-                ? intl.formatMessage(messages.searchPlaceholder)
-                : messages.searchPlaceholder.defaultMessage
-            }
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            onKeyDown={onSearchKeyDown}
-            onBlur={() => searchEvents(searchText)}
+            onSubmit={searchEvents}
+            onClear={() => searchEvents('')}
+            placeholder={intl.formatMessage(messages.searchPlaceholder)}
+            screenReaderText={{
+              label: intl.formatMessage(messages.searchPlaceholder),
+              submitButton: intl.formatMessage(messages.searchSubmit),
+              clearButton: intl.formatMessage(messages.searchClear),
+            }}
           />
           <FilterDropdown types={types} />
         </div>

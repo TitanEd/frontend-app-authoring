@@ -1,8 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faApple, faFacebook, faGoogle, faMicrosoft,
-//   faChartBar, faUsers, faGraduationCap, faFileAlt,
+  faApple,
+  faFacebook,
+  faGoogle,
+  faMicrosoft,
+  //   faChartBar, faUsers, faGraduationCap, faFileAlt,
 } from '@fortawesome/free-brands-svg-icons';
 // import {
 //   faChartBar as fasChartBar,
@@ -12,7 +15,10 @@ import {
 // } from '@fortawesome/free-solid-svg-icons';
 
 import {
-  faUsers, faChartBar, faTachometerAlt, faClock,
+  faUsers,
+  faChartBar,
+  faTachometerAlt,
+  faClock,
   faBook,
   faChartLine,
   faChartPie,

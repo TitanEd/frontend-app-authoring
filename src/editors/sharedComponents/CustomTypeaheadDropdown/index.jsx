@@ -28,9 +28,9 @@ class CustomTypeaheadDropdown extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.value !== this.props.value) {
-        this.setState({ displayValue: this.props.value || '' });
+      this.setState({ displayValue: this.props.value || '' });
     }
-}
+  }
   // shouldComponentUpdate(nextProps) {
   //   if (this.props.value !== nextProps.value && nextProps.value !== '') {
   //     const opt = this.props.options.find((o) => o === nextProps.value);
@@ -65,7 +65,9 @@ class CustomTypeaheadDropdown extends React.Component {
           className="dropdown-item data-hj-suppress"
           value={value}
           key={value}
-          onClick={(e) => { this.handleItemClick(e); }}
+          onClick={(e) => {
+            this.handleItemClick(e);
+          }}
         >
           {value}
         </button>
@@ -127,13 +129,13 @@ class CustomTypeaheadDropdown extends React.Component {
   // eslint-disable-next-line react/no-unused-class-component-methods
   handleClickOutside = () => {
     // if (this.state.dropDownItems.length > 0) {
-      this.setState(() => ({
-        icon: this.expandMoreButton(),
-        dropDownItems: '',
-        isFocused: false,
-      }));
+    this.setState(() => ({
+      icon: this.expandMoreButton(),
+      dropDownItems: '',
+      isFocused: false,
+    }));
     // }
-    console.log("clicked outside");
+    console.log('clicked outside');
   };
 
   handleExpandLess() {
@@ -170,7 +172,9 @@ class CustomTypeaheadDropdown extends React.Component {
         size="sm"
         variant="secondary"
         alt="expand-more"
-        onClick={(e) => { this.handleExpandMore(e); }}
+        onClick={(e) => {
+          this.handleExpandMore(e);
+        }}
       />
     );
   }
@@ -185,7 +189,9 @@ class CustomTypeaheadDropdown extends React.Component {
         size="sm"
         variant="secondary"
         alt="expand-less"
-        onClick={(e) => { this.handleExpandLess(e); }}
+        onClick={(e) => {
+          this.handleExpandLess(e);
+        }}
       />
     );
   }

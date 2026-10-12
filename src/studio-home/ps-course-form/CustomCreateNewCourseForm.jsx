@@ -1,18 +1,20 @@
 /* eslint-disable no-console */
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   Container,
   Row,
   Col,
 } from '@openedx/paragon';
 import PSCourseForm from './PSCourseForm';
-import { validateImageFile } from '../../utils/imageValidation';
+import { formatImageValidationError, imageValidationMessages, validateImageFile } from '../../utils/imageValidation';
 
 const CustomCreateNewCourseForm = ({
   editedValues,
   handleValuesChange,
 }) => {
+  const intl = useIntl();
   // Calculate next year's January 1st
   const getNextYearJanuaryFirst = () => {
     const currentYear = new Date().getFullYear();
@@ -101,7 +103,7 @@ const CustomCreateNewCourseForm = ({
         const errorField = field === 'courseImageAssetPath' ? 'cardImage' : 'bannerImage';
         setImageErrors(prev => ({
           ...prev,
-          [errorField]: validationResult.error,
+          [errorField]: formatImageValidationError(intl, validationResult.error),
         }));
         return;
       }
@@ -128,7 +130,7 @@ const CustomCreateNewCourseForm = ({
       const errorField = field === 'courseImageAssetPath' ? 'cardImage' : 'bannerImage';
       setImageErrors(prev => ({
         ...prev,
-        [errorField]: 'Error validating image file.',
+        [errorField]: intl.formatMessage(imageValidationMessages.failed),
       }));
     }
   };
@@ -172,9 +174,9 @@ const CustomCreateNewCourseForm = ({
 
   return (
     <div className="create-new-course-form mt-4">
-      <Container size="xl" className="pb-0 px-2">
-        <Row>
-          <Col xs={12}>
+      <Container size="xl" className="pb-0 px-0">
+        <Row className="mx-0">
+          <Col xs={12} className="px-0">
             <PSCourseForm
               hideGeneralTab={false}
               editedValues={formValues}
@@ -192,7 +194,7 @@ const CustomCreateNewCourseForm = ({
               imageErrors={imageErrors}
               onSubmit={handleCreateNewCourse}
               onResetForm={resetForm}
-            //   scheduleSettings
+              //   scheduleSettings
             />
           </Col>
         </Row>
@@ -213,7 +215,7 @@ CustomCreateNewCourseForm.propTypes = {
 };
 
 CustomCreateNewCourseForm.defaultProps = {
-  handleValuesChange: () => { },
+  handleValuesChange: () => {},
 };
 
 export default CustomCreateNewCourseForm;

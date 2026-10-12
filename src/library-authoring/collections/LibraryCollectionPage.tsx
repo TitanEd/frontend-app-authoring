@@ -201,7 +201,6 @@ const LibraryCollectionPage = () => {
         componentPickerMode,
         libraryData,
         extraFilter,
-        // Verawood's SubHeaderTitle no longer accepts `infoClickHandler`
         // (the collection info sidebar is opened from <HeaderActions />).
         subHeaderTitle: <SubHeaderTitle title={collectionData.title} />,
         breadcrumbTitle: collectionData.title,
@@ -209,7 +208,6 @@ const LibraryCollectionPage = () => {
         headerActions: <HeaderActions />,
         intl,
         libraryId,
-        // Verawood renamed `sidebarComponentInfo` to `sidebarItemInfo` in the SidebarContext.
         sidebarComponentInfo: sidebarItemInfo,
       }}
     >
