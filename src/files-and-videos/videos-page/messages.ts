@@ -86,6 +86,31 @@ const messages = defineMessages({
     defaultMessage: 'Cancel uploads',
     description: 'Label for cancel button',
   },
+  transcriptColumn: {
+    id: 'course-authoring.video-uploads.table.column.transcript',
+    defaultMessage: 'Transcript',
+    description: 'Column header of the videos table',
+  },
+  activeColumn: {
+    id: 'course-authoring.video-uploads.table.column.active',
+    defaultMessage: 'Active',
+    description: 'Column header of the videos table',
+  },
+  videoLengthColumn: {
+    id: 'course-authoring.video-uploads.table.column.video-length',
+    defaultMessage: 'Video length',
+    description: 'Column header of the videos table',
+  },
+  statusColumn: {
+    id: 'course-authoring.video-uploads.table.column.status',
+    defaultMessage: 'Status',
+    description: 'Column header of the videos table',
+  },
+  fileNameColumn: {
+    id: 'course-authoring.video-uploads.table.column.file-name',
+    defaultMessage: 'File name',
+    description: 'Column header of the videos table',
+  },
 });
 
 export default messages;

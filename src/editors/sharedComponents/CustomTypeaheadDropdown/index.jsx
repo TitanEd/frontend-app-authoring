@@ -171,7 +171,7 @@ class CustomTypeaheadDropdown extends React.Component {
         iconAs={Icon}
         size="sm"
         variant="secondary"
-        alt="expand-more"
+        alt={this.props.expandMoreAlt}
         onClick={(e) => {
           this.handleExpandMore(e);
         }}
@@ -188,7 +188,7 @@ class CustomTypeaheadDropdown extends React.Component {
         iconAs={Icon}
         size="sm"
         variant="secondary"
-        alt="expand-less"
+        alt={this.props.expandLessAlt}
         onClick={(e) => {
           this.handleExpandLess(e);
         }}
@@ -246,6 +246,8 @@ class CustomTypeaheadDropdown extends React.Component {
 }
 
 CustomTypeaheadDropdown.defaultProps = {
+  expandMoreAlt: 'expand-more',
+  expandLessAlt: 'expand-less',
   options: null,
   floatingLabel: null,
   handleFocus: null,
@@ -263,6 +265,8 @@ CustomTypeaheadDropdown.defaultProps = {
 };
 
 CustomTypeaheadDropdown.propTypes = {
+  expandMoreAlt: PropTypes.string,
+  expandLessAlt: PropTypes.string,
   noOptionsMessage: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.string),

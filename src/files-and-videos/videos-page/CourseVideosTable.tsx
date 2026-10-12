@@ -165,7 +165,7 @@ export const CourseVideosTable = () => {
   const maxFileSize = videoUploadMaxFileSize * 1073741824;
   const transcriptColumn = {
     id: 'transcriptStatus',
-    Header: 'Transcript',
+    Header: intl.formatMessage(messages.transcriptColumn),
     accessor: 'transcriptStatus',
     Cell: ({ row }) => TranscriptColumn({ row }),
     Filter: CheckboxFilter,
@@ -183,7 +183,7 @@ export const CourseVideosTable = () => {
   };
   const activeColumn = {
     id: 'activeStatus',
-    Header: 'Active',
+    Header: intl.formatMessage(messages.activeColumn),
     accessor: 'activeStatus',
     Cell: ({ row }) => ActiveColumn({ row, pageLoadStatus: loadingStatus }),
     Filter: CheckboxFilter,
@@ -195,7 +195,7 @@ export const CourseVideosTable = () => {
   };
   const durationColumn = {
     id: 'duration',
-    Header: 'Video length',
+    Header: intl.formatMessage(messages.videoLengthColumn),
     accessor: 'duration',
     Cell: ({ row }) => {
       const { duration } = row.original;
@@ -204,7 +204,7 @@ export const CourseVideosTable = () => {
   };
   const processingStatusColumn = {
     id: 'status',
-    Header: 'Status',
+    Header: intl.formatMessage(messages.statusColumn),
     accessor: 'status',
     Cell: ({ row }) => StatusColumn({ row }),
     Filter: CheckboxFilter,
@@ -222,7 +222,7 @@ export const CourseVideosTable = () => {
   const tableColumns = [
     { ...videoThumbnailColumn },
     {
-      Header: 'File name',
+      Header: intl.formatMessage(messages.fileNameColumn),
       accessor: 'clientVideoId',
     },
     { ...durationColumn },

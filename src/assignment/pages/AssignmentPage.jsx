@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { Pagination } from '@openedx/paragon';
+import { Pagination } from '@src/generic/translated-paragon';
 import '../assets/styles/_assignment.scss';
 import { AssignmentProvider } from '../context/AssignmentContext';
 import SearchInput from '../components/SearchInput';
@@ -72,7 +72,6 @@ const AssignmentPageContent = () => {
       <div className="pagination-row">
         <Pagination
           currentPage={currentPage}
-          paginationLabel="assignment pagination"
           pageCount={totalPages}
           onPageSelect={setCurrentPage}
         />

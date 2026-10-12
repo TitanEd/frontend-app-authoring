@@ -43,10 +43,11 @@ const BrokenLinkHref: FC<{ href: string; }> = ({ href }) => {
 };
 
 const GoToBlock: FC<{ block: { url: string; displayName?: string; }; }> = ({ block }) => {
+  const intl = useIntl();
   return (
     <div className="go-to-block-link-container">
       <Link to={block.url} className="broken-link" rel="noreferrer" target="_blank">
-        {block.displayName}
+        {block.displayName || intl.formatMessage(messages.goToBlock)}
       </Link>
     </div>
   );
@@ -111,7 +112,7 @@ const LinksCol: FC<{
       data-updated-links-count={updatedLinkMap ? Object.keys(updatedLinkMap).length : undefined}
     >
       <div className="d-flex align-items-center flex-grow-1">
-        <GoToBlock block={{ url: block.url, displayName: block.displayName || 'Go to block' }} />
+        <GoToBlock block={{ url: block.url, displayName: block.displayName }} />
         <Icon className="arrow-forward-ios" src={ArrowForwardIos} />
         <BrokenLinkHref href={href} />
       </div>
@@ -209,7 +210,7 @@ const BrokenLinkTable: FC<BrokenLinkTableProps> = ({
                 <LinksCol
                   block={{
                     url: buildBlockContainerUrl(courseId, unit.id, block.id),
-                    displayName: block.displayName || 'Go to block',
+                    displayName: block.displayName || '',
                     id: block.id,
                   }}
                   href={displayLink}
@@ -242,7 +243,7 @@ const BrokenLinkTable: FC<BrokenLinkTableProps> = ({
             <LinksCol
               block={{
                 url: buildBlockContainerUrl(courseId, unit.id, block.id),
-                displayName: block.displayName || 'Go to block',
+                displayName: block.displayName || '',
               }}
               href={link}
               linkType={BROKEN}
@@ -261,7 +262,7 @@ const BrokenLinkTable: FC<BrokenLinkTableProps> = ({
             <LinksCol
               block={{
                 url: buildBlockContainerUrl(courseId, unit.id, block.id),
-                displayName: block.displayName || 'Go to block',
+                displayName: block.displayName || '',
               }}
               href={link}
               linkType={LOCKED}
@@ -281,7 +282,7 @@ const BrokenLinkTable: FC<BrokenLinkTableProps> = ({
             <LinksCol
               block={{
                 url: buildBlockContainerUrl(courseId, unit.id, block.id),
-                displayName: block.displayName || 'Go to block',
+                displayName: block.displayName || '',
               }}
               href={link}
               linkType={MANUAL}

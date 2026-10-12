@@ -2,13 +2,13 @@ import React, { useCallback, useState } from 'react';
 import {
   Icon,
   Row,
-  Pagination,
   Alert,
   Button,
   Form,
   Stack,
   useToggle,
 } from '@openedx/paragon';
+import { Pagination } from '@src/generic/translated-paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { Add, Error } from '@openedx/paragon/icons';
 
@@ -250,7 +250,6 @@ const LibrariesV2List: React.FC<Props> = ({
               && (
                 <Pagination
                   className="d-flex justify-content-center"
-                  paginationLabel="pagination navigation"
                   pageCount={data!.numPages}
                   currentPage={currentPage}
                   onPageSelect={handlePageSelect}

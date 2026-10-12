@@ -417,6 +417,11 @@ const messages = defineMessages({
     defaultMessage: 'Course content, grading and the team are set up after creation, from the course outline.',
     description: 'Tip',
   },
+  aiButtonLabel: {
+    id: 'course-authoring.create-course.ai-button.label',
+    defaultMessage: 'Generate with AI',
+    description: 'Screen-reader label of the AI button next to a field',
+  },
 });
 
 export default messages;

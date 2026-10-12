@@ -8,9 +8,9 @@ import {
   MenuItem,
   Pagination,
   Row,
-  SearchField,
   Stack,
 } from '@openedx/paragon';
+import { SearchField } from '@src/generic/translated-paragon';
 import { Error, FilterList, AccessTime } from '@openedx/paragon/icons';
 
 import { LoadingSpinner } from '@src/generic/Loading';

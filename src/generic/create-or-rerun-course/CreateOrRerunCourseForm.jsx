@@ -23,6 +23,7 @@ import { updatePostErrors } from '../data/slice';
 import { updateCreateOrRerunCourseQuery } from '../data/thunks';
 import { useCreateOrRerunCourse } from './hooks';
 import messages from './messages';
+import a11yMessages from '../a11y-messages';
 
 const CreateOrRerunCourseForm = ({
   title,
@@ -174,6 +175,8 @@ const CreateOrRerunCourseForm = ({
         handleBlur={handleCustomBlurForDropdown}
         handleChange={(value) => setFieldValue(field.name, value)}
         noOptionsMessage={intl.formatMessage(messages.courseOrgNoOptions)}
+        expandMoreAlt={intl.formatMessage(a11yMessages.expandMore)}
+        expandLessAlt={intl.formatMessage(a11yMessages.expandLess)}
         helpMessage=""
         errorMessage=""
         floatingLabel=""

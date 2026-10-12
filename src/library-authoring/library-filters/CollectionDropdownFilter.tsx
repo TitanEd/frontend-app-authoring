@@ -5,9 +5,9 @@ import {
   Form,
   OverlayTrigger,
   Scrollable,
-  SearchField,
   Tooltip,
 } from '@openedx/paragon';
+import { SearchField } from '@src/generic/translated-paragon';
 import { Folder } from '@openedx/paragon/icons';
 import Loading from '@src/generic/Loading';
 import { useMultiLibraryContext } from '@src/library-authoring/common/context/MultiLibraryContext';

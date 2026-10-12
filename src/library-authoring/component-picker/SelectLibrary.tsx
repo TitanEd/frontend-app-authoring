@@ -4,9 +4,9 @@ import {
   Card,
   Form,
   Pagination,
-  SearchField,
   Stack,
 } from '@openedx/paragon';
+import { SearchField } from '@src/generic/translated-paragon';
 import { useCallback, useState } from 'react';
 
 import Loading from '../../generic/Loading';

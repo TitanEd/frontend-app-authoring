@@ -18,7 +18,8 @@ import CustomStatusBar from './src/course-outline/status-bar/CustomStatusBar';
 import SubHeader from './src/generic/sub-header/SubHeader';
 import CustomCourseUpdates from './src/course-updates/CustomCourseUpdates';
 import CustomCourseExportPage from './src/export-page/CustomCourseExportPage'
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
+import cardHeaderMessages from './src/course-outline/card-header/messages';
 import SettingCard from './src/advanced-settings/setting-card/SettingCard';
 import CustomExportSidebar from '/src/export-page/export-sidebar/CustomExportSidebar';
 import CourseChecklistCustom from './src/plugins-components/CourseChecklistCustom';
@@ -176,17 +177,20 @@ return {
                         id: 'card-header-menu-icon',
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: ({ namePrefix }) => (
+                        RenderWidget: ({ namePrefix }) => {
+                          const intl = useIntl();
+                          return (
                             <Dropdown.Toggle
                                 className="item-card-header__menu"
                                 id={`${namePrefix}-card-header__menu`}
                                 data-testid={`${namePrefix}-card-header__menu-button`}
                                 as={IconButton}
                                 src={Settings}
-                                alt={`${namePrefix}-card-header__menu`}
+                                alt={intl.formatMessage(cardHeaderMessages.menuButtonAlt)}
                                 iconAs={Icon}
                             />
-                        ),
+                          );
+                        },
                     },
                 },
             ],

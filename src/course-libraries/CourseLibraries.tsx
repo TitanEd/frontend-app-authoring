@@ -77,7 +77,11 @@ const LibraryCard = ({ linkSummary }: LibraryCardProps) => {
               showLaunchIcon={false}
               iconAfter={Launch}
             >
-              View Library
+              <FormattedMessage
+                id="course-authoring.course-libraries.view-library.button"
+                defaultMessage="View Library"
+                description="Button that opens the library in a new tab"
+              />
             </Button>
           </ActionRow>
         }

@@ -36,6 +36,8 @@ pull_translations:
 	   && atlas pull $(ATLAS_OPTIONS) \
 	            translations/frontend-component-ai-translations/src/i18n/messages:frontend-component-ai-translations \
 	            translations/frontend-platform/src/i18n/messages:frontend-platform \
+	            translations/frontend-plugin-notifications/src/i18n/messages:frontend-plugin-notifications \
+	            translations/frontend-component-header/src/i18n/messages:frontend-component-header \
 	            translations/paragon/src/i18n/messages:paragon \
 	            translations/frontend-component-footer/src/i18n/messages:frontend-component-footer \
 	            translations/frontend-app-course-authoring/src/i18n/messages:frontend-app-course-authoring

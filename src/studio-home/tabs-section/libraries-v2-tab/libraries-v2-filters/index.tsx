@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { SearchField } from '@openedx/paragon';
+import { SearchField } from '@src/generic/translated-paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { LoadingSpinner } from '../../../../generic/Loading';

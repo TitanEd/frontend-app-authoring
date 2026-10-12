@@ -42,6 +42,8 @@ import { getConfig } from '@edx/frontend-platform';
 import { DatepickerControl, DATEPICKER_TYPES } from '../../generic/datepicker-control';
 import './PSCourseForm.scss';
 import messages from './messages';
+import createCourseMessages from './createCourseMessages';
+import a11yMessages from '../../generic/a11y-messages';
 import IntroductionVideo from '../../schedule-and-details/introducing-section/introduction-video/CustomIntroductionVideo';
 // import { getStudioHomeData } from '../data/selectors';
 import { useCreateOrRerunCourse } from '../../generic/create-or-rerun-course/hooks';
@@ -854,7 +856,7 @@ const PSCourseForm = ({
                     if (isCardImage) { updateCardImage(''); }
                     else { updateBannerImage(''); }
                   }}
-                  aria-label={`Remove ${label.toLowerCase()}`}
+                  aria-label={`${intl.formatMessage(createCourseMessages.imageRemove)} ${label}`}
                 >
                   <Icon src={Close} />
                 </Button>
@@ -1302,6 +1304,8 @@ const PSCourseForm = ({
                                             handleChange={(value) => handleInputChange('organization', value)}
                                             handleBlur={handleCustomBlurForDropdown}
                                             noOptionsMessage={intl.formatMessage(messages.noOrganizationsAvailable)}
+                                            expandMoreAlt={intl.formatMessage(a11yMessages.expandMore)}
+                                            expandLessAlt={intl.formatMessage(a11yMessages.expandLess)}
                                             required
                                           />
                                         ) :
@@ -1453,7 +1457,7 @@ const PSCourseForm = ({
                                           <Col xs={12} md={6}>
                                             <div className="datepicker-control">
                                               <Form.Label>
-                                                Course start date <span className="required-asterisk">*</span>
+                                                {intl.formatMessage(createCourseMessages.courseStartDate)} <span className="required-asterisk">*</span>
                                               </Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.date}
@@ -1543,7 +1547,7 @@ const PSCourseForm = ({
                                           <Col xs={12} md={6}>
                                             <div className="datepicker-control">
                                               <Form.Label>
-                                                Enrollment start date{' '}
+                                                {intl.formatMessage(createCourseMessages.enrollmentStartDate)}{' '}
                                                 {/* <span className="required-asterisk">*</span> */}
                                               </Form.Label>
                                               <DatepickerControl

@@ -96,6 +96,16 @@ const messages = defineMessages({
     defaultMessage: 'YouTube video',
     description: 'Accessible title of the embedded video in the YouTube widget',
   },
+  placeholderWidgetTitle: {
+    id: 'dashboard.widget.placeholder.title',
+    defaultMessage: 'Placeholder',
+    description: 'Title of the empty drop area of a dashboard column',
+  },
+  placeholderWidgetContent: {
+    id: 'dashboard.widget.placeholder.content',
+    defaultMessage: 'Drag widgets here',
+    description: 'Text of the empty drop area of a dashboard column',
+  },
 });
 
 export default messages;

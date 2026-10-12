@@ -276,9 +276,9 @@ const Dashboard = () => {
           if (!placeholderExists) {
             updatedItems.push({
               id: 'left-placeholder',
-              title: 'Placeholder',
+              title: intl.formatMessage(messages.placeholderWidgetTitle),
               type: 'text',
-              content: 'Drag widgets here',
+              content: intl.formatMessage(messages.placeholderWidgetContent),
               position: 'left',
               enabled: false,
               order: updatedItems.length + 1,
@@ -297,9 +297,9 @@ const Dashboard = () => {
           if (!placeholderExists) {
             updatedItems.push({
               id: 'right-placeholder',
-              title: 'Placeholder',
+              title: intl.formatMessage(messages.placeholderWidgetTitle),
               type: 'text',
-              content: 'Drag widgets here',
+              content: intl.formatMessage(messages.placeholderWidgetContent),
               position: 'right',
               enabled: false,
               order: updatedItems.length + 1,

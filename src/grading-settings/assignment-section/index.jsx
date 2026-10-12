@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { Button } from '@openedx/paragon';
 import { CheckCircle, Warning } from '@openedx/paragon/icons';
@@ -155,7 +155,12 @@ const AssignmentSection = ({
                 description={
                   <>
                     <span className="course-grading-assignment-item-alert-warning-list-label">
-                      {courseAssignmentUsage.length} Final assignment(s) found:
+                      <FormattedMessage
+                        id="course-authoring.grading-settings.assignment.alert.warning.usage.list-label"
+                        defaultMessage="{count} Final assignment(s) found:"
+                        description="Label above the list of assignments of a type"
+                        values={{ count: courseAssignmentUsage.length }}
+                      />
                     </span>
                     <ol className="course-grading-assignment-item-alert-warning-list">
                       {courseAssignmentUsage.map(assignmentItem => <li key={assignmentItem}>{assignmentItem}</li>)}

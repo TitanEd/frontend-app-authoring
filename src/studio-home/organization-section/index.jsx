@@ -9,6 +9,7 @@ import TypeaheadDropdown from '../../editors/sharedComponents/TypeaheadDropdown'
 import { getOrganizations } from '../../generic/data/selectors';
 import { fetchOrganizationsQuery } from '../../generic/data/thunks';
 import messages from '../messages';
+import a11yMessages from '../../generic/a11y-messages';
 
 const OrganizationSection = () => {
   const intl = useIntl();
@@ -59,6 +60,8 @@ const OrganizationSection = () => {
           handleBlur={(e) => setInputValue(e.target.value)}
           handleChange={(value) => setInputValue(value)}
           noOptionsMessage={intl.formatMessage(messages.organizationInputNoOptions)}
+          expandMoreAlt={intl.formatMessage(a11yMessages.expandMore)}
+          expandLessAlt={intl.formatMessage(a11yMessages.expandLess)}
           helpMessage=""
           errorMessage=""
           floatingLabel=""

@@ -86,6 +86,11 @@ const messages = defineMessages({
     id: 'course-authoring.scanResults.updateAllButtonText',
     defaultMessage: 'Update all',
   },
+  goToBlock: {
+    id: 'course-authoring.scanResults.goToBlock',
+    defaultMessage: 'Go to block',
+    description: 'Link text for a block that has no name',
+  },
 });
 
 export default messages;

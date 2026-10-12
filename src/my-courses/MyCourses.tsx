@@ -4,10 +4,9 @@ import {
   Button,
   Container,
   Icon,
-  Pagination,
   Row,
-  SearchField,
 } from '@openedx/paragon';
+import { Pagination, SearchField } from '@src/generic/translated-paragon';
 import './MyCourses.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIntl } from '@edx/frontend-platform/i18n';
@@ -260,7 +259,6 @@ const MyCourses = () => {
         <div className="pagination-container">
           <Pagination
             className="d-flex justify-content-end"
-            paginationLabel="pagination navigation"
             pageCount={numPages}
             currentPage={currentPage}
             onPageSelect={handlePageSelected}

@@ -105,6 +105,21 @@ const messages = defineMessages({
     id: 'course-authoring.custom-pages.deleteConfirmation.cancelButton.label',
     defaultMessage: 'Cancel',
   },
+  breadcrumbAriaLabel: {
+    id: 'course-authoring.custom-pages.breadcrumb.aria-label',
+    defaultMessage: 'Custom Page breadcrumbs',
+    description: 'Screen-reader label of the breadcrumbs of the custom pages page',
+  },
+  breadcrumbContent: {
+    id: 'course-authoring.custom-pages.breadcrumb.content',
+    defaultMessage: 'Content',
+    description: 'Breadcrumb link to the course outline',
+  },
+  breadcrumbPagesAndResources: {
+    id: 'course-authoring.custom-pages.breadcrumb.pages-and-resources',
+    defaultMessage: 'Pages and Resources',
+    description: 'Breadcrumb link to the Pages and Resources page',
+  },
 });
 
 export default messages;

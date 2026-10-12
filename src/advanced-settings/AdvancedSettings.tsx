@@ -234,7 +234,7 @@ const AdvancedSettings = () => {
                         <FormattedMessage
                           id="course-authoring.advanced-settings.policies.description"
                           defaultMessage="{notice} Do not modify these policies unless you are familiar with their purpose."
-                          values={{ notice: <strong>Warning:</strong> }}
+                          values={{ notice: <strong><FormattedMessage id="course-authoring.advanced-settings.policies.description.notice" defaultMessage="Warning:" description="Bold word in front of the advanced settings warning" /></strong> }}
                         />
                       </div>
                       <div className="setting-items-deprecated-setting">

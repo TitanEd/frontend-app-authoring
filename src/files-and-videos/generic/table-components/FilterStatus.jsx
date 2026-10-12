@@ -36,7 +36,13 @@ const FilterStatus = ({
     <div className={className}>
       <RowStatusComponent />
       <Row className="m-0 align-items-center">
-        <span className="mr-2">Filters applied</span>
+        <span className="mr-2">
+          <FormattedMessage
+            id="course-authoring.files-and-videos.filter-status.label"
+            defaultMessage="Filters applied"
+            description="Label in front of the list of active filters"
+          />
+        </span>
         {filters.map(({ name, value }) => (
           <Chip
             key={value}

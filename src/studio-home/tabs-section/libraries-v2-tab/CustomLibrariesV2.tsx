@@ -6,9 +6,9 @@ import {
   Alert,
   Button,
   Icon,
-  Pagination,
   Row,
 } from '@openedx/paragon';
+import { Pagination } from '@src/generic/translated-paragon';
 import { Add, Error } from '@openedx/paragon/icons';
 import { useNavigate } from 'react-router-dom';
 import LibrariesV2Filters from './libraries-v2-filters';
@@ -116,7 +116,6 @@ const CustomLibrariesV2 = ({
               && (
                 <Pagination
                   className="d-flex justify-content-end"
-                  paginationLabel="pagination navigation"
                   pageCount={data!.numPages}
                   currentPage={currentPage}
                   onPageSelect={handlePageSelect}

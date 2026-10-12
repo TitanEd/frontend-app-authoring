@@ -4,9 +4,9 @@ import {
   Toast,
   Card,
   ActionRow,
-  Pagination,
   Icon,
 } from '@openedx/paragon';
+import { Pagination } from '@src/generic/translated-paragon';
 
 import {
   useReactTable,

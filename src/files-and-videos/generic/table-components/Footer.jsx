@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { DataTableContext, Pagination, TableFooter } from '@openedx/paragon';
+import { DataTableContext, TableFooter } from '@openedx/paragon';
+import { Pagination } from '@src/generic/translated-paragon';
 
 const Footer = () => {
   const {
@@ -21,7 +22,6 @@ const Footer = () => {
         size="small"
         currentPage={pageIndex + 1}
         pageCount={pageCount}
-        paginationLabel="table pagination"
         onPageSelect={(pageNum) => gotoPage(pageNum - 1)}
       />
     </TableFooter>

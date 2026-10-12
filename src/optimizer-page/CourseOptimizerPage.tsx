@@ -244,7 +244,7 @@ const CourseOptimizerPage = () => {
               <article>
                 <div className="d-flex flex-wrap justify-content-between align-items-center mb-3 p-3">
                   <div>
-                    <p className="small text-muted mb-1">Tools</p>
+                    <p className="small text-muted mb-1">{intl.formatMessage(messages.headingSubtitle)}</p>
                     <div className="d-flex align-items-center">
                       <h1 className="h2 mb-0 mr-3">{intl.formatMessage(messages.headingTitle)}</h1>
                       <Badge variant="primary" className="ml-2">{intl.formatMessage(messages.new)}</Badge>

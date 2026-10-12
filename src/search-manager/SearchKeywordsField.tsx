@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { SearchField } from '@openedx/paragon';
+import { SearchField } from '@src/generic/translated-paragon';
 import { debounce } from 'lodash';
 import messages from './messages';
 import { useSearchContext } from './SearchManager';

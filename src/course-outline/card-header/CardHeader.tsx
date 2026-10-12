@@ -261,7 +261,7 @@ const CardHeader = ({
                 data-testid={`${namePrefix}-card-header__menu-button`}
                 as={IconButton}
                 src={MoveVertIcon}
-                alt={`${namePrefix}-card-header__menu`}
+                alt={intl.formatMessage(messages.menuButtonAlt)}
                 iconAs={Icon}
               />
             </PluginSlot>

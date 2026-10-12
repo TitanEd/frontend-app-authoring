@@ -51,7 +51,15 @@ const BasicSection = ({
       id="course-authoring.schedule.basic.promotion.title"
       defaultMessage="Course summary page {smallText}"
       values={{
-        smallText: <small>(for student enrollment and access)</small>,
+        smallText: (
+          <small>
+            <FormattedMessage
+              id="course-authoring.schedule.basic.promotion.title.small"
+              defaultMessage="(for student enrollment and access)"
+              description="Small text after the 'Course summary page' title"
+            />
+          </small>
+        ),
       }}
     />
   );

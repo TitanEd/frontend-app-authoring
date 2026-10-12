@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { SearchField } from '@openedx/paragon';
+import { SearchField } from '@src/generic/translated-paragon';
 import { debounce } from 'lodash';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import type { Dispatch } from 'redux';

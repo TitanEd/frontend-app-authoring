@@ -96,6 +96,11 @@ const messages = defineMessages({
     defaultMessage: 'Update available - click to sync',
     description: 'Alt text for the sync icon button.',
   },
+  menuButtonAlt: {
+    id: 'course-authoring.course-outline.card.menu.alt',
+    defaultMessage: 'Actions menu',
+    description: 'Alt text of the button that opens the menu of a section, subsection or unit card',
+  },
 });
 
 export default messages;

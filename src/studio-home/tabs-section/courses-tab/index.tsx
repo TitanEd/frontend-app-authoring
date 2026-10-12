@@ -5,11 +5,11 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import {
   Icon,
   Row,
-  Pagination,
   Alert,
   Button,
   Form,
 } from '@openedx/paragon';
+import { Pagination } from '@src/generic/translated-paragon';
 import { Error } from '@openedx/paragon/icons';
 
 import { COURSE_CREATOR_STATES } from '@src/constants';
@@ -113,7 +113,6 @@ const CardList = ({
             {numPages > 1 && (
               <Pagination
                 className="d-flex justify-content-center w-100"
-                paginationLabel="pagination navigation"
                 pageCount={numPages}
                 currentPage={currentPage}
                 onPageSelect={handlePageSelected}
