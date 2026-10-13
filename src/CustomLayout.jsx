@@ -29,6 +29,7 @@ import { useContentSearchConnection } from './search-manager/data/apiHooks';
 import { SearchContextProvider } from './search-manager';
 import { LoadingSpinner } from './generic/Loading';
 import HeaderExtras, { headerUser } from './customHeaderExtras';
+import { fetchSiteFeatures } from './useSiteFeatures';
 
 // Custom UI styles load after the stock Verawood styles (as in the previous
 // version), so on equal specificity the custom rules win.
@@ -217,7 +218,7 @@ const CustomLayout = () => {
 
     const fetchMenu = async () => {
       try {
-        const menuConfig = await fetchNavigationItems();
+        const [menuConfig, siteFeatures] = await Promise.all([fetchNavigationItems(), fetchSiteFeatures()]);
 
         setIsSearchEnabled(menuConfig.enable_search_in_header);
 
@@ -246,7 +247,8 @@ const CustomLayout = () => {
               label: intl.formatMessage(customMessages.sidebarMyAssessmentsTitle),
               path: '/assessments',
               icon: <ParagonIcons.FactCheck />,
-              isVisible: true, // Always visible
+              // A feature a site may not have (useSiteFeatures.js).
+              isVisible: Boolean(siteFeatures.assessment_center),
             },
             {
               label: intl.formatMessage(customMessages.sidebarContentLibrariesTitle),
@@ -344,7 +346,8 @@ const CustomLayout = () => {
             label: intl.formatMessage(customMessages.sidebarMyAssessmentsTitle),
             path: '/assessments',
             icon: <ParagonIcons.FactCheck />,
-            isVisible: true,
+            // Not known without the API: a feature is not shown on a guess.
+            isVisible: false,
           },
           {
             label: intl.formatMessage(customMessages.sidebarContentLibrariesTitle),

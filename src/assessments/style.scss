@@ -604,3 +604,32 @@
   .tas-next,
   .tas-ring__value { transition: none; }
 }
+
+// ---- pages of the list ----
+
+.tas-list-top {
+  // Where "next page" scrolls back to; clear of the pinned header.
+  scroll-margin-block-start: 6rem;
+}
+
+.tas-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem 1rem;
+  margin-block-start: 1.5rem;
+  color: var(--tas-muted, var(--pgn-color-text-muted, #64748b));
+
+  .pagination {
+    margin: 0;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .tas-pager {
+    justify-content: center;
+    text-align: center;
+  }
+}

@@ -8,7 +8,7 @@
  * assignment_manager/overview.py). The stylesheet is the one of the learner page.
  */
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {
-  Button, Container, Form, Icon, Spinner,
+  Button, Container, Form, Icon, Pagination, Spinner,
 } from '@openedx/paragon';
 import {
   Assignment, CheckCircle, Edit, EventNote, People, Quiz, RateReview, Schedule, Search, Timer, UploadFile,
@@ -63,6 +63,8 @@ const inPeriod = (due, period, now) => {
   return due.getFullYear() === now.getFullYear();
 };
 
+const PAGE_SIZE = 20;
+
 const TeamAssessmentsPage = () => {
   const intl = useIntl();
   const navigate = useNavigate();
@@ -73,13 +75,16 @@ const TeamAssessmentsPage = () => {
   const [kind, setKind] = useState('');
   const [period, setPeriod] = useState('');
   const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const listTop = useRef(null);
 
   const load = useCallback(() => {
     setFailed(false);
     getAuthenticatedHttpClient()
       .get(`${getConfig().LMS_BASE_URL}/titaned/api/v2/my-assessments/teaching/`)
       .then((response) => setData(response.data))
-      .catch(() => setFailed(true));
+      // 403: the feature this page belongs to is not part of the site's plan.
+      .catch((error) => setFailed(error?.response?.status === 403 ? 'unavailable' : true));
   }, []);
   useEffect(() => { load(); }, [load]);
 
@@ -114,6 +119,25 @@ const TeamAssessmentsPage = () => {
   }, [scoped, status]);
   const shownCount = groups.reduce((sum, group) => sum + group.list.length, 0);
 
+  // PAGE_SIZE assessments per page; a group that does not fit goes on over the next page.
+  useEffect(() => { setPage(1); }, [status, course, kind, period, query]);
+  const pageCount = Math.max(1, Math.ceil(shownCount / PAGE_SIZE));
+  const currentPage = Math.min(page, pageCount);
+  const pageGroups = useMemo(() => {
+    let skip = (currentPage - 1) * PAGE_SIZE;
+    let room = PAGE_SIZE;
+    return groups.map((group) => {
+      const list = group.list.slice(skip, skip + room);
+      skip = Math.max(0, skip - group.list.length);
+      room -= list.length;
+      return { ...group, total: group.list.length, list };
+    }).filter((group) => group.list.length > 0);
+  }, [groups, currentPage]);
+  const goToPage = (number) => {
+    setPage(number);
+    if (listTop.current) { listTop.current.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  };
+
   const time = (date) => intl.formatTime(date, { hour: 'numeric', minute: '2-digit' });
   const day = (date) => intl.formatDate(date, {
     weekday: 'short', month: 'short', day: 'numeric', year: date.getFullYear() === now.getFullYear() ? undefined : 'numeric',
@@ -138,8 +162,10 @@ const TeamAssessmentsPage = () => {
   if (failed) {
     body = (
       <div className="tas-state" role="alert">
-        <p>{intl.formatMessage(messages.error)}</p>
-        <Button variant="outline-primary" onClick={load}>{intl.formatMessage(messages.retry)}</Button>
+        <p>{intl.formatMessage(failed === 'unavailable' ? messages.unavailable : messages.error)}</p>
+        {failed !== 'unavailable' && (
+          <Button variant="outline-primary" onClick={load}>{intl.formatMessage(messages.retry)}</Button>
+        )}
       </div>
     );
   } else if (!data) {
@@ -250,9 +276,10 @@ const TeamAssessmentsPage = () => {
               </div>
             )}
 
-            {groups.map((group) => (
+            <div ref={listTop} className="tas-list-top" />
+            {pageGroups.map((group) => (
               <section key={group.key} className="tas-group">
-                <h2>{group.name} <span>{intl.formatNumber(group.list.length)}</span></h2>
+                <h2>{group.name} <span>{intl.formatNumber(group.total)}</span></h2>
                 <ul className="tas-list">
                   {group.list.map((item) => {
                     const meta = KINDS[item.kind] || KINDS.quiz;
@@ -311,6 +338,31 @@ const TeamAssessmentsPage = () => {
                 </ul>
               </section>
             ))}
+
+            {pageCount > 1 && (
+              <div className="tas-pager">
+                <span aria-live="polite">
+                  {intl.formatMessage(messages.pageRange, {
+                    from: (currentPage - 1) * PAGE_SIZE + 1,
+                    to: Math.min(currentPage * PAGE_SIZE, shownCount),
+                    total: shownCount,
+                  })}
+                </span>
+                <Pagination
+                  paginationLabel={intl.formatMessage(messages.paginationLabel)}
+                  pageCount={pageCount}
+                  currentPage={currentPage}
+                  onPageSelect={goToPage}
+                  buttonLabels={{
+                    previous: intl.formatMessage(messages.pagePrevious),
+                    next: intl.formatMessage(messages.pageNext),
+                    page: intl.formatMessage(messages.pageWord),
+                    currentPage: intl.formatMessage(messages.pageCurrent),
+                    pageOfCount: intl.formatMessage(messages.pageOf),
+                  }}
+                />
+              </div>
+            )}
           </>
         )}
       </>

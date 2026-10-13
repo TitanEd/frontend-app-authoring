@@ -218,7 +218,7 @@ return {
                         id: 'custom-schedule-details',
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: (props) => <CustomScheduleAndDetails {...props} messages={messages} />,
+                        RenderWidget: (props) => <CustomScheduleAndDetails {...props} />,
                     },
                 },
             ],

@@ -55,6 +55,8 @@ import formMessages from './messages';
 import pageMessages from './createCourseMessages';
 import './CustomCreateNewCourseForm.scss';
 
+import { useSiteFeatures } from '../../useSiteFeatures';
+
 const messages = { ...formMessages, ...pageMessages };
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png'];
@@ -121,6 +123,7 @@ FormCard.defaultProps = {
 };
 
 const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
+  const siteFeatures = useSiteFeatures();
   const intl = useIntl();
   const navigate = useNavigate();
 
@@ -771,50 +774,53 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
               </div>
             </FormCard>
 
-            <FormCard
-              title={intl.formatMessage(messages.pricing)}
-              help={intl.formatMessage(messages.pricingHelp)}
-            >
-              <Form.Group className="mb-0">
-                <Form.Label id="create-course-pricing-label">{intl.formatMessage(messages.pricingModel)}</Form.Label>
-                <Form.RadioSet
-                  name="pricingModel"
-                  aria-labelledby="create-course-pricing-label"
-                  value={values.pricingModel}
-                  onChange={(event) => setValue('pricingModel', event.target.value)}
-                  className="tels-create-course__choices"
-                >
-                  <Form.Radio value={PRICING.free} description={intl.formatMessage(messages.freeHelp)}>
-                    {intl.formatMessage(messages.free)}
-                  </Form.Radio>
-                  <Form.Radio value={PRICING.paid} description={intl.formatMessage(messages.paidHelp)}>
-                    {intl.formatMessage(messages.paid)}
-                  </Form.Radio>
-                </Form.RadioSet>
-              </Form.Group>
-              {isPaid && (
-                <Row className="tels-create-course__row">
-                  <Col xs={12} sm={6}>
-                    <Field
-                      field="price"
-                      label={intl.formatMessage(messages.price)}
-                      required
-                      help={intl.formatMessage(messages.priceHelp)}
-                      error={errorOf('price')}
-                    >
-                      <Form.Control
-                        type="number"
-                        min={1}
-                        step={1}
-                        inputMode="numeric"
-                        placeholder={intl.formatMessage(messages.enterCoursePrice)}
-                        {...bind('price')}
-                      />
-                    </Field>
-                  </Col>
-                </Row>
-              )}
-            </FormCard>
+            {/* Selling courses is a feature a site may not have (useSiteFeatures.js). */}
+            {siteFeatures.ecommerce && (
+              <FormCard
+                title={intl.formatMessage(messages.pricing)}
+                help={intl.formatMessage(messages.pricingHelp)}
+              >
+                <Form.Group className="mb-0">
+                  <Form.Label id="create-course-pricing-label">{intl.formatMessage(messages.pricingModel)}</Form.Label>
+                  <Form.RadioSet
+                    name="pricingModel"
+                    aria-labelledby="create-course-pricing-label"
+                    value={values.pricingModel}
+                    onChange={(event) => setValue('pricingModel', event.target.value)}
+                    className="tels-create-course__choices"
+                  >
+                    <Form.Radio value={PRICING.free} description={intl.formatMessage(messages.freeHelp)}>
+                      {intl.formatMessage(messages.free)}
+                    </Form.Radio>
+                    <Form.Radio value={PRICING.paid} description={intl.formatMessage(messages.paidHelp)}>
+                      {intl.formatMessage(messages.paid)}
+                    </Form.Radio>
+                  </Form.RadioSet>
+                </Form.Group>
+                {isPaid && (
+                  <Row className="tels-create-course__row">
+                    <Col xs={12} sm={6}>
+                      <Field
+                        field="price"
+                        label={intl.formatMessage(messages.price)}
+                        required
+                        help={intl.formatMessage(messages.priceHelp)}
+                        error={errorOf('price')}
+                      >
+                        <Form.Control
+                          type="number"
+                          min={1}
+                          step={1}
+                          inputMode="numeric"
+                          placeholder={intl.formatMessage(messages.enterCoursePrice)}
+                          {...bind('price')}
+                        />
+                      </Field>
+                    </Col>
+                  </Row>
+                )}
+              </FormCard>
+            )}
 
             <FormCard
               title={intl.formatMessage(messages.courseContentLicense)}
@@ -880,11 +886,13 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                           })}
                         </Badge>
                       )}
-                      <Badge variant={isPaid && values.price ? 'info' : 'success'}>
-                        {isPaid && values.price
-                          ? intl.formatMessage(messages.previewPrice, { price: values.price })
-                          : intl.formatMessage(messages.free)}
-                      </Badge>
+                      {siteFeatures.ecommerce && (
+                        <Badge variant={isPaid && values.price ? 'info' : 'success'}>
+                          {isPaid && values.price
+                            ? intl.formatMessage(messages.previewPrice, { price: values.price })
+                            : intl.formatMessage(messages.free)}
+                        </Badge>
+                      )}
                     </div>
                   </div>
                 </div>

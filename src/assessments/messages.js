@@ -67,6 +67,14 @@ const messages = defineMessages({
   edit: { id: 'tels.teaching.cta.edit', defaultMessage: 'Edit' },
   view: { id: 'tels.teaching.cta.view', defaultMessage: 'View' },
   gradebook: { id: 'tels.teaching.cta.gradebook', defaultMessage: 'Gradebook' },
+  pageRange: { id: 'tels.teaching.page.range', defaultMessage: 'Showing {from}–{to} of {total}' },
+  paginationLabel: { id: 'tels.teaching.page.label', defaultMessage: 'Pages of assessments' },
+  pagePrevious: { id: 'tels.teaching.page.previous', defaultMessage: 'Previous' },
+  pageNext: { id: 'tels.teaching.page.next', defaultMessage: 'Next' },
+  pageWord: { id: 'tels.teaching.page.word', defaultMessage: 'Page' },
+  pageCurrent: { id: 'tels.teaching.page.current', defaultMessage: 'Current page' },
+  pageOf: { id: 'tels.teaching.page.of', defaultMessage: 'of' },
+  unavailable: { id: 'tels.teaching.unavailable', defaultMessage: 'This page is not available on this site.' },
 });
 
 export default messages;

@@ -1,5 +1,224 @@
-.schedule-detail-form {
-    .datepicker-custom-control-icon {
-        right: 1.188rem !important;
+// Course → Schedule & Details (CustomScheduleAndDetails.jsx), in the look of the "Create new
+// course" form: cards on the page background, a section bar, a save bar that stays in view.
+// Paragon design tokens only, so the light, dark and admin themes all apply; logical
+// properties, so it mirrors in right-to-left languages.
+
+.tels-course-details {
+  --tels-cd-gap: var(--pgn-spacing-spacer-4);
+  --tels-cd-radius: var(--pgn-spacing-spacer-base);
+  --tels-cd-border: var(--pgn-size-border-width) solid var(--pgn-color-light-400);
+
+  box-sizing: border-box;
+  max-width: 90rem;
+  min-width: 0;
+  margin-inline: auto;
+  padding: var(--pgn-spacing-spacer-4) var(--pgn-spacing-spacer-4) 0;
+  color: var(--pgn-color-body-base);
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--pgn-spacing-spacer-3);
+    margin-bottom: var(--pgn-spacing-spacer-4);
+  }
+
+  &__title {
+    margin: 0 0 var(--pgn-spacing-spacer-1);
+    font-size: var(--pgn-typography-font-size-h3-base);
+    font-weight: var(--pgn-typography-font-weight-bold);
+    line-height: var(--pgn-typography-headings-line-height);
+  }
+
+  &__lead {
+    margin: 0;
+    font-size: var(--pgn-typography-font-size-sm);
+    color: var(--pgn-color-gray-500);
+  }
+
+  &__alerts {
+    scroll-margin-top: var(--pgn-spacing-spacer-5);
+
+    .alert {
+      margin-bottom: var(--pgn-spacing-spacer-4);
     }
+  }
+
+  // Section bar: jumps to a card.
+  &__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pgn-spacing-spacer-2);
+    margin-bottom: var(--tels-cd-gap);
+  }
+
+  &__nav-link {
+    padding: var(--pgn-spacing-spacer-1) var(--pgn-spacing-spacer-3);
+    border: var(--tels-cd-border);
+    border-radius: 999px;
+    background-color: var(--pgn-color-bg-base);
+    color: var(--pgn-color-body-base);
+    font-size: var(--pgn-typography-font-size-sm);
+    font-weight: var(--pgn-typography-font-weight-bold);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--pgn-color-primary-base);
+      color: var(--pgn-color-primary-base);
+      text-decoration: none;
+    }
+  }
+
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--tels-cd-gap);
+    align-items: start;
+  }
+
+  &__main,
+  &__aside {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--tels-cd-gap);
+    min-width: 0;
+  }
+
+  &__card {
+    min-width: 0;
+    padding: var(--pgn-spacing-spacer-4);
+    border: var(--tels-cd-border);
+    border-radius: var(--tels-cd-radius);
+    background-color: var(--pgn-color-bg-base);
+    // A jump from the section bar stops below the pinned header.
+    scroll-margin-top: var(--pgn-spacing-spacer-5);
+  }
+
+  // The stock sections bring their own spacing for a page without cards: reset it.
+  .section-container {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .section-sub-header {
+    display: block;
+    margin: 0 0 var(--pgn-spacing-spacer-4);
+    padding: 0;
+    border: 0;
+
+    h2,
+    .lead {
+      margin: 0;
+      font-size: var(--pgn-typography-font-size-h4-base);
+      font-weight: var(--pgn-typography-font-weight-bold);
+      line-height: var(--pgn-typography-headings-line-height);
+      color: var(--pgn-color-body-base);
+    }
+
+    span,
+    .small {
+      display: block;
+      margin-top: var(--pgn-spacing-spacer-1);
+      font-size: var(--pgn-typography-font-size-sm);
+      color: var(--pgn-color-gray-500);
+    }
+  }
+
+  .pgn__form-group {
+    min-width: 0;
+  }
+
+  .pgn__form-label {
+    margin-bottom: var(--pgn-spacing-spacer-1);
+    font-size: var(--pgn-typography-font-size-sm);
+    font-weight: var(--pgn-typography-font-weight-bold);
+    color: var(--pgn-color-body-base);
+  }
+
+  .form-control {
+    max-width: 100%;
+  }
+
+  textarea.form-control {
+    resize: vertical;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  .datepicker-custom-control-icon {
+    inset-inline-end: 1.188rem !important;
+  }
+
+  &__price {
+    max-width: 18rem;
+  }
+
+  &__note {
+    padding: var(--pgn-spacing-spacer-3);
+    border-radius: var(--tels-cd-radius);
+    background-color: var(--pgn-color-light-200);
+    font-size: var(--pgn-typography-font-size-sm);
+    color: var(--pgn-color-gray-700);
+  }
+
+  // Save bar: only while there is something to save, and always in view.
+  &__actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--pgn-spacing-spacer-2);
+    margin: var(--tels-cd-gap) calc(var(--pgn-spacing-spacer-4) * -1) 0;
+    padding: var(--pgn-spacing-spacer-3) var(--pgn-spacing-spacer-4);
+    border-top: var(--tels-cd-border);
+    background-color: var(--pgn-color-bg-base);
+    box-shadow: 0 -6px 18px rgb(0 0 0 / 8%);
+  }
+
+  &__status {
+    flex: 1 1 14rem;
+    margin: 0;
+    font-size: var(--pgn-typography-font-size-sm);
+    font-weight: var(--pgn-typography-font-weight-bold);
+    color: var(--pgn-color-gray-700);
+
+    &.is-error {
+      color: var(--pgn-color-danger-base);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    &__layout {
+      grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+    }
+
+    &__aside {
+      position: sticky;
+      top: var(--pgn-spacing-spacer-3);
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    padding-inline: var(--pgn-spacing-spacer-3);
+
+    &__card {
+      padding: var(--pgn-spacing-spacer-3);
+    }
+
+    &__actions {
+      margin-inline: calc(var(--pgn-spacing-spacer-3) * -1);
+
+      .btn {
+        flex: 1 1 auto;
+      }
+    }
+  }
 }
