@@ -11,7 +11,7 @@ import { getConfig, getPath } from '@edx/frontend-platform';
 
 import MyCourses from '@src/my-courses/MyCourses';
 import LibrariesV2Tab from '@src/studio-home/tabs-section/libraries-v2-tab';
-import Dashboard from './dashboard/Dashboard';
+import Dashboard from './dashboard/BoardHome';
 import {
   LibraryAndComponentPicker,
   CreateLibrary,
@@ -31,6 +31,7 @@ import { LegacyLibMigrationPage } from './legacy-libraries-migration/LegacyLibMi
 import CustomCreateNewCourseForm from './studio-home/ps-course-form/CustomCreateNewCourseForm';
 import Calendar from './calendar/pages/CalendarPage';
 import AssignmentPage from './assignment/pages/AssignmentPage';
+import TeamAssessmentsPage from './assessments/TeamAssessmentsPage';
 import registerFontAwesomeIcons from './utils/RegisterFontAwesome';
 import CustomLayout from './CustomLayout';
 import initializeCustomStore from './customStore';
@@ -83,6 +84,7 @@ const CustomAppRoutes = () => {
           />
           <Route path="/legacy/preview-changes/:usageKey" element={<PreviewChangesEmbed />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/assessments" element={<TeamAssessmentsPage />} />
           <Route path="/assignments" element={<AssignmentPage />} />
           <Route path="/course/:courseId/*" element={<CustomCourseAuthoringRoutes />} />
           <Route path="/course_rerun/:courseId" element={<CourseRerun />} />

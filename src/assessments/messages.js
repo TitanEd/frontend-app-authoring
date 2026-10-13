@@ -1,0 +1,72 @@
+import { defineMessages } from '@edx/frontend-platform/i18n';
+
+const messages = defineMessages({
+  pageTitle: { id: 'tels.teaching.title', defaultMessage: 'My Assessments' },
+  intro: { id: 'tels.teaching.intro', defaultMessage: 'The quizzes, exams and assignments of all your courses: what is open, what closed and what waits for you.' },
+  loading: { id: 'tels.teaching.loading', defaultMessage: 'Loading the assessments…' },
+  error: { id: 'tels.teaching.error', defaultMessage: 'The assessments could not be loaded.' },
+  retry: { id: 'tels.teaching.retry', defaultMessage: 'Try again' },
+  emptyTitle: { id: 'tels.teaching.empty.title', defaultMessage: 'No assessments yet' },
+  emptyText: { id: 'tels.teaching.empty.text', defaultMessage: 'Mark a subsection of one of your courses as graded and it appears here.' },
+  myCourses: { id: 'tels.teaching.empty.cta', defaultMessage: 'Go to my courses' },
+  noMatchTitle: { id: 'tels.teaching.nomatch.title', defaultMessage: 'Nothing matches these filters' },
+  clearFilters: { id: 'tels.teaching.filters.clear', defaultMessage: 'Clear filters' },
+
+  heroReview: { id: 'tels.teaching.hero.review', defaultMessage: '{count, plural, one {# response waits for your grade.} other {# responses wait for your grade.}}' },
+  heroDue: { id: 'tels.teaching.hero.due', defaultMessage: '{count, plural, one {# assessment closes this week.} other {# assessments close this week.}}' },
+  heroCalm: { id: 'tels.teaching.hero.calm', defaultMessage: 'Nothing waits for you, and nothing closes this week.' },
+  figureAssessments: { id: 'tels.teaching.figure.assessments', defaultMessage: 'Assessments' },
+  figureCourses: { id: 'tels.teaching.figure.courses', defaultMessage: 'Courses' },
+  figureToReview: { id: 'tels.teaching.figure.review', defaultMessage: 'To grade' },
+  figureSubmissionRate: { id: 'tels.teaching.figure.rate', defaultMessage: 'Submission rate' },
+
+  statusAll: { id: 'tels.teaching.status.all', defaultMessage: 'All' },
+  statusNeedsReview: { id: 'tels.teaching.status.needs_review', defaultMessage: 'Needs review' },
+  statusDue: { id: 'tels.teaching.status.due', defaultMessage: 'Due soon' },
+  statusOpen: { id: 'tels.teaching.status.open', defaultMessage: 'Open' },
+  statusPastDue: { id: 'tels.teaching.status.past_due', defaultMessage: 'Past due' },
+  statusClosed: { id: 'tels.teaching.status.closed', defaultMessage: 'Closed' },
+  statusScheduled: { id: 'tels.teaching.status.scheduled', defaultMessage: 'Not released' },
+  statusHidden: { id: 'tels.teaching.status.hidden', defaultMessage: 'Hidden from learners' },
+
+  kindQuiz: { id: 'tels.teaching.kind.quiz', defaultMessage: 'Quiz' },
+  kindTimedExam: { id: 'tels.teaching.kind.timed_exam', defaultMessage: 'Timed exam' },
+  kindEntranceExam: { id: 'tels.teaching.kind.entrance_exam', defaultMessage: 'Entrance exam' },
+  kindOpenResponse: { id: 'tels.teaching.kind.open_response', defaultMessage: 'Open response' },
+  kindStaffGraded: { id: 'tels.teaching.kind.staff_graded', defaultMessage: 'Staff graded' },
+
+  filterCourse: { id: 'tels.teaching.filter.course', defaultMessage: 'Course' },
+  filterAllCourses: { id: 'tels.teaching.filter.course.all', defaultMessage: 'All courses' },
+  filterType: { id: 'tels.teaching.filter.type', defaultMessage: 'Assessment type' },
+  filterAllTypes: { id: 'tels.teaching.filter.type.all', defaultMessage: 'All types' },
+  filterDue: { id: 'tels.teaching.filter.due', defaultMessage: 'Due' },
+  filterAnyTime: { id: 'tels.teaching.filter.due.any', defaultMessage: 'Any time' },
+  filterToday: { id: 'tels.teaching.filter.due.today', defaultMessage: 'Today' },
+  filterTomorrow: { id: 'tels.teaching.filter.due.tomorrow', defaultMessage: 'Tomorrow' },
+  filterWeek: { id: 'tels.teaching.filter.due.week', defaultMessage: 'This week' },
+  filterMonth: { id: 'tels.teaching.filter.due.month', defaultMessage: 'This month' },
+  filterYear: { id: 'tels.teaching.filter.due.year', defaultMessage: 'This year' },
+  search: { id: 'tels.teaching.filter.search', defaultMessage: 'Search assessments' },
+  showing: { id: 'tels.teaching.showing', defaultMessage: '{count, plural, one {# assessment} other {# assessments}}' },
+
+  dueOn: { id: 'tels.teaching.due.on', defaultMessage: 'Due {date}' },
+  dueToday: { id: 'tels.teaching.due.today', defaultMessage: 'Due today at {time}' },
+  dueTomorrow: { id: 'tels.teaching.due.tomorrow', defaultMessage: 'Due tomorrow at {time}' },
+  dueInDays: { id: 'tels.teaching.due.days', defaultMessage: '{count, plural, one {Due in # day} other {Due in # days}}' },
+  closedDays: { id: 'tels.teaching.due.closed', defaultMessage: '{count, plural, =0 {Closed today} one {Closed # day ago} other {Closed # days ago}}' },
+  noDueDate: { id: 'tels.teaching.due.none', defaultMessage: 'No due date' },
+  opensOn: { id: 'tels.teaching.opens', defaultMessage: 'Opens {date}' },
+
+  submitted: { id: 'tels.teaching.submitted', defaultMessage: '{submitted} of {learners} submitted' },
+  noLearners: { id: 'tels.teaching.learners.none', defaultMessage: 'No learners yet' },
+  average: { id: 'tels.teaching.average', defaultMessage: 'Average {percent}' },
+  missing: { id: 'tels.teaching.missing', defaultMessage: '{count, plural, one {# not submitted} other {# not submitted}}' },
+  toReview: { id: 'tels.teaching.toreview', defaultMessage: '{count, plural, one {# to grade} other {# to grade}}' },
+
+  grade: { id: 'tels.teaching.cta.grade', defaultMessage: 'Grade responses' },
+  edit: { id: 'tels.teaching.cta.edit', defaultMessage: 'Edit' },
+  view: { id: 'tels.teaching.cta.view', defaultMessage: 'View' },
+  gradebook: { id: 'tels.teaching.cta.gradebook', defaultMessage: 'Gradebook' },
+});
+
+export default messages;

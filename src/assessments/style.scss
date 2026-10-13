@@ -1,0 +1,606 @@
+// "My Assessments": the learner page (learner dashboard) and the course-team page (Studio).
+// The file is the same in both MFEs. Built on the design tokens, so it follows the theme and
+// dark mode; logical properties mirror it in right-to-left languages.
+
+.tas-page {
+  --tas-brand: var(--pgn-color-primary-base, #2b2399);
+  --tas-surface: var(--pgn-color-bg-base, #fff);
+  --tas-soft: color-mix(in srgb, var(--tas-brand) 9%, var(--tas-surface));
+  --tas-line: var(--pgn-color-light-400, #e3e8f0);
+  --tas-text: var(--pgn-color-text-base, #1f2937);
+  --tas-muted: var(--pgn-color-text-muted, var(--pgn-color-gray-500, #64748b));
+  --tas-danger: var(--pgn-color-danger-base, #c32d3a);
+  --tas-warning: #b45f06;
+  --tas-good: var(--pgn-color-success-base, #15803d);
+  --tas-info: var(--pgn-color-info-base, #00688d);
+
+  min-block-size: 100%;
+  background: var(--bg-body, transparent);
+  color: var(--tas-text);
+}
+
+// Lighter status colours on dark surfaces.
+[data-paragon-theme-variant="dark"] .tas-page,
+[data-theme="dark"] .tas-page {
+  --tas-danger: #ff8a93;
+  --tas-warning: #ffb866;
+  --tas-good: #5fd38d;
+  --tas-info: #6cc8ea;
+}
+
+.tas-container {
+  display: grid;
+  gap: 1.25rem;
+  padding-block: 1rem 2.5rem;
+}
+
+.tas-card {
+  border: 1px solid var(--tas-line);
+  border-radius: 18px;
+  background: var(--tas-surface);
+}
+
+.tas-state {
+  display: grid;
+  justify-items: center;
+  gap: .75rem;
+  padding: 3.5rem 1rem;
+  color: var(--tas-muted);
+  text-align: center;
+
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--tas-text);
+  }
+
+  p { margin: 0; max-inline-size: 46ch; }
+
+  &__icon {
+    inline-size: 56px;
+    block-size: 56px;
+    padding: 12px;
+    border-radius: 50%;
+    background: var(--tas-soft);
+    color: var(--tas-brand);
+  }
+}
+
+// ---- hero ----
+
+.tas-hero {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1.25rem 2rem;
+  align-items: center;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 24px;
+  background:
+    radial-gradient(60% 140% at 100% 0%, color-mix(in srgb, #fff 22%, transparent), transparent 60%),
+    linear-gradient(120deg, color-mix(in srgb, var(--tas-brand) 60%, #05060f), var(--tas-brand));
+  color: #fff;
+
+  [dir="rtl"] & {
+    background:
+      radial-gradient(60% 140% at 0% 0%, color-mix(in srgb, #fff 22%, transparent), transparent 60%),
+      linear-gradient(240deg, color-mix(in srgb, var(--tas-brand) 60%, #05060f), var(--tas-brand));
+  }
+
+  h1 {
+    margin: 0 0 .35rem;
+    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem);
+    color: #fff;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, .9);
+  }
+
+  .tas-ring__track { stroke: rgba(255, 255, 255, .22); }
+  .tas-ring__value { stroke: #fff; }
+}
+
+.tas-hero__figures {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(124px, 1fr);
+  gap: .75rem;
+  margin: 0;
+
+  > div {
+    display: grid;
+    justify-items: center;
+    padding: .8rem 1rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .12);
+    text-align: center;
+  }
+
+  dt {
+    font-weight: 400;
+    color: rgba(255, 255, 255, .85);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+}
+
+.tas-ring {
+  position: relative;
+  display: inline-block;
+  flex: none;
+
+  svg { display: block; }
+
+  &__track,
+  &__value {
+    fill: none;
+    stroke-width: 10;
+  }
+
+  &__value {
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease;
+  }
+
+  &__inside {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    line-height: 1.15;
+
+    strong { font-size: 1.6rem; }
+    small { font-size: 1rem; }
+  }
+}
+
+.tas-next {
+  display: grid;
+  gap: .2rem;
+  padding: 1rem 1.15rem;
+  border-radius: 18px;
+  background: var(--tas-surface);
+  color: var(--tas-text);
+  text-decoration: none;
+  box-shadow: 0 14px 30px rgba(5, 6, 15, .25);
+  inline-size: clamp(260px, 30vw, 360px);
+  transition: translate .2s;
+
+  &:hover,
+  &:focus-visible {
+    translate: 0 -3px;
+    color: var(--tas-text);
+    text-decoration: none;
+  }
+
+  strong {
+    font-size: 1.15rem;
+    color: var(--tas-text);
+  }
+
+  &__due { color: var(--tas-text); }
+
+  &__label {
+    color: var(--tas-brand);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  &__course { color: var(--tas-muted); }
+
+  &__due,
+  &__go {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+  }
+
+  &__go {
+    justify-self: start;
+    margin-block-start: .5rem;
+    padding: .35rem .9rem;
+    border-radius: var(--pgn-btn-border-radius-base, 999px);
+    background: var(--tas-brand);
+    color: #fff;
+    font-weight: 600;
+
+    [dir="rtl"] & .pgn__icon { scale: -1 1; }
+  }
+}
+
+// ---- status chips and filters ----
+
+.tas-chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: .75rem;
+}
+
+.tas-chip {
+  --chip: var(--tas-brand);
+
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .8rem 1rem;
+  border: 1px solid var(--tas-line);
+  border-radius: 16px;
+  background: var(--tas-surface);
+  color: var(--tas-text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s, translate .15s;
+
+  > .pgn__icon { color: var(--chip); }
+
+  strong {
+    margin-inline-start: auto;
+    font-size: 1.35rem;
+    color: var(--chip);
+  }
+
+  &:hover { translate: 0 -2px; }
+
+  &:focus-visible {
+    outline: 2px solid var(--chip);
+    outline-offset: 2px;
+  }
+
+  &.is-on {
+    border-color: var(--chip);
+    box-shadow: inset 0 0 0 1px var(--chip);
+    background: color-mix(in srgb, var(--chip) 8%, var(--tas-surface));
+  }
+
+  &--past_due,
+  &--needs_review { --chip: var(--tas-danger); }
+  &--due { --chip: var(--tas-warning); }
+  &--submitted,
+  &--closed { --chip: var(--tas-good); }
+  &--scheduled,
+  &--hidden { --chip: var(--tas-muted); }
+}
+
+.tas-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.3fr);
+  gap: .75rem 1rem;
+  padding: 1rem 1.15rem;
+
+  .form-group,
+  .pgn__form-group { margin: 0; }
+
+  label { font-weight: 600; }
+
+  &__foot {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem 1rem;
+    color: var(--tas-muted);
+  }
+}
+
+// ---- list ----
+
+.tas-group {
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin: .25rem 0 .75rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--tas-text);
+
+    span {
+      padding: 0 .6rem;
+      border-radius: 999px;
+      background: var(--tas-soft);
+      color: var(--tas-brand);
+      font-size: 1rem;
+    }
+  }
+
+  &--past_due h2 span,
+  &--needs_review h2 span {
+    background: color-mix(in srgb, var(--tas-danger) 12%, var(--tas-surface));
+    color: var(--tas-danger);
+  }
+}
+
+.tas-list {
+  display: grid;
+  gap: .65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tas-item {
+  --state: var(--tas-brand);
+
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 2.2fr) minmax(0, 1.2fr) minmax(110px, .8fr) auto;
+  gap: .75rem 1.15rem;
+  align-items: center;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--tas-line);
+  border-inline-start: 5px solid var(--state);
+  border-radius: 16px;
+  background: var(--tas-surface);
+  color: var(--tas-text);
+  text-decoration: none;
+  transition: translate .2s, box-shadow .2s;
+
+  &--past_due,
+  &--needs_review { --state: var(--tas-danger); }
+  &--due { --state: var(--tas-warning); }
+  &--submitted,
+  &--closed { --state: var(--tas-good); }
+  &--scheduled,
+  &--hidden { --state: var(--tas-muted); }
+
+  &:hover,
+  &:focus-visible,
+  &:focus-within {
+    translate: 0 -2px;
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--tas-brand) 14%, transparent);
+    color: var(--tas-text);
+    text-decoration: none;
+  }
+
+  strong {
+    font-size: 1.1rem;
+    color: var(--tas-text);
+  }
+
+  small {
+    font-size: 1rem;
+    color: var(--tas-muted);
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    inline-size: 46px;
+    block-size: 46px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--state) 12%, var(--tas-surface));
+    color: var(--state);
+  }
+
+  &__main,
+  &__when,
+  &__state {
+    display: grid;
+    gap: .25rem;
+    min-inline-size: 0;
+  }
+
+  &__course {
+    overflow: hidden;
+    color: var(--tas-muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    margin-block-start: .15rem;
+  }
+
+  &__due {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-weight: 600;
+    color: var(--state);
+  }
+
+  &--active &__due,
+  &--open &__due { color: var(--tas-text); }
+
+  &__score {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--tas-text);
+  }
+
+  &__go {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .4rem .9rem;
+    border: 1px solid var(--tas-brand);
+    border-radius: var(--pgn-btn-border-radius-base, 999px);
+    color: var(--tas-brand);
+    font-weight: 600;
+    white-space: nowrap;
+
+    [dir="rtl"] & .pgn__icon { scale: -1 1; }
+  }
+
+  &:hover &__go {
+    background: var(--tas-brand);
+    color: #fff;
+  }
+}
+
+.tas-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  padding: .05rem .6rem;
+  border-radius: 999px;
+  background: var(--tas-soft);
+  color: var(--tas-brand);
+
+  &--plain {
+    background: transparent;
+    border: 1px solid var(--tas-line);
+    color: var(--tas-muted);
+  }
+
+  &--past_due,
+  &--needs_review {
+    background: color-mix(in srgb, var(--tas-danger) 12%, var(--tas-surface));
+    color: var(--tas-danger);
+  }
+
+  &--due {
+    background: color-mix(in srgb, var(--tas-warning) 14%, var(--tas-surface));
+    color: var(--tas-warning);
+  }
+
+  &--submitted,
+  &--closed {
+    background: color-mix(in srgb, var(--tas-good) 12%, var(--tas-surface));
+    color: var(--tas-good);
+  }
+
+  &--scheduled,
+  &--hidden {
+    background: color-mix(in srgb, var(--tas-muted) 14%, var(--tas-surface));
+    color: var(--tas-muted);
+  }
+}
+
+.tas-meter {
+  display: block;
+  inline-size: 100%;
+  block-size: 8px;
+  border-radius: 999px;
+  background: var(--tas-soft);
+  overflow: hidden;
+
+  span {
+    display: block;
+    block-size: 100%;
+    border-radius: inherit;
+    background: var(--state, var(--tas-brand));
+  }
+}
+
+// ---- course-team page ----
+
+.tas-item--team {
+  grid-template-columns: auto minmax(0, 2fr) minmax(0, 1.1fr) minmax(150px, 1fr) auto;
+}
+
+.tas-item__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .4rem;
+  max-inline-size: 260px;
+
+  .btn { white-space: nowrap; }
+}
+
+.tas-item__numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .15rem .75rem;
+  color: var(--tas-muted);
+
+  b { color: var(--tas-text); }
+}
+
+@media (max-width: 1199.98px) {
+  .tas-hero {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .tas-next,
+  .tas-hero__figures {
+    grid-column: 1 / -1;
+    inline-size: auto;
+    grid-auto-columns: minmax(0, 1fr);
+  }
+
+  .tas-item,
+  .tas-item--team {
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .tas-item__main { grid-column: 2 / -1; }
+  .tas-item__when { grid-column: 2; }
+
+  .tas-item__go,
+  .tas-item__links {
+    grid-column: 2 / -1;
+    justify-self: start;
+    justify-content: flex-start;
+    max-inline-size: none;
+  }
+
+  .tas-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575.98px) {
+  .tas-hero {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .tas-next { inline-size: 100%; text-align: start; }
+
+  .tas-hero__figures {
+    inline-size: 100%;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tas-chips {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tas-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tas-item,
+  .tas-item--team {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: .9rem;
+  }
+
+  .tas-item__when,
+  .tas-item__state {
+    grid-column: 1 / -1;
+  }
+
+  .tas-item__go,
+  .tas-item__links {
+    grid-column: 1 / -1;
+    justify-content: center;
+    justify-self: stretch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tas-item,
+  .tas-chip,
+  .tas-next,
+  .tas-ring__value { transition: none; }
+}

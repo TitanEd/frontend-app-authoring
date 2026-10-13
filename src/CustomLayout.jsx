@@ -243,6 +243,12 @@ const CustomLayout = () => {
               isVisible: true, // Always visible
             },
             {
+              label: intl.formatMessage(customMessages.sidebarMyAssessmentsTitle),
+              path: '/assessments',
+              icon: <ParagonIcons.FactCheck />,
+              isVisible: true, // Always visible
+            },
+            {
               label: intl.formatMessage(customMessages.sidebarContentLibrariesTitle),
               path: '/libraries',
               icon: <ParagonIcons.LibraryBooks />,
@@ -332,6 +338,12 @@ const CustomLayout = () => {
             label: intl.formatMessage(customMessages.sidebarMyCoursesTitle),
             path: '/my-courses',
             icon: <ParagonIcons.LmsBook />,
+            isVisible: true,
+          },
+          {
+            label: intl.formatMessage(customMessages.sidebarMyAssessmentsTitle),
+            path: '/assessments',
+            icon: <ParagonIcons.FactCheck />,
             isVisible: true,
           },
           {
