@@ -42,7 +42,7 @@ pull_translations:
 	            translations/frontend-component-footer/src/i18n/messages:frontend-component-footer \
 	            translations/frontend-app-course-authoring/src/i18n/messages:frontend-app-course-authoring
 
-	$(intl_imports) frontend-component-ai-translations frontend-platform paragon frontend-component-footer frontend-app-course-authoring
+	$(intl_imports) frontend-plugin-notifications frontend-component-ai-translations frontend-platform paragon frontend-component-header frontend-component-footer frontend-app-course-authoring
 
 # This target is used by Travis.
 validate-no-uncommitted-package-lock-changes:
