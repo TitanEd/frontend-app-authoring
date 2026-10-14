@@ -11,13 +11,17 @@ const { default: CourseNavigationSidebar } = await import('./src/shared-componen
 const { default: CustomScheduleAndDetails } = await import('./src/CustomScheduleAndDetails');
 const { default: messages } = await import('./src/schedule-and-details/messages');
 const { Settings, DragHandle, SettingsApplications } = await import('@openedx/paragon/icons');
+const {
+  ActionRow, Button, Container, Dropdown, Icon, IconButton, Layout, ProgressBar, Stack,
+} = await import('@openedx/paragon');
+const { default: cardHeaderMessages } = await import('./src/course-outline/card-header/messages');
 const { default: FormSwitchGroup } = await import('./src/generic/FormSwitchGroup');
 const { default: StatusBarContent } = await import('./src/course-outline/status-bar/StatusBarContent');
 const { default: CustomStatusBar } = await import('./src/course-outline/status-bar/CustomStatusBar');
 const { default: SubHeader } = await import('./src/generic/sub-header/SubHeader');
 const { default: CustomCourseUpdates } = await import('./src/course-updates/CustomCourseUpdates');
 const { default: CustomCourseExportPage } = await import('./src/export-page/CustomCourseExportPage');
-const { FormattedMessage } = await import('@edx/frontend-platform/i18n');
+const { FormattedMessage, useIntl } = await import('@edx/frontend-platform/i18n');
 const { default: WarningMessage } = await import('./src/generic/warning-message/WarningMessage');
 const { default: SettingCard } = await import('./src/advanced-settings/setting-card/SettingCard');
 const { default: CustomExportSidebar } = await import('/src/export-page/export-sidebar/CustomExportSidebar');
@@ -178,17 +182,20 @@ return {
                         id: 'card-header-menu-icon',
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: ({ namePrefix }) => (
+                        RenderWidget: ({ namePrefix }) => {
+                          const intl = useIntl();
+                          return (
                             <Dropdown.Toggle
                                 className="item-card-header__menu"
                                 id={`${namePrefix}-card-header__menu`}
                                 data-testid={`${namePrefix}-card-header__menu-button`}
                                 as={IconButton}
                                 src={Settings}
-                                alt={`${namePrefix}-card-header__menu`}
+                                alt={intl.formatMessage(cardHeaderMessages.menuButtonAlt)}
                                 iconAs={Icon}
                             />
-                        ),
+                          );
+                        },
                     },
                 },
             ],
