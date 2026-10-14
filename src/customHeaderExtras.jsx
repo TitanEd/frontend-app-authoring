@@ -17,6 +17,11 @@
  *
  * The chosen mode is stored the way frontend-platform reads it (localStorage) and in a cookie
  * on the LMS domain, so the other MFEs and the LMS pages open in the same mode.
+ *
+ *  - loadSiteIntegrations(): Google Tag Manager and the support chat of the site (Control Hub ->
+ *    Add-ons -> Integration). The LMS serves them as one small script, /integrations/site.js
+ *    (control-hub integrations/api.py); the tools of the staff ask for it without the chat.
+ *    Google Analytics 4 needs nothing here: frontend-platform loads it from the configuration.
  */
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -171,6 +176,23 @@ const writeCookie = (variant) => {
   });
 };
 
+const STAFF_TOOLS = /^\/(authoring|course-authoring|admin-console|gradebook|communications|ora-grading)(\/|$)/;
+
+export const loadSiteIntegrations = () => {
+  try {
+    const lmsBaseUrl = getConfig().LMS_BASE_URL;
+    // Once per page, and never inside a frame (the page around it does the work).
+    if (!lmsBaseUrl || window.telsSiteIntegrationsRequested || window.top !== window.self) { return; }
+    window.telsSiteIntegrationsRequested = true;
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `${lmsBaseUrl}/integrations/site.js${STAFF_TOOLS.test(window.location.pathname) ? '?chat=0' : ''}`;
+    document.head.appendChild(script);
+  } catch (e) {
+    // No access to the top window (embedded by another site): nothing to load.
+  }
+};
+
 export const currentThemeVariant = () => {
   const variant = readCookie(THEME_KEYS[0]) || readStorage()
     || document.documentElement.getAttribute(THEME_ATTRIBUTES[0]);
@@ -193,6 +215,8 @@ const HeaderExtras = () => {
   const [variant] = useState(currentThemeVariant);
 
   // A mode chosen in another MFE or on an LMS page arrives in the cookie: adopt it.
+  useEffect(() => { loadSiteIntegrations(); }, []);
+
   useEffect(() => {
     const fromCookie = readCookie(THEME_KEYS[0]);
     if (fromCookie && fromCookie !== readStorage()) {
