@@ -251,6 +251,13 @@ const CustomLayout = () => {
               isVisible: Boolean(siteFeatures.assessment_center),
             },
             {
+              label: intl.formatMessage(customMessages.sidebarMyMeetingsTitle),
+              path: '/meetings',
+              icon: <ParagonIcons.VideoCall />,
+              // Live classes with Zoom: a feature a site may not have (useSiteFeatures.js).
+              isVisible: Boolean(siteFeatures.zoom_integration),
+            },
+            {
               label: intl.formatMessage(customMessages.sidebarContentLibrariesTitle),
               path: '/libraries',
               icon: <ParagonIcons.LibraryBooks />,
@@ -260,7 +267,8 @@ const CustomLayout = () => {
               label: intl.formatMessage(customMessages.sidebarCalendarTitle),
               path: '/calendar',
               icon: <ParagonIcons.Calendar />,
-              isVisible: menuConfig.enable_calendar || false,
+              // The sold feature "Calendar": a feature a site may not have (useSiteFeatures.js).
+              isVisible: Boolean(siteFeatures.calendar),
             },
             {
               label: intl.formatMessage(customMessages.sidebarClassPlannerTitle),
@@ -347,6 +355,12 @@ const CustomLayout = () => {
             path: '/assessments',
             icon: <ParagonIcons.FactCheck />,
             // Not known without the API: a feature is not shown on a guess.
+            isVisible: false,
+          },
+          {
+            label: intl.formatMessage(customMessages.sidebarMyMeetingsTitle),
+            path: '/meetings',
+            icon: <ParagonIcons.VideoCall />,
             isVisible: false,
           },
           {

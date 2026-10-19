@@ -32,6 +32,7 @@ import CustomCreateNewCourseForm from './studio-home/ps-course-form/CustomCreate
 import Calendar from './calendar/pages/CalendarPage';
 import AssignmentPage from './assignment/pages/AssignmentPage';
 import TeamAssessmentsPage from './assessments/TeamAssessmentsPage';
+import TeamMeetingsPage from './meetings/TeamMeetingsPage';
 import registerFontAwesomeIcons from './utils/RegisterFontAwesome';
 import CustomLayout from './CustomLayout';
 import initializeCustomStore from './customStore';
@@ -85,6 +86,7 @@ const CustomAppRoutes = () => {
           <Route path="/legacy/preview-changes/:usageKey" element={<PreviewChangesEmbed />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/assessments" element={<TeamAssessmentsPage />} />
+          <Route path="/meetings" element={<TeamMeetingsPage />} />
           <Route path="/assignments" element={<AssignmentPage />} />
           <Route path="/course/:courseId/*" element={<CustomCourseAuthoringRoutes />} />
           <Route path="/course_rerun/:courseId" element={<CourseRerun />} />
