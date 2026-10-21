@@ -16,7 +16,7 @@ import * as ParagonIcons from '@openedx/paragon/icons';
 //   LmsBook,
 // } from '@openedx/paragon/icons';
 // import Sidebar from 'library/Sidebar/Sidebar';
-import { MainHeader, Sidebar, SidebarProvider, AnnouncementBanner } from 'titaned-frontend-library';
+import { MainHeader, Sidebar, SidebarProvider } from 'titaned-frontend-library';
 import customGetUserMenuItems from '@src/library/utils/customGetUserMenuItems';
 // import MainHeader from 'library/Header/MainHeader';
 // import { SidebarProvider } from 'library/providers/SidebarProvider';
@@ -143,38 +143,6 @@ const CustomLayout = () => {
     userMenuItemsFromAPI,
     isAdmin: userIsAdmin,
   });
-
-  const [systemAlert, setSystemAlert] = useState(null);
-  const [userAlert, setUserAlert] = useState(null);
-
-  useEffect(() => {
-    const fetchAlerts = async () => {
-      try {
-        const systemResponse = await getAuthenticatedHttpClient().get(
-          `${getConfig().LMS_BASE_URL}/titaned/api/v1/system/alerts/`,
-        );
-        // const systemResponse = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/system/alerts/');
-
-        const userResponse = await getAuthenticatedHttpClient().get(
-          `${getConfig().LMS_BASE_URL}/titaned/api/v1/user/alerts/`,
-        );
-        // for local api fetch
-        // const userResponse = await getAuthenticatedHttpClient().get('LMS_API_DOMAIN/titaned/api/v1/user/alerts/');
-
-        if (systemResponse?.data) {
-          setSystemAlert(systemResponse.data.alert);
-        }
-
-        if (userResponse?.data) {
-          setUserAlert(userResponse.data.alert);
-        }
-      } catch (error) {
-        console.error('Error fetching announcement alerts:', error);
-      }
-    };
-
-    fetchAlerts();
-  }, []);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -581,21 +549,6 @@ const CustomLayout = () => {
 
   const renderContent = () => (
     <div className={`app-container ${CUSTOM_UI_CLASS}`}>
-      {systemAlert && (
-        <AnnouncementBanner
-          announcementType="systemAlert"
-          data={systemAlert}
-          backgroundColor="var(--pgn-color-primary-light)"
-        />
-      )}
-
-      {userAlert && (
-        <AnnouncementBanner
-          announcementType="userAlert"
-          data={userAlert}
-          backgroundColor="var(--pgn-color-warning-100, var(--pgn-color-light-200))"
-        />
-      )}
       {/* <p>This is header</p> */}
       <SidebarProvider>
         <div className="header-container">

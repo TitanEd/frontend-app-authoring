@@ -136,7 +136,102 @@ const HEADER_EXTRAS_STYLE = `
     max-width: 2rem; max-height: 2rem;
     border-radius: 50%; object-fit: cover;
   }
+  /* Announcements of the site (Control Hub -> Configuration -> Announcements), above the page. */
+  .tels-announcements { display: grid; gap: 1px; }
+  .tels-announcement {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+    padding: .6rem 1rem; font-size: 1rem; line-height: 1.5;
+    color: var(--pgn-color-gray-900, #1f2933);
+    background: var(--pgn-color-info-100, #e6f2fb);
+    border-inline-start: 4px solid var(--pgn-color-info-500, #0b6fbf);
+  }
+  .tels-announcement--success { background: var(--pgn-color-success-100, #e4f5ec); border-color: var(--pgn-color-success-500, #18794e); }
+  .tels-announcement--warning { background: var(--pgn-color-warning-100, #fdf2dc); border-color: var(--pgn-color-warning-500, #a15c07); }
+  .tels-announcement--critical { background: var(--pgn-color-danger-100, #fdebe6); border-color: var(--pgn-color-danger-500, #c4320a); }
+  .tels-announcement__text { min-width: 0; overflow-wrap: anywhere; }
+  .tels-announcement__text p { display: inline; margin: 0; }
+  .tels-announcement__text a { color: inherit; text-decoration: underline; }
+  .tels-announcement__close {
+    flex: none; border: 0; background: transparent; color: inherit; font-size: 1.5rem; line-height: 1;
+    padding: 0 .25rem; cursor: pointer;
+  }
+  .tels-announcement__close:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 `;
+
+// Staff tools: no chat widget, and the announcements for course teams.
+const STAFF_TOOLS = /^\/(authoring|course-authoring|admin-console|gradebook|communications|ora-grading)(\/|$)/;
+const CLOSED_ANNOUNCEMENTS = 'tels-announcements-closed';
+
+const closedAnnouncements = () => {
+  try {
+    return JSON.parse(window.localStorage.getItem(CLOSED_ANNOUNCEMENTS) || '[]');
+  } catch (error) {
+    return [];
+  }
+};
+
+/**
+ * The site's announcements shown now: to learners on learning pages, to course teams on the staff
+ * tools (Studio, gradebook…). Drawn above the page; one closed stays closed until it is changed
+ * (its id and version are remembered in this browser).
+ */
+const Announcements = () => {
+  const intl = useIntl();
+  const [items, setItems] = useState([]);
+  const [host, setHost] = useState(null);
+
+  useEffect(() => {
+    if (window.top !== window.self) { return undefined; }
+    const element = document.createElement('div');
+    element.className = 'tels-announcements';
+    document.body.insertBefore(element, document.body.firstChild);
+    setHost(element);
+    const audience = STAFF_TOOLS.test(window.location.pathname) ? 'course_teams' : 'learners';
+    const closed = closedAnnouncements();
+    fetch(`${getConfig().LMS_BASE_URL}/titaned/api/v1/system/alerts/?audience=${audience}`)
+      .then((response) => (response.ok ? response.json() : {}))
+      .then((data) => setItems((data.announcements || []).filter(
+        (item) => !closed.includes(`${item.id}:${item.version}`),
+      )))
+      .catch(() => {});
+    return () => element.remove();
+  }, []);
+
+  const close = (item) => {
+    try {
+      const keep = closedAnnouncements().slice(-50);
+      window.localStorage.setItem(CLOSED_ANNOUNCEMENTS, JSON.stringify([...keep, `${item.id}:${item.version}`]));
+    } catch (error) {
+      // storage blocked: closed for this page only
+    }
+    setItems((current) => current.filter((other) => other.id !== item.id));
+  };
+
+  if (!host || !items.length) { return null; }
+  return createPortal(
+    items.map((item) => (
+      <div key={item.id} className={`tels-announcement tels-announcement--${item.severity}`} role="status">
+        <div className="tels-announcement__text">
+          {item.title && <strong>{item.title} </strong>}
+          {/* The message is cleaned of unsafe HTML by the LMS (alerts.views.announcement_payload). */}
+          {/* eslint-disable-next-line react/no-danger */}
+          <span dangerouslySetInnerHTML={{ __html: item.message }} />
+        </div>
+        {item.dismissible && (
+          <button
+            type="button"
+            className="tels-announcement__close"
+            aria-label={intl.formatMessage(messages.closeAnnouncement)}
+            onClick={() => close(item)}
+          >
+            ×
+          </button>
+        )}
+      </div>
+    )),
+    host,
+  );
+};
 
 const readCookie = (name) => {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=(light|dark)(?:;|$)`));
@@ -175,8 +270,6 @@ const writeCookie = (variant) => {
     document.cookie = `${key}=${variant}; domain=${cookieDomain()}; path=/; expires=${expires}; SameSite=Lax`;
   });
 };
-
-const STAFF_TOOLS = /^\/(authoring|course-authoring|admin-console|gradebook|communications|ora-grading)(\/|$)/;
 
 export const loadSiteIntegrations = () => {
   try {
@@ -340,6 +433,7 @@ const HeaderExtras = () => {
   return (
     <>
       <style>{HEADER_EXTRAS_STYLE}</style>
+      <Announcements />
       {host && createPortal(
         <>
           <PluginSlot id={NOTIFICATIONS_SLOT_ID}>
