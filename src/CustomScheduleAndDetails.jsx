@@ -58,6 +58,16 @@ import './CustomScheduleAndDetails.scss';
 const priceUrl = (courseId) => `${getConfig().LMS_BASE_URL}/titaned/api/v2/course-price/${courseId}/`;
 const validPrice = (value) => /^\d+$/.test(String(value).trim()) && Number(value) >= 1;
 
+// A cleared date goes to Studio as null. The stock page sends '' (the certificate behaviour
+// dropdown clears its date that way), and Studio's course details API in Verawood parses every
+// date before saving and refuses '' ("Datetime has wrong format").
+const DATE_FIELDS = ['startDate', 'endDate', 'enrollmentStart', 'enrollmentEnd', 'certificateAvailableDate'];
+const saveCourseDetails = (courseId, details) =>
+  updateCourseDetailsQuery(courseId, {
+    ...details,
+    ...Object.fromEntries(DATE_FIELDS.filter((name) => details[name] === '').map((name) => [name, null])),
+  });
+
 /** One card of the page; `id` is what the section bar jumps to. */
 const DetailsCard = ({ id, children }) => (
   <div className="tels-course-details__card" id={id}>{children}</div>
@@ -201,7 +211,7 @@ const CustomScheduleAndDetails = ({ courseId }) => {
     handleInternetConnectionFailed,
   } = useSaveValuesPrompt(
     courseId,
-    updateCourseDetailsQuery,
+    saveCourseDetails,
     canShowCertificateAvailableDateField,
     courseDetails,
   );
