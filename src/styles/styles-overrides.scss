@@ -3262,3 +3262,37 @@ body.tels-custom-authoring {
     }
   }
 }
+
+// Component picker ("Add components" of a problem bank, "Use from library"): the library page
+// inside a modal. The page's breadcrumb pull-out (-2rem, made for the page padding) put the
+// library title against the modal's edge; in the modal it lines up with the content instead.
+.pgn__modal .library-authoring-page-container .library-authoring-page-content .ca-breadcrumb-bg {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+// Component cards of a library (page and picker): the "Select" button sits on the coloured
+// header of its type, so it is white like the header's icon (was brand-on-colour, unreadable).
+.library-item-header[class*="component-style-"]:not(.component-style-collection) .pgn__card-header-actions .btn-outline-primary {
+  // !important: the brand gives outline buttons their colours with !important.
+  color: var(--pgn-color-white) !important;
+  border-color: color-mix(in srgb, var(--pgn-color-white) 75%, transparent) !important;
+  background-color: transparent !important;
+
+  &:hover,
+  &:focus,
+  &:not(:disabled):not(.disabled):active {
+    color: var(--pgn-color-white) !important;
+    border-color: var(--pgn-color-white) !important;
+    background-color: color-mix(in srgb, var(--pgn-color-white) 18%, transparent) !important;
+  }
+
+  .pgn__icon {
+    color: inherit !important;
+  }
+}
+
+// Library filter row (Tags, Type, … sort): the filter buttons sat edge to edge.
+.library-authoring-page .d-flex.mt-3.align-items-center {
+  column-gap: var(--pgn-spacing-spacer-2, 0.5rem);
+}

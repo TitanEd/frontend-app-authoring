@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import last from 'lodash/last';
 import { useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import { FileUpload as FileUploadIcon } from '@openedx/paragon/icons';
+import { FileUpload as FileUploadIcon, InsertPhoto } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform';
 import {
   Form,
@@ -57,16 +57,33 @@ const CourseUploadImage = ({
     }
   };
 
+  // A path whose file does not load (a new course points at Studio's default
+  // "images_course_image.jpg", which does not exist; or the file was deleted) shows a placeholder.
+  const [isMissing, setIsMissing] = useState(false);
+  useEffect(() => setIsMissing(false), [assetImagePath]);
+
+  const placeholder = (
+    <div className="image-preview image-preview--placeholder">
+      <Icon src={InsertPhoto} className="image-preview__icon" />
+      <p className="m-0">
+        {intl.formatMessage(messages.uploadImageDropzoneText, { identifierFieldText })}
+      </p>
+    </div>
+  );
+
+  const preview = isMissing ? placeholder : (
+    <div className="image-preview">
+      <Image
+        src={imageAbsolutePath().href}
+        alt={intl.formatMessage(messages.uploadImageDropzoneAlt)}
+        fluid
+        onError={() => setIsMissing(true)}
+      />
+    </div>
+  );
+
   const inputComponent = assetImagePath ?
-    (
-      <div className="image-preview">
-        <Image
-          src={imageAbsolutePath().href}
-          alt={intl.formatMessage(messages.uploadImageDropzoneAlt)}
-          fluid
-        />
-      </div>
-    ) :
+    preview :
     (
       <>
         <IconButton
