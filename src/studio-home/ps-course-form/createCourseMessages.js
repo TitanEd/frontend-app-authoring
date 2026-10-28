@@ -31,7 +31,7 @@ const messages = defineMessages({
   },
   scheduleHelp: {
     id: 'course-authoring.create-course.card.schedule.help',
-    defaultMessage: 'When the course runs and when learners can enrol. All dates and times are in UTC.',
+    defaultMessage: 'When the course runs and when learners can enrol. Dates and times are in your time zone ({timezone}).',
     description: 'Card subtitle',
   },
   presentationTitle: {
@@ -146,7 +146,7 @@ const messages = defineMessages({
   },
   timeHelp: {
     id: 'course-authoring.create-course.field.time.help',
-    defaultMessage: 'Optional. 00:00 UTC when left empty.',
+    defaultMessage: 'Optional. 00:00 when left empty.',
     description: 'Help text of a time field',
   },
   enrollmentStartAfterCourseStart: {

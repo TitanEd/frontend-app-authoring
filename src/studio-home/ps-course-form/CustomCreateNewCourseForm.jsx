@@ -7,6 +7,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
 import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {
@@ -27,6 +28,8 @@ import {
   WarningFilled,
 } from '@openedx/paragon/icons';
 
+import { TIME_FORMAT } from '../../constants';
+import { getUserTimezoneLabel } from '../../utils/customDateUtils';
 import { videoTranscriptLanguages } from '../../editors/data/constants/video';
 import { LICENSE_TYPE } from '../../schedule-and-details/license-section/constants';
 import { useLicenseDetails } from '../../schedule-and-details/license-section/hooks';
@@ -99,6 +102,62 @@ Field.defaultProps = {
   help: null,
   error: null,
   className: 'mb-0',
+};
+
+/** "HH:mm" as a Date of today, for the time picker. */
+const timeToDate = (time) => {
+  const match = /^(\d{2}):(\d{2})$/.exec(time || '');
+  if (!match) {
+    return null;
+  }
+  const date = new Date();
+  date.setHours(Number(match[1]), Number(match[2]), 0, 0);
+  return date;
+};
+
+const pad = (number) => String(number).padStart(2, '0');
+
+/**
+ * A time field in the 24-hour format, like the Schedule & Details page
+ * (the browser's own time input follows the browser locale).
+ */
+const TimeInput = ({
+  id,
+  name,
+  value,
+  onChange,
+  onBlur,
+}) => (
+  <DatePicker
+    id={id}
+    name={name}
+    selected={timeToDate(value)}
+    onChange={(date) => onChange(date ? `${pad(date.getHours())}:${pad(date.getMinutes())}` : '')}
+    onChangeRaw={(event) => {
+      // An emptied field leaves the time out (the picker keeps the last one)
+      if (event?.target?.value === '') {
+        onChange('');
+      }
+    }}
+    onBlur={onBlur}
+    showTimeSelect
+    showTimeSelectOnly
+    dateFormat={TIME_FORMAT}
+    timeFormat={TIME_FORMAT}
+    placeholderText={TIME_FORMAT.toLocaleUpperCase()}
+    showPopperArrow={false}
+    autoComplete="off"
+    customInput={<Form.Control />}
+    wrapperClassName="tels-create-course__time"
+  />
+);
+
+TimeInput.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
 };
 
 /** One titled group of fields. */
@@ -323,7 +382,13 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
       </Col>
       <Col xs={12} sm={5}>
         <Field field={timeField} label={timeLabel} help={intl.formatMessage(messages.timeHelp)}>
-          <Form.Control type="time" {...bind(timeField)} />
+          <TimeInput
+            id={fieldId(timeField)}
+            name={timeField}
+            value={values[timeField]}
+            onChange={(time) => setValue(timeField, time)}
+            onBlur={() => touch(timeField)}
+          />
         </Field>
       </Col>
     </Row>
@@ -573,7 +638,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
 
             <FormCard
               title={intl.formatMessage(messages.schedule)}
-              help={intl.formatMessage(messages.scheduleHelp)}
+              help={intl.formatMessage(messages.scheduleHelp, { timezone: getUserTimezoneLabel() })}
             >
               {renderDateTime(
                 'startDate',
@@ -881,7 +946,6 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                               year: 'numeric',
                               month: 'short',
                               day: 'numeric',
-                              timeZone: 'UTC',
                             }),
                           })}
                         </Badge>

@@ -1,5 +1,5 @@
 // Course → Schedule & Details (CustomScheduleAndDetails.jsx), in the look of the "Create new
-// course" form: cards on the page background, a section bar, a save bar that stays in view.
+// course" form: cards on the page background, a section bar; the save prompt of the other settings pages.
 // Paragon design tokens only, so the light, dark and admin themes all apply; logical
 // properties, so it mirrors in right-to-left languages.
 
@@ -8,6 +8,9 @@
   --tels-cd-radius: var(--pgn-spacing-spacer-base);
   --tels-cd-border: var(--pgn-size-border-width) solid var(--pgn-color-light-400);
 
+  // Holds the absolutely placed screen-reader hints of the date fields. Without it they sit
+  // against <body> and make the whole document taller than the window.
+  position: relative;
   box-sizing: border-box;
   max-width: 90rem;
   min-width: 0;
@@ -38,22 +41,27 @@
   }
 
   &__alerts {
-    scroll-margin-top: var(--pgn-spacing-spacer-5);
-
     .alert {
       margin-bottom: var(--pgn-spacing-spacer-4);
     }
   }
 
-  // Section bar: jumps to a card.
+  // Section bar: jumps to a card and stays pinned at the top of the content column, on the
+  // page background, so every section is one click away.
   &__nav {
+    position: sticky;
+    top: 0;
+    z-index: 6;
     display: flex;
     flex-wrap: wrap;
     gap: var(--pgn-spacing-spacer-2);
-    margin-bottom: var(--tels-cd-gap);
+    margin: 0 calc(var(--pgn-spacing-spacer-4) * -1) var(--pgn-spacing-spacer-3);
+    padding: var(--pgn-spacing-spacer-2) var(--pgn-spacing-spacer-4);
+    background-color: var(--bg-body, var(--pgn-color-light-200));
   }
 
-  &__nav-link {
+  // Heavier than the theme's `.tels-custom-authoring a:not(.btn)` link colour.
+  @at-root .tels-course-details .tels-course-details__nav a.tels-course-details__nav-link {
     padding: var(--pgn-spacing-spacer-1) var(--pgn-spacing-spacer-3);
     border: var(--tels-cd-border);
     border-radius: 999px;
@@ -68,6 +76,14 @@
       border-color: var(--pgn-color-primary-base);
       color: var(--pgn-color-primary-base);
       text-decoration: none;
+    }
+
+    &.is-active,
+    &.is-active:hover,
+    &.is-active:focus-visible {
+      border-color: var(--pgn-color-primary-base);
+      background-color: var(--pgn-color-primary-base);
+      color: var(--pgn-color-white);
     }
   }
 
@@ -92,8 +108,11 @@
     border: var(--tels-cd-border);
     border-radius: var(--tels-cd-radius);
     background-color: var(--pgn-color-bg-base);
-    // A jump from the section bar stops below the pinned header.
-    scroll-margin-top: var(--pgn-spacing-spacer-5);
+
+    // Focused by a jump from the section bar (for screen readers), not drawn for the mouse.
+    &:focus:not(:focus-visible) {
+      outline: 0;
+    }
   }
 
   // The stock sections bring their own spacing for a page without cards: reset it.
@@ -150,6 +169,32 @@
     max-width: 100%;
   }
 
+  // Prerequisite course: the stock menu is always 20rem tall (empty space under a short
+  // list) and narrower than its field. It is as wide as the field and as tall as its items,
+  // up to 20rem; the toggle spans the field with its arrow at the end. `.requirements-section`
+  // outweighs the stock rule, which loads later.
+  .requirements-section .dropdown-prerequisite {
+    .dropdown {
+      background-color: transparent !important;
+    }
+
+    .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      font-weight: var(--pgn-typography-font-weight-normal);
+      text-align: start;
+    }
+
+    .dropdown-menu {
+      width: 100%;
+      height: auto;
+      max-height: 20rem;
+      overflow-y: auto;
+    }
+  }
+
   .datepicker-custom-control-icon {
     inset-inline-end: 1.188rem !important;
   }
@@ -166,35 +211,6 @@
     color: var(--pgn-color-gray-700);
   }
 
-  // Save bar: only while there is something to save, and always in view.
-  &__actions {
-    position: sticky;
-    bottom: 0;
-    z-index: 5;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--pgn-spacing-spacer-2);
-    margin: var(--tels-cd-gap) calc(var(--pgn-spacing-spacer-4) * -1) 0;
-    padding: var(--pgn-spacing-spacer-3) var(--pgn-spacing-spacer-4);
-    border-top: var(--tels-cd-border);
-    background-color: var(--pgn-color-bg-base);
-    box-shadow: 0 -6px 18px rgb(0 0 0 / 8%);
-  }
-
-  &__status {
-    flex: 1 1 14rem;
-    margin: 0;
-    font-size: var(--pgn-typography-font-size-sm);
-    font-weight: var(--pgn-typography-font-weight-bold);
-    color: var(--pgn-color-gray-700);
-
-    &.is-error {
-      color: var(--pgn-color-danger-base);
-    }
-  }
-
   @media (min-width: 1200px) {
     &__layout {
       grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
@@ -202,7 +218,16 @@
 
     &__aside {
       position: sticky;
-      top: var(--pgn-spacing-spacer-3);
+      top: calc(var(--tels-cd-nav-height, 3.5rem) + var(--pgn-spacing-spacer-3));
+    }
+  }
+
+  // On phones the section bar scrolls away with the page instead of covering it.
+  @media (width < 768px) {
+    &__nav {
+      position: static;
+      margin-inline: 0;
+      padding-inline: 0;
     }
   }
 
@@ -211,14 +236,6 @@
 
     &__card {
       padding: var(--pgn-spacing-spacer-3);
-    }
-
-    &__actions {
-      margin-inline: calc(var(--pgn-spacing-spacer-3) * -1);
-
-      .btn {
-        flex: 1 1 auto;
-      }
     }
   }
 }

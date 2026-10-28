@@ -1,6 +1,6 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
-// Messages of the custom configure modal (CustomBasicTab): times are entered in
+// Labels of the configure modal time fields: times are entered in
 // the user's time zone, e.g. "Release time in (Asia/Kolkata GMT+05:30)".
 const messages = defineMessages({
   releaseTimeCustom: {

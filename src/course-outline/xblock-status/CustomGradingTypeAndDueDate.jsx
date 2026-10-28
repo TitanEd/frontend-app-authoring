@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Icon } from '@openedx/paragon';
 import { Check as CheckIcon, CalendarMonth as CalendarIcon } from '@openedx/paragon/icons';
-import { convertToLocalTime } from '../../utils/customDateUtils';
+import { localizeStudioDate } from '../../utils/customDateUtils';
 
 import messages from './messages';
 
@@ -22,8 +22,8 @@ const GradingTypeAndDueDate = ({
 }) => {
   const intl = useIntl();
 
-  // Convert dueDate to local time, if valid
-  const localDueDate = dueDate ? convertToLocalTime(dueDate) : 'No scheduled due date';
+  // Due date in the computer's time zone (text it cannot read stays as it is)
+  const localDueDate = dueDate ? localizeStudioDate(dueDate) : 'No scheduled due date';
 
   const showRelativeWeeks = isSelfPaced && isCustomRelativeDatesActive && relativeWeeksDue;
 

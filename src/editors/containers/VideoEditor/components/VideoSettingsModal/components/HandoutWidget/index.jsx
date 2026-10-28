@@ -21,6 +21,7 @@ import UploadErrorAlert from '@src/editors/sharedComponents/ErrorAlerts/UploadEr
 import CollapsibleFormWidget from '@src/editors/sharedComponents/CollapsibleFormWidget/CollapsibleFormWidget';
 import { ErrorContext } from '@src/editors/containers/VideoEditor/hooks';
 import { RequestKeys } from '@src/editors/data/constants/requests';
+import { floatingMenuClass, floatingMenuProps } from '../floatingMenu';
 import messages from './messages';
 import * as hooks from './hooks';
 
@@ -74,7 +75,11 @@ const HandoutWidget = ({
                     variant="primary"
                     alt="Actions dropdown"
                   />
-                  <Dropdown.Menu className="video_handout Action Menu">
+                  <Dropdown.Menu
+                    className={`video_handout Action Menu ${floatingMenuClass}`}
+                    align="right"
+                    {...floatingMenuProps}
+                  >
                     <Dropdown.Item
                       key="handout-actions-replace"
                       onClick={fileInput.click}

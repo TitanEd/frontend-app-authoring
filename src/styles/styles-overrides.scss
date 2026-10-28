@@ -1311,9 +1311,11 @@ body {
   }
 }
 
+// Save prompts at the bottom of the settings pages (Grading, Advanced settings, Schedule & Details…):
+// level with the page content.
 .alert-toast {
-  width: 75.6% !important;
-  padding-left: 28px;
+  width: 71% !important;
+  padding-left: 0 !important;
 }
 
 .certificates {

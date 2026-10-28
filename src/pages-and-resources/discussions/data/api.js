@@ -1,5 +1,6 @@
 import { camelCaseObject, ensureConfig, getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 import { DivisionSchemes } from '../../../data/constants';
 
@@ -31,12 +32,29 @@ function normalizeLtiConfig(data) {
   };
 }
 
+// Studio stores blackout times without a time zone and reads them as UTC; the form
+// shows and takes them in the computer's time zone. Values without a time stay as they are.
+const BLACKOUT_DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm';
+const hasBlackoutTime = (value) => moment(value, BLACKOUT_DATE_TIME_FORMAT, true).isValid();
+
+export const blackoutUtcToLocal = (value) => (
+  hasBlackoutTime(value)
+    ? moment.utc(value, BLACKOUT_DATE_TIME_FORMAT, true).local().format(BLACKOUT_DATE_TIME_FORMAT)
+    : value
+);
+
+export const blackoutLocalToUtc = (value) => (
+  hasBlackoutTime(value)
+    ? moment(value, BLACKOUT_DATE_TIME_FORMAT, true).utc().format(BLACKOUT_DATE_TIME_FORMAT)
+    : value
+);
+
 export function normalizeRestrictedDates(data) {
   if (!data || Object.keys(data).length < 1) {
     return [];
   }
 
-  const normalizeData = data.map(([startDate, endDate]) => ({
+  const normalizeData = data.map((period) => period.map(blackoutUtcToLocal)).map(([startDate, endDate]) => ({
     id: uuid(),
     startDate: normalizeDate(startDate),
     startTime: getTime(startDate),
@@ -165,7 +183,7 @@ export function denormalizeRestrictedDate(restrictedPeriod) {
       normalizeDate(restrictedPeriod.endDate),
       normalizeTime(endOfDayTime(restrictedPeriod.endTime)),
     ),
-  ];
+  ].map(blackoutLocalToUtc);
 }
 
 function denormalizeData(courseId, appId, data) {

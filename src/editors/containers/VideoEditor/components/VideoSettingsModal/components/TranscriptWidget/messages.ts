@@ -76,6 +76,16 @@ const messages = defineMessages({
     defaultMessage: 'Select Language',
     description: 'Placeholder For Dropdown, which allows users to set the language associtated with a transcript',
   },
+  languageSearchPlaceholder: {
+    id: 'authoring.videoeditor.transcripts.languageSearchPlaceholder',
+    defaultMessage: 'Search languages',
+    description: 'Placeholder of the search box at the top of the transcript language list',
+  },
+  languageSearchEmpty: {
+    id: 'authoring.videoeditor.transcripts.languageSearchEmpty',
+    defaultMessage: 'No language matches your search.',
+    description: 'Shown in the transcript language list when the search finds nothing',
+  },
   cancelDeleteLabel: {
     id: 'authoring.videoeditor.transcripts.cancelDeleteLabel',
     defaultMessage: 'Cancel',

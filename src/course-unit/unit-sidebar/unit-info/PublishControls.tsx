@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import ModalNotification from '@src/generic/modal-notification';
 import { useIframe } from '@src/generic/hooks/context/hooks';
 import { getCourseUnitData } from '@src/course-unit/data/selectors';
+import { localizeStudioDate } from '@src/utils/customDateUtils';
 import { messageTypes, PUBLISH_TYPES } from '@src/course-unit/constants';
 import { SidebarFooter, SidebarHeader } from '@src/course-unit/legacy-sidebar/components';
 import useCourseUnitData from '@src/course-unit/legacy-sidebar/hooks';
@@ -108,7 +109,7 @@ const PublishControls = ({
                   </>
                 )}
                 <span>
-                  {editedOn}
+                  {localizeStudioDate(editedOn)}
                 </span>
               </Stack>
             </div>
@@ -131,7 +132,7 @@ const PublishControls = ({
                   </>
                 )}
                 <span>
-                  {publishedOn}
+                  {localizeStudioDate(publishedOn)}
                 </span>
               </Stack>
             </div>

@@ -89,6 +89,21 @@ body {
   // }
 }
 
+/* The library's open sidebar is 200px, which cut the last letter of the longest label
+   ("Create New Course") at the 1rem label size. Also covers the overlay sidebar of the
+   course pages (`.non-standard-route`). Longer translations ("Bibliotecas de contenido")
+   go on two lines instead of being cut. */
+.sidebar-container .sidebar:not(.collapsed) {
+  width: 220px;
+}
+
+.sidebar-container .sidebar .sidebar-btn .btn-label {
+  min-width: 0;
+  line-height: 1.25;
+  text-align: start;
+  white-space: normal;
+}
+
 /* Styles for the sidebar scrollbar */
 .sidebar-container::-webkit-scrollbar {
   width: 4px;

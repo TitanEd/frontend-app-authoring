@@ -4,6 +4,8 @@ import { useCourseItemData } from '@src/course-outline/data/apiHooks';
 import { DatepickerControl, DATEPICKER_TYPES } from '@src/generic/datepicker-control';
 import { SidebarSection } from '@src/generic/sidebar';
 import { useStateWithCallback } from '@src/hooks';
+import customMessages from '@src/generic/configure-modal/customMessages';
+import { getUserTimezoneLabel } from '@src/utils/customDateUtils';
 import messages from '../messages';
 
 interface Props {
@@ -34,7 +36,7 @@ export const ReleaseSection = ({ itemId, onChange }: Props) => {
         <DatepickerControl
           type={DATEPICKER_TYPES.time}
           value={localState}
-          label={intl.formatMessage(messages.releaseTimeLabel)}
+          label={intl.formatMessage(customMessages.releaseTimeCustom, { timezone: getUserTimezoneLabel(localState) })}
           controlName="start-time"
           onChange={setLocalState}
         />

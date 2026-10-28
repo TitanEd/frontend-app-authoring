@@ -5,6 +5,8 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { DatepickerControl, DATEPICKER_TYPES } from '../datepicker-control';
 import messages from './messages';
+import customMessages from './customMessages';
+import { getUserTimezoneLabel } from '../../utils/customDateUtils';
 
 const BasicTab = ({
   values,
@@ -45,7 +47,7 @@ const BasicTab = ({
               <DatepickerControl
                 type={DATEPICKER_TYPES.time}
                 value={releaseDate}
-                label={intl.formatMessage(messages.releaseTimeUTC)}
+                label={intl.formatMessage(customMessages.releaseTimeCustom, { timezone: getUserTimezoneLabel(releaseDate) })}
                 controlName="start-time"
                 onChange={(val) => setFieldValue('releaseDate', val)}
               />
@@ -89,7 +91,7 @@ const BasicTab = ({
                 <DatepickerControl
                   type={DATEPICKER_TYPES.time}
                   value={dueDate}
-                  label={intl.formatMessage(messages.dueTimeUTC)}
+                  label={intl.formatMessage(customMessages.dueTimeCustom, { timezone: getUserTimezoneLabel(dueDate) })}
                   controlName="start-time"
                   onChange={(val) => setFieldValue('dueDate', val)}
                 />

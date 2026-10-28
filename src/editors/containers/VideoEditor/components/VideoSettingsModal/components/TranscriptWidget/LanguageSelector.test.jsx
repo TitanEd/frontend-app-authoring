@@ -24,13 +24,17 @@ jest.mock('react-redux', () => {
   };
 });
 
-jest.mock('../../../../../../data/constants/video', () => ({
-  videoTranscriptLanguages: {
+jest.mock('../../../../../../data/constants/video', () => {
+  const languages = {
     [lang1Code]: lang1,
     [lang2Code]: lang2,
     [lang3Code]: lang3,
-  },
-}));
+  };
+  return {
+    videoTranscriptLanguages: languages,
+    in8lTranscriptLanguages: () => languages,
+  };
+});
 
 jest.mock('../../../../../../data/redux', () => ({
   thunkActions: {
@@ -97,5 +101,20 @@ describe('LanguageSelector', () => {
       languageBeforeChange: lang1Code,
     });
     expect(mockDispatch).toHaveBeenCalled();
+  });
+
+  test('the search box keeps the languages whose name or code matches', () => {
+    const { video } = selectors;
+    jest.spyOn(video, 'openLanguages').mockReturnValue(props.openLanguages);
+    render(<LanguageSelector {...props} language="" />);
+    fireEvent.click(screen.getByRole('button', { name: 'Languages' }));
+    const search = screen.getByRole('searchbox', { name: 'Search languages' });
+    fireEvent.change(search, { target: { value: 'elv' } });
+    expect(screen.getByText(lang2)).toBeInTheDocument();
+    expect(screen.queryByText(lang3)).not.toBeInTheDocument();
+    fireEvent.change(search, { target: { value: 'sl' } });
+    expect(screen.getByText(lang3)).toBeInTheDocument();
+    fireEvent.change(search, { target: { value: 'zzz' } });
+    expect(screen.getByText('No language matches your search.')).toBeInTheDocument();
   });
 });

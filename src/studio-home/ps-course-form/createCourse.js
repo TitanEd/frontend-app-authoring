@@ -10,6 +10,7 @@
  */
 import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { localDateTimeToUtc } from '../../utils/customDateUtils';
 
 export const COURSE_KEY_PART_PATTERN = /^[a-zA-Z0-9_.-]+$/;
 export const COURSE_KEY_MAX_LENGTH = 65;
@@ -57,8 +58,11 @@ export const getInitialValues = (now = new Date()) => ({
   introVideo: '',
 });
 
-/** `2027-01-31` + `09:30` -> `2027-01-31T09:30:00Z`. Studio keeps course dates in UTC. */
-export const toUtcDateTime = (date, time) => (date ? `${date}T${time || '00:00'}:00Z` : null);
+/**
+ * A date and time entered in the computer's time zone as UTC: Studio keeps course
+ * dates in UTC. `2027-01-31` + `09:30` in Asia/Kolkata -> `2027-01-31T04:00:00Z`.
+ */
+export const toUtcDateTime = (date, time) => localDateTimeToUtc(date, time);
 
 /** The course key Studio will give the course, or '' while a part is missing. */
 export const buildCourseKey = ({ organization, courseNumber, courseRun }) => {

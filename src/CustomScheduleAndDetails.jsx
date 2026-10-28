@@ -5,14 +5,14 @@
  * schedule, details, introducing, learning outcomes, instructors, requirements, licence), so
  * nothing the stock page can do is lost: permissions, validation, image uploads, the entrance
  * exam and prerequisites all work as upstream. This file adds the layout (cards, a section
- * bar, a save bar that stays in view), one save request with clear feedback, and the Pricing
+ * bar, the save prompt of the other settings pages), one save request with clear feedback, and the Pricing
  * card, which only exists on a site that has the Ecommerce feature.
  *
  * Rendered through the plugin slot `schedule_and_details_plugin_slot` (env.config.jsx); the
  * stock page around it loads the course details and settings into the store.
  */
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ import {
   Button, Form, Hyperlink, StatefulButton,
 } from '@openedx/paragon';
 import {
-  CheckCircle as CheckCircleIcon, ErrorOutline as ErrorOutlineIcon, Launch,
+  CheckCircle as CheckCircleIcon, ErrorOutline as ErrorOutlineIcon, Launch, Warning as WarningIcon,
 } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
@@ -31,7 +31,6 @@ import InternetConnectionAlert from './generic/internet-connection-alert';
 import PermissionDeniedAlert from './generic/PermissionDeniedAlert';
 import { RequestStatus } from './data/constants';
 import { STATEFUL_BUTTON_STATES } from './constants';
-import { useScrollToHashElement } from './hooks';
 import { useCourseUserPermissions } from './authz/hooks';
 import { getScheduleAndDetailsPermissions } from './authz/permissionHelpers';
 import {
@@ -50,6 +49,7 @@ import InstructorsSection from './schedule-and-details/instructors-section';
 import RequirementsSection from './schedule-and-details/requirements-section';
 import LicenseSection from './schedule-and-details/license-section';
 import ScheduleSidebar from './schedule-and-details/schedule-sidebar';
+import { isValidIntroVideo } from './schedule-and-details/introducing-section/introduction-video/youtube';
 import stockMessages from './schedule-and-details/messages';
 import messages from './schedule-and-details/customDetailsMessages';
 import { useSiteFeatures } from './useSiteFeatures';
@@ -68,9 +68,32 @@ const saveCourseDetails = (courseId, details) =>
     ...Object.fromEntries(DATE_FIELDS.filter((name) => details[name] === '').map((name) => [name, null])),
   });
 
+// The page scrolls inside the shell's content column (.main-content). An #anchor jump or
+// scrollIntoView() would also scroll <html>, whose `overflow: hidden` only hides its scroll bar:
+// the header went off the top and a blank strip showed at the bottom. Only the column scrolls.
+const scrollBehavior = () => (window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
+
+const scrollColumnTo = (element, offset = 0, behavior = scrollBehavior()) => {
+  const column = element.closest('.main-content');
+  if (!column) {
+    element.scrollIntoView({ behavior, block: 'start' });
+    return;
+  }
+  const top = element.getBoundingClientRect().top - column.getBoundingClientRect().top + column.scrollTop - offset;
+  column.scrollTo({ top: Math.max(0, top), behavior });
+};
+
+// Space kept between the pinned section bar and a card it jumps to.
+const JUMP_GAP = 16;
+
+// The section named in the address (…/details#details-schedule) until the page has jumped to it.
+// Kept outside the component: the stock page drops the hash through the router, which mounts
+// this page again.
+const pendingSection = { id: '' };
+
 /** One card of the page; `id` is what the section bar jumps to. */
 const DetailsCard = ({ id, children }) => (
-  <div className="tels-course-details__card" id={id}>{children}</div>
+  <div className="tels-course-details__card" id={id} tabIndex={-1}>{children}</div>
 );
 
 DetailsCard.propTypes = {
@@ -216,7 +239,6 @@ const CustomScheduleAndDetails = ({ courseId }) => {
     courseDetails,
   );
 
-  useScrollToHashElement({ isLoading });
 
   // ---- price (Ecommerce feature only) ----
   const showPricing = Boolean(siteFeatures.ecommerce);
@@ -247,7 +269,8 @@ const CustomScheduleAndDetails = ({ courseId }) => {
   const priceDirty = showPricing && Boolean(priceInfo) && (isPaid !== Boolean(savedPrice) || wantedPrice !== savedPrice);
   const priceInvalid = priceDirty && isPaid && !validPrice(price);
 
-  const hasErrors = Object.keys(errorFields || {}).length > 0 || priceInvalid;
+  const introVideoInvalid = !isValidIntroVideo(editedValues?.introVideo);
+  const hasErrors = Object.keys(errorFields || {}).length > 0 || priceInvalid || introVideoInvalid;
   const canEdit = canEditSchedule || canEditDetails;
   const isSaving = isQueryPending || priceStatus === 'saving';
   const isDirty = showModifiedAlert || priceDirty;
@@ -287,7 +310,7 @@ const CustomScheduleAndDetails = ({ courseId }) => {
   useEffect(() => {
     if (showSuccessfulAlert || showFailedAlert || priceStatus === 'failed') {
       const top = document.querySelector('.tels-course-details__alerts');
-      if (top) { top.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      if (top) { scrollColumnTo(top, JUMP_GAP); }
     }
   }, [showSuccessfulAlert, showFailedAlert, priceStatus]);
 
@@ -318,6 +341,91 @@ const CustomScheduleAndDetails = ({ courseId }) => {
     showCreditSection, aboutPageEditable, enableExtendedCourseDetails, showRequirementsSection, showPricing,
     licensingEnabled,
   ]);
+
+  // ---- section bar: pinned above the cards, marks the section in view ----
+  const isReady = !isLoading && Boolean(courseSettings && courseDetails) && Boolean(canViewScheduleAndDetails);
+  const navRef = useRef(null);
+  const [activeSection, setActiveSection] = useState(null);
+  // After a click the clicked section stays marked until the author scrolls: the last cards
+  // can be too short to reach the top of the column.
+  const clickedSection = useRef(null);
+
+  // The bar covers the top of the column only while it is pinned (not on phones).
+  const navOffset = () => {
+    const nav = navRef.current;
+    return (nav && window.getComputedStyle(nav).position === 'sticky' ? nav.offsetHeight : 0) + JUMP_GAP;
+  };
+
+  const jumpTo = useCallback((id) => {
+    const card = document.getElementById(id);
+    if (!card) { return; }
+    clickedSection.current = id;
+    setActiveSection(id);
+    scrollColumnTo(card, navOffset());
+    card.focus({ preventScroll: true });
+    window.history.replaceState(window.history.state, '', `#${id}`);
+  }, []);
+
+  // A link to a section opens at that section. The stock page around this one scrolls to the
+  // hash too (scrollIntoView, then drops the hash) right after this page mounts: the jump comes
+  // after the stock one. Images and editors above the section load later and push it down, so
+  // it is kept in place while the page grows, until the author scrolls or for a few seconds.
+  useState(() => {
+    if (window.location.hash.length > 1) { pendingSection.id = window.location.hash.substring(1); }
+  });
+  useEffect(() => {
+    const { id } = pendingSection;
+    if (!isReady || !id || !sections.some(([sectionId]) => sectionId === id)) { return undefined; }
+    const root = navRef.current && navRef.current.closest('.tels-course-details');
+    const keepInPlace = new ResizeObserver(() => {
+      const card = document.getElementById(id);
+      if (card && clickedSection.current === id) { scrollColumnTo(card, navOffset(), 'auto'); }
+    });
+    const start = window.setTimeout(() => {
+      pendingSection.id = '';
+      jumpTo(id);
+      if (root) { keepInPlace.observe(root); }
+    }, 0);
+    const stop = window.setTimeout(() => keepInPlace.disconnect(), 5000);
+    return () => {
+      window.clearTimeout(start);
+      window.clearTimeout(stop);
+      keepInPlace.disconnect();
+    };
+  }, [isReady]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const nav = navRef.current;
+    const column = nav && nav.closest('.main-content');
+    if (!isReady || !column) { return undefined; }
+    const root = nav.closest('.tels-course-details');
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      if (clickedSection.current) { return; }
+      const line = column.getBoundingClientRect().top + navOffset() + 1;
+      let current = sections[0][0];
+      sections.forEach(([id]) => {
+        const card = document.getElementById(id);
+        if (card && card.getBoundingClientRect().top <= line) { current = id; }
+      });
+      setActiveSection(current);
+    };
+    const onScroll = () => { if (!frame) { frame = window.requestAnimationFrame(update); } };
+    const release = () => { clickedSection.current = null; };
+    // The sticky case card sits under the bar, whatever height the bar wraps to.
+    const resize = new ResizeObserver(() => root.style.setProperty('--tels-cd-nav-height', `${nav.offsetHeight}px`));
+    resize.observe(nav);
+    column.addEventListener('scroll', onScroll, { passive: true });
+    ['wheel', 'touchstart', 'keydown'].forEach((name) => column.addEventListener(name, release, { passive: true }));
+    update();
+    return () => {
+      resize.disconnect();
+      column.removeEventListener('scroll', onScroll);
+      ['wheel', 'touchstart', 'keydown'].forEach((name) => column.removeEventListener(name, release));
+      if (frame) { window.cancelAnimationFrame(frame); }
+    };
+  }, [isReady, sections]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading || !courseSettings || !courseDetails) {
     return null;
@@ -359,9 +467,7 @@ const CustomScheduleAndDetails = ({ courseId }) => {
   // press would move the cursor (as upstream).
   const { overview: initialOverview, aboutSidebarHtml: initialAboutSidebarHtml } = courseDetails;
 
-  let status = intl.formatMessage(messages.unsaved);
-  if (isSaving) { status = intl.formatMessage(messages.saving); }
-  if (triedToSave && hasErrors) { status = intl.formatMessage(messages.fixErrors); }
+  const showErrors = triedToSave && hasErrors;
 
   return (
     <div className="tels-course-details">
@@ -401,9 +507,18 @@ const CustomScheduleAndDetails = ({ courseId }) => {
         />
       </div>
 
-      <nav className="tels-course-details__nav" aria-label={intl.formatMessage(messages.navLabel)}>
+      <nav className="tels-course-details__nav" ref={navRef} aria-label={intl.formatMessage(messages.navLabel)}>
         {sections.map(([id, label]) => (
-          <a key={id} href={`#${id}`} className="tels-course-details__nav-link">{intl.formatMessage(label)}</a>
+          <a
+            key={id}
+            href={`#${id}`}
+            // `nav-link`: the theme leaves these out of its link colour rule.
+            className={`nav-link tels-course-details__nav-link${activeSection === id ? ' is-active' : ''}`}
+            aria-current={activeSection === id ? 'location' : undefined}
+            onClick={(event) => { event.preventDefault(); jumpTo(id); }}
+          >
+            {intl.formatMessage(label)}
+          </a>
         ))}
       </nav>
 
@@ -545,30 +660,43 @@ const CustomScheduleAndDetails = ({ courseId }) => {
         </aside>
       </div>
 
-      {isDirty && (
-        <div className="tels-course-details__actions" role="region" aria-label={intl.formatMessage(stockMessages.alertWarning)}>
-          <p className={`tels-course-details__status${triedToSave && hasErrors ? ' is-error' : ''}`} role="status">{status}</p>
-          <Button variant="tertiary" onClick={handleCancel} disabled={isSaving}>
-            {intl.formatMessage(stockMessages.buttonCancelText)}
-          </Button>
-          <StatefulButton
-            onClick={handleSave}
-            disabled={!canEdit}
-            state={isSaving ? STATEFUL_BUTTON_STATES.pending : STATEFUL_BUTTON_STATES.default}
-            labels={{
-              default: intl.formatMessage(stockMessages.buttonSaveText),
-              pending: intl.formatMessage(stockMessages.buttonSavingText),
-            }}
-            disabledStates={[STATEFUL_BUTTON_STATES.pending]}
-          />
-        </div>
-      )}
-
+      {/* The same save prompt as the Grading and Advanced settings pages. */}
       <div className="alert-toast">
         <InternetConnectionAlert
           isFailed={savingStatus === RequestStatus.FAILED}
           isQueryPending={isQueryPending}
           onInternetConnectionFailed={handleInternetConnectionFailed}
+        />
+        <AlertMessage
+          show={isDirty}
+          aria-hidden={!isDirty}
+          aria-labelledby={intl.formatMessage(stockMessages.alertWarningAriaLabelledby)}
+          aria-describedby={intl.formatMessage(stockMessages.alertWarningAriaDescribedby)}
+          role="dialog"
+          actions={[
+            !isSaving && (
+              <Button key="cancel-button" variant="tertiary" onClick={handleCancel}>
+                {intl.formatMessage(stockMessages.buttonCancelText)}
+              </Button>
+            ),
+            <StatefulButton
+              key="save-button"
+              onClick={handleSave}
+              disabled={!canEdit}
+              state={isSaving ? STATEFUL_BUTTON_STATES.pending : STATEFUL_BUTTON_STATES.default}
+              labels={{
+                default: intl.formatMessage(stockMessages.buttonSaveText),
+                pending: intl.formatMessage(stockMessages.buttonSavingText),
+              }}
+              disabledStates={[STATEFUL_BUTTON_STATES.pending]}
+            />,
+          ].filter(Boolean)}
+          variant="warning"
+          icon={WarningIcon}
+          title={intl.formatMessage(showErrors ? stockMessages.alertWarningOnSaveWithError : stockMessages.alertWarning)}
+          description={intl.formatMessage(showErrors
+            ? stockMessages.alertWarningDescriptionsOnSaveWithError
+            : stockMessages.alertWarningDescriptions)}
         />
       </div>
     </div>

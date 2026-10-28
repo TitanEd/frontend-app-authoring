@@ -9,6 +9,7 @@ import type { IntlShape } from 'react-intl';
 
 import { ICON_COLOR_VARIANTS, UNIT_VISIBILITY_STATES } from '../constants';
 import messages from './messages';
+import { localizeStudioDate } from '../../utils/customDateUtils';
 
 /**
  * Get information about the publishing status.
@@ -33,9 +34,9 @@ export const getPublishInfo = (
 ): string => {
   let publishInfoText;
   if (hasChanges && editedOn && editedBy) {
-    publishInfoText = intl.formatMessage(messages.publishInfoDraftSaved, { editedOn, editedBy });
+    publishInfoText = intl.formatMessage(messages.publishInfoDraftSaved, { editedOn: localizeStudioDate(editedOn), editedBy });
   } else if (publishedOn && publishedBy) {
-    publishInfoText = intl.formatMessage(messages.publishLastPublished, { publishedOn, publishedBy });
+    publishInfoText = intl.formatMessage(messages.publishLastPublished, { publishedOn: localizeStudioDate(publishedOn), publishedBy });
   } else {
     publishInfoText = intl.formatMessage(messages.publishInfoPreviouslyPublished);
   }
@@ -54,7 +55,7 @@ export const getReleaseInfo = (intl: IntlShape, releaseDate: string, releaseDate
   if (releaseDate) {
     return {
       isScheduled: true,
-      releaseDate,
+      releaseDate: localizeStudioDate(releaseDate),
       releaseDateFrom,
       sectionNameMessage: intl.formatMessage(messages.releaseInfoWithSection, { sectionName: releaseDateFrom }),
     };

@@ -4,22 +4,19 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Form, Icon } from '@openedx/paragon';
 import { AccessTime, Calendar } from '@openedx/paragon/icons';
-import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { convertToDateFromString, convertToStringFromDate, isValidDate } from '../../utils/customDateUtils';
+import {
+  convertToDateFromString,
+  convertToStringFromDate,
+  getUserTimezoneLabel,
+  isValidDate,
+} from '../../utils/customDateUtils';
 import { DATE_FORMAT, TIME_FORMAT } from '../../constants';
-import coreMessages from './messages';
+import messages from './messages';
 
-const customMessages = defineMessages({
-  datepickerCustom: {
-    id: 'course-authoring.schedule.schedule-section.datepicker.custom',
-    defaultMessage: 'Local time',
-    description: 'Label shown next to datepicker indicating local timezone',
-  },
-});
-
-const messages = { ...coreMessages, ...customMessages };
-
+// Same control as DatepickerControl, but the value (a UTC string) is shown and
+// picked in the computer's time zone; `showUTC` names that time zone.
 export const DATEPICKER_TYPES = {
   date: 'date',
   time: 'time',
@@ -61,8 +58,7 @@ const DatepickerControl = ({
         {label}
         {showUTC && (
           <span className="h6 font-weight-normal text-gray-500 mb-0">
-            {/* This will show the user's timezone with offset */}
-            ({intl.formatMessage(messages.datepickerCustom)})
+            ({getUserTimezoneLabel(formattedDate)})
           </span>
         )}
       </Form.Label>
@@ -100,7 +96,9 @@ const DatepickerControl = ({
           showPopperArrow={false}
           aria-describedby={describedByIds}
           onChange={(date) => {
-            if (isValidDate(date)) {
+            if (!date) {
+              onChange('');
+            } else if (isValidDate(date)) {
               onChange(convertToStringFromDate(date));
             }
           }}

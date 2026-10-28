@@ -16,6 +16,7 @@ import {
 import CollapsableEditor from '../../../../../../generic/CollapsableEditor';
 import ConfirmationPopup from '../../../../../../generic/ConfirmationPopup';
 import CollapseCardHeading from './CollapseCardHeading';
+import { getUserTimezoneLabel } from '../../../../../../utils/customDateUtils';
 
 const DiscussionRestrictionItem = ({
   restrictedDate,
@@ -110,7 +111,7 @@ const DiscussionRestrictionItem = ({
         <RestrictDatesInput
           value={restrictedDate.startTime}
           type="time"
-          label={intl.formatMessage(messages.startTimeLabel, { zone: 'UTC' })}
+          label={`${intl.formatMessage(messages.startTimeLabel)} (${getUserTimezoneLabel()})`}
           helpText={intl.formatMessage(messages.restrictedStartTimeHelp)}
           fieldName="startTime"
           formGroupClasses="pr-md-0"
@@ -136,7 +137,7 @@ const DiscussionRestrictionItem = ({
         <RestrictDatesInput
           value={restrictedDate.endTime}
           type="time"
-          label={intl.formatMessage(messages.endTimeLabel, { zone: 'UTC' })}
+          label={`${intl.formatMessage(messages.endTimeLabel)} (${getUserTimezoneLabel()})`}
           helpText={intl.formatMessage(messages.restrictedEndTimeHelp)}
           fieldName="endTime"
           formGroupClasses="pr-md-0"

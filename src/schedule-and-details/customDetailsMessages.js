@@ -30,9 +30,6 @@ const messages = defineMessages({
   priceNotSelling: { id: 'tels.details.pricing.notSelling', defaultMessage: 'Selling courses is switched off for this site, so learners enrol for free until an administrator switches it on.' },
   priceLoadFailed: { id: 'tels.details.pricing.loadFailed', defaultMessage: 'The price could not be loaded.' },
   priceSaveFailed: { id: 'tels.details.pricing.saveFailed', defaultMessage: 'The price could not be saved. Try again.' },
-  unsaved: { id: 'tels.details.unsaved', defaultMessage: 'You have unsaved changes.' },
-  fixErrors: { id: 'tels.details.fixErrors', defaultMessage: 'Correct the highlighted fields before saving.' },
-  saving: { id: 'tels.details.saving', defaultMessage: 'Saving your changes. This can take a few seconds.' },
 });
 
 export default messages;

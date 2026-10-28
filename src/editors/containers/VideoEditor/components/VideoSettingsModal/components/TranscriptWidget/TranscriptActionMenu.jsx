@@ -14,6 +14,7 @@ import { FileInput, fileInput } from '../../../../../../sharedComponents/FileInp
 // should be re-thought and cleaned up to avoid this pattern.
 // eslint-disable-next-line import/no-self-import
 import * as module from './TranscriptActionMenu';
+import { floatingMenuClass, floatingMenuProps } from '../floatingMenu';
 import messages from './messages';
 
 export const hooks = {
@@ -47,7 +48,11 @@ const TranscriptActionMenu = ({
         variant="primary"
         alt="Actions dropdown"
       />
-      <Dropdown.Menu className="video_transcript Action Menu">
+      <Dropdown.Menu
+        className={`video_transcript Action Menu ${floatingMenuClass}`}
+        align="right"
+        {...floatingMenuProps}
+      >
         <Dropdown.Item
           key={`transcript-actions-${index}-replace`}
           onClick={input.click}

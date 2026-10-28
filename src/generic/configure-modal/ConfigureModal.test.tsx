@@ -68,7 +68,7 @@ describe('<ConfigureModal /> for Section', () => {
     expect(getByText(messages.basicTabTitle.defaultMessage)).toBeInTheDocument();
     expect(getByText(messages.visibilityTabTitle.defaultMessage)).toBeInTheDocument();
     expect(getByText(messages.releaseDate.defaultMessage)).toBeInTheDocument();
-    expect(getByText(messages.releaseTimeUTC.defaultMessage)).toBeInTheDocument();
+    expect(getByText(/^Release time in \(/)).toBeInTheDocument();
     expect(getByRole('button', { name: messages.cancelButton.defaultMessage })).toBeInTheDocument();
     expect(getByRole('button', { name: messages.saveButton.defaultMessage })).toBeInTheDocument();
   });
@@ -121,11 +121,11 @@ describe('<ConfigureModal /> for Subsection', () => {
     expect(getByText(messages.visibilityTabTitle.defaultMessage)).toBeInTheDocument();
     expect(getByText(messages.advancedTabTitle.defaultMessage)).toBeInTheDocument();
     expect(getByText(messages.releaseDate.defaultMessage)).toBeInTheDocument();
-    expect(getByText(messages.releaseTimeUTC.defaultMessage)).toBeInTheDocument();
+    expect(getByText(/^Release time in \(/)).toBeInTheDocument();
     expect(getByText(messages.grading.defaultMessage)).toBeInTheDocument();
     expect(getByText(messages.gradeAs.defaultMessage)).toBeInTheDocument();
     expect(getByText(messages.dueDate.defaultMessage)).toBeInTheDocument();
-    expect(getByText(messages.dueTimeUTC.defaultMessage)).toBeInTheDocument();
+    expect(getByText(/^Due time in \(/)).toBeInTheDocument();
     expect(getByRole('button', { name: messages.cancelButton.defaultMessage })).toBeInTheDocument();
     expect(getByRole('button', { name: messages.saveButton.defaultMessage })).toBeInTheDocument();
   });
@@ -133,9 +133,9 @@ describe('<ConfigureModal /> for Subsection', () => {
   it('hides release and due dates for self paced courses', () => {
     const { queryByText } = renderSubsectionComponent({ isSelfPaced: true });
     expect(queryByText(messages.releaseDate.defaultMessage)).not.toBeInTheDocument();
-    expect(queryByText(messages.releaseTimeUTC.defaultMessage)).not.toBeInTheDocument();
+    expect(queryByText(/^Release time in \(/)).not.toBeInTheDocument();
     expect(queryByText(messages.dueDate.defaultMessage)).not.toBeInTheDocument();
-    expect(queryByText(messages.dueTimeUTC.defaultMessage)).not.toBeInTheDocument();
+    expect(queryByText(/^Due time in \(/)).not.toBeInTheDocument();
   });
 
   it('switches to the subsection Visibility tab and renders correctly', async () => {

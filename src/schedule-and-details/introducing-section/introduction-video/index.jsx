@@ -1,18 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Card } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import messages from './messages';
+import customMessages from './customMessages';
+import { youTubeVideoId } from './youtube';
 
+// The field takes a YouTube link or a video ID and hands the ID on (Studio stores the ID only).
+// Text that is neither is handed on as typed, so the page can refuse to save it.
 const IntroductionVideo = ({ introVideo, isEditable = true, onChange }) => {
   const intl = useIntl();
-  const embedVideoUrl = introVideo
-    ? `//www.youtube.com/embed/${introVideo}`
+  // What the author typed or pasted; `introVideo` is the ID taken from it.
+  const [text, setText] = useState(introVideo || '');
+
+  // The value changed elsewhere (cancel, delete, a saved course): show it.
+  useEffect(() => {
+    const value = introVideo || '';
+    if (text !== value && (youTubeVideoId(text) || text) !== value) {
+      setText(value);
+    }
+  }, [introVideo]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const videoId = youTubeVideoId(text);
+  const isInvalid = Boolean(text.trim()) && !videoId;
+  const embedVideoUrl = videoId
+    ? `//www.youtube.com/embed/${videoId}`
     : '';
 
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setText(value);
+    onChange(youTubeVideoId(value) || value, 'introVideo');
+  };
+
+  let feedback = intl.formatMessage(customMessages.linkHelp);
+  if (isInvalid) {
+    feedback = intl.formatMessage(customMessages.linkInvalid);
+  } else if (videoId && videoId !== text.trim()) {
+    feedback = intl.formatMessage(customMessages.linkFound, { id: videoId });
+  }
+
   return (
-    <Form.Group className="form-group-custom">
+    <Form.Group className="form-group-custom" isInvalid={isInvalid}>
       <Form.Label>
         {intl.formatMessage(messages.courseIntroductionVideoLabel)}
       </Form.Label>
@@ -32,22 +62,27 @@ const IntroductionVideo = ({ introVideo, isEditable = true, onChange }) => {
         <Card.Divider />
         <Card.Footer className="p-2.5">
           <Form.Control
-            value={introVideo || ''}
-            placeholder={intl.formatMessage(messages.courseIntroductionVideoPlaceholder)}
-            onChange={(e) => onChange(e.target.value, 'introVideo')}
+            value={text}
+            placeholder={intl.formatMessage(customMessages.linkPlaceholder)}
+            onChange={handleChange}
             disabled={!isEditable}
+            inputMode="url"
+            spellCheck={false}
           />
           <Button
             variant="outline-primary"
-            onClick={() => onChange('', 'introVideo')}
-            disabled={!introVideo || !isEditable}
+            onClick={() => {
+              setText('');
+              onChange('', 'introVideo');
+            }}
+            disabled={!text || !isEditable}
           >
             {intl.formatMessage(messages.courseIntroductionVideoDelete)}
           </Button>
         </Card.Footer>
       </Card>
-      <Form.Control.Feedback>
-        {intl.formatMessage(messages.courseIntroductionVideoHelpText)}
+      <Form.Control.Feedback type={isInvalid ? 'invalid' : 'default'} hasIcon={false}>
+        {feedback}
       </Form.Control.Feedback>
     </Form.Group>
   );

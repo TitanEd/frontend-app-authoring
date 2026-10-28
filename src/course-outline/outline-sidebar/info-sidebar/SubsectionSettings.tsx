@@ -11,9 +11,11 @@ import { ConfigureSubsectionData } from '@src/course-outline/data/types';
 import { useOutlineSidebarContext } from '@src/course-outline/outline-sidebar/OutlineSidebarContext';
 import { useCourseAuthoringContext } from '@src/CourseAuthoringContext';
 import AdvancedTab from '@src/generic/configure-modal/AdvancedTab';
+import customMessages from '@src/generic/configure-modal/customMessages';
 import { DatepickerControl, DATEPICKER_TYPES } from '@src/generic/datepicker-control';
 import { SidebarContent, SidebarSection } from '@src/generic/sidebar';
 import { useStateWithCallback } from '@src/hooks';
+import { getUserTimezoneLabel } from '@src/utils/customDateUtils';
 import {
   useCallback,
   useEffect,
@@ -131,7 +133,7 @@ const GradingSection = ({ subsectionId, onChange }: SubProps) => {
             <DatepickerControl
               type={DATEPICKER_TYPES.time}
               value={localState?.dueDate}
-              label={intl.formatMessage(messages.subsectionGradingDueTimeLabel)}
+              label={intl.formatMessage(customMessages.dueTimeCustom, { timezone: getUserTimezoneLabel(localState?.dueDate) })}
               controlName="start-time"
               onChange={(val) => setLocalState((prev) => ({ ...prev, dueDate: val }))}
             />

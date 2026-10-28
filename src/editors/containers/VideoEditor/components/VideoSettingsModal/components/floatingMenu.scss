@@ -1,0 +1,5 @@
+// A floating menu whose button has scrolled out of sight stays hidden until the button is back.
+.video-settings-floating-menu.dropdown-menu[data-popper-reference-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
+}
