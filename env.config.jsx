@@ -530,19 +530,19 @@ return {
             ],
         },
 
+        // The library page in TELS' layout. The stock page stays for the picker that searches
+        // every library at once ("Add existing" in the course outline): it has no library data.
         library_authoring_page_plugin_slot: {
-            keepDefault: false,
+            keepDefault: true,
             plugins: [
                 {
-                    op: PLUGIN_OPERATIONS.Insert,
-                    widget: {
-                        id: "library-authoring-page-content",
-                        type: DIRECT_PLUGIN,
-                        priority: 1,
-                        RenderWidget: (props) => (
-                            <CustomLibraryAuthoringPage {...props} />
-                        ),
-                    },
+                    op: PLUGIN_OPERATIONS.Wrap,
+                    widgetId: "default_contents",
+                    wrapper: ({ component, pluginProps }) => (
+                        pluginProps.libraryData
+                            ? <CustomLibraryAuthoringPage {...pluginProps} />
+                            : component
+                    ),
                 }
             ],
         },

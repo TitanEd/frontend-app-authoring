@@ -65,7 +65,7 @@ const CustomLibraryAuthoringPage = ({
           </div>
         </div>
         <Helmet>
-          <title>{libraryData.title} | {process.env.SITE_NAME}</title>
+          <title>{libraryData?.title} | {process.env.SITE_NAME}</title>
         </Helmet>
         <Container className="library-authoring-page">
           <SearchContextProvider

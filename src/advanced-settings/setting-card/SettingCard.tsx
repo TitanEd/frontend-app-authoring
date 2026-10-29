@@ -27,7 +27,10 @@ const SettingCard = ({
   setIsEditableState,
 }) => {
   const intl = useIntl();
-  const { deprecated, help, displayName } = settingData;
+  const { deprecated, displayName } = settingData;
+  // A link whose href lacks its closing quote (the platform's "Teams Configuration" help) points
+  // nowhere; close the quote so it opens the documentation.
+  const help = (settingData.help || '').replace(/href="([^"\s>]+)>/g, 'href="$1">');
   const initialValue = JSON.stringify(settingData.value, null, 4);
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState<HTMLButtonElement | null>(null);
