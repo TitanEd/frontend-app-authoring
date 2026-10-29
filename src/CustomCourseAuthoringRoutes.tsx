@@ -26,6 +26,7 @@ import {
   OutlineSidebarPagesProvider,
 } from './course-outline';
 import { CourseOutlineProvider } from './course-outline/CourseOutlineContext';
+import ShowComponentInUnit from './course-outline/ShowComponentInUnit';
 import ScheduleAndDetails from './schedule-and-details';
 import { GradingSettings } from './grading-settings';
 import CourseTeam from './course-team/CourseTeam';
@@ -207,13 +208,15 @@ const CustomCourseAuthoringRoutes = () => {
             element={
               <PageWrap>
                 {withLayout(
-                  <CourseOutlineProvider>
-                    <OutlineSidebarPagesProvider>
-                      <OutlineSidebarProvider>
-                        <CourseOutline />
-                      </OutlineSidebarProvider>
-                    </OutlineSidebarPagesProvider>
-                  </CourseOutlineProvider>,
+                  <ShowComponentInUnit courseId={courseId}>
+                    <CourseOutlineProvider>
+                      <OutlineSidebarPagesProvider>
+                        <OutlineSidebarProvider>
+                          <CourseOutline />
+                        </OutlineSidebarProvider>
+                      </OutlineSidebarPagesProvider>
+                    </CourseOutlineProvider>
+                  </ShowComponentInUnit>,
                 )}
               </PageWrap>
             }

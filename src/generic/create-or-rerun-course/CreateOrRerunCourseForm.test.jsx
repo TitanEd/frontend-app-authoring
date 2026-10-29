@@ -23,9 +23,15 @@ import { updateCreateOrRerunCourseQuery } from '../data/thunks';
 import { getCreateOrRerunCourseUrl } from '../data/api';
 import messages from './messages';
 import { CreateOrRerunCourseForm } from '.';
+import { waitForRerun } from '../../course-rerun/rerunProgress';
 import { initialState } from './factories/mockApiResponses';
 
 const mockedUsedNavigate = jest.fn();
+
+jest.mock('../../course-rerun/rerunProgress', () => ({
+  ...jest.requireActual('../../course-rerun/rerunProgress'),
+  waitForRerun: jest.fn(),
+}));
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -189,26 +195,36 @@ describe('<CreateOrRerunCourseForm />', () => {
 
       expect(mockedUsedNavigate).toHaveBeenCalledWith(`${url}${destinationCourseKey}`);
     });
-    it('should redirect to /home when re-running a course', async () => {
+    const rerunTheCourse = async (rerunState) => {
+      waitForRerun.mockResolvedValue(rerunState);
       const user = userEvent.setup();
       const rerunProps = { ...props, isCreateNewCourse: false };
       render(<RootWrapper {...rerunProps} />);
       await mockStore();
-      const url = '/course/';
-      const destinationCourseKey = 'courseKey';
       const displayNameInput = screen.getByPlaceholderText(messages.courseDisplayNamePlaceholder.defaultMessage);
       const orgInput = screen.getByText(messages.courseOrgNoOptions.defaultMessage);
       const runInput = screen.getByPlaceholderText(messages.courseRunPlaceholder.defaultMessage);
       const rerunBtn = screen.getByRole('button', { name: messages.rerunCreateButton.defaultMessage });
-      await axiosMock.onPost(getCreateOrRerunCourseUrl()).reply(200, { url, destinationCourseKey });
+      await axiosMock.onPost(getCreateOrRerunCourseUrl()).reply(200, { url: '/course/', destinationCourseKey: 'courseKey' });
 
       await user.type(displayNameInput, 'foo course name');
       fireEvent.click(orgInput);
       await user.type(runInput, '1');
       await user.click(rerunBtn);
       await executeThunk(updateCreateOrRerunCourseQuery({ org: 'testX', run: 'some' }, true), store.dispatch);
+    };
+    it('should open the new course outline when the re-run is ready', async () => {
+      await rerunTheCourse('ready');
 
-      expect(mockedUsedNavigate).toHaveBeenCalledWith('/home');
+      await waitFor(() => expect(mockedUsedNavigate).toHaveBeenCalledWith('/course/courseKey'));
+      expect(waitForRerun).toHaveBeenCalledWith('courseKey');
+    });
+    it('should go to My Courses with a notice while the re-run is still being copied', async () => {
+      await rerunTheCourse('in_progress');
+
+      await waitFor(() => expect(mockedUsedNavigate).toHaveBeenCalledWith('/my-courses', {
+        state: { telsRerun: expect.objectContaining({ courseKey: 'courseKey', state: 'in_progress' }) },
+      }));
     });
     it('should include sourceCourseKey in request data for rerun', async () => {
       const user = userEvent.setup();

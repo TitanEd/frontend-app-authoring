@@ -44,6 +44,7 @@ const CreateOrRerunCourseForm = ({
     postErrors,
     isFormFilled,
     isFormInvalid,
+    isWaitingForRerun,
     organizations,
     showErrorBanner,
     dispatch,
@@ -277,7 +278,7 @@ const CreateOrRerunCourseForm = ({
             className="ml-3"
             onClick={handleOnClickCreate}
             disabled={!isFormFilled || isFormInvalid}
-            state={savingStatus === RequestStatus.PENDING
+            state={savingStatus === RequestStatus.PENDING || isWaitingForRerun
               ? STATEFUL_BUTTON_STATES.pending
               : STATEFUL_BUTTON_STATES.default}
             {...createButtonState}

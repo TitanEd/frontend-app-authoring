@@ -49,8 +49,12 @@ body {
   }
 }
 
-/* Custom UI only. Fill the space under the header and banner. */
+/* Custom UI only. Fill the space under the header and banner. It is also the containing block of
+   what is positioned inside it: otherwise absolute elements (Paragon's .sr-only labels) escape its
+   scrolling and make the page taller than the window, and scrollIntoView (Studio scrolls to a
+   component after it is saved) then scrolls the whole page, header off screen and a gap below. */
 .main-content {
+  position: relative;
   overflow-y: auto;
   height: auto;
   align-self: stretch;

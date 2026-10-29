@@ -17,6 +17,7 @@ import {
 import { updateSavingStatus, updatePostErrors } from '../data/slice';
 import { fetchOrganizationsQuery } from '../data/thunks';
 import messages from './messages';
+import { RERUN_NOTICE_STATE_KEY, RERUN_STATES, waitForRerun } from '../../course-rerun/rerunProgress';
 
 const useCreateOrRerunCourse = (initialValues) => {
   const intl = useIntl();
@@ -32,6 +33,7 @@ const useCreateOrRerunCourse = (initialValues) => {
   } = useSelector(getStudioHomeData);
   const [isFormFilled, setFormFilled] = useState(false);
   const [showErrorBanner, setShowErrorBanner] = useState(false);
+  const [isWaitingForRerun, setWaitingForRerun] = useState(false);
   const organizations = canCreateOrganizations ? allOrganizations : allowedOrganizations;
 
   const { specialCharsRule, noSpaceRule } = REGEX_RULES;
@@ -110,7 +112,24 @@ const useCreateOrRerunCourse = (initialValues) => {
       // is in the destionationCourseKey attribute from the api.
       if (url) {
         if (destinationCourseKey) {
-          navigate(`${url}${destinationCourseKey}`);
+          // Studio copies the course in the background: open the new outline once the copy is
+          // done, or go to My Courses with a notice when it takes longer (a large course).
+          setWaitingForRerun(true);
+          waitForRerun(destinationCourseKey).then((state) => {
+            if (state === RERUN_STATES.ready) {
+              navigate(`${url}${destinationCourseKey}`);
+              return;
+            }
+            navigate('/my-courses', {
+              state: {
+                [RERUN_NOTICE_STATE_KEY]: {
+                  courseKey: destinationCourseKey,
+                  displayName: values.displayName,
+                  state,
+                },
+              },
+            });
+          });
         } else {
           navigate(url);
         }
@@ -130,6 +149,7 @@ const useCreateOrRerunCourse = (initialValues) => {
     postErrors,
     isFormFilled,
     isFormInvalid,
+    isWaitingForRerun,
     organizations,
     showErrorBanner,
     dispatch,

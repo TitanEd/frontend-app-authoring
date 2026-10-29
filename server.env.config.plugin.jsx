@@ -10,11 +10,11 @@ const { PLUGIN_OPERATIONS, DIRECT_PLUGIN } = await import('@openedx/frontend-plu
 const { default: CourseNavigationSidebar } = await import('./src/shared-components/CourseNavigationSidebar');
 const { default: CustomScheduleAndDetails } = await import('./src/CustomScheduleAndDetails');
 const { default: messages } = await import('./src/schedule-and-details/messages');
-const { Settings, DragHandle, SettingsApplications } = await import('@openedx/paragon/icons');
+const { SettingsApplications } = await import('@openedx/paragon/icons');
 const {
   ActionRow, Button, Container, Dropdown, Icon, IconButton, Layout, ProgressBar, Stack,
 } = await import('@openedx/paragon');
-const { default: cardHeaderMessages } = await import('./src/course-outline/card-header/messages');
+const { OutlineMenuToggle, OutlineDragIcon } = await import('./src/course-outline/outline-icons/OutlineIcons');
 const { default: FormSwitchGroup } = await import('./src/generic/FormSwitchGroup');
 const { default: StatusBarContent } = await import('./src/course-outline/status-bar/StatusBarContent');
 const { default: CustomStatusBar } = await import('./src/course-outline/status-bar/CustomStatusBar');
@@ -182,20 +182,7 @@ return {
                         id: 'card-header-menu-icon',
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: ({ namePrefix }) => {
-                          const intl = useIntl();
-                          return (
-                            <Dropdown.Toggle
-                                className="item-card-header__menu"
-                                id={`${namePrefix}-card-header__menu`}
-                                data-testid={`${namePrefix}-card-header__menu-button`}
-                                as={IconButton}
-                                src={Settings}
-                                alt={intl.formatMessage(cardHeaderMessages.menuButtonAlt)}
-                                iconAs={Icon}
-                            />
-                          );
-                        },
+                        RenderWidget: ({ namePrefix }) => <OutlineMenuToggle namePrefix={namePrefix} />,
                     },
                 },
             ],
@@ -209,7 +196,7 @@ return {
                         id: 'drag-indicator-icon',
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: () => <Icon src={DragHandle} className="btn-icon-secondary" />,
+                        RenderWidget: ({ category }) => <OutlineDragIcon category={category} />,
                     },
                 },
             ],

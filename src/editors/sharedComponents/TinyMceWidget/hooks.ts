@@ -17,6 +17,32 @@ import * as tinyMCE from '../../data/constants/tinyMCE';
 import { getRelativeUrl, getStaticUrl, parseAssetName } from './utils';
 import { isLibraryKey } from '../../../generic/key-utils';
 
+/**
+ * In dark mode, the writing area (its own document, so the page's dark theme does not reach it)
+ * takes the page's dark background, text and link colours; nothing in light mode. The rules repeat
+ * tinyMCEStyles' selectors, which give the body white and the text fixed dark greys.
+ */
+export const darkContentStyle = (): string => {
+  if (document.documentElement.getAttribute('data-paragon-theme-variant') !== 'dark') {
+    return '';
+  }
+  const root = getComputedStyle(document.documentElement);
+  const token = (name: string) => root.getPropertyValue(name).trim();
+  const bg = token('--pgn-color-bg-base');
+  const text = token('--pgn-color-text-base');
+  if (!bg || !text) {
+    return '';
+  }
+  const link = token('--pgn-color-link-base') || text;
+  return `
+  body.mce-content-body { background-color: ${bg}; color: ${text}; }
+  .mce-content-body .hd-1, .mce-content-body .hd-2, .mce-content-body p, .mce-content-body ol,
+  .mce-content-body ul, .mce-content-body pre, .mce-content-body code { color: ${text}; }
+  .mce-content-body a, .mce-content-body a:link, .mce-content-body a:visited { color: ${link}; }
+  .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before { color: ${token('--pgn-color-text-muted') || text}; }
+  .mce-content-body table, .mce-content-body td, .mce-content-body th { border-color: ${token('--pgn-color-border') || text}; }`;
+};
+
 export const state = StrictDict({
   // eslint-disable-next-line react-hooks/rules-of-hooks
   isImageModalOpen: (val) => useState(val),
@@ -460,7 +486,7 @@ export const editorConfig = ({
       ...config,
       skin: false,
       content_css: false,
-      content_style: tinyMCEStyles + a11ycheckerCss,
+      content_style: tinyMCEStyles + a11ycheckerCss + darkContentStyle(),
       min_height: minHeight,
       max_height: maxHeight,
       contextmenu: 'link table',

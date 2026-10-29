@@ -1,0 +1,60 @@
+// Header search of titaned-frontend-library (MainHeader, CustomLayout.jsx).
+//
+// The library passes an icon *name* ("quiz", "video"…) where Paragon's Icon expects a component, so
+// each result showed an empty element named after the icon (<quiz>). These rules draw the Paragon
+// icon Studio's own search uses for that kind of block, in the text colour. Its highlight also had
+// side padding, which read as extra spaces between words ("Practice : Leadership").
+.search-result-icon .pgn__icon > * {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  background-color: currentColor;
+  mask: var(--tels-search-icon) center / contain no-repeat;
+}
+
+// TextFields
+.search-result-icon .pgn__icon > text {
+  --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2.5 4v3h5v12h3V7h5V4h-13zm19 5h-9v3h3v7h3v-7h3V9z'/%3E%3C/svg%3E");
+}
+
+// VideoCamera
+.search-result-icon .pgn__icon > video {
+  --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17 10.5V6H3v12h14v-4.5l4 4v-11l-4 4Z'/%3E%3C/svg%3E");
+}
+
+// HelpOutline
+.search-result-icon .pgn__icon > quiz {
+  --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z'/%3E%3C/svg%3E");
+}
+
+// Folder
+.search-result-icon .pgn__icon > folder {
+  --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 4H2v16h20V6H12l-2-2z'/%3E%3C/svg%3E");
+}
+
+// Info
+.search-result-icon .pgn__icon > info {
+  --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z'/%3E%3C/svg%3E");
+}
+
+// Link
+.search-result-icon .pgn__icon > link {
+  --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17 7h-4v2h4c1.65 0 3 1.35 3 3s-1.35 3-3 3h-4v2h4c2.76 0 5-2.24 5-5s-2.24-5-5-5zm-6 8H7c-1.65 0-3-1.35-3-3s1.35-3 3-3h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-2zm-3-4h8v2H8z'/%3E%3C/svg%3E");
+}
+
+// Description
+.search-result-icon .pgn__icon > file {
+  --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 2H4v20h16V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/%3E%3C/svg%3E");
+}
+
+// LibraryAdd
+.search-result-icon .pgn__icon > library {
+  --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 6H2v16h16v-2H4V6zm18-4H6v16h16V2zm-3 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z'/%3E%3C/svg%3E");
+}
+
+// One class more than the library's `.search-results-dropdown .search-highlight`, which loads later.
+.search-results-dropdown .search-result-title .search-highlight,
+.search-results-dropdown .search-result-description .search-highlight {
+  padding-inline: 0;
+  border-radius: .125rem;
+}

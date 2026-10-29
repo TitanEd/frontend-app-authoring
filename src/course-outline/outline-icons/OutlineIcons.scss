@@ -1,0 +1,32 @@
+// Drag handle and settings (gear) buttons of the course outline cards: one hover, the brand's
+// primary icon-button hover. The drag button is a `.btn-icon-secondary` (dark hover) in the
+// stock code, and the outline forces the icon colour of both with `!important`
+// (`styles-overrides.scss`), so these selectors outweigh the brand and fork rules.
+.course-outline-container .row .btn-icon.btn-icon-secondary:has(.outline-drag-icon),
+.course-outline-container .section-card .item-card-header .btn-icon.item-card-header__menu {
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    background-color: var(--pgn-color-icon-button-bg-primary-hover) !important;
+    color: var(--pgn-color-icon-button-text-primary-hover, var(--pgn-color-icon-button-accent, var(--pgn-color-text-inverse))) !important;
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--pgn-color-icon-button-bg-primary-active-base, var(--pgn-color-icon-button-bg-primary-hover)) !important;
+    color: var(--pgn-color-icon-button-text-primary-active-base, var(--pgn-color-icon-button-accent, var(--pgn-color-text-inverse))) !important;
+  }
+}
+
+.course-outline-container .row .btn-icon.btn-icon-secondary:has(.outline-drag-icon) {
+  position: relative;
+}
+
+// Covers the whole button, so hovering any part of it shows the tooltip.
+.outline-drag-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  color: inherit;
+}

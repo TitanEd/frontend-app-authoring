@@ -28,6 +28,7 @@ import CourseCard from './course-card/CourseCard';
 import ContactAdministrator from '../studio-home/tabs-section/courses-tab/contact-administrator';
 import { fetchCourseDetail } from '../data/thunks';
 import customMessages from '../customMessages';
+import RerunNotice from '../course-rerun/RerunNotice';
 
 interface Course {
   courseKey: string;
@@ -299,6 +300,9 @@ const MyCourses = () => {
 
   return (
     <Container className="my-courses-page mt-4">
+      <RerunNotice
+        onReady={() => dispatch(fetchMyCoursesData(location.search ?? '', false, { page: 1, order: 'display_name' }, true))}
+      />
       {/* Add the filters at the top */}
       {/* <CoursesFilter dispatch={dispatch} locationValue="/my-courses" /> */}
       {

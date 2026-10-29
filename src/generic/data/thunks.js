@@ -44,7 +44,12 @@ export function updateCreateOrRerunCourseQuery(courseData, isRerun = false) {
     try {
       const response = await createOrRerunCourse(courseData);
       if (isRerun) {
-        dispatch(updateRedirectUrlObj({ url: '/home' }));
+        // The re-run is copied in the background: useCreateOrRerunCourse waits for it before
+        // opening the new outline (or My Courses with a notice), so the outline never opens
+        // before the course exists. A refused re-run (errMsg) stays on the form.
+        dispatch(updateRedirectUrlObj(response.destinationCourseKey
+          ? { url: '/course/', destinationCourseKey: response.destinationCourseKey }
+          : {}));
       } else {
         dispatch(updateRedirectUrlObj('url' in response ? response : {}));
       }

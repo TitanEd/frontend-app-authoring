@@ -5,11 +5,7 @@ import { PLUGIN_OPERATIONS, DIRECT_PLUGIN } from '@openedx/frontend-plugin-frame
 import CourseNavigationSidebar from './src/shared-components/CourseNavigationSidebar';
 import CustomScheduleAndDetails from './src/CustomScheduleAndDetails';
 import messages from './src/schedule-and-details/messages';
-import { Settings, DragHandle } from '@openedx/paragon/icons';
 import {
-    Icon,
-    IconButton,
-    Dropdown,
     Button,
     ProgressBar,
 } from '@openedx/paragon';
@@ -18,8 +14,8 @@ import CustomStatusBar from './src/course-outline/status-bar/CustomStatusBar';
 import SubHeader from './src/generic/sub-header/SubHeader';
 import CustomCourseUpdates from './src/course-updates/CustomCourseUpdates';
 import CustomCourseExportPage from './src/export-page/CustomCourseExportPage'
-import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import cardHeaderMessages from './src/course-outline/card-header/messages';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { OutlineMenuToggle, OutlineDragIcon } from './src/course-outline/outline-icons/OutlineIcons';
 import SettingCard from './src/advanced-settings/setting-card/SettingCard';
 import CustomExportSidebar from '/src/export-page/export-sidebar/CustomExportSidebar';
 import CourseChecklistCustom from './src/plugins-components/CourseChecklistCustom';
@@ -177,20 +173,7 @@ return {
                         id: 'card-header-menu-icon',
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: ({ namePrefix }) => {
-                          const intl = useIntl();
-                          return (
-                            <Dropdown.Toggle
-                                className="item-card-header__menu"
-                                id={`${namePrefix}-card-header__menu`}
-                                data-testid={`${namePrefix}-card-header__menu-button`}
-                                as={IconButton}
-                                src={Settings}
-                                alt={intl.formatMessage(cardHeaderMessages.menuButtonAlt)}
-                                iconAs={Icon}
-                            />
-                          );
-                        },
+                        RenderWidget: ({ namePrefix }) => <OutlineMenuToggle namePrefix={namePrefix} />,
                     },
                 },
             ],
@@ -204,7 +187,7 @@ return {
                         id: 'drag-indicator-icon',
                         type: DIRECT_PLUGIN,
                         priority: 1,
-                        RenderWidget: () => <Icon src={DragHandle} className="btn-icon-secondary" />,
+                        RenderWidget: ({ category }) => <OutlineDragIcon category={category} />,
                     },
                 },
             ],
