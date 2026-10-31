@@ -12,7 +12,8 @@ import MockAdapter from 'axios-mock-adapter/types';
 import { useGetContentHits } from '@src/search-manager';
 import { mockContentLibrary } from './data/api.mocks';
 import mockEmptyResult from '../search-modal/__mocks__/empty-search-result.json';
-import { LibraryProvider } from './common/context/LibraryContext';
+import { LibraryProvider, useLibraryContext } from './common/context/LibraryContext';
+import { ComponentPickerProvider } from './common/context/ComponentPickerContext';
 import LibraryContent from './LibraryContent';
 import { libraryComponentsMock } from './__mocks__';
 import { getModulestoreMigratedBlocksInfoUrl } from './data/api';
@@ -100,6 +101,35 @@ describe('<LibraryHome />', () => {
     });
     render(<LibraryContent />, withLibraryId(mockContentLibrary.libraryId));
     expect(screen.getByText('You have not added any content to this library yet.')).toBeInTheDocument();
+  });
+
+  it('offers "Add component" in an empty library that can be edited', async () => {
+    mockUseSearchContext.mockReturnValue({
+      ...data,
+      totalHits: 0,
+    });
+    render(<LibraryContent />, withLibraryId(mockContentLibrary.libraryId));
+    expect(await screen.findByRole('button', { name: /add component/i })).toBeInTheDocument();
+  });
+
+  it('does not offer "Add component" inside a component picker', async () => {
+    // As in LibraryAndComponentPicker: the library provider sits outside the picker provider.
+    mockUseSearchContext.mockReturnValue({
+      ...data,
+      totalHits: 0,
+    });
+    const LibraryTitle = () => <span>{useLibraryContext().libraryData?.title}</span>;
+    render(
+      <ComponentPickerProvider componentPickerMode="multiple" onChangeComponentSelection={jest.fn()}>
+        <LibraryTitle />
+        <LibraryContent />
+      </ComponentPickerProvider>,
+      withLibraryId(mockContentLibrary.libraryId),
+    );
+    // Once the library has loaded (it is editable), the picker still offers no "Add component".
+    expect(await screen.findByText('Test Library')).toBeInTheDocument();
+    expect(screen.getByText('You have not added any content to this library yet.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /add component/i })).not.toBeInTheDocument();
   });
 
   it('should load more results when the user scrolls to the bottom', async () => {

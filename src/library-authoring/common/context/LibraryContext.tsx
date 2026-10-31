@@ -180,16 +180,31 @@ export const LibraryProvider = ({
   );
 };
 
+/**
+ * Inside a component picker the library is browsed, never edited. `LibraryProvider` decides
+ * `readOnly` from the picker context around *it*, but some pickers place the provider outside
+ * their own `ComponentPickerProvider` (`LibraryAndComponentPicker`, the problem bank's "Add
+ * components") or inside an editable library (`PickLibraryContentModal`). The nearest picker
+ * context is the one that counts, so it is checked here, where the context is read.
+ */
+function useReadOnlyInPicker<T extends Partial<LibraryContextData>>(ctx: T): T {
+  const { componentPickerMode } = useComponentPickerContext();
+  return useMemo(
+    () => (componentPickerMode && !ctx.readOnly ? { ...ctx, readOnly: true } : ctx),
+    [ctx, componentPickerMode],
+  );
+}
+
 export function useLibraryContext(): LibraryContextData {
   const ctx = useContext(LibraryContext);
   if (ctx === undefined) {
     /* istanbul ignore next */
     throw new Error('useLibraryContext() was used in a component without a <LibraryProvider> ancestor.');
   }
-  return ctx;
+  return useReadOnlyInPicker(ctx);
 }
 
 export function useOptionalLibraryContext(): Partial<LibraryContextData> {
   const ctx = useContext(LibraryContext);
-  return ctx || { readOnly: true };
+  return useReadOnlyInPicker(ctx || { readOnly: true });
 }
