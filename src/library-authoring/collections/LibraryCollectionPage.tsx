@@ -203,7 +203,8 @@ const LibraryCollectionPage = () => {
         extraFilter,
         // (the collection info sidebar is opened from <HeaderActions />).
         subHeaderTitle: <SubHeaderTitle title={collectionData.title} />,
-        breadcrumbTitle: collectionData.title,
+        // The library: the first link of the breadcrumb (the collection is the page title).
+        breadcrumbTitle: libraryData.title,
         breadcumbs: breadcrumbs,
         headerActions: <HeaderActions />,
         intl,

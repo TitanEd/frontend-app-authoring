@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
+import { Helmet } from 'react-helmet';
 import { Container } from '@openedx/paragon';
 import { LmsBook } from '@openedx/paragon/icons';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +23,7 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const CustomLibraryCollectionPage = ({
   //   componentPickerMode,
-  //   libraryData,
+  libraryData,
   extraFilter,
   subHeaderTitle,
   //   breadcumbs,
@@ -35,6 +36,11 @@ const CustomLibraryCollectionPage = ({
   const navigate = useNavigate();
   return (
     <div className="d-flex library-authoring-page-container">
+      {libraryData?.title && (
+        <Helmet>
+          <title>{libraryData.title} | {process.env.SITE_NAME}</title>
+        </Helmet>
+      )}
       <div className="flex-grow-1 library-authoring-page-content">
         <div className="ca-breadcrumb-bg">
           <div className="ca-breadcrumb-container">
@@ -52,7 +58,15 @@ const CustomLibraryCollectionPage = ({
                 {breadcrumbTitle || <FormattedMessage {...rootCustomMessages.loading} />}
               </span>
               <span className="ca-breadcrumb-divider">/</span>
-              <span className="ca-breadcrumb-current">
+              <span
+                className="ca-breadcrumb-current collection-breadcrumb-icon"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate(`/library/${libraryId}/collections`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') { navigate(`/library/${libraryId}/collections`); }
+                }}
+              >
                 <FormattedMessage {...customMessages.allCollections} />
               </span>
             </div>

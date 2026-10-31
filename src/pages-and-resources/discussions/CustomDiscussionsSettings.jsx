@@ -67,7 +67,7 @@ const DiscussionsSettings = () => {
   if (status === FAILED) {
     return (
       <ModalDialog
-        className="bg-light-200"
+        className="tels-discussions-modal"
         onClose={handleClose}
         isOpen
       >
@@ -86,7 +86,7 @@ const DiscussionsSettings = () => {
   if (status === DENIED) {
     return (
       <ModalDialog
-        className="bg-light-200"
+        className="tels-discussions-modal"
         onClose={handleClose}
         isOpen
       >
@@ -107,7 +107,7 @@ const DiscussionsSettings = () => {
       <AppConfigForm.Provider>
         <Stepper activeKey={currentStep}>
           <ModalDialog
-            className="bg-light-200"
+            className="tels-discussions-modal"
             onClose={handleClose}
             isOpen
             size="xl"

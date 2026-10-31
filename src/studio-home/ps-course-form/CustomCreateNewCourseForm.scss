@@ -11,6 +11,9 @@
   max-width: 90rem;
   min-width: 0;
   margin-inline: auto;
+  // The action bar reaches the column edges with negative margins; the column is a few px
+  // narrower than this box, which showed a horizontal scroll bar. Clip keeps the bar sticky.
+  overflow-x: clip;
   padding: var(--pgn-spacing-spacer-4) var(--pgn-spacing-spacer-4) 0;
   color: var(--pgn-color-body-base);
 

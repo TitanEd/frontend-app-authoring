@@ -830,15 +830,36 @@ body {
   }
 }
 
-// Textbooks
+// Textbooks (the page container and each textbook card both carry `textbook-card`)
 .textbook-card {
   .sub-header {
+    align-items: center;
+
     .sub-header-actions {
-      margin-bottom: 1rem;
+      margin-bottom: 0;
     }
   }
 
   padding: 0 !important;
+
+  [data-testid="textbook-card"] {
+    @include card-style2;
+
+    padding: 1rem 1.25rem !important;
+    box-shadow: none;
+
+    .pgn__card-header-title-md {
+      @include section-title-style1;
+
+      font-weight: 600 !important;
+      color: var(--text-primary);
+    }
+
+    .pgn__card-header {
+      align-items: center;
+      margin-bottom: .5rem;
+    }
+  }
 
   .setting-items {
     article {
@@ -856,7 +877,7 @@ body {
     display: block;
     height: 1px;
     background-color: var(--pgn-color-light-400);
-    margin: -1rem -1rem 1rem;
+    margin: .5rem -1rem 1rem;
   }
 
   .textbook-form {
@@ -1492,10 +1513,16 @@ body {
   }
 }
 
+// The brand zeroes the side padding of every `.page-content .container-fluid:not(#main)`;
+// the same weight plus this class keeps the card's 1rem.
+.custom-checklist-container,
+.tels-custom-authoring .page-content .custom-checklist-container.container-fluid:not(#main) {
+  padding: 1rem !important;
+}
+
 .custom-checklist-container {
   @include card-style1;
 
-  padding: 1rem;
   margin-left: 1rem !important;
   width: 98% !important;
 
@@ -1753,9 +1780,11 @@ body {
     min-width: 0;
     padding: 1rem;
 
+    // Breadcrumb and title start where the library card starts (as in the course outline);
+    // the old -2rem pulled them under the left menu when it is open.
     .ca-breadcrumb-bg {
-      margin-left: -2rem !important;
-      margin-right: -1rem !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
       margin-bottom: 1rem !important;
     }
 
@@ -1781,10 +1810,16 @@ body {
     font-size: 1.5rem !important;
   }
 
+  // The brand zeroes the side padding of every `.page-content .container-fluid:not(#main)`
+  // with !important; the library card keeps its 1rem (same weight plus this class).
+  .library-authoring-page,
+  .library-authoring-page.container-fluid:not(#main) {
+    padding: 1rem !important;
+  }
+
   .library-authoring-page {
     @include card-style1;
 
-    padding: 1rem;
     // margin: 0 1rem;
 
     hr {
@@ -3312,4 +3347,327 @@ body.tels-custom-authoring {
   &:focus {
     background-color: color-mix(in srgb, var(--pgn-color-primary-base) 10%, transparent) !important;
   }
+}
+
+// Configure discussions (Pages & Resources → Discussion): the same white surface as the other
+// settings modals, a compact header with the stepper, bordered provider cards that show which one
+// is selected, a framed features table and a full-width settings card.
+.pgn__modal.tels-discussions-modal {
+  background-color: var(--bg-surface) !important;
+  border-radius: 1rem;
+  overflow: hidden;
+
+  .pgn__modal-close-container {
+    top: 1rem;
+    inset-inline-end: 1rem;
+
+    .pgn__modal-close-button {
+      background-color: transparent !important;
+      color: var(--text-secondary) !important;
+
+      &:hover,
+      &:focus-visible {
+        background-color: color-mix(in srgb, var(--pgn-color-primary-base) 10%, transparent) !important;
+        color: var(--pgn-color-primary-base) !important;
+      }
+    }
+  }
+
+  .pgn__modal-header {
+    padding: 1.25rem 1.5rem 0 !important;
+    border-bottom: 1px solid var(--border-color);
+
+    .pgn__modal-title {
+      margin-bottom: .5rem !important;
+    }
+
+    .pgn__stepper-header {
+      padding: .5rem 0 .75rem !important;
+      border-bottom: 0 !important;
+    }
+  }
+
+  .pgn__modal-body {
+    padding: 1.5rem !important;
+    color: var(--text-primary);
+
+    [data-testid="appList"] {
+      margin: 0 !important;
+
+      > .d-flex:first-child {
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      h3 {
+        @include section-title-style1;
+
+        font-weight: 600 !important;
+        color: var(--text-primary) !important;
+      }
+
+      h3.my-sm-5 {
+        margin: 2rem 0 1rem !important;
+      }
+    }
+
+    .pgn__card-grid.mt-5 {
+      margin-top: 1.25rem !important;
+    }
+
+    .pgn__card-grid__card-item {
+      margin-bottom: 1.5rem;
+
+      .pgn__card {
+        height: 100%;
+        border-radius: 12px;
+        border: 1px solid var(--border-color) !important;
+        background-color: var(--bg-surface) !important;
+        box-shadow: none !important;
+        transition: border-color .15s ease, box-shadow .15s ease;
+
+        &[aria-disabled="false"]:hover {
+          border-color: var(--pgn-color-primary-base) !important;
+        }
+
+        &[aria-checked="true"] {
+          border-color: var(--pgn-color-primary-base) !important;
+          box-shadow: 0 0 0 1px var(--pgn-color-primary-base) !important;
+          background-color: color-mix(in srgb, var(--pgn-color-primary-base) 5%, var(--bg-surface)) !important;
+        }
+
+        .pgn__card-header {
+          padding: 1.25rem 1.25rem 0;
+          align-items: flex-start;
+        }
+
+        .pgn__card-header-content,
+        .pgn__card-header-actions,
+        .pgn__card-header-actions > .mt-2\.5 {
+          margin-top: 0 !important;
+        }
+
+        .pgn__card-header-title-sm {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: var(--text-primary);
+        }
+
+        .pgn__card-header-subtitle-sm .h6 {
+          font-size: 1rem;
+          font-weight: 500;
+          margin: 0;
+        }
+
+        .pgn__card-section {
+          padding: .5rem 1.25rem 1.25rem;
+          color: var(--text-secondary);
+        }
+      }
+    }
+
+    .app-list-data-table .pgn__data-table-wrapper {
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+
+      .pgn__data-table-container {
+        border: 0;
+      }
+
+      tr th,
+      tr td {
+        background-color: var(--bg-surface) !important;
+        border-color: var(--border-color) !important;
+        color: var(--text-primary);
+        font-size: 1rem;
+      }
+
+      thead th {
+        font-weight: 600;
+        border-bottom: 1px solid var(--border-color) !important;
+      }
+
+      tbody tr:nth-child(even) td {
+        background-color: color-mix(in srgb, var(--text-primary) 3%, var(--bg-surface)) !important;
+      }
+    }
+
+    .small,
+    small,
+    .font-size-14,
+    .discussion-restriction .btn,
+    .discussion-restriction .form-control {
+      font-size: 1rem !important;
+    }
+
+    // Settings step: the form card fills the modal instead of a narrow column.
+    [data-testid="appConfigForm"] {
+      max-width: 56rem !important;
+      padding: 0 !important;
+    }
+
+    [data-testid="legacyConfigForm"],
+    [data-testid="appConfigForm"] > .pgn__card {
+      margin-bottom: 0 !important;
+      border-radius: 12px;
+      border: 1px solid var(--border-color) !important;
+      background-color: var(--bg-surface) !important;
+      box-shadow: none !important;
+
+      h3.text-primary-500 {
+        @include section-title-style1;
+
+        font-weight: 600 !important;
+        margin: 1.25rem 0 .75rem !important;
+      }
+
+      h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-secondary) !important;
+      }
+
+      hr {
+        border-top: 1px solid var(--border-color) !important;
+        border-color: var(--border-color) !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+      }
+    }
+  }
+
+  .pgn__modal-footer {
+    padding: 1rem 1.5rem !important;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-surface);
+  }
+}
+
+// Library / collection / component info panels: the history timeline bar was Paragon's info
+// blue; a tint of the brand colour as the other accents of these panels.
+.library-authoring-sidebar .history-widget-bar {
+  border-left-color: color-mix(in srgb, var(--pgn-color-primary-base) 45%, transparent) !important;
+}
+
+// Library "Published" status (status buttons, status widget, unit / section hierarchy): the brand
+// colour instead of Paragon's info blue, which the brand does not set.
+.status-button.published-status,
+.status-widget.published-status,
+.library-authoring-sidebar .published-status,
+.library-authoring-page .published-status {
+  background-color: color-mix(in srgb, var(--pgn-color-primary-base) 8%, var(--bg-surface)) !important;
+  border-color: var(--pgn-color-primary-base) !important;
+  color: var(--pgn-color-primary-base) !important;
+}
+
+// "Expand" over the component preview: an outline brand button, not Paragon's grey "light".
+.library-authoring-sidebar .btn-light {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--pgn-color-primary-base) !important;
+  color: var(--pgn-color-primary-base) !important;
+
+  &:hover,
+  &:focus-visible {
+    background-color: color-mix(in srgb, var(--pgn-color-primary-base) 10%, var(--bg-surface)) !important;
+  }
+}
+
+// The selected library card (its info panel is open): brand outline, not the text colour.
+.library-item-card .pgn__card.selected {
+  outline-color: var(--pgn-color-primary-base) !important;
+}
+
+.library-item-card .pgn__card:not(.selected):focus-visible {
+  outline: 2px solid var(--pgn-color-primary-base) !important;
+}
+
+// Dialog close button: Paragon focuses it when a dialog opens and paints the focus as a filled
+// brand circle, which read as a pressed button. A quiet icon button, tinted on hover and focus.
+.pgn__modal-close-container .pgn__modal-close-button {
+  background-color: transparent !important;
+  color: var(--text-secondary, #454545) !important;
+
+  &:hover,
+  &:focus-visible {
+    background-color: color-mix(in srgb, var(--pgn-color-primary-base) 10%, transparent) !important;
+    color: var(--pgn-color-primary-base) !important;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--pgn-color-primary-base);
+    outline-offset: 1px;
+  }
+}
+
+// Library sub-pages (Backup, Import, Import steps, Unit / Section / Subsection pages) put their
+// title in a tinted strip (`px-4 bg-light-200 border-bottom` around a SubHeader). Drawn as the
+// header row of a card, like the course pages (Textbooks, Checklists): title, divider, content.
+.tels-custom-authoring .page-content .px-4.bg-light-200.border-bottom:has(.sub-header) {
+  margin-bottom: 1rem !important;
+  padding: 0 0 .75rem !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  background-color: transparent !important;
+
+  .sub-header {
+    margin: 0 !important;
+  }
+
+  .sub-header-title {
+    @include sub-header-title-style1;
+
+    color: var(--text-primary) !important;
+  }
+
+  .sub-header-title-subtitle {
+    color: var(--text-secondary) !important;
+    font-size: 1rem !important;
+  }
+}
+
+// Their content box: the library card (border, radius, white) with its 1rem inset; the brand
+// zeroes the padding of every `.page-content .container-fluid:not(#main)`.
+.tels-custom-authoring .page-content .library-authoring-page.bg-white.container-fluid:not(#main) {
+  @include card-style1;
+
+  margin-top: 1rem !important;
+  padding: 1rem !important;
+}
+
+.tels-custom-authoring .page-content .library-authoring-page > .container-fluid:not(#main) {
+  padding: 0 !important;
+}
+
+// Library Backup: the library bar was Paragon's navy with a blue button.
+.tels-custom-authoring .library-authoring-page .bg-info-700.row {
+  margin: 0 !important;
+  padding: 1rem 1.25rem !important;
+  border: 1px solid color-mix(in srgb, var(--pgn-color-primary-base) 30%, var(--border-color));
+  border-radius: 12px !important;
+  background-color: color-mix(in srgb, var(--pgn-color-primary-base) 8%, var(--bg-surface)) !important;
+  color: var(--text-primary) !important;
+  gap: 1rem;
+
+  .small {
+    color: var(--text-secondary) !important;
+    font-size: 1rem !important;
+  }
+
+  .btn-info {
+    border-color: var(--pgn-color-primary-base) !important;
+    background-color: var(--pgn-color-primary-base) !important;
+    color: #FFFFFF !important;
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      border-color: color-mix(in srgb, var(--pgn-color-primary-base) 82%, #000000) !important;
+      background-color: color-mix(in srgb, var(--pgn-color-primary-base) 82%, #000000) !important;
+    }
+  }
+}
+
+// Library list cards: "Organization" / "ID" labels were 12.8px (nothing below 1rem in the shell).
+.library-card-info-label {
+  font-size: 1rem !important;
+  letter-spacing: .02em;
 }
