@@ -37,6 +37,7 @@ import registerFontAwesomeIcons from './utils/RegisterFontAwesome';
 import CustomLayout from './CustomLayout';
 import initializeCustomStore from './customStore';
 import initCustomSentry from './customSentry';
+import installStudioFrameTheme from './studioFrameTheme';
 
 registerFontAwesomeIcons();
 
@@ -50,6 +51,7 @@ const CustomAppRoutes = () => {
 
   useEffect(() => {
     initCustomSentry();
+    installStudioFrameTheme();
   }, []);
 
   const router = useMemo(() =>
