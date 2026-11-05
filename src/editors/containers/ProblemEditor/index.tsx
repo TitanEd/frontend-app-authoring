@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
@@ -52,9 +52,18 @@ const ProblemEditor: React.FC<Props> = ({
     || selectors.requests.isFinished(state, { requestKey: RequestKeys.fetchAdvancedSettings })
   );
 
+  // The same content can arrive twice. Initializing again would put the spinner back in place of an open form.
+  const initializedWith = useRef<string | null>(null);
+
   useEffect(() => {
     const run = async () => {
       if (blockFinished && !blockFailed) {
+        const content = JSON.stringify(blockValue?.data ?? null);
+        if (initializedWith.current === content) {
+          return;
+        }
+        initializedWith.current = content;
+
         // Await initialize problem and set a new problem type if applicable
         // oxlint-disable-next-line @typescript-eslint/await-thenable
         await dispatch(thunkActions.problem.initializeProblem(blockValue));

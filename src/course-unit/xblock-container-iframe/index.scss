@@ -2,3 +2,31 @@
     width: calc(100% + var(--pgn-spacing-spacer-base) * .3125);
     margin: 0 calc(var(--pgn-spacing-spacer-base) * .3125 * -1);
 }
+
+// While the editor loads, its spinner must not push the component down: it would jump back when the dialog opens.
+// The dialog itself renders in a portal, which leaves this layer empty.
+.editor-page.xblock-editor-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--pgn-color-modal-backdrop-bg);
+    opacity: var(--pgn-other-modal-opacity);
+  }
+
+  > * {
+    position: relative;
+  }
+
+  &:empty {
+    display: none;
+  }
+}

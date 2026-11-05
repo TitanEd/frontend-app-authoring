@@ -25,21 +25,26 @@ export const ReleaseSection = ({ itemId, onChange }: Props) => {
     <SidebarSection
       title={intl.formatMessage(messages.subsectionReleaseTitle)}
     >
-      <Stack className="mt-3" direction="horizontal" gap={3}>
-        <DatepickerControl
-          type={DATEPICKER_TYPES.date}
-          value={localState}
-          label={intl.formatMessage(messages.releaseDateLabel)}
-          controlName="state-date"
-          onChange={setLocalState}
-        />
-        <DatepickerControl
-          type={DATEPICKER_TYPES.time}
-          value={localState}
-          label={intl.formatMessage(customMessages.releaseTimeCustom, { timezone: getUserTimezoneLabel(localState) })}
-          controlName="start-time"
-          onChange={setLocalState}
-        />
+      {/* The time label names the time zone and wraps: the inputs line up at the bottom of the row. */}
+      <Stack className="mt-3 align-items-end" direction="horizontal" gap={3}>
+        <div className="w-50">
+          <DatepickerControl
+            type={DATEPICKER_TYPES.date}
+            value={localState}
+            label={intl.formatMessage(messages.releaseDateLabel)}
+            controlName="state-date"
+            onChange={setLocalState}
+          />
+        </div>
+        <div className="w-50">
+          <DatepickerControl
+            type={DATEPICKER_TYPES.time}
+            value={localState}
+            label={intl.formatMessage(customMessages.releaseTimeCustom, { timezone: getUserTimezoneLabel(localState) })}
+            controlName="start-time"
+            onChange={setLocalState}
+          />
+        </div>
       </Stack>
     </SidebarSection>
   );

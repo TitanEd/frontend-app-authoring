@@ -2,7 +2,9 @@ import {
   buildCourseKey,
   buildCreateCoursePayload,
   descriptionToOverview,
+  formatCurrency,
   getInitialValues,
+  isValidPrice,
   parseYoutubeId,
   toUtcDateTime,
   validateCourseForm,
@@ -41,6 +43,17 @@ const filledValues = () => ({
 });
 
 describe('create course data layer', () => {
+  it('shows the currency code with its symbol', () => {
+    expect(formatCurrency({ currency: 'usd', symbol: '$' })).toBe('USD $');
+    expect(formatCurrency({ currency: 'inr', symbol: '' })).toBe('INR');
+    expect(formatCurrency({})).toBe('');
+  });
+
+  it('accepts whole prices of at least 1', () => {
+    ['1', 49, ' 100 '].forEach((price) => expect(isValidPrice(price)).toBe(true));
+    ['', '0', '-5', '12.5', 'abc'].forEach((price) => expect(isValidPrice(price)).toBe(false));
+  });
+
   it('starts with next year as the course start date', () => {
     expect(getInitialValues(new Date(2026, 5, 1)).startDate).toBe('2027-01-01');
   });

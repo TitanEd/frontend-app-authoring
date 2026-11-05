@@ -313,7 +313,7 @@ const XBlockContainerIframe: FC<XBlockContainerIframeProps> = ({
         </div>
       </StandardModal>
       {isXBlockEditorModalOpen && (
-        <div className="editor-page">
+        <div className="editor-page xblock-editor-layer">
           <EditorPage
             courseId={courseId}
             blockType={blockType}

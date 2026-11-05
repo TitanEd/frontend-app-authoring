@@ -105,6 +105,15 @@ export const descriptionToOverview = (description) =>
     .map((paragraph) => `<p>${escapeHtml(paragraph).replace(/\n/g, '<br>')}</p>`)
     .join('\n');
 
+/** A price is a whole number of at least 1. */
+export const isValidPrice = (price) => {
+  const text = String(price).trim();
+  return /^\d+$/.test(text) && Number(text) >= 1;
+};
+
+/** The site's currency as shown next to a price: "USD $". Empty until it is known. */
+export const formatCurrency = ({ currency, symbol } = {}) => `${(currency || '').toUpperCase()} ${symbol || ''}`.trim();
+
 /** Body of the create-course request. Images are not part of it (see the file comment). */
 export const buildCreateCoursePayload = (values) => {
   const selfPaced = values.coursePacing === PACING.self;
@@ -151,6 +160,12 @@ export const getRequestErrorMessage = (error) => {
   const message = data?.error || data?.message || data?.ErrMsg || data?.detail || data?.developer_message;
   return typeof message === 'string' ? message.trim() : '';
 };
+
+/** Currency courses of this site are sold in: `{ currency: 'usd', symbol: '$' }`. Needs the Ecommerce feature. */
+export async function fetchSiteCurrency() {
+  const { data } = await getAuthenticatedHttpClient().get(`${getConfig().LMS_BASE_URL}/titaned/api/v2/course-price/`);
+  return data;
+}
 
 export async function fetchCreateCourseOptions() {
   const { data } = await getAuthenticatedHttpClient().get(studioUrl('/titaned/api/v1/menu-config/'));
@@ -339,11 +354,8 @@ export const validateCourseForm = (values, messages) => {
     }
   }
 
-  if (values.pricingModel === PRICING.paid) {
-    const price = String(values.price).trim();
-    if (!/^\d+$/.test(price) || Number(price) < 1) {
-      fail('price', messages.priceInvalid);
-    }
+  if (values.pricingModel === PRICING.paid && !isValidPrice(values.price)) {
+    fail('price', messages.priceInvalid);
   }
 
   return errors;

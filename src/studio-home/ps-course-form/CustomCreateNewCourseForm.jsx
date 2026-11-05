@@ -37,6 +37,7 @@ import LicenseSelector from '../../schedule-and-details/license-section/license-
 import LicenseCommonsOptions from '../../schedule-and-details/license-section/license-commons-options';
 import LicenseIcons from '../../schedule-and-details/license-section/license-icons';
 import licenseMessages from '../../schedule-and-details/license-section/messages';
+import detailsMessages from '../../schedule-and-details/customDetailsMessages';
 import certificateMessages from '../../schedule-and-details/schedule-section/certificate-display-row/messages';
 import { formatImageValidationError, imageValidationMessages, validateImageFile } from '../../utils/imageValidation';
 import {
@@ -48,6 +49,9 @@ import {
   createCourse,
   fetchCreateCourseOptions,
   fetchPrerequisiteOptions,
+  fetchSiteCurrency,
+  formatCurrency,
+  isValidPrice,
   getInitialValues,
   getRequestErrorMessage,
   parseYoutubeId,
@@ -198,6 +202,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
   // Until the server says otherwise the organization can be typed, so the form is never stuck.
   const [canTypeOrganization, setCanTypeOrganization] = useState(true);
   const [prerequisites, setPrerequisites] = useState(null);
+  const [siteCurrency, setSiteCurrency] = useState({});
   const alertRef = useRef(null);
   const imagesRef = useRef(images);
   imagesRef.current = images;
@@ -224,6 +229,20 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
       });
     };
   }, []);
+
+  const sellsCourses = Boolean(siteFeatures.ecommerce);
+  useEffect(() => {
+    if (!sellsCourses) {
+      return undefined;
+    }
+    let isActive = true;
+    fetchSiteCurrency()
+      .then((currency) => isActive && setSiteCurrency(currency))
+      .catch(() => {});
+    return () => {
+      isActive = false;
+    };
+  }, [sellsCourses]);
 
   const setValue = useCallback((field, value) => {
     setValues((previous) => (previous[field] === value ? previous : { ...previous, [field]: value }));
@@ -262,9 +281,23 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
   const courseUrl = courseKey ? `${getConfig().LMS_BASE_URL}/courses/${courseKey}/about` : '';
   const isSelfPaced = values.coursePacing === PACING.self;
   const isPaid = values.pricingModel === PRICING.paid;
+  const currencyLabel = formatCurrency(siteCurrency);
   const videoId = parseYoutubeId(values.introVideo);
   const startDateTime = toUtcDateTime(values.startDate, values.startTime);
   const isLocked = isSubmitting || Boolean(created);
+
+  const previewPriceText = () => {
+    if (!isPaid) {
+      return intl.formatMessage(messages.free);
+    }
+    if (!isValidPrice(values.price)) {
+      return intl.formatMessage(messages.paid);
+    }
+    const price = String(values.price).trim();
+    return intl.formatMessage(messages.previewPrice, {
+      price: `${currencyLabel}${siteCurrency.symbol ? '' : ' '}${price}`.trim(),
+    });
+  };
 
   const handleImageChange = async (field, event) => {
     const file = event.target.files?.[0];
@@ -867,7 +900,9 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                     <Col xs={12} sm={6}>
                       <Field
                         field="price"
-                        label={intl.formatMessage(messages.price)}
+                        label={currencyLabel
+                          ? intl.formatMessage(detailsMessages.price, { currency: currencyLabel })
+                          : intl.formatMessage(messages.price)}
                         required
                         help={intl.formatMessage(messages.priceHelp)}
                         error={errorOf('price')}
@@ -950,11 +985,9 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                           })}
                         </Badge>
                       )}
-                      {siteFeatures.ecommerce && (
-                        <Badge variant={isPaid && values.price ? 'info' : 'success'}>
-                          {isPaid && values.price
-                            ? intl.formatMessage(messages.previewPrice, { price: values.price })
-                            : intl.formatMessage(messages.free)}
+                      {sellsCourses && (
+                        <Badge variant={isPaid ? 'info' : 'success'}>
+                          {previewPriceText()}
                         </Badge>
                       )}
                     </div>

@@ -25,7 +25,7 @@ const onSavingStatus = jest.fn();
 
 const renderComponent = () =>
   render(
-    <CourseAuthoringProvider>
+    <CourseAuthoringProvider courseId={courseId}>
       <TextbookForm
         closeTextbookForm={closeTextbookFormMock}
         initialFormValues={initialFormValuesMock}
@@ -159,6 +159,17 @@ describe('<TextbookForm />', () => {
     await waitFor(() => {
       expect(getAllByTestId('form-chapters-fields')).toHaveLength(2);
     });
+  });
+
+  it('names the course in the upload modal title', async () => {
+    axiosMock.onGet(/\/api\/courses\/v1\/courses\//).reply(200, { name: 'Test Course' });
+    const user = userEvent.setup();
+    const { findByTestId, findByRole } = renderComponent();
+
+    await user.click(await findByTestId('chapter-upload-button'));
+
+    const dialog = await findByRole('dialog');
+    await within(dialog).findByText('Upload a new PDF to “Test Course”');
   });
 
   it('open modal dropzone when "Upload" button is clicked', async () => {

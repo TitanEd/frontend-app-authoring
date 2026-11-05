@@ -33,8 +33,8 @@ const TextbookForm = ({
 }) => {
   const intl = useIntl();
 
-  const { courseDetail } = useCourseAuthoringContext();
-  const courseTitle = courseDetail ? courseDetail?.name : '';
+  const { courseDetails } = useCourseAuthoringContext();
+  const courseTitle = courseDetails?.name ?? '';
 
   const [currentTextbookIndex, setCurrentTextbookIndex] = useState(0);
   const [isUploadModalOpen, openUploadModal, closeUploadModal] = useToggle(false);
