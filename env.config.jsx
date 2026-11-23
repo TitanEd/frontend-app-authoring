@@ -43,6 +43,7 @@ import CustomAdvancedSettingsHeader from './src/advanced-settings/CustomAdvanced
 import CustomAppRoutes from './src/CustomAppRoutes';
 import CustomXBlockStatus from './src/course-outline/xblock-status/CustomXBlockStatus';
 import CustomBasicTab from './src/generic/configure-modal/CustomBasicTab';
+import CustomUnitAccessSettings from './src/course-unit/unit-sidebar/unit-info/CustomUnitAccessSettings';
 import CustomOutlineSidebar from './src/course-outline/outline-sidebar/CustomOutlineSidebar';
 
 const getPluginSlots = () => {
@@ -127,6 +128,25 @@ return {
                         type: DIRECT_PLUGIN,
                         priority: 1,
                         RenderWidget: (props) => <CustomBasicTab {...props} />,
+                    },
+                },
+            ],
+        },
+        // TSD-61: unit sidebar Access Restrictions shows a note instead of an empty drop-down when the course has no groups.
+        'org.openedx.frontend.authoring.course_unit_sidebar_access.v1': {
+            keepDefault: false,
+            plugins: [
+                {
+                    op: PLUGIN_OPERATIONS.Hide,
+                    widgetId: 'default_contents',
+                },
+                {
+                    op: PLUGIN_OPERATIONS.Insert,
+                    widget: {
+                        id: 'custom_unit_access_settings',
+                        type: DIRECT_PLUGIN,
+                        priority: 1,
+                        RenderWidget: (props) => <CustomUnitAccessSettings {...props} />,
                     },
                 },
             ],

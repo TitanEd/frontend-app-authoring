@@ -5,6 +5,7 @@
  */
 /* eslint-disable react/prop-types, react/no-array-index-key */
 import React from 'react';
+import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Button, Hyperlink, Icon } from '@openedx/paragon';
 import {
@@ -37,6 +38,9 @@ export const ICONS = {
 };
 
 const day = (intl, value, options = { month: 'short', day: 'numeric' }) => intl.formatDate(value, options);
+
+// Announcement links typed as a site path (e.g. /courses) point at the LMS, not at this MFE's host.
+const linkHref = (url) => (url && url.startsWith('/') && !url.startsWith('//') ? `${getConfig().LMS_BASE_URL}${url}` : url);
 
 const Empty = ({ children }) => {
   const intl = useIntl();
@@ -277,7 +281,7 @@ const Announcement = ({ data }) => {
   return (
     <div className="tb-announcement">
       <p dir="auto">{data.text}</p>
-      {data.link_url && <Button as="a" href={data.link_url} variant="outline-primary" iconAfter={ArrowForward}>{data.link_label || data.link_url}</Button>}
+      {data.link_url && <Button as="a" href={linkHref(data.link_url)} variant="outline-primary" iconAfter={ArrowForward}>{data.link_label || data.link_url}</Button>}
     </div>
   );
 };

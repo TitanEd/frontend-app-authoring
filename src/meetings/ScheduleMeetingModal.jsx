@@ -24,6 +24,8 @@ import {
 } from '@openedx/paragon';
 import { Repeat } from '@openedx/paragon/icons';
 
+import { TelsDateInput, TelsTimeInput } from '../generic/tels-date-time-input/TelsDateTimeInput';
+
 import messages from './messages';
 import { ZOOM_WEEKDAYS, weekdayDate } from './meetingUtils';
 
@@ -48,20 +50,45 @@ const browserZone = () => {
   }
 };
 
-// Tomorrow at the next full hour, as the form shows it.
-const defaultStart = () => {
-  const date = new Date(Date.now() + 24 * 60 * 60 * 1000);
-  date.setMinutes(0, 0, 0);
-  date.setHours(date.getHours() + 1);
+// "YYYY-MM-DD" and "HH:MM" of the current moment in an IANA time zone (falls back to the browser zone).
+const nowInZone = (zone) => {
+  const partsOf = (timeZone) => {
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    };
+    if (timeZone) { options.timeZone = timeZone; }
+    const parts = new Intl.DateTimeFormat('en-CA', options).formatToParts(new Date());
+    const get = (type) => parts.find((part) => part.type === type)?.value;
+    return { date: `${get('year')}-${get('month')}-${get('day')}`, time: `${get('hour')}:${get('minute')}` };
+  };
+  try {
+    return partsOf(zone);
+  } catch {
+    return partsOf();
+  }
+};
+
+// Tomorrow at the next full hour, as the form shows it (in the chosen zone).
+const defaultStart = (zone) => {
+  const { date, time } = nowInZone(zone);
+  const next = new Date(`${date}T12:00:00`);
+  next.setDate(next.getDate() + 1);
+  const hour = Math.min(23, Number(time.slice(0, 2)) + 1);
   return {
-    date: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
-    time: `${pad(date.getHours())}:00`,
+    date: `${next.getFullYear()}-${pad(next.getMonth() + 1)}-${pad(next.getDate())}`,
+    time: `${pad(hour)}:00`,
   };
 };
 
 const emptyForm = (options) => {
   const zones = (options?.time_zones || []).map((zone) => zone.value);
   const wanted = options?.default_time_zone || browserZone();
+  const time_zone = zones.includes(wanted) ? wanted : 'UTC';
   const settings = {};
   Object.entries(options?.settings || {}).forEach(([key, value]) => {
     settings[key] = value.allowed && value.default;
@@ -70,8 +97,8 @@ const emptyForm = (options) => {
     course_id: options?.courses?.length === 1 ? options.courses[0].id : '',
     topic: '',
     agenda: '',
-    ...defaultStart(),
-    time_zone: zones.includes(wanted) ? wanted : 'UTC',
+    ...defaultStart(time_zone),
+    time_zone,
     duration: Math.min(60, options?.max_duration || 60),
     recurrence: {
       type: 'none',
@@ -117,6 +144,7 @@ const ScheduleMeetingModal = ({
   const recurringEdit = Boolean(editing && editing.is_recurring);
   const [scope, setScope] = useState(recurringEdit ? 'single' : 'series');
   const [form, setForm] = useState(() => emptyForm(options));
+  const [loadedStart, setLoadedStart] = useState('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
@@ -129,13 +157,18 @@ const ScheduleMeetingModal = ({
     setMessage('');
     if (!editing) {
       setForm(emptyForm(options));
+      setLoadedStart('');
       return;
     }
     setLoading(true);
     const params = single ? { occurrence: editing.id } : {};
     getAuthenticatedHttpClient()
       .get(`${getConfig().LMS_BASE_URL}/titaned/api/v2/meetings/${editing.meeting_id}/`, { params })
-      .then(({ data }) => setForm(fromDetail(data.meeting, options)))
+      .then(({ data }) => {
+        const next = fromDetail(data.meeting, options);
+        setForm(next);
+        setLoadedStart(`${next.date}T${next.time}`);
+      })
       .catch((error) => setMessage(error?.response?.data?.message || intl.formatMessage(messages.actionFailed)))
       .finally(() => setLoading(false));
   }, [isOpen, editing, scope]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -189,6 +222,16 @@ const ScheduleMeetingModal = ({
     return intl.formatMessage(messages.summaryTimes, { base, count: Number(rule.end_times) || 0 });
   }, [rule, intl]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const { zoneNow, start, pastStart } = useMemo(() => {
+    const zoneNow = nowInZone(form.time_zone);
+    const start = `${form.date}T${form.time}`;
+    const pastStart = Boolean(form.date && form.time)
+      && start !== loadedStart
+      && start < `${zoneNow.date}T${zoneNow.time}`;
+    return { zoneNow, start, pastStart };
+  }, [form.time_zone, form.date, form.time, loadedStart]);
+  const zoneLabel = (options?.time_zones || []).find((zone) => zone.value === form.time_zone)?.label || form.time_zone;
+
   const submit = (event) => {
     event.preventDefault();
     const missing = {};
@@ -202,6 +245,11 @@ const ScheduleMeetingModal = ({
     });
     if (Object.keys(missing).length) {
       setErrors(missing);
+      setMessage(intl.formatMessage(messages.formFixErrors));
+      return;
+    }
+    if (pastStart) {
+      setErrors({ start: intl.formatMessage(messages.formPastStart, { zone: zoneLabel }) });
       setMessage(intl.formatMessage(messages.formFixErrors));
       return;
     }
@@ -321,6 +369,7 @@ const ScheduleMeetingModal = ({
                     value={form.topic}
                     maxLength={200}
                     disabled={single}
+                    placeholder={intl.formatMessage(messages.placeholderTopic)}
                     onChange={(event) => set('topic', event.target.value)}
                     {...invalid('topic')}
                   />
@@ -336,6 +385,7 @@ const ScheduleMeetingModal = ({
                   rows={3}
                   maxLength={2000}
                   value={form.agenda}
+                  placeholder={intl.formatMessage(messages.placeholderAgenda)}
                   onChange={(event) => set('agenda', event.target.value)}
                   {...invalid('agenda')}
                 />
@@ -345,21 +395,28 @@ const ScheduleMeetingModal = ({
               <div className="mtg-form__row">
                 <Form.Group controlId="mtg-f-date">
                   <Form.Label>{intl.formatMessage(messages.formDate)}</Form.Label>
-                  <Form.Control
-                    type="date"
+                  <TelsDateInput
+                    id="mtg-f-date"
                     value={form.date}
-                    onChange={(event) => set('date', event.target.value)}
-                    {...invalid('start')}
+                    min={start === loadedStart ? undefined : zoneNow.date}
+                    onChange={(next) => set('date', next)}
+                    placeholder={intl.formatMessage(messages.placeholderDate)}
+                    isInvalid={Boolean(errors.start || pastStart)}
+                    ariaDescribedBy={pastStart || errors.start ? 'mtg-start-error' : undefined}
                   />
                 </Form.Group>
                 <Form.Group controlId="mtg-f-time">
                   <Form.Label>{intl.formatMessage(messages.formTime)}</Form.Label>
-                  <Form.Control
-                    type="time"
-                    step={300}
+                  <TelsTimeInput
+                    id="mtg-f-time"
                     value={form.time}
-                    onChange={(event) => set('time', event.target.value)}
-                    {...invalid('start')}
+                    step={5}
+                    min={form.date === zoneNow.date && start !== loadedStart ? zoneNow.time : undefined}
+                    onChange={(next) => set('time', next)}
+                    placeholder={intl.formatMessage(messages.placeholderTime)}
+                    isInvalid={Boolean(errors.start || pastStart)}
+                    ariaDescribedBy={pastStart || errors.start ? 'mtg-start-error' : undefined}
+                    timeCaption={intl.formatMessage(messages.formTime)}
                   />
                 </Form.Group>
                 <Form.Group controlId="mtg-f-duration">
@@ -370,6 +427,7 @@ const ScheduleMeetingModal = ({
                     max={options.max_duration}
                     step={5}
                     value={form.duration}
+                    placeholder={intl.formatMessage(messages.placeholderDuration)}
                     onChange={(event) => set('duration', event.target.value)}
                     {...invalid('duration')}
                   />
@@ -379,7 +437,11 @@ const ScheduleMeetingModal = ({
                   {fieldError('duration')}
                 </Form.Group>
               </div>
-              {fieldError('start')}
+              {pastStart ? (
+                <div className="mtg-form__error" id="mtg-start-error">
+                  {intl.formatMessage(messages.formPastStart, { zone: zoneLabel })}
+                </div>
+              ) : fieldError('start')}
 
               <Form.Group controlId="mtg-f-zone">
                 <Form.Label>{intl.formatMessage(messages.formTimeZone)}</Form.Label>
@@ -424,6 +486,7 @@ const ScheduleMeetingModal = ({
                           min={1}
                           max={options.interval_max?.[rule.type] || 99}
                           value={rule.interval}
+                          placeholder={intl.formatMessage(messages.placeholderInterval)}
                           onChange={(event) => setRule('interval', event.target.value)}
                           {...invalid('interval')}
                         />
@@ -534,6 +597,7 @@ const ScheduleMeetingModal = ({
                             max={options.max_occurrences || 60}
                             value={rule.end_times}
                             disabled={rule.end_mode !== 'count'}
+                            placeholder={intl.formatMessage(messages.placeholderTimes)}
                             onChange={(event) => setRule('end_times', event.target.value)}
                             {...invalid('end_times')}
                           />
@@ -547,14 +611,15 @@ const ScheduleMeetingModal = ({
                             onChange={() => setRule('end_mode', 'date')}
                           />
                           {intl.formatMessage(messages.formEndsOn)}
-                          <Form.Control
+                          <TelsDateInput
                             id="mtg-f-enddate"
-                            type="date"
                             value={rule.end_date}
                             min={form.date}
                             disabled={rule.end_mode !== 'date'}
-                            onChange={(event) => setRule('end_date', event.target.value)}
-                            {...invalid('end_date')}
+                            onChange={(next) => setRule('end_date', next)}
+                            placeholder={intl.formatMessage(messages.placeholderEndDate)}
+                            isInvalid={Boolean(errors.end_date)}
+                            ariaDescribedBy={errors.end_date ? 'mtg-end_date-error' : undefined}
                           />
                         </label>
                         {fieldError('end_times')}

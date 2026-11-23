@@ -11,6 +11,7 @@
 
 - [`org.openedx.frontend.authoring.course_unit_header_actions.v1`](./CourseUnitHeaderActionsSlot/)
 - [`org.openedx.frontend.authoring.course_unit_sidebar.v2`](./CourseAuthoringUnitSidebarSlot/)
+- [`org.openedx.frontend.authoring.course_unit_sidebar_access.v1`](./CourseUnitSidebarAccessSlot/)
 
 ## Other Slots
 

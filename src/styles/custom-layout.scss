@@ -246,3 +246,33 @@ body {
 .sidebar .dropdown-toggle {
   padding: .375rem .75rem !important;
 }
+
+// Top announcement banner (customHeaderExtras: .tels-announcements, first child of <body>,
+// outside #root). html/body don't scroll and the shell is 100vh tall, so the banner pushed the
+// bottom of the shell below the window and it could not be scrolled into view. While a banner is
+// shown, body is one window tall and the shell takes the room the banner leaves. The :has() chain
+// reaches the shell at any wrapper depth below #root.
+body:has(> .tels-announcements) {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+body:has(> .tels-announcements) > .tels-announcements {
+  flex: 0 0 auto;
+}
+
+body:has(> .tels-announcements) > #root,
+body:has(> .tels-announcements) #root div:has(.app-container) {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+body:has(> .tels-announcements) .app-container {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+}

@@ -50,6 +50,7 @@ const { default: CustomAdvancedSettingsHeader } = await import('./src/advanced-s
 const { default: CustomAppRoutes } = await import('./src/CustomAppRoutes');
 const { default: CustomXBlockStatus } = await import('./src/course-outline/xblock-status/CustomXBlockStatus');
 const { default: CustomBasicTab } = await import('./src/generic/configure-modal/CustomBasicTab');
+const { default: CustomUnitAccessSettings } = await import('./src/course-unit/unit-sidebar/unit-info/CustomUnitAccessSettings');
 const { default: CustomOutlineSidebar } = await import('./src/course-outline/outline-sidebar/CustomOutlineSidebar');
 
 {% raw %}
@@ -136,6 +137,25 @@ return {
                         type: DIRECT_PLUGIN,
                         priority: 1,
                         RenderWidget: (props) => <CustomBasicTab {...props} />,
+                    },
+                },
+            ],
+        },
+        // TSD-61: unit sidebar Access Restrictions shows a note instead of an empty drop-down when the course has no groups.
+        'org.openedx.frontend.authoring.course_unit_sidebar_access.v1': {
+            keepDefault: false,
+            plugins: [
+                {
+                    op: PLUGIN_OPERATIONS.Hide,
+                    widgetId: 'default_contents',
+                },
+                {
+                    op: PLUGIN_OPERATIONS.Insert,
+                    widget: {
+                        id: 'custom_unit_access_settings',
+                        type: DIRECT_PLUGIN,
+                        priority: 1,
+                        RenderWidget: (props) => <CustomUnitAccessSettings {...props} />,
                     },
                 },
             ],
