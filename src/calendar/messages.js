@@ -121,6 +121,7 @@ const messages = defineMessages({
   formSave: { id: 'tels.calendar.form.save', defaultMessage: 'Save' },
   formSaving: { id: 'tels.calendar.form.saving', defaultMessage: 'Saving…' },
   formError: { id: 'tels.calendar.form.error', defaultMessage: 'The event could not be saved. Check the fields marked in red.' },
+  formPastStart: { id: 'tels.calendar.form.past', defaultMessage: 'Choose a start that is still to come.' },
 
   subscribe: { id: 'tels.calendar.subscribe', defaultMessage: 'Export and subscribe' },
   subscribeTitle: { id: 'tels.calendar.subscribe.title', defaultMessage: 'Take your calendar with you' },

@@ -190,15 +190,31 @@ const formFromEvent = (event, day, courses, course) => {
   }
   const editable = courses.filter((entry) => entry.editable);
   const chosen = editable.find((entry) => entry.id === course) || (editable.length === 1 ? editable[0] : null);
+  // Prefer the next hour today when the usual 10:00 start would already be past.
+  let startTime = '10:00';
+  let endTime = '11:00';
+  if (dateInput(day) === dateInput(new Date())) {
+    const now = new Date();
+    if (now.getHours() >= 10) {
+      const nextHour = now.getHours() + 1;
+      if (nextHour >= 23) {
+        startTime = '23:00';
+        endTime = '23:59';
+      } else {
+        startTime = `${String(nextHour).padStart(2, '0')}:00`;
+        endTime = `${String(nextHour + 1).padStart(2, '0')}:00`;
+      }
+    }
+  }
   return {
     course: chosen ? chosen.id : '',
     title: '',
     kind: 'office_hours',
     allDay: false,
     startDate: dateInput(day),
-    startTime: '10:00',
+    startTime,
     endDate: dateInput(day),
-    endTime: '11:00',
+    endTime,
     repeat: 0,
     location: '',
     url: '',
@@ -211,8 +227,22 @@ export const EventForm = ({
 }) => {
   const { intl } = useFormats();
   const [form, setForm] = useState(() => formFromEvent(event, day, courses, course));
+  const [initialStart] = useState(() => {
+    const first = formFromEvent(event, day, courses, course);
+    return `${first.startDate}T${first.allDay ? '' : first.startTime}`;
+  });
   const [errors, setErrors] = useState({});
   const [state, setState] = useState('default');
+  const today = dateInput(new Date());
+  const nowTime = timeInput(new Date());
+  const startKey = `${form.startDate}T${form.allDay ? '' : form.startTime}`;
+  const unchanged = Boolean(event) && startKey === initialStart;
+  const pastStart = !unchanged && Boolean(form.startDate) && (form.allDay
+    ? form.startDate < today
+    : (form.startDate < today || (form.startDate === today && Boolean(form.startTime) && form.startTime < nowTime)));
+  const shownErrors = pastStart
+    ? { ...errors, start: intl.formatMessage(messages.formPastStart) }
+    : errors;
   const set = (name) => (change) => {
     const value = change.target.type === 'checkbox' ? change.target.checked : change.target.value;
     setForm((current) => {
@@ -229,6 +259,10 @@ export const EventForm = ({
 
   const submit = async (submitEvent) => {
     submitEvent.preventDefault();
+    if (pastStart) {
+      setErrors({ start: intl.formatMessage(messages.formPastStart) });
+      return;
+    }
     setState('pending');
     setErrors({});
     try {
@@ -243,11 +277,11 @@ export const EventForm = ({
   };
 
   const field = (name, label, control, help) => (
-    <Form.Group controlId={`tcal-form-${name}`} isInvalid={Boolean(errors[name])} className="tcal-form__field">
+    <Form.Group controlId={`tcal-form-${name}`} isInvalid={Boolean(shownErrors[name])} className="tcal-form__field">
       <Form.Label>{label}</Form.Label>
       {control}
-      {help && !errors[name] && <Form.Text>{help}</Form.Text>}
-      {errors[name] && <Form.Control.Feedback type="invalid">{errors[name]}</Form.Control.Feedback>}
+      {help && !shownErrors[name] && <Form.Text>{help}</Form.Text>}
+      {shownErrors[name] && <Form.Control.Feedback type="invalid">{shownErrors[name]}</Form.Control.Feedback>}
     </Form.Group>
   );
   const editable = courses.filter((entry) => entry.editable);
@@ -306,13 +340,13 @@ export const EventForm = ({
               {field(
                 'start',
                 intl.formatMessage(messages.formDate), (
-                  <Form.Control type="date" value={form.startDate} onChange={set('startDate')} required />
+                  <Form.Control type="date" value={form.startDate} min={unchanged ? undefined : today} onChange={set('startDate')} required />
                 ),
               )}
               {!form.allDay && field(
                 'start_time',
                 intl.formatMessage(messages.formTime), (
-                  <Form.Control type="time" value={form.startTime} onChange={set('startTime')} required />
+                  <Form.Control type="time" value={form.startTime} min={!unchanged && form.startDate === today ? nowTime : undefined} onChange={set('startTime')} required />
                 ),
               )}
             </fieldset>

@@ -156,6 +156,14 @@ const HEADER_EXTRAS_STYLE = `
     padding: 0 .25rem; cursor: pointer;
   }
   .tels-announcement__close:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  /* TSD-111: the user menu opened from the toggle's left edge and ran past the right edge of the
+     window; in dark mode its border (10% black) and shadow did not show against the page. */
+  .header-container .usermenu-dropdown .dropdown-menu,
+  .header-container .usermenu-dropdown-mobile .dropdown-menu { right: 0; left: auto; }
+  html[data-paragon-theme-variant="dark"] .header-container .usermenu-dropdown .dropdown-menu,
+  html[data-paragon-theme-variant="dark"] .header-container .usermenu-dropdown-mobile .dropdown-menu {
+    background-color: #1f2937 !important; border-color: rgba(255, 255, 255, .16) !important; box-shadow: 0 8px 24px rgba(0, 0, 0, .5) !important;
+  }
 `;
 
 // Staff tools: no chat widget, and the announcements for course teams.

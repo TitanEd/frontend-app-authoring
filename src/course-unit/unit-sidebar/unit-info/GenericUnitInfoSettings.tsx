@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { Button, ButtonGroup, useToggle } from '@openedx/paragon';
 import { PUBLISH_TYPES, UNIT_VISIBILITY_STATES } from '@src/course-unit/constants';
 import { UserPartitionInfoTypes } from '@src/data/types';
-import { AccessEditComponent, DiscussionEditComponent } from '@src/generic/configure-modal/UnitTab';
+import { DiscussionEditComponent } from '@src/generic/configure-modal/UnitTab';
 import { SidebarContent, SidebarSection } from '@src/generic/sidebar';
 import { Form, Formik } from 'formik';
 import { useMemo } from 'react';
@@ -11,6 +11,7 @@ import { useConfigureUnit } from '@src/course-outline/data/apiHooks';
 import { useStateWithCallback } from '@src/hooks';
 import ModalNotification from '@src/generic/modal-notification';
 import { InfoOutline } from '@openedx/paragon/icons';
+import CourseUnitSidebarAccessSlot from '@src/plugin-slots/CourseUnitSidebarAccessSlot';
 import messages from './messages';
 
 interface UnitInfoSettingsProps {
@@ -148,7 +149,7 @@ export const GenericUnitInfoSettings = (props: UnitInfoSettingsProps) => {
               dirty,
             }) => (
               <Form>
-                <AccessEditComponent
+                <CourseUnitSidebarAccessSlot
                   selectedPartitionIndex={values.selectedPartitionIndex}
                   setFieldValue={setFieldValue}
                   userPartitionInfo={userPartitionInfo}

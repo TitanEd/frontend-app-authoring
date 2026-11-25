@@ -132,6 +132,14 @@
 .tcal-search {
   margin: 0;
   min-inline-size: min(16rem, 100%);
+
+  // The search icon sat a few pixels above the middle: Paragon gives its box a fixed height,
+  // shorter than this field. The box now spans the whole field, so the icon is centred.
+  .pgn__form-control-decorator {
+    top: 0;
+    bottom: 0;
+    height: auto;
+  }
 }
 
 .tcal-views {

@@ -2515,6 +2515,102 @@ select.form-control {
   }
 }
 
+// Course outline next to the open Info sidebar and the docked AI assistant.
+// The page stays wide while the panels take the room, so these rules follow
+// the outline's own width (container queries), not the window's.
+.course-outline-container {
+  container: tels-outline-page / inline-size;
+
+  > .d-flex > .flex-fill {
+    container: tels-outline / inline-size;
+  }
+
+  // Title, rename and status/actions: wrap the actions to a second line
+  // instead of squeezing the title to one word per line. Unwrapped headers
+  // forced the rows wider than the outline card.
+  .item-card-header {
+    flex-wrap: wrap;
+    row-gap: var(--pgn-spacing-spacer-2);
+
+    > .pgn__hstack {
+      flex: 1 1 8rem;
+      min-width: 0;
+    }
+
+    > .ml-auto {
+      flex-shrink: 0;
+    }
+
+    [role="status"] {
+      white-space: nowrap;
+    }
+  }
+
+  // "New unit" / "Use unit from library": stack them rather than wrap their text.
+  article .pgn__hstack:has(> .btn-block) {
+    flex-wrap: wrap;
+
+    > .btn-block {
+      flex: 1 1 14rem;
+      margin-top: 0;
+      white-space: nowrap;
+    }
+  }
+}
+
+// Not enough room for the outline and the open Info sidebar side by side:
+// the sidebar goes above the outline at full width.
+@container tels-outline-page (max-width: 1180px) {
+  .course-outline-container > .d-flex:has(> .sidebar .resizable) {
+    flex-direction: column;
+    align-items: stretch !important;
+
+    > .flex-fill {
+      width: 100%;
+    }
+
+    // Lifts the side-by-side caps of the `.sidebar` block above (width, sticky).
+    > .sidebar {
+      order: -1;
+      align-self: stretch !important;
+      width: auto;
+      max-width: none;
+      position: static;
+      margin-left: 0;
+      margin-bottom: var(--pgn-spacing-spacer-3);
+
+      > .pgn__hstack {
+        flex: 1 1 auto !important;
+        width: auto !important;
+      }
+
+      .resizable {
+        flex: 1 1 auto;
+        width: auto !important;
+        max-width: none;
+      }
+    }
+  }
+}
+
+// Narrow outline: tighten the inline row padding and indents so nested units
+// keep a usable width.
+@container tels-outline (max-width: 640px) {
+  .course-outline-container {
+    .row:has(> .col > [data-testid="section-card"]),
+    .row:has(> .col > [data-testid="subsection-card"]),
+    .row:has(> .col > [data-testid="unit-card"]) {
+      padding: .75rem 1rem !important;
+      margin-bottom: 1rem !important;
+    }
+
+    .section-card .section-card__content,
+    .subsection-card .subsection-card__content {
+      margin-left: .75rem;
+    }
+  }
+}
+
 .custom-schedule-details {
   margin-top: -1.5rem;
   margin-bottom: 1.5rem;
@@ -3672,3 +3768,199 @@ body.tels-custom-authoring {
   font-size: 1rem !important;
   letter-spacing: .02em;
 }
+
+// TSD-67: the brand theme clips collapsible cards (overflow: hidden, for rounded corners),
+// which hid the "Add a tag" dropdown in Manage Tags. Let a card show the open tag menu.
+.collapsible-card:has(.react-select-add-tags__menu),
+.collapsible-card-lg:has(.react-select-add-tags__menu) {
+  overflow: visible !important;
+}
+
+// TSD-67: tag options in the Add a tag menu have no side padding (Open edX sets padding: 0),
+// so the hover border touched the checkbox and the text. Add horizontal padding only.
+.taxonomy-tags-selectable-box-set .pgn__selectable_box.taxonomy-tags-selectable-box {
+  padding-right: .5rem;
+  padding-left: .5rem;
+}
+
+// TSD-138: Textbook chapter asset upload/delete icons were small bare icons at the end of the label.
+// Show them as clear outlined icon buttons with a gap; delete turns red on hover.
+.textbook-form .field-icon-button.btn-icon {
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  margin-left: .5rem;
+  border: 1px solid var(--pgn-color-primary-base) !important;
+  border-radius: var(--pgn-size-border-radius-base, .375rem) !important;
+  color: var(--pgn-color-primary-base) !important;
+
+  .pgn__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background-color: color-mix(in srgb, var(--pgn-color-primary-base) 12%, transparent) !important;
+  }
+
+  &[data-testid="chapter-delete-button"]:hover,
+  &[data-testid="chapter-delete-button"]:focus-visible {
+    border-color: var(--pgn-color-danger-base, #c4320a) !important;
+    background-color: color-mix(in srgb, var(--pgn-color-danger-base, #c4320a) 12%, transparent) !important;
+    color: var(--pgn-color-danger-base, #c4320a) !important;
+  }
+}
+
+.textbook-form .field-icon-button.ml-auto {
+  margin-left: auto !important;
+}
+
+// TSD-168: the info rail of the Studio sidebars (Course Outline, unit page: info, add, tags, help)
+// draws its icon buttons as outlined buttons (.rounded-iconbutton: 1px brand border, transparent),
+// but the brand's icon-button hover filled them with solid brand colour. Every other outlined button
+// (Course info, Reindex, Add, View live, Collapse all, New unit) only shifts its border and text
+// colour on hover. Hover and focus now follow the outlined buttons, in light and dark mode.
+// The selected button (.btn-icon-primary-active / aria-selected) keeps its fill.
+// The brand rule is !important, so this one repeats that weight.
+.sidebar-toggle .rounded-iconbutton.btn-icon.btn-icon-primary:not(.btn-icon-primary-active):not([aria-selected="true"]) {
+  &:is(:hover, :focus):not(:disabled) {
+    background-color: transparent !important;
+    color: var(--pgn-color-btn-hover-text-outline-primary, var(--pgn-color-primary-base)) !important;
+    border-color: var(--pgn-color-btn-hover-border-outline-primary, var(--pgn-color-primary-base));
+
+    .pgn__icon,
+    .btn-icon__icon {
+      color: inherit !important;
+    }
+  }
+}
+
+// Date and time pickers (Schedule a class, calendar New event and every other date/time field):
+// the browser draws the calendar / clock icon itself, dark grey, so it was almost invisible in dark
+// mode and never in the brand colour. The icon is redrawn as a mask filled with the brand token, so
+// it follows the brand (and its hover) in light and dark mode. accent-color gives the browser's own
+// picker the brand colour where the browser supports it, and in dark mode the pickers open dark.
+.tels-custom-authoring {
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"] {
+    accent-color: var(--pgn-color-primary-base);
+
+    &::-webkit-calendar-picker-indicator {
+      opacity: 1;
+      cursor: pointer;
+      background: var(--pgn-color-primary-base);
+      -webkit-mask: var(--tels-picker-icon) center / 1.125rem 1.125rem no-repeat;
+      mask: var(--tels-picker-icon) center / 1.125rem 1.125rem no-repeat;
+    }
+
+    &:hover::-webkit-calendar-picker-indicator {
+      background: var(--pgn-color-primary-hover, var(--pgn-color-primary-base));
+    }
+  }
+
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"] {
+    --tels-picker-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V10h16v11zm0-13H4V5h16v3z'/%3E%3C/svg%3E");
+  }
+
+  input[type="time"] {
+    --tels-picker-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z'/%3E%3C/svg%3E");
+  }
+}
+
+html[data-paragon-theme-variant="dark"] .tels-custom-authoring {
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"] {
+    color-scheme: dark;
+  }
+}
+
+
+// TitanEd date / time pickers (react-datepicker, TelsDateTimeInput): full-width like the other
+// fields, brand icon, and a pop-up in the brand colour that follows dark mode.
+.tels-picker {
+  display: block;
+  width: 100%;
+
+  .react-datepicker__input-container { display: block; }
+
+  .react-datepicker__calendar-icon {
+    position: absolute;
+    top: 50%;
+    right: .75rem;
+    left: auto;
+    transform: translateY(-50%);
+    width: 1.125rem;
+    height: 1.125rem;
+    padding: 0;
+    color: var(--pgn-color-primary-base);
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .tels-picker__input { padding-right: 2.5rem; padding-left: .75rem; }
+}
+
+#tels-picker-portal .react-datepicker-popper { z-index: 2100; }
+
+.tels-picker__calendar {
+  font-family: inherit;
+  border-color: var(--pgn-color-light-400, #d1d5db);
+
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected,
+  .react-datepicker__time-list-item--selected {
+    background-color: var(--pgn-color-primary-base) !important;
+    color: #fff !important;
+  }
+
+  .react-datepicker__day:not(.react-datepicker__day--selected):not(.react-datepicker__day--disabled):hover,
+  .react-datepicker__time-list-item:not(.react-datepicker__time-list-item--selected):not(.react-datepicker__time-list-item--disabled):hover {
+    background-color: color-mix(in srgb, var(--pgn-color-primary-base) 15%, transparent) !important;
+  }
+
+  .react-datepicker__day--today { font-weight: 700; color: var(--pgn-color-primary-base); }
+  .react-datepicker__navigation-icon::before { border-color: var(--pgn-color-primary-base); }
+
+  .react-datepicker__time-container, .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box { width: 7rem; }
+  .react-datepicker__time-list-item { white-space: nowrap; height: auto !important; padding: .35rem .5rem !important; }
+}
+
+html[data-paragon-theme-variant="dark"] .tels-picker__calendar {
+  background-color: #1f2937;
+  border-color: rgba(255, 255, 255, .16);
+  color: #e5e7eb;
+
+  .react-datepicker__header {
+    background-color: #111827;
+    border-bottom-color: rgba(255, 255, 255, .12);
+  }
+
+  .react-datepicker__current-month,
+  .react-datepicker-time__header,
+  .react-datepicker__day-name,
+  .react-datepicker__day,
+  .react-datepicker__time-list-item { color: #e5e7eb; }
+
+  .react-datepicker__day--outside-month,
+  .react-datepicker__day--disabled,
+  .react-datepicker__time-list-item--disabled { color: #6b7280 !important; }
+
+  .react-datepicker__time-container,
+  .react-datepicker__time,
+  .react-datepicker__time-box { background-color: #1f2937; border-color: rgba(255, 255, 255, .12); }
+
+  .react-datepicker__time-list { background-color: #1f2937; }
+  .react-datepicker__time-container .react-datepicker__time { background-color: #1f2937; }
+}
+
+// TSD-61: note shown in the unit sidebar Access Restrictions when the course has no groups.
+.tels-unit-access-empty { color: var(--pgn-color-gray-700); line-height: 1.5; a { color: var(--pgn-color-primary-base); font-weight: 600; } }

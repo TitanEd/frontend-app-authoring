@@ -646,3 +646,12 @@
 @media (prefers-reduced-motion: reduce) {
   .mtg-dot { animation: none; }
 }
+
+// The search icon of the filters sat a few pixels above the middle: Paragon gives its box a
+// fixed height, shorter than this field. The box now spans the whole field, so the icon is centred
+// (same fix as .tcal-search in src/calendar/style.scss).
+.mtg-filters__search .pgn__form-control-decorator {
+  top: 0;
+  bottom: 0;
+  height: auto;
+}
