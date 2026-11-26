@@ -3400,7 +3400,7 @@ body.tels-custom-authoring {
 
   &:hover,
   &:focus,
-  &:not(:disabled):not(.disabled):active {
+  &:not(:disabled, .disabled):active {
     color: var(--pgn-color-white) !important;
     border-color: var(--pgn-color-white) !important;
     background-color: color-mix(in srgb, var(--pgn-color-white) 18%, transparent) !important;
@@ -3413,7 +3413,7 @@ body.tels-custom-authoring {
 
 // Library filter row (Tags, Type, … sort): the filter buttons sat edge to edge.
 .library-authoring-page .d-flex.mt-3.align-items-center {
-  column-gap: var(--pgn-spacing-spacer-2, 0.5rem);
+  column-gap: var(--pgn-spacing-spacer-2, .5rem);
 }
 
 // "All libraries" filter of the outline's "Add existing" panel: white text on a cleared
@@ -3793,9 +3793,9 @@ body.tels-custom-authoring {
 
   &[data-testid="chapter-delete-button"]:hover,
   &[data-testid="chapter-delete-button"]:focus-visible {
-    border-color: var(--pgn-color-danger-base, #c4320a) !important;
-    background-color: color-mix(in srgb, var(--pgn-color-danger-base, #c4320a) 12%, transparent) !important;
-    color: var(--pgn-color-danger-base, #c4320a) !important;
+    border-color: var(--pgn-color-danger-base, #C4320A) !important;
+    background-color: color-mix(in srgb, var(--pgn-color-danger-base, #C4320A) 12%, transparent) !important;
+    color: var(--pgn-color-danger-base, #C4320A) !important;
   }
 }
 
@@ -3810,7 +3810,7 @@ body.tels-custom-authoring {
 // colour on hover. Hover and focus now follow the outlined buttons, in light and dark mode.
 // The selected button (.btn-icon-primary-active / aria-selected) keeps its fill.
 // The brand rule is !important, so this one repeats that weight.
-.sidebar-toggle .rounded-iconbutton.btn-icon.btn-icon-primary:not(.btn-icon-primary-active):not([aria-selected="true"]) {
+.sidebar-toggle .rounded-iconbutton.btn-icon.btn-icon-primary:not(.btn-icon-primary-active, [aria-selected="true"]) {
   &:is(:hover, :focus):not(:disabled) {
     background-color: transparent !important;
     color: var(--pgn-color-btn-hover-text-outline-primary, var(--pgn-color-primary-base)) !important;
@@ -3844,15 +3844,31 @@ body.tels-custom-authoring {
     z-index: 1;
   }
 
-  .tels-picker__input { padding-right: 2.5rem; padding-left: .75rem; }
+  .tels-picker__input {
+    padding-right: 2.5rem;
+    padding-left: .75rem;
+  }
 }
 
 #tels-picker-portal .react-datepicker-popper { z-index: 2100; }
 
 .tels-picker__calendar {
   .react-datepicker__time-container, .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box { width: 7rem; }
-  .react-datepicker__time-list-item { white-space: nowrap; height: auto !important; padding: .35rem .5rem !important; }
+
+  .react-datepicker__time-list-item {
+    white-space: nowrap;
+    height: auto !important;
+    padding: .35rem .5rem !important;
+  }
 }
 
 // TSD-61: note shown in the unit sidebar Access Restrictions when the course has no groups.
-.tels-unit-access-empty { color: var(--pgn-color-gray-700); line-height: 1.5; a { color: var(--pgn-color-primary-base); font-weight: 600; } }
+.tels-unit-access-empty {
+  color: var(--pgn-color-gray-700);
+  line-height: 1.5;
+
+  a {
+    color: var(--pgn-color-primary-base);
+    font-weight: 600;
+  }
+}

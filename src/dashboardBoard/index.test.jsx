@@ -1,6 +1,9 @@
 import React from 'react';
 import {
-  render, screen, waitFor, fireEvent,
+  render,
+  screen,
+  waitFor,
+  fireEvent,
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
@@ -16,10 +19,21 @@ jest.mock('@edx/frontend-platform/auth', () => ({ getAuthenticatedHttpClient: je
 const URL = 'http://lms.test/titaned/api/v2/dashboard/learner/';
 
 const metric = (uid, title, value) => ({
-  uid, type: uid, title, description: '', icon: 'book', tone: 'brand', value,
+  uid,
+  type: uid,
+  title,
+  description: '',
+  icon: 'book',
+  tone: 'brand',
+  value,
 });
 const announcement = (uid, title, text) => ({
-  uid, type: 'announcement', title, icon: 'book', size: 'small', data: { text },
+  uid,
+  type: 'announcement',
+  title,
+  icon: 'book',
+  size: 'small',
+  data: { text },
 });
 
 const boardData = (overrides = {}) => ({
@@ -33,9 +47,12 @@ const boardData = (overrides = {}) => ({
 });
 
 const client = {};
-const renderBoard = () => render(
-  <IntlProvider locale="en"><DashboardBoard audience="learner" /></IntlProvider>,
-);
+const renderBoard = () =>
+  render(
+    <IntlProvider locale="en">
+      <DashboardBoard audience="learner" />
+    </IntlProvider>,
+  );
 const widgetTitles = () => screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent);
 
 describe('DashboardBoard', () => {
@@ -67,7 +84,12 @@ describe('DashboardBoard', () => {
       data: boardData({
         metrics: [metric('m1', 'Enrolled courses', 3)],
         hidden: [{
-          uid: 'm2', kind: 'metric', type: 'm2', title: 'Points', icon: 'book', tone: 'brand',
+          uid: 'm2',
+          kind: 'metric',
+          type: 'm2',
+          title: 'Points',
+          icon: 'book',
+          tone: 'brand',
         }],
         customized: true,
       }),
@@ -86,10 +108,12 @@ describe('DashboardBoard', () => {
     expect(screen.getByRole('button', { name: 'Show "Points"' })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Save my dashboard' }));
-    await waitFor(() => expect(client.put).toHaveBeenCalledWith(URL, {
-      order: ['m1', 'm2', 'w2', 'w1'],
-      hidden: ['m2'],
-    }));
+    await waitFor(() =>
+      expect(client.put).toHaveBeenCalledWith(URL, {
+        order: ['m1', 'm2', 'w2', 'w1'],
+        hidden: ['m2'],
+      })
+    );
     expect(await screen.findByText('Your dashboard is saved.')).toBeInTheDocument();
   });
 

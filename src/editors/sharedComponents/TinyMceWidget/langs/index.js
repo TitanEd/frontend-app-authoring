@@ -13,7 +13,8 @@ import './ar';
 import './es_MX';
 import './hi';
 
-const QUESTION_LABEL_HELP = 'Apply a "Question" label to specific text, recognized by screen readers. Recommended to improve accessibility.';
+const QUESTION_LABEL_HELP =
+  'Apply a "Question" label to specific text, recognized by screen readers. Recommended to improve accessibility.';
 
 const extras = {
   ar: {
@@ -40,7 +41,8 @@ const extras = {
     'Edit Image Settings': 'Editar la configuración de la imagen',
     'Code Block': 'Bloque de código',
     Label: 'Etiqueta',
-    [QUESTION_LABEL_HELP]: 'Aplica una etiqueta de «Pregunta» a un texto específico para que la reconozcan los lectores de pantalla. Recomendado para mejorar la accesibilidad.',
+    [QUESTION_LABEL_HELP]:
+      'Aplica una etiqueta de «Pregunta» a un texto específico para que la reconozcan los lectores de pantalla. Recomendado para mejorar la accesibilidad.',
     'Insert iframe': 'Insertar iframe',
     'Embed iframe': 'Incrustar iframe',
     'Source URL': 'URL de origen',

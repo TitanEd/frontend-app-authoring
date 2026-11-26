@@ -15,7 +15,10 @@
  * one, copy to the other.
  */
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';
@@ -23,7 +26,14 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Button, Icon, Spinner } from '@openedx/paragon';
 import {
-  ArrowBack, ArrowForward, DragIndicator, TrendingDown, TrendingUp, Tune, Visibility, VisibilityOff,
+  ArrowBack,
+  ArrowForward,
+  DragIndicator,
+  TrendingDown,
+  TrendingUp,
+  Tune,
+  Visibility,
+  VisibilityOff,
 } from '@openedx/paragon/icons';
 
 import messages from './messages';
@@ -39,16 +49,21 @@ const Metric = ({ metric }) => {
   if (metric.unit === 'days') { unit = ` ${intl.formatMessage(messages.days, { count: metric.value })}`; }
   return (
     <div className={`tb-metric tb-tone-${metric.tone}`} title={metric.description}>
-      <span className="tb-metric__icon"><Icon src={ICONS[metric.icon] || ICONS.book} /></span>
+      <span className="tb-metric__icon">
+        <Icon src={ICONS[metric.icon] || ICONS.book} />
+      </span>
       <div className="tb-metric__body">
         <span className="tb-metric__title">{metric.title}</span>
         <strong className="tb-metric__value">
-          {intl.formatNumber(metric.value)}<small>{unit}</small>
+          {intl.formatNumber(metric.value)}
+          <small>{unit}</small>
         </strong>
         {hasTrend && difference !== 0 && (
           <span
             className={`tb-metric__trend ${difference > 0 ? 'is-up' : 'is-down'}`}
-            title={intl.formatMessage(messages.versusBefore, { difference: intl.formatNumber(difference, { signDisplay: 'always' }) })}
+            title={intl.formatMessage(messages.versusBefore, {
+              difference: intl.formatNumber(difference, { signDisplay: 'always' }),
+            })}
           >
             <Icon src={difference > 0 ? TrendingUp : TrendingDown} size="xs" />
             {intl.formatNumber(difference, { signDisplay: 'always' })}
@@ -73,13 +88,20 @@ Metric.propTypes = {
 
 // The tools of one card while the board is being customized.
 const CardTools = ({
-  title, hidden, first, last, onMove, onToggle,
+  title,
+  hidden,
+  first,
+  last,
+  onMove,
+  onToggle,
 }) => {
   const intl = useIntl();
   const label = (message) => intl.formatMessage(message, { title });
   return (
     <div className="tb-tools">
-      <span className="tb-tools__grip" aria-hidden="true"><Icon src={DragIndicator} /></span>
+      <span className="tb-tools__grip" aria-hidden="true">
+        <Icon src={DragIndicator} />
+      </span>
       <button
         type="button"
         className="tb-tools__btn tb-tools__btn--arrow"
@@ -146,14 +168,20 @@ const DashboardBoard = ({ audience }) => {
       .catch(() => setFailed(true));
   }, [url]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   // Every card of the board by uid, with its kind; a hidden one has no figures.
   const cards = useMemo(() => {
     const all = {};
     if (board) {
-      board.metrics.forEach((item) => { all[item.uid] = { ...item, kind: 'metrics', loaded: true }; });
-      board.widgets.forEach((item) => { all[item.uid] = { ...item, kind: 'widgets', loaded: true }; });
+      board.metrics.forEach((item) => {
+        all[item.uid] = { ...item, kind: 'metrics', loaded: true };
+      });
+      board.widgets.forEach((item) => {
+        all[item.uid] = { ...item, kind: 'widgets', loaded: true };
+      });
       (board.hidden || []).forEach((item) => {
         all[item.uid] = { ...item, kind: item.kind === 'metric' ? 'metrics' : 'widgets', loaded: false };
       });
@@ -171,16 +199,18 @@ const DashboardBoard = ({ audience }) => {
     });
   };
 
-  const place = (kind, uid, index) => setDraft((current) => {
-    const list = current[kind].filter((other) => other !== uid);
-    list.splice(Math.max(0, Math.min(index, list.length)), 0, uid);
-    return { ...current, [kind]: list };
-  });
+  const place = (kind, uid, index) =>
+    setDraft((current) => {
+      const list = current[kind].filter((other) => other !== uid);
+      list.splice(Math.max(0, Math.min(index, list.length)), 0, uid);
+      return { ...current, [kind]: list };
+    });
 
-  const toggle = (uid) => setDraft((current) => ({
-    ...current,
-    hidden: current.hidden.includes(uid) ? current.hidden.filter((other) => other !== uid) : [...current.hidden, uid],
-  }));
+  const toggle = (uid) =>
+    setDraft((current) => ({
+      ...current,
+      hidden: current.hidden.includes(uid) ? current.hidden.filter((other) => other !== uid) : [...current.hidden, uid],
+    }));
 
   const store = (request) => {
     setSaving(true);
@@ -195,10 +225,13 @@ const DashboardBoard = ({ audience }) => {
       .finally(() => setSaving(false));
   };
 
-  const save = () => store(getAuthenticatedHttpClient().put(url, {
-    order: [...draft.metrics, ...draft.widgets],
-    hidden: draft.hidden,
-  }));
+  const save = () =>
+    store(
+      getAuthenticatedHttpClient().put(url, {
+        order: [...draft.metrics, ...draft.widgets],
+        hidden: draft.hidden,
+      }),
+    );
   const reset = () => store(getAuthenticatedHttpClient().delete(url));
 
   if (failed) {
@@ -234,66 +267,72 @@ const DashboardBoard = ({ audience }) => {
       onDragEnter: () => {
         if (dragged && dragged.kind === kind && dragged.uid !== uid) { place(kind, dragged.uid, index); }
       },
-      onDragOver: (event) => { if (dragged && dragged.kind === kind) { event.preventDefault(); } },
+      onDragOver: (event) => {
+        if (dragged && dragged.kind === kind) { event.preventDefault(); }
+      },
       onDrop: (event) => event.preventDefault(),
       onDragEnd: () => setDragged(null),
     };
   };
 
-  const stateClass = (uid) => [
-    editing ? 'is-editing' : '',
-    editing && draft.hidden.includes(uid) ? 'is-hidden' : '',
-    dragged && dragged.uid === uid ? 'is-dragged' : '',
-  ].join(' ');
+  const stateClass = (uid) =>
+    [
+      editing ? 'is-editing' : '',
+      editing && draft.hidden.includes(uid) ? 'is-hidden' : '',
+      dragged && dragged.uid === uid ? 'is-dragged' : '',
+    ].join(' ');
 
-  const tools = (kind, uid, index) => editing && (
-    <CardTools
-      title={cards[uid].title}
-      hidden={draft.hidden.includes(uid)}
-      first={index === 0}
-      last={index === draft[kind].length - 1}
-      onMove={(step) => place(kind, uid, index + step)}
-      onToggle={() => toggle(uid)}
-    />
-  );
+  const tools = (kind, uid, index) =>
+    editing && (
+      <CardTools
+        title={cards[uid].title}
+        hidden={draft.hidden.includes(uid)}
+        first={index === 0}
+        last={index === draft[kind].length - 1}
+        onMove={(step) => place(kind, uid, index + step)}
+        onToggle={() => toggle(uid)}
+      />
+    );
 
   const [metricIds, widgetIds] = KINDS.map((kind) => (editing ? draft[kind] : board[kind].map((item) => item.uid)));
 
   return (
     <div className={`tb-board tb-board--${audience} ${editing ? 'tb-board--editing' : ''}`}>
       <div className="tb-bar-top">
-        {editing ? (
-          <>
-            <p className="tb-bar-top__hint">{intl.formatMessage(messages.customizeHint)}</p>
-            <div className="tb-bar-top__actions">
-              {board.customized && (
-                <Button variant="link" disabled={saving} onClick={reset}>
-                  {intl.formatMessage(messages.reset)}
-                </Button>
-              )}
-              <Button variant="outline-primary" disabled={saving} onClick={() => setDraft(null)}>
-                {intl.formatMessage(messages.cancel)}
-              </Button>
-              <Button variant="primary" disabled={saving} onClick={save}>
-                {intl.formatMessage(saving ? messages.saving : messages.save)}
-              </Button>
-            </div>
-          </>
-        ) : (
-          <>
-            <p className="tb-bar-top__hint" role="status">
-              {notice && notice.tone === 'success' && notice.text}
-              {!notice && hiddenCount > 0 && intl.formatMessage(messages.hiddenCount, { count: hiddenCount })}
-            </p>
-            {total > 0 && board.can_customize !== false && (
+        {editing ?
+          (
+            <>
+              <p className="tb-bar-top__hint">{intl.formatMessage(messages.customizeHint)}</p>
               <div className="tb-bar-top__actions">
-                <Button variant="outline-primary" iconBefore={Tune} onClick={startCustomizing}>
-                  {intl.formatMessage(messages.customize)}
+                {board.customized && (
+                  <Button variant="link" disabled={saving} onClick={reset}>
+                    {intl.formatMessage(messages.reset)}
+                  </Button>
+                )}
+                <Button variant="outline-primary" disabled={saving} onClick={() => setDraft(null)}>
+                  {intl.formatMessage(messages.cancel)}
+                </Button>
+                <Button variant="primary" disabled={saving} onClick={save}>
+                  {intl.formatMessage(saving ? messages.saving : messages.save)}
                 </Button>
               </div>
-            )}
-          </>
-        )}
+            </>
+          ) :
+          (
+            <>
+              <p className="tb-bar-top__hint" role="status">
+                {notice && notice.tone === 'success' && notice.text}
+                {!notice && hiddenCount > 0 && intl.formatMessage(messages.hiddenCount, { count: hiddenCount })}
+              </p>
+              {total > 0 && board.can_customize !== false && (
+                <div className="tb-bar-top__actions">
+                  <Button variant="outline-primary" iconBefore={Tune} onClick={startCustomizing}>
+                    {intl.formatMessage(messages.customize)}
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
       </div>
       {notice && notice.tone === 'danger' && <p className="tb-notice" role="alert">{notice.text}</p>}
       {!editing && total > 0 && hiddenCount === total && (
@@ -307,7 +346,9 @@ const DashboardBoard = ({ audience }) => {
               <div key={uid} className={`tb-slot ${stateClass(uid)}`} {...editProps('metrics', uid, index)}>
                 {metric.loaded ? <Metric metric={metric} /> : (
                   <div className={`tb-metric tb-tone-${metric.tone}`}>
-                    <span className="tb-metric__icon"><Icon src={ICONS[metric.icon] || ICONS.book} /></span>
+                    <span className="tb-metric__icon">
+                      <Icon src={ICONS[metric.icon] || ICONS.book} />
+                    </span>
                     <div className="tb-metric__body">
                       <span className="tb-metric__title">{metric.title}</span>
                     </div>
@@ -331,12 +372,18 @@ const DashboardBoard = ({ audience }) => {
               {...editProps('widgets', uid, index)}
             >
               <header className="tb-widget__head">
-                <span className="tb-widget__icon"><Icon src={ICONS[widget.icon] || ICONS.book} /></span>
+                <span className="tb-widget__icon">
+                  <Icon src={ICONS[widget.icon] || ICONS.book} />
+                </span>
                 <h2>{widget.title}</h2>
                 {tools('widgets', uid, index)}
               </header>
               {widget.loaded
-                ? <div className="tb-widget__body"><Body data={widget.data} /></div>
+                ? (
+                  <div className="tb-widget__body">
+                    <Body data={widget.data} />
+                  </div>
+                )
                 : <p className="tb-empty">{intl.formatMessage(messages.afterSave)}</p>}
             </section>
           );

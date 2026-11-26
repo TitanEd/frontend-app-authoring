@@ -83,7 +83,13 @@ const TranscriptSettings = ({
                   )}
               </TransitionReplace>
               <ActionRow.Spacer />
-              <IconButton size="sm" iconAs={Icon} src={Close} onClick={closeTranscriptSettings} alt={intl.formatMessage(a11yMessages.closeSettings)} />
+              <IconButton
+                size="sm"
+                iconAs={Icon}
+                src={Close}
+                onClick={closeTranscriptSettings}
+                alt={intl.formatMessage(a11yMessages.closeSettings)}
+              />
             </ActionRow>
             <TransitionReplace>
               {transcriptType ?

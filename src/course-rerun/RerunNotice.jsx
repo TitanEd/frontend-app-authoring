@@ -13,13 +13,22 @@ const STOP_CHECKING_AFTER_MS = 15 * 60 * 1000;
 
 const VARIANTS = {
   [RERUN_STATES.inProgress]: {
-    variant: 'info', icon: Info, title: customMessages.rerunInProgressTitle, body: customMessages.rerunInProgressBody,
+    variant: 'info',
+    icon: Info,
+    title: customMessages.rerunInProgressTitle,
+    body: customMessages.rerunInProgressBody,
   },
   [RERUN_STATES.ready]: {
-    variant: 'success', icon: CheckCircle, title: customMessages.rerunReadyTitle, body: customMessages.rerunReadyBody,
+    variant: 'success',
+    icon: CheckCircle,
+    title: customMessages.rerunReadyTitle,
+    body: customMessages.rerunReadyBody,
   },
   [RERUN_STATES.failed]: {
-    variant: 'danger', icon: ErrorIcon, title: customMessages.rerunFailedTitle, body: customMessages.rerunFailedBody,
+    variant: 'danger',
+    icon: ErrorIcon,
+    title: customMessages.rerunFailedTitle,
+    body: customMessages.rerunFailedBody,
   },
 };
 

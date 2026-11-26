@@ -31,7 +31,8 @@ const messages = defineMessages({
   },
   scheduleHelp: {
     id: 'course-authoring.create-course.card.schedule.help',
-    defaultMessage: 'When the course runs and when learners can enrol. Dates and times are in your time zone ({timezone}).',
+    defaultMessage:
+      'When the course runs and when learners can enrol. Dates and times are in your time zone ({timezone}).',
     description: 'Card subtitle',
   },
   presentationTitle: {

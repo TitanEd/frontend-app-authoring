@@ -9,9 +9,25 @@ import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { Button, Hyperlink, Icon } from '@openedx/paragon';
 import {
-  ArrowForward, BarChart, Bolt, CalendarMonth, Campaign, CheckCircle, EmojiEvents, Groups,
-  LocalFireDepartment, Lock, MenuBook, NotificationsActive, PersonAdd, PlayCircle, Star,
-  TrackChanges, TrendingUp, VerifiedUser, Videocam,
+  ArrowForward,
+  BarChart,
+  Bolt,
+  CalendarMonth,
+  Campaign,
+  CheckCircle,
+  EmojiEvents,
+  Groups,
+  LocalFireDepartment,
+  Lock,
+  MenuBook,
+  NotificationsActive,
+  PersonAdd,
+  PlayCircle,
+  Star,
+  TrackChanges,
+  TrendingUp,
+  VerifiedUser,
+  Videocam,
 } from '@openedx/paragon/icons';
 
 import messages from './messages';
@@ -40,7 +56,9 @@ export const ICONS = {
 const day = (intl, value, options = { month: 'short', day: 'numeric' }) => intl.formatDate(value, options);
 
 // Announcement links typed as a site path (e.g. /courses) point at the LMS, not at this MFE's host.
-const linkHref = (url) => (url && url.startsWith('/') && !url.startsWith('//') ? `${getConfig().LMS_BASE_URL}${url}` : url);
+const linkHref = (
+  url,
+) => (url && url.startsWith('/') && !url.startsWith('//') ? `${getConfig().LMS_BASE_URL}${url}` : url);
 
 const Empty = ({ children }) => {
   const intl = useIntl();
@@ -67,7 +85,8 @@ const ContinueLearning = ({ data }) => {
         <Bar percent={course.progress} label={intl.formatMessage(messages.complete, { percent: course.progress })} />
         <span className="tb-muted">
           {intl.formatMessage(messages.complete, { percent: course.progress })}
-          {course.last_activity && ` · ${intl.formatMessage(messages.lastActivity, { date: day(intl, course.last_activity) })}`}
+          {course.last_activity &&
+            ` · ${intl.formatMessage(messages.lastActivity, { date: day(intl, course.last_activity) })}`}
         </span>
       </div>
       <Button as="a" href={course.url} variant="primary" iconAfter={ArrowForward}>
@@ -104,7 +123,9 @@ const MyCourses = ({ data }) => {
         ))}
       </ul>
       {data.total > data.courses.length && (
-        <p className="tb-muted tb-more">{intl.formatMessage(messages.moreCourses, { count: data.total - data.courses.length })}</p>
+        <p className="tb-muted tb-more">
+          {intl.formatMessage(messages.moreCourses, { count: data.total - data.courses.length })}
+        </p>
       )}
     </>
   );
@@ -119,7 +140,11 @@ const WeeklyGoal = ({ data }) => {
   return (
     <div className="tb-goal">
       <div className="tb-goal__ring">
-        <svg viewBox="0 0 120 120" role="img" aria-label={intl.formatMessage(messages.goalDone, { done: data.done, target: data.target })}>
+        <svg
+          viewBox="0 0 120 120"
+          role="img"
+          aria-label={intl.formatMessage(messages.goalDone, { done: data.done, target: data.target })}
+        >
           <circle className="tb-goal__track" cx="60" cy="60" r={radius} />
           <circle
             className="tb-goal__value"
@@ -131,7 +156,9 @@ const WeeklyGoal = ({ data }) => {
             transform="rotate(-90 60 60)"
           />
         </svg>
-        <span className="tb-goal__number"><strong>{data.done}</strong>/ {data.target}</span>
+        <span className="tb-goal__number">
+          <strong>{data.done}</strong>/ {data.target}
+        </span>
       </div>
       <p className={`tb-goal__text ${left === 0 ? 'is-done' : ''}`}>
         {left === 0 ? intl.formatMessage(messages.goalReached) : intl.formatMessage(messages.goalLeft, { count: left })}
@@ -139,7 +166,10 @@ const WeeklyGoal = ({ data }) => {
       <ol className="tb-goal__week" aria-hidden="true">
         {data.week.map((item) => (
           <li key={item.date} className={item.future ? 'is-future' : ''}>
-            <span style={{ blockSize: `${Math.round((item.count / most) * 100)}%` }} className={item.count ? 'is-on' : ''} />
+            <span
+              style={{ blockSize: `${Math.round((item.count / most) * 100)}%` }}
+              className={item.count ? 'is-on' : ''}
+            />
             <small>{day(intl, item.date, { weekday: 'narrow' })}</small>
           </li>
         ))}
@@ -169,7 +199,9 @@ const ActivityHeatmap = ({ data }) => {
         ))}
       </div>
       <div className="tb-heat__foot">
-        <span><strong>{intl.formatMessage(messages.heatStreak, { count: data.streak })}</strong></span>
+        <span>
+          <strong>{intl.formatMessage(messages.heatStreak, { count: data.streak })}</strong>
+        </span>
         <span>{intl.formatMessage(messages.heatActive, { count: data.active_days })}</span>
         <span>{intl.formatMessage(messages.heatTotal, { count: data.total })}</span>
         <span className="tb-heat__legend" aria-hidden="true">
@@ -224,12 +256,18 @@ const Badges = ({ data }) => {
         <span className="tb-chip is-warm">{intl.formatMessage(messages.points, { count: data.points })}</span>
       </p>
       {data.earned.length > 0
-        ? <div className="tb-badges__row">{data.earned.map((badge, index) => <BadgeIcon key={index} badge={badge} />)}</div>
+        ? (
+          <div className="tb-badges__row">
+            {data.earned.map((badge, index) => <BadgeIcon key={index} badge={badge} />)}
+          </div>
+        )
         : <Empty>{intl.formatMessage(messages.badgesNone)}</Empty>}
       {data.next.length > 0 && (
         <>
           <p className="tb-muted tb-badges__next">{intl.formatMessage(messages.badgesNext)}</p>
-          <div className="tb-badges__row">{data.next.map((badge, index) => <BadgeIcon key={index} badge={badge} locked />)}</div>
+          <div className="tb-badges__row">
+            {data.next.map((badge, index) => <BadgeIcon key={index} badge={badge} locked />)}
+          </div>
         </>
       )}
     </div>
@@ -245,12 +283,20 @@ const Leaderboard = ({ data }) => {
         {data.rows.map((row, index) => (
           <li key={index} className={row.me ? 'is-me' : ''}>
             <span className={`tb-ranks__place tb-ranks__place--${index + 1}`}>{index + 1}</span>
-            <span className="tb-ranks__name">{row.name}{row.me && <span className="tb-chip">{intl.formatMessage(messages.you)}</span>}</span>
+            <span className="tb-ranks__name">
+              {row.name}
+              {row.me && <span className="tb-chip">{intl.formatMessage(messages.you)}</span>}
+            </span>
             <strong>{intl.formatNumber(row.points)}</strong>
           </li>
         ))}
       </ol>
-      {data.my_rank && <p className="tb-muted tb-more">{intl.formatMessage(messages.myRank, { rank: data.my_rank })} · {intl.formatMessage(messages.points, { count: data.my_points })}</p>}
+      {data.my_rank && (
+        <p className="tb-muted tb-more">
+          {intl.formatMessage(messages.myRank, { rank: data.my_rank })} ·{' '}
+          {intl.formatMessage(messages.points, { count: data.my_points })}
+        </p>
+      )}
     </>
   );
 };
@@ -263,10 +309,16 @@ const UpcomingEvents = ({ data }) => {
       <ul className="tb-events">
         {data.events.map((event) => (
           <li key={event.url}>
-            <span className="tb-events__date"><strong>{day(intl, event.start, { day: 'numeric' })}</strong>{day(intl, event.start, { month: 'short' })}</span>
+            <span className="tb-events__date">
+              <strong>{day(intl, event.start, { day: 'numeric' })}</strong>
+              {day(intl, event.start, { month: 'short' })}
+            </span>
             <span className="tb-events__text">
               <a href={event.url}>{event.title}</a>
-              <span className="tb-muted">{intl.formatTime(event.start)}{event.online && ` · ${intl.formatMessage(messages.online)}`}</span>
+              <span className="tb-muted">
+                {intl.formatTime(event.start)}
+                {event.online && ` · ${intl.formatMessage(messages.online)}`}
+              </span>
             </span>
           </li>
         ))}
@@ -281,7 +333,11 @@ const Announcement = ({ data }) => {
   return (
     <div className="tb-announcement">
       <p dir="auto">{data.text}</p>
-      {data.link_url && <Button as="a" href={linkHref(data.link_url)} variant="outline-primary" iconAfter={ArrowForward}>{data.link_label || data.link_url}</Button>}
+      {data.link_url && (
+        <Button as="a" href={linkHref(data.link_url)} variant="outline-primary" iconAfter={ArrowForward}>
+          {data.link_label || data.link_url}
+        </Button>
+      )}
     </div>
   );
 };
@@ -319,10 +375,17 @@ const Trend = ({ points, label }) => {
         <path className="tb-trend__area" d={`${line} L${width} ${height} L0 ${height} Z`} />
         <path className="tb-trend__line" d={line} />
         {xy.map(([x, y], index) => (
-          <circle key={points[index].date} className={points[index].count ? 'tb-trend__dot' : 'tb-trend__dot is-zero'} cx={x} cy={y} r="4">
+          <circle
+            key={points[index].date}
+            className={points[index].count ? 'tb-trend__dot' : 'tb-trend__dot is-zero'}
+            cx={x}
+            cy={y}
+            r="4"
+          >
             <title>
               {intl.formatMessage(messages.enrollmentsOn, {
-                date: day(intl, points[index].date), count: points[index].count,
+                date: day(intl, points[index].date),
+                count: points[index].count,
               })}
             </title>
           </circle>
@@ -355,7 +418,10 @@ const Columns = ({ items, title }) => {
       {items.map((item) => (
         <li key={item.key} title={title(item)}>
           <span className="tb-columns__value">{item.count || ''}</span>
-          <span className="tb-columns__bar" style={{ blockSize: `${Math.max(item.count ? 6 : 2, Math.round((item.count / most) * 100))}%` }} />
+          <span
+            className="tb-columns__bar"
+            style={{ blockSize: `${Math.max(item.count ? 6 : 2, Math.round((item.count / most) * 100))}%` }}
+          />
           <small>{item.label}</small>
         </li>
       ))}
@@ -367,7 +433,11 @@ const LearnerActivity = ({ data }) => {
   const intl = useIntl();
   return (
     <Columns
-      items={data.points.map((point) => ({ key: point.date, count: point.count, label: day(intl, point.date, { day: 'numeric' }) }))}
+      items={data.points.map((point) => ({
+        key: point.date,
+        count: point.count,
+        label: day(intl, point.date, { day: 'numeric' }),
+      }))}
       title={(item) => intl.formatMessage(messages.learnersOn, { date: day(intl, item.key), count: item.count })}
     />
   );
@@ -405,9 +475,16 @@ const CourseTable = ({ data }) => {
         <tbody>
           {data.courses.map((course) => (
             <tr key={course.id}>
-              <th scope="row"><a href={course.url}>{course.title}</a></th>
+              <th scope="row">
+                <a href={course.url}>{course.title}</a>
+              </th>
               <td>{intl.formatNumber(course.learners)}</td>
-              <td><span className="tb-table__meter"><Bar percent={course.progress} label={`${course.progress}%`} />{course.progress}%</span></td>
+              <td>
+                <span className="tb-table__meter">
+                  <Bar percent={course.progress} label={`${course.progress}%`} />
+                  {course.progress}%
+                </span>
+              </td>
               <td>{course.grade}%</td>
               <td>{intl.formatNumber(course.certificates)}</td>
             </tr>
@@ -419,7 +496,10 @@ const CourseTable = ({ data }) => {
 };
 
 const People = ({
-  rows, total, more, empty,
+  rows,
+  total,
+  more,
+  empty,
 }) => {
   if (!rows.length) { return <Empty>{empty}</Empty>; }
   return (
@@ -427,8 +507,13 @@ const People = ({
       <ul className="tb-people">
         {rows.map((row, index) => (
           <li key={index}>
-            <span className="tb-people__avatar" aria-hidden="true">{(row.name || '?').trim().charAt(0).toUpperCase()}</span>
-            <span className="tb-people__text"><strong>{row.name}</strong><span className="tb-muted">{row.course}</span></span>
+            <span className="tb-people__avatar" aria-hidden="true">
+              {(row.name || '?').trim().charAt(0).toUpperCase()}
+            </span>
+            <span className="tb-people__text">
+              <strong>{row.name}</strong>
+              <span className="tb-muted">{row.course}</span>
+            </span>
             <span className="tb-people__meta">{row.meta}</span>
           </li>
         ))}

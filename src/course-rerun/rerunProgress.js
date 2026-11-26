@@ -28,7 +28,10 @@ export async function fetchRerunState(courseKey) {
   return rerunStateOf(courseKey, data?.results?.inProcessCourseActions);
 }
 
-const pause = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+const pause = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 
 /**
  * Wait a little for a re-run: return as soon as it is ready or failed, or "in progress" after
@@ -46,7 +49,7 @@ export async function waitForRerun(courseKey, { attempts = 4, interval = 1500 } 
       if (state !== RERUN_STATES.inProgress) {
         return state;
       }
-    } catch (error) {
+    } catch {
       // A failed check is not a failed re-run: keep waiting, then say it is in progress.
     }
   }

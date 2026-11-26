@@ -1457,7 +1457,8 @@ const PSCourseForm = ({
                                           <Col xs={12} md={6}>
                                             <div className="datepicker-control">
                                               <Form.Label>
-                                                {intl.formatMessage(createCourseMessages.courseStartDate)} <span className="required-asterisk">*</span>
+                                                {intl.formatMessage(createCourseMessages.courseStartDate)}{' '}
+                                                <span className="required-asterisk">*</span>
                                               </Form.Label>
                                               <DatepickerControl
                                                 type={DATEPICKER_TYPES.date}

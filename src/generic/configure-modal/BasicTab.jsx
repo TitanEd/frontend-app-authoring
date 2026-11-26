@@ -47,7 +47,9 @@ const BasicTab = ({
               <DatepickerControl
                 type={DATEPICKER_TYPES.time}
                 value={releaseDate}
-                label={intl.formatMessage(customMessages.releaseTimeCustom, { timezone: getUserTimezoneLabel(releaseDate) })}
+                label={intl.formatMessage(customMessages.releaseTimeCustom, {
+                  timezone: getUserTimezoneLabel(releaseDate),
+                })}
                 controlName="start-time"
                 onChange={(val) => setFieldValue('releaseDate', val)}
               />

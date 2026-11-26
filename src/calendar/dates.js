@@ -17,7 +17,8 @@ const pad = (number) => String(number).padStart(2, '0');
 export const startOfDay = (date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 // Calendar days, safe across daylight-saving changes (always local midnight).
 export const addDays = (date, days) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
-export const sameDay = (a, b) => a.getFullYear() === b.getFullYear()
+export const sameDay = (a, b) =>
+  a.getFullYear() === b.getFullYear()
   && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 export const dayKey = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 export const parseDay = (text) => {
@@ -70,10 +71,11 @@ export const step = (view, date, direction) => {
 /** Six weeks of seven days, as the month view draws them. */
 export const monthWeeks = (date, weekStart = 1) => {
   const { start } = visibleRange('month', date, weekStart);
-  return Array.from({ length: 6 }, (_week, week) => Array.from(
-    { length: 7 },
-    (_day, day) => addDays(start, week * 7 + day),
-  ));
+  return Array.from({ length: 6 }, (_week, week) =>
+    Array.from(
+      { length: 7 },
+      (_day, day) => addDays(start, week * 7 + day),
+    ));
 };
 
 /** An event of the API with real dates: ``startDate``, ``endDate`` (or null) and ``lastDay``. */
@@ -82,7 +84,10 @@ export const prepare = (event) => {
     const startDate = parseDay(event.start);
     const lastDay = parseDay(event.end || event.start);
     return {
-      ...event, startDate, endDate: addDays(lastDay, 1), lastDay: lastDay < startDate ? startDate : lastDay,
+      ...event,
+      startDate,
+      endDate: addDays(lastDay, 1),
+      lastDay: lastDay < startDate ? startDate : lastDay,
     };
   }
   const startDate = new Date(event.start);
@@ -90,7 +95,10 @@ export const prepare = (event) => {
   // An event that ends at midnight does not reach into the next day.
   const lastDay = endDate && endDate > startDate ? startOfDay(new Date(endDate.getTime() - 1)) : startOfDay(startDate);
   return {
-    ...event, startDate, endDate, lastDay,
+    ...event,
+    startDate,
+    endDate,
+    lastDay,
   };
 };
 
@@ -121,18 +129,22 @@ export const eventsByDay = (events, start, end) => {
 /** The events that match the course, the shown types and the search text. */
 export const filterEvents = (events, { course = '', types = null, query = '' } = {}) => {
   const text = query.trim().toLowerCase();
-  return events.filter((event) => (!course || event.course_id === course)
+  return events.filter((event) =>
+    (!course || event.course_id === course)
     && (!types || types.has(event.type))
     && (!text || [event.title, event.course, event.section, event.location]
-      .filter(Boolean).join(' ').toLowerCase().includes(text)));
+      .filter(Boolean).join(' ').toLowerCase().includes(text))
+  );
 };
 
 /** What is still to come from now to the end of the 7th day. */
 export const upcoming = (events, now, days = UPCOMING_DAYS) => {
   const until = addDays(startOfDay(now), days);
   return events
-    .filter((event) => (event.endDate && !event.all_day ? event.endDate : event.startDate) >= now
-      || (event.all_day && event.lastDay >= startOfDay(now)))
+    .filter((event) =>
+      (event.endDate && !event.all_day ? event.endDate : event.startDate) >= now
+      || (event.all_day && event.lastDay >= startOfDay(now))
+    )
     .filter((event) => event.startDate < until)
     .sort(compareEvents);
 };
@@ -160,7 +172,8 @@ export const eventPayload = (form) => {
     payload.end = form.endDate || form.startDate;
   } else {
     payload.start = new Date(`${form.startDate}T${form.startTime || '00:00'}`).toISOString();
-    payload.end = new Date(`${form.endDate || form.startDate}T${form.endTime || form.startTime || '00:00'}`).toISOString();
+    payload.end = new Date(`${form.endDate || form.startDate}T${form.endTime || form.startTime || '00:00'}`)
+      .toISOString();
   }
   if (form.repeat) { payload.repeat_weeks = Number(form.repeat); }
   return payload;

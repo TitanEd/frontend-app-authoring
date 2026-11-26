@@ -3,7 +3,13 @@
  * (``--tcal-<type>``, from the design tokens). Same file in both forks.
  */
 import {
-  Assignment, Campaign, Event, EventAvailable, School, Timer, Videocam,
+  Assignment,
+  Campaign,
+  Event,
+  EventAvailable,
+  School,
+  Timer,
+  Videocam,
 } from '@openedx/paragon/icons';
 
 import messages from './messages';

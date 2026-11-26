@@ -33,6 +33,7 @@ describe('ShowComponentInUnit helpers', () => {
   });
 
   it('gives nothing when no unit holds the block', () => {
-    expect(unitPageOf(COURSE, block('problem', 'p1'), [{ id: block('chapter', 'c1'), category: 'chapter' }])).toBeNull();
+    expect(unitPageOf(COURSE, block('problem', 'p1'), [{ id: block('chapter', 'c1'), category: 'chapter' }]))
+      .toBeNull();
   });
 });

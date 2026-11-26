@@ -21,25 +21,35 @@ export const fetchSiteFeatures = () => {
     pending = getAuthenticatedHttpClient()
       .get(`${getConfig().LMS_BASE_URL}/titaned/api/v2/features/`)
       .then(({ data }) => data || {})
-      .catch(() => { pending = null; return {}; });
+      .catch(() => {
+        pending = null;
+        return {};
+      });
   }
   return pending;
 };
 
 // For tests.
-export const forgetSiteFeatures = () => { pending = null; };
+export const forgetSiteFeatures = () => {
+  pending = null;
+};
 
 export const useSiteFeatures = () => {
   const [features, setFeatures] = useState({});
   useEffect(() => {
     let mounted = true;
-    fetchSiteFeatures().then((data) => { if (mounted) { setFeatures(data); } });
-    return () => { mounted = false; };
+    fetchSiteFeatures().then((data) => {
+      if (mounted) { setFeatures(data); }
+    });
+    return () => {
+      mounted = false;
+    };
   }, []);
   return features;
 };
 
 // Menu entries that name a `feature` stay only when that feature is on.
-export const withSiteFeatures = (items, features) => items
-  .filter((item) => !item.feature || Boolean(features[item.feature]))
-  .map(({ feature, ...item }) => item);
+export const withSiteFeatures = (items, features) =>
+  items
+    .filter((item) => !item.feature || Boolean(features[item.feature]))
+    .map(({ feature, ...item }) => item);

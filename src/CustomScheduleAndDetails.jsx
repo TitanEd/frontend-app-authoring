@@ -12,15 +12,25 @@
  * stock page around it loads the course details and settings into the store.
  */
 import React, {
-  useCallback, useEffect, useMemo, useRef, useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import {
-  Button, Form, Hyperlink, StatefulButton,
+  Button,
+  Form,
+  Hyperlink,
+  StatefulButton,
 } from '@openedx/paragon';
 import {
-  CheckCircle as CheckCircleIcon, ErrorOutline as ErrorOutlineIcon, Launch, Warning as WarningIcon,
+  CheckCircle as CheckCircleIcon,
+  ErrorOutline as ErrorOutlineIcon,
+  Launch,
+  Warning as WarningIcon,
 } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
@@ -34,7 +44,11 @@ import { STATEFUL_BUTTON_STATES } from './constants';
 import { useCourseUserPermissions } from './authz/hooks';
 import { getScheduleAndDetailsPermissions } from './authz/permissionHelpers';
 import {
-  getCourseDetails, getCourseSettings, getLoadingDetailsStatus, getLoadingSettingsStatus, getSavingStatus,
+  getCourseDetails,
+  getCourseSettings,
+  getLoadingDetailsStatus,
+  getLoadingSettingsStatus,
+  getSavingStatus,
 } from './schedule-and-details/data/selectors';
 import { updateCourseDetailsQuery } from './schedule-and-details/data/thunks';
 import { useSaveValuesPrompt } from './schedule-and-details/hooks';
@@ -106,7 +120,13 @@ DetailsCard.propTypes = {
  * honor mode), not in the course details, so it has its own request.
  */
 const PricingCard = ({
-  info, paid, value, onPaidChange, onChange, isEditable, showError,
+  info,
+  paid,
+  value,
+  onPaidChange,
+  onChange,
+  isEditable,
+  showError,
 }) => {
   const intl = useIntl();
   return (
@@ -126,10 +146,18 @@ const PricingCard = ({
               value={paid ? 'paid' : 'free'}
               onChange={(event) => onPaidChange(event.target.value === 'paid')}
             >
-              <Form.Radio value="free" disabled={!isEditable} description={intl.formatMessage(messages.pricingFreeHelp)}>
+              <Form.Radio
+                value="free"
+                disabled={!isEditable}
+                description={intl.formatMessage(messages.pricingFreeHelp)}
+              >
                 {intl.formatMessage(messages.pricingFree)}
               </Form.Radio>
-              <Form.Radio value="paid" disabled={!isEditable} description={intl.formatMessage(messages.pricingPaidHelp)}>
+              <Form.Radio
+                value="paid"
+                disabled={!isEditable}
+                description={intl.formatMessage(messages.pricingPaidHelp)}
+              >
                 {intl.formatMessage(messages.pricingPaid)}
               </Form.Radio>
             </Form.RadioSet>
@@ -137,7 +165,9 @@ const PricingCard = ({
           {paid && (
             <Form.Group className="mb-0 mt-3 tels-course-details__price" isInvalid={showError && !validPrice(value)}>
               <Form.Label>
-                {intl.formatMessage(messages.price, { currency: `${(info.currency || '').toUpperCase()} ${info.symbol || ''}`.trim() })}
+                {intl.formatMessage(messages.price, {
+                  currency: `${(info.currency || '').toUpperCase()} ${info.symbol || ''}`.trim(),
+                })}
               </Form.Label>
               <Form.Control
                 type="number"
@@ -147,10 +177,15 @@ const PricingCard = ({
                 value={value}
                 disabled={!isEditable}
                 placeholder={intl.formatMessage(messages.placeholderPrice)}
-                onChange={(event) => onChange(event.target.value)}
+                onChange={(event) =>
+                  onChange(event.target.value)}
               />
               {showError && !validPrice(value)
-                ? <Form.Control.Feedback type="invalid" hasIcon={false}>{intl.formatMessage(messages.priceInvalid)}</Form.Control.Feedback>
+                ? (
+                  <Form.Control.Feedback type="invalid" hasIcon={false}>
+                    {intl.formatMessage(messages.priceInvalid)}
+                  </Form.Control.Feedback>
+                )
                 : <Form.Text>{intl.formatMessage(messages.priceHelp)}</Form.Text>}
             </Form.Group>
           )}
@@ -164,9 +199,15 @@ const PricingCard = ({
 };
 
 PricingCard.propTypes = {
-  info: PropTypes.oneOfType([PropTypes.bool, PropTypes.shape({
-    price: PropTypes.number, currency: PropTypes.string, symbol: PropTypes.string, selling: PropTypes.bool,
-  })]),
+  info: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      price: PropTypes.number,
+      currency: PropTypes.string,
+      symbol: PropTypes.string,
+      selling: PropTypes.bool,
+    }),
+  ]),
   paid: PropTypes.bool.isRequired,
   value: PropTypes.string.isRequired,
   onPaidChange: PropTypes.func.isRequired,
@@ -240,7 +281,6 @@ const CustomScheduleAndDetails = ({ courseId }) => {
     courseDetails,
   );
 
-
   // ---- price (Ecommerce feature only) ----
   const showPricing = Boolean(siteFeatures.ecommerce);
   const [priceInfo, setPriceInfo] = useState(null); // null: loading, false: failed
@@ -260,14 +300,19 @@ const CustomScheduleAndDetails = ({ courseId }) => {
           setPrice(data.price ? String(data.price) : '');
         }
       })
-      .catch(() => { if (mounted) { setPriceInfo(false); } });
-    return () => { mounted = false; };
+      .catch(() => {
+        if (mounted) { setPriceInfo(false); }
+      });
+    return () => {
+      mounted = false;
+    };
   }, [courseId, showPricing]);
 
   const savedPrice = priceInfo && priceInfo.price ? String(priceInfo.price) : '';
   // What would be stored: nothing for a free course.
   const wantedPrice = isPaid ? String(price).trim() : '';
-  const priceDirty = showPricing && Boolean(priceInfo) && (isPaid !== Boolean(savedPrice) || wantedPrice !== savedPrice);
+  const priceDirty = showPricing && Boolean(priceInfo) &&
+    (isPaid !== Boolean(savedPrice) || wantedPrice !== savedPrice);
   const priceInvalid = priceDirty && isPaid && !validPrice(price);
 
   const introVideoInvalid = !isValidIntroVideo(editedValues?.introVideo);
@@ -318,7 +363,10 @@ const CustomScheduleAndDetails = ({ courseId }) => {
   // Leaving with unsaved changes asks first.
   useEffect(() => {
     if (!isDirty) { return undefined; }
-    const warn = (event) => { event.preventDefault(); event.returnValue = ''; }; // eslint-disable-line no-param-reassign
+    const warn = (event) => {
+      event.preventDefault();
+      event.returnValue = '';
+    }; // eslint-disable-line no-param-reassign
     window.addEventListener('beforeunload', warn);
     return () => window.removeEventListener('beforeunload', warn);
   }, [isDirty]);
@@ -326,20 +374,25 @@ const CustomScheduleAndDetails = ({ courseId }) => {
   const showCreditSection = Boolean(creditEligibilityEnabled && isCreditCourse);
   const showRequirementsSection = Boolean(aboutPageEditable || isPrerequisiteCoursesEnabled || isEntranceExamsEnabled);
 
-  const sections = useMemo(() => [
-    ['details-basics', messages.navBasics, true],
-    ['details-credit', messages.navCredit, showCreditSection],
-    ['details-pacing', messages.navPacing, true],
-    ['details-schedule', messages.navSchedule, true],
-    ['details-language', messages.navDetails, Boolean(aboutPageEditable)],
-    ['details-introducing', messages.navIntroducing, true],
-    ['details-outcomes', messages.navOutcomes, Boolean(enableExtendedCourseDetails)],
-    ['details-instructors', messages.navInstructors, Boolean(enableExtendedCourseDetails)],
-    ['details-requirements', messages.navRequirements, showRequirementsSection],
-    ['details-pricing', messages.navPricing, showPricing],
-    ['details-license', messages.navLicense, Boolean(licensingEnabled)],
-  ].filter(([, , shown]) => shown), [
-    showCreditSection, aboutPageEditable, enableExtendedCourseDetails, showRequirementsSection, showPricing,
+  const sections = useMemo(() =>
+    [
+      ['details-basics', messages.navBasics, true],
+      ['details-credit', messages.navCredit, showCreditSection],
+      ['details-pacing', messages.navPacing, true],
+      ['details-schedule', messages.navSchedule, true],
+      ['details-language', messages.navDetails, Boolean(aboutPageEditable)],
+      ['details-introducing', messages.navIntroducing, true],
+      ['details-outcomes', messages.navOutcomes, Boolean(enableExtendedCourseDetails)],
+      ['details-instructors', messages.navInstructors, Boolean(enableExtendedCourseDetails)],
+      ['details-requirements', messages.navRequirements, showRequirementsSection],
+      ['details-pricing', messages.navPricing, showPricing],
+      ['details-license', messages.navLicense, Boolean(licensingEnabled)],
+    ].filter(([, , shown]) => shown), [
+    showCreditSection,
+    aboutPageEditable,
+    enableExtendedCourseDetails,
+    showRequirementsSection,
+    showPricing,
     licensingEnabled,
   ]);
 
@@ -412,8 +465,12 @@ const CustomScheduleAndDetails = ({ courseId }) => {
       });
       setActiveSection(current);
     };
-    const onScroll = () => { if (!frame) { frame = window.requestAnimationFrame(update); } };
-    const release = () => { clickedSection.current = null; };
+    const onScroll = () => {
+      if (!frame) { frame = window.requestAnimationFrame(update); }
+    };
+    const release = () => {
+      clickedSection.current = null;
+    };
     // The sticky case card sits under the bar, whatever height the bar wraps to.
     const resize = new ResizeObserver(() => root.style.setProperty('--tels-cd-nav-height', `${nav.offsetHeight}px`));
     resize.observe(nav);
@@ -478,7 +535,14 @@ const CustomScheduleAndDetails = ({ courseId }) => {
           <p className="tels-course-details__lead">{intl.formatMessage(messages.lead)}</p>
         </div>
         {lmsLinkForAboutPage && (
-          <Button as={Hyperlink} destination={lmsLinkForAboutPage} target="_blank" variant="outline-primary" iconAfter={Launch} showLaunchIcon={false}>
+          <Button
+            as={Hyperlink}
+            destination={lmsLinkForAboutPage}
+            target="_blank"
+            variant="outline-primary"
+            iconAfter={Launch}
+            showLaunchIcon={false}
+          >
             {intl.formatMessage(messages.viewAbout)}
           </Button>
         )}
@@ -516,7 +580,10 @@ const CustomScheduleAndDetails = ({ courseId }) => {
             // `nav-link`: the theme leaves these out of its link colour rule.
             className={`nav-link tels-course-details__nav-link${activeSection === id ? ' is-active' : ''}`}
             aria-current={activeSection === id ? 'location' : undefined}
-            onClick={(event) => { event.preventDefault(); jumpTo(id); }}
+            onClick={(event) => {
+              event.preventDefault();
+              jumpTo(id);
+            }}
           >
             {intl.formatMessage(label)}
           </a>
@@ -694,10 +761,14 @@ const CustomScheduleAndDetails = ({ courseId }) => {
           ].filter(Boolean)}
           variant="warning"
           icon={WarningIcon}
-          title={intl.formatMessage(showErrors ? stockMessages.alertWarningOnSaveWithError : stockMessages.alertWarning)}
-          description={intl.formatMessage(showErrors
-            ? stockMessages.alertWarningDescriptionsOnSaveWithError
-            : stockMessages.alertWarningDescriptions)}
+          title={intl.formatMessage(
+            showErrors ? stockMessages.alertWarningOnSaveWithError : stockMessages.alertWarning,
+          )}
+          description={intl.formatMessage(
+            showErrors
+              ? stockMessages.alertWarningDescriptionsOnSaveWithError
+              : stockMessages.alertWarningDescriptions,
+          )}
         />
       </div>
     </div>

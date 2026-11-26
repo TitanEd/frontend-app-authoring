@@ -60,7 +60,11 @@ const CustomAppRoutes = () => {
     // The router ignores a URL that is the base path without its trailing slash
     // (e.g. /authoring), which left the page blank. Add the slash first.
     if (basename.endsWith('/') && window.location.pathname === basename.slice(0, -1)) {
-      window.history.replaceState(window.history.state, '', `${basename}${window.location.search}${window.location.hash}`);
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${basename}${window.location.search}${window.location.hash}`,
+      );
     }
 
     return createBrowserRouter(

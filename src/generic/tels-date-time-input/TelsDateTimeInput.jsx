@@ -87,7 +87,8 @@ TelsDateInput.propTypes = {
   ariaDescribedBy: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
-  // false = render next to the input with a fixed-position pop-up (not clipped by an overflow parent, and clicks stay inside e.g. a dropdown menu).
+  // false = render next to the input with a fixed-position pop-up (not clipped by an overflow parent,
+  // and clicks stay inside e.g. a dropdown menu).
   inPortal: PropTypes.bool,
 };
 
@@ -161,7 +162,8 @@ TelsTimeInput.propTypes = {
   placeholder: PropTypes.string,
   step: PropTypes.number,
   timeCaption: PropTypes.string,
-  // false = render next to the input with a fixed-position pop-up (not clipped by an overflow parent, and clicks stay inside e.g. a dropdown menu).
+  // false = render next to the input with a fixed-position pop-up (not clipped by an overflow parent,
+  // and clicks stay inside e.g. a dropdown menu).
   inPortal: PropTypes.bool,
 };
 
