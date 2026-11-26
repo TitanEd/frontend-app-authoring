@@ -18,6 +18,7 @@ import messages from './messages';
 import { COURSE_EVENT_KINDS, TYPE_META, kindLabel } from './meta';
 import { eventShape, useFormats } from './views';
 import * as api from './api';
+import { TelsDateInput, TelsTimeInput } from './TelsDateTimeInput';
 
 const ACTION_LABELS = {
   open_studio: messages.actionOpenStudio,
@@ -256,6 +257,8 @@ export const EventForm = ({
       return next;
     });
   };
+  // The Tels date / time inputs hand back the value itself ('YYYY-MM-DD' / 'HH:MM'), not an event.
+  const setValue = (name) => (value) => set(name)({ target: { type: 'text', value } });
 
   const submit = async (submitEvent) => {
     submitEvent.preventDefault();
@@ -319,7 +322,13 @@ export const EventForm = ({
             {field(
               'title',
               intl.formatMessage(messages.formTitle), (
-                <Form.Control value={form.title} onChange={set('title')} maxLength={200} required />
+                <Form.Control
+                  value={form.title}
+                  onChange={set('title')}
+                  maxLength={200}
+                  required
+                  placeholder={intl.formatMessage(messages.formPlaceholderTitle)}
+                />
               ),
             )}
             {field(
@@ -340,13 +349,13 @@ export const EventForm = ({
               {field(
                 'start',
                 intl.formatMessage(messages.formDate), (
-                  <Form.Control type="date" value={form.startDate} min={unchanged ? undefined : today} onChange={set('startDate')} required />
+                  <TelsDateInput id="tcal-form-start" value={form.startDate} min={unchanged ? undefined : today} onChange={setValue('startDate')} isInvalid={Boolean(shownErrors.start)} placeholder={intl.formatMessage(messages.formPlaceholderDate)} />
                 ),
               )}
               {!form.allDay && field(
                 'start_time',
                 intl.formatMessage(messages.formTime), (
-                  <Form.Control type="time" value={form.startTime} min={!unchanged && form.startDate === today ? nowTime : undefined} onChange={set('startTime')} required />
+                  <TelsTimeInput id="tcal-form-start_time" value={form.startTime} min={!unchanged && form.startDate === today ? nowTime : undefined} onChange={setValue('startTime')} isInvalid={Boolean(shownErrors.start_time)} timeCaption={intl.formatMessage(messages.formTime)} placeholder={intl.formatMessage(messages.formPlaceholderTime)} />
                 ),
               )}
             </fieldset>
@@ -355,13 +364,13 @@ export const EventForm = ({
               {field(
                 'end',
                 intl.formatMessage(messages.formDate), (
-                  <Form.Control type="date" value={form.endDate} min={form.startDate} onChange={set('endDate')} required />
+                  <TelsDateInput id="tcal-form-end" value={form.endDate} min={form.startDate || undefined} onChange={setValue('endDate')} isInvalid={Boolean(shownErrors.end)} placeholder={intl.formatMessage(messages.formPlaceholderDate)} />
                 ),
               )}
               {!form.allDay && field(
                 'end_time',
                 intl.formatMessage(messages.formTime), (
-                  <Form.Control type="time" value={form.endTime} onChange={set('endTime')} required />
+                  <TelsTimeInput id="tcal-form-end_time" value={form.endTime} min={form.endDate && form.endDate === form.startDate ? form.startTime || undefined : undefined} onChange={setValue('endTime')} isInvalid={Boolean(shownErrors.end_time)} timeCaption={intl.formatMessage(messages.formTime)} placeholder={intl.formatMessage(messages.formPlaceholderTime)} />
                 ),
               )}
             </fieldset>
@@ -379,7 +388,12 @@ export const EventForm = ({
             {field(
               'location',
               intl.formatMessage(messages.formPlace), (
-                <Form.Control value={form.location} onChange={set('location')} maxLength={255} />
+                <Form.Control
+                  value={form.location}
+                  onChange={set('location')}
+                  maxLength={255}
+                  placeholder={intl.formatMessage(messages.formPlaceholderPlace)}
+                />
               ), intl.formatMessage(messages.formPlaceHelp),
             )}
             {field(
@@ -392,7 +406,14 @@ export const EventForm = ({
               {field(
                 'description',
                 intl.formatMessage(messages.formDescription), (
-                  <Form.Control as="textarea" rows={4} value={form.description} onChange={set('description')} maxLength={5000} />
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    value={form.description}
+                    onChange={set('description')}
+                    maxLength={5000}
+                    placeholder={intl.formatMessage(messages.formPlaceholderDescription)}
+                  />
                 ),
               )}
             </div>

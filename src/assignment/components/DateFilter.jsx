@@ -10,6 +10,7 @@ import { Calendar, Close } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { useAssignmentContext } from '../context/AssignmentContext';
 import messages from '../data/messages';
+import { TelsDateInput } from '../../generic/tels-date-time-input/TelsDateTimeInput';
 
 const DateFilter = () => {
   const intl = useIntl();
@@ -50,15 +51,17 @@ const DateFilter = () => {
         size="sm"
       />
       <Dropdown.Menu className="date-filter-panel">
-        <Form.Group>
+        <Form.Group controlId="assignment-date-filter-from">
           <Form.Label>{intl.formatMessage(messages.fromDateLabel)}</Form.Label>
-          <Form.Control
-            type="date"
+          <TelsDateInput
+            id="assignment-date-filter-from"
+            inPortal={false}
             value={fromDate ? new Date(fromDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => {
-              setFromDate(e.target.value);
+            placeholder={intl.formatMessage(messages.placeholderDate)}
+            onChange={(value) => {
+              setFromDate(value);
               if (toDate) {
-                const maxTo = new Date(e.target.value);
+                const maxTo = new Date(value);
                 maxTo.setMonth(maxTo.getMonth() + 3);
                 if (new Date(toDate) > maxTo) {
                   setToDate('');
@@ -68,15 +71,17 @@ const DateFilter = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mt-2">
+        <Form.Group controlId="assignment-date-filter-to" className="mt-2">
           <Form.Label>{intl.formatMessage(messages.toDateLabel)}</Form.Label>
-          <Form.Control
-            type="date"
+          <TelsDateInput
+            id="assignment-date-filter-to"
+            inPortal={false}
             value={toDate ? new Date(toDate).toISOString().split('T')[0] : ''}
-            onChange={(e) => setToDate(e.target.value)}
+            placeholder={intl.formatMessage(messages.placeholderDate)}
+            onChange={(value) => setToDate(value)}
             disabled={!fromDate}
-            min={fromDate ? new Date(fromDate).toISOString().split('T')[0] : ''}
-            max={getMaxToDate()}
+            min={fromDate ? new Date(fromDate).toISOString().split('T')[0] : undefined}
+            max={getMaxToDate() || undefined}
           />
         </Form.Group>
 

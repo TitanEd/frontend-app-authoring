@@ -18,6 +18,7 @@ import FormikControl from '../../generic/FormikControl';
 import SubHeader from '../../generic/sub-header/SubHeader';
 import { useCreateLibraryV2 } from './data/apiHooks';
 import messages from './messages';
+import customMessages from './customMessages';
 
 import FormikErrorFeedback from '../../generic/FormikErrorFeedback';
 
@@ -70,7 +71,7 @@ const CustomCreateLibrary = ({
             name="title"
             label={<Form.Label>{formatMessage(messages.titleLabel)}</Form.Label>}
             value={formikProps.values.title}
-            placeholder={formatMessage(messages.titlePlaceholder)}
+            placeholder={formatMessage(customMessages.titlePlaceholder)}
             help={formatMessage(messages.titleHelp)}
             className=""
             controlClasses="pb-2"
@@ -81,7 +82,7 @@ const CustomCreateLibrary = ({
               name="org"
               isLoading={isOrganizationListLoading}
               onChange={(event) => formikProps.setFieldValue('org', event.selectionId)}
-              placeholder={formatMessage(messages.orgPlaceholder)}
+              placeholder={formatMessage(customMessages.orgPlaceholder)}
             >
               {organizationListData ?
                 organizationListData.map((org) => (
@@ -97,7 +98,7 @@ const CustomCreateLibrary = ({
             name="slug"
             label={<Form.Label>{formatMessage(messages.slugLabel)}</Form.Label>}
             value={formikProps.values.slug}
-            placeholder={formatMessage(messages.slugPlaceholder)}
+            placeholder={formatMessage(customMessages.slugPlaceholder)}
             help={formatMessage(messages.slugHelp)}
             className=""
             controlClasses="pb-2"

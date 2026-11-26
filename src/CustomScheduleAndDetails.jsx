@@ -146,6 +146,7 @@ const PricingCard = ({
                 inputMode="numeric"
                 value={value}
                 disabled={!isEditable}
+                placeholder={intl.formatMessage(messages.placeholderPrice)}
                 onChange={(event) => onChange(event.target.value)}
               />
               {showError && !validPrice(value)

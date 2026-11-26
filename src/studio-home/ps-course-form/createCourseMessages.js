@@ -69,10 +69,55 @@ const messages = defineMessages({
     defaultMessage: 'How others may reuse the content of this course.',
     description: 'Card subtitle',
   },
-  titlePlaceholder: {
-    id: 'course-authoring.create-course.field.title.placeholder',
-    defaultMessage: 'e.g. Introduction to Data Science',
+  placeholderTitle: {
+    id: 'tels.create.course.placeholder.title',
+    defaultMessage: 'Enter a course title',
     description: 'Placeholder of the course title field',
+  },
+  placeholderNumber: {
+    id: 'tels.create.course.placeholder.number',
+    defaultMessage: 'Enter the course number',
+    description: 'Placeholder of the course number field',
+  },
+  placeholderRun: {
+    id: 'tels.create.course.placeholder.run',
+    defaultMessage: 'Enter the course run',
+    description: 'Placeholder of the course run field',
+  },
+  placeholderLength: {
+    id: 'tels.create.course.placeholder.length',
+    defaultMessage: 'Enter the course length',
+    description: 'Placeholder of the course length / duration field',
+  },
+  placeholderEffort: {
+    id: 'tels.create.course.placeholder.effort',
+    defaultMessage: 'Enter the hours per week',
+    description: 'Placeholder of the weekly effort field',
+  },
+  placeholderShortDescription: {
+    id: 'tels.create.course.placeholder.shortDescription',
+    defaultMessage: 'Enter a short description',
+    description: 'Placeholder of the short description field',
+  },
+  placeholderDescription: {
+    id: 'tels.create.course.placeholder.description',
+    defaultMessage: 'Enter a description',
+    description: 'Placeholder of the description field',
+  },
+  placeholderOrganization: {
+    id: 'tels.create.course.placeholder.organization',
+    defaultMessage: 'Enter the organization',
+    description: 'Placeholder of the free-text organization field',
+  },
+  placeholderEntranceExamScore: {
+    id: 'tels.create.course.placeholder.entranceExamScore',
+    defaultMessage: 'Enter a number',
+    description: 'Placeholder of the entrance exam minimum score field',
+  },
+  placeholderDate: {
+    id: 'tels.create.course.placeholder.date',
+    defaultMessage: 'Select a date',
+    description: 'Placeholder of the course date fields',
   },
   titleHelp: {
     id: 'course-authoring.create-course.field.title.help',
@@ -238,11 +283,6 @@ const messages = defineMessages({
     id: 'course-authoring.create-course.field.intro-video.invalid',
     defaultMessage: 'Enter a YouTube link or video ID.',
     description: 'Validation error',
-  },
-  effortPlaceholder: {
-    id: 'course-authoring.create-course.field.effort.placeholder',
-    defaultMessage: 'e.g. 4',
-    description: 'Placeholder of the weekly effort field',
   },
   prerequisiteLoading: {
     id: 'course-authoring.create-course.field.prerequisite.loading',

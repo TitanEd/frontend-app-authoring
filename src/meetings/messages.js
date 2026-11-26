@@ -36,6 +36,11 @@ const messages = defineMessages({
   filterRecurring: { id: 'tels.meetings.team.filter.type.recurring', defaultMessage: 'Repeating' },
   filterOneOff: { id: 'tels.meetings.team.filter.type.oneoff', defaultMessage: 'One-off' },
   search: { id: 'tels.meetings.team.search', defaultMessage: 'Search' },
+  filterPlaceholderSearch: {
+    id: 'tels.meetings.filter.placeholder.search',
+    defaultMessage: 'Search',
+    description: 'Placeholder of the meetings filter search field',
+  },
   showing: { id: 'tels.meetings.team.showing', defaultMessage: '{count, plural, one {# class} other {# classes}}' },
   clearFilters: { id: 'tels.meetings.team.filters.clear', defaultMessage: 'Clear filters' },
 

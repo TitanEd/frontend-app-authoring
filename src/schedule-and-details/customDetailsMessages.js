@@ -25,6 +25,11 @@ const messages = defineMessages({
   pricingPaid: { id: 'tels.details.pricing.paid', defaultMessage: 'Paid' },
   pricingPaidHelp: { id: 'tels.details.pricing.paid.help', defaultMessage: 'Learners pay at checkout before they are enrolled.' },
   price: { id: 'tels.details.pricing.price', defaultMessage: 'Price ({currency})' },
+  placeholderPrice: {
+    id: 'tels.schedule.details.placeholder.price',
+    defaultMessage: 'Enter the price',
+    description: 'Placeholder of the course price field on Schedule & details',
+  },
   priceHelp: { id: 'tels.details.pricing.price.help', defaultMessage: 'A whole number, without decimals.' },
   priceInvalid: { id: 'tels.details.pricing.price.invalid', defaultMessage: 'Enter a price of 1 or more, as a whole number.' },
   priceNotSelling: { id: 'tels.details.pricing.notSelling', defaultMessage: 'Selling courses is switched off for this site, so learners enrol for free until an administrator switches it on.' },

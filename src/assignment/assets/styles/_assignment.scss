@@ -54,6 +54,8 @@
     justify-content: center;
 
     .date-filter-panel {
+      // The brand clips .dropdown-menu (overflow: hidden); this panel holds date pickers whose pop-up must show outside it.
+      overflow: visible;
       margin-top: 8px;
       padding: 16px;
       border-radius: 12px;

@@ -18,6 +18,7 @@ import { WysiwygEditor } from '../../generic/WysiwygEditor';
 import { REQUEST_TYPES } from '../constants';
 import { geUpdateFormSettings } from './utils';
 import messages from './messages';
+import customMessages from './customMessages';
 
 const UpdateForm = ({
   close,
@@ -85,6 +86,7 @@ const UpdateForm = ({
                     autoComplete="off"
                     selectsStart
                     showPopperArrow={false}
+                    placeholderText={intl.formatMessage(customMessages.placeholderDate)}
                     onChange={(value) => {
                       setFieldValue('date', value);
                     }}

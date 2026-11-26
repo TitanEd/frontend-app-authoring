@@ -71,6 +71,7 @@ import {
   tabOf,
   zoneNameOf,
 } from './meetingUtils';
+import { TelsDateInput } from '../generic/tels-date-time-input/TelsDateTimeInput';
 import './style.scss';
 
 const STATUSES = {
@@ -642,26 +643,29 @@ const TeamMeetingsPage = () => {
               value={query}
               leadingElement={<Icon src={Search} />}
               onChange={(event) => setQuery(event.target.value)}
+              placeholder={intl.formatMessage(messages.filterPlaceholderSearch)}
             />
           </Form.Group>
           {period === 'custom' && (
             <div className="mtg-filters__range">
               <Form.Group controlId="mtg-from">
                 <Form.Label>{intl.formatMessage(messages.filterFrom)}</Form.Label>
-                <Form.Control
-                  type="date"
+                <TelsDateInput
+                  id="mtg-from"
                   value={from}
                   max={to || undefined}
-                  onChange={(event) => setFrom(event.target.value)}
+                  onChange={setFrom}
+                  placeholder={intl.formatMessage(messages.placeholderDate)}
                 />
               </Form.Group>
               <Form.Group controlId="mtg-to">
                 <Form.Label>{intl.formatMessage(messages.filterTo)}</Form.Label>
-                <Form.Control
-                  type="date"
+                <TelsDateInput
+                  id="mtg-to"
                   value={to}
                   min={from || undefined}
-                  onChange={(event) => setTo(event.target.value)}
+                  onChange={setTo}
+                  placeholder={intl.formatMessage(messages.placeholderDate)}
                 />
               </Form.Group>
             </div>
