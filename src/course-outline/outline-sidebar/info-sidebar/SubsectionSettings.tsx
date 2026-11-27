@@ -133,7 +133,9 @@ const GradingSection = ({ subsectionId, onChange }: SubProps) => {
             <DatepickerControl
               type={DATEPICKER_TYPES.time}
               value={localState?.dueDate}
-              label={intl.formatMessage(customMessages.dueTimeCustom, { timezone: getUserTimezoneLabel(localState?.dueDate) })}
+              label={intl.formatMessage(customMessages.dueTimeCustom, {
+                timezone: getUserTimezoneLabel(localState?.dueDate),
+              })}
               controlName="start-time"
               onChange={(val) => setLocalState((prev) => ({ ...prev, dueDate: val }))}
             />

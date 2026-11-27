@@ -301,7 +301,8 @@ const MyCourses = () => {
   return (
     <Container className="my-courses-page mt-4">
       <RerunNotice
-        onReady={() => dispatch(fetchMyCoursesData(location.search ?? '', false, { page: 1, order: 'display_name' }, true))}
+        onReady={() =>
+          dispatch(fetchMyCoursesData(location.search ?? '', false, { page: 1, order: 'display_name' }, true))}
       />
       {/* Add the filters at the top */}
       {/* <CoursesFilter dispatch={dispatch} locationValue="/my-courses" /> */}

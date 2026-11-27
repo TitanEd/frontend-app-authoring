@@ -137,7 +137,10 @@ const CustomPages = () => {
                     ? `/course/${courseId}`
                     : `${config.STUDIO_BASE_URL}/course/${courseId}`,
                 },
-                { label: intl.formatMessage(messages.breadcrumbPagesAndResources), to: getPagePath(courseId, 'true', 'tabs') },
+                {
+                  label: intl.formatMessage(messages.breadcrumbPagesAndResources),
+                  to: getPagePath(courseId, 'true', 'tabs'),
+                },
               ]}
             />
           </div>

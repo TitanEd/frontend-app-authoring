@@ -437,11 +437,13 @@ const ScheduleMeetingModal = ({
                   {fieldError('duration')}
                 </Form.Group>
               </div>
-              {pastStart ? (
-                <div className="mtg-form__error" id="mtg-start-error">
-                  {intl.formatMessage(messages.formPastStart, { zone: zoneLabel })}
-                </div>
-              ) : fieldError('start')}
+              {pastStart ?
+                (
+                  <div className="mtg-form__error" id="mtg-start-error">
+                    {intl.formatMessage(messages.formPastStart, { zone: zoneLabel })}
+                  </div>
+                ) :
+                fieldError('start')}
 
               <Form.Group controlId="mtg-f-zone">
                 <Form.Label>{intl.formatMessage(messages.formTimeZone)}</Form.Label>

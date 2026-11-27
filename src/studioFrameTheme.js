@@ -16,7 +16,7 @@ const currentVariant = () => (document.documentElement.getAttribute(VARIANT_ATTR
 const studioOrigin = () => {
   try {
     return new URL(getConfig().STUDIO_BASE_URL).origin;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
@@ -25,7 +25,7 @@ const tellFrame = (frame, origin, variant) => {
   try {
     // Frames of any other origin do not receive it (postMessage checks the target origin).
     frame.contentWindow?.postMessage({ 'indigo-toggle-dark': true, variant }, origin);
-  } catch (error) {
+  } catch {
     // a frame that is being removed: nothing to tell
   }
 };

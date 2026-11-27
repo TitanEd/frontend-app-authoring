@@ -74,9 +74,7 @@ const TranslatedSearchField = (props: React.ComponentProps<typeof ParagonSearchF
 
 const TranslatedSearchFieldAdvanced = (
   props: React.ComponentProps<typeof ParagonSearchField.Advanced>,
-) => (
-  <ParagonSearchField.Advanced screenReaderText={useSearchFieldLabels()} {...props} />
-);
+) => <ParagonSearchField.Advanced screenReaderText={useSearchFieldLabels()} {...props} />;
 
 export const SearchField = Object.assign(TranslatedSearchField, {
   Advanced: TranslatedSearchFieldAdvanced,

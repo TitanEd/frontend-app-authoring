@@ -173,7 +173,7 @@ const CLOSED_ANNOUNCEMENTS = 'tels-announcements-closed';
 const closedAnnouncements = () => {
   try {
     return JSON.parse(window.localStorage.getItem(CLOSED_ANNOUNCEMENTS) || '[]');
-  } catch (error) {
+  } catch {
     return [];
   }
 };
@@ -198,9 +198,11 @@ const Announcements = () => {
     const closed = closedAnnouncements();
     fetch(`${getConfig().LMS_BASE_URL}/titaned/api/v1/system/alerts/?audience=${audience}`)
       .then((response) => (response.ok ? response.json() : {}))
-      .then((data) => setItems((data.announcements || []).filter(
-        (item) => !closed.includes(`${item.id}:${item.version}`),
-      )))
+      .then((data) =>
+        setItems((data.announcements || []).filter(
+          (item) => !closed.includes(`${item.id}:${item.version}`),
+        ))
+      )
       .catch(() => {});
     return () => element.remove();
   }, []);
@@ -209,7 +211,7 @@ const Announcements = () => {
     try {
       const keep = closedAnnouncements().slice(-50);
       window.localStorage.setItem(CLOSED_ANNOUNCEMENTS, JSON.stringify([...keep, `${item.id}:${item.version}`]));
-    } catch (error) {
+    } catch {
       // storage blocked: closed for this page only
     }
     setItems((current) => current.filter((other) => other.id !== item.id));
@@ -220,7 +222,7 @@ const Announcements = () => {
     items.map((item) => (
       <div key={item.id} className={`tels-announcement tels-announcement--${item.severity}`} role="status">
         <div className="tels-announcement__text">
-          {item.title && <strong>{item.title} </strong>}
+          {item.title && <strong>{item.title}</strong>}
           {/* The message is cleaned of unsafe HTML by the LMS (alerts.views.announcement_payload). */}
           {/* eslint-disable-next-line react/no-danger */}
           <span dangerouslySetInnerHTML={{ __html: item.message }} />
@@ -249,7 +251,7 @@ const readCookie = (name) => {
 const readStorage = () => {
   try {
     return window.localStorage.getItem(THEME_KEYS[0]);
-  } catch (error) {
+  } catch {
     return null; // storage blocked (private mode): the cookie alone decides
   }
 };
@@ -257,7 +259,7 @@ const readStorage = () => {
 const writeStorage = (variant) => {
   try {
     THEME_KEYS.forEach((key) => window.localStorage.setItem(key, variant));
-  } catch (error) {
+  } catch {
     // storage blocked: nothing to remember here
   }
 };
@@ -267,7 +269,7 @@ const cookieDomain = () => {
     const lmsHost = new URL(getConfig().LMS_BASE_URL).hostname;
     // Only a domain this page belongs to can be set; otherwise keep the cookie on this host.
     return window.location.hostname.endsWith(lmsHost) ? lmsHost : window.location.hostname;
-  } catch (error) {
+  } catch {
     return window.location.hostname;
   }
 };
@@ -289,7 +291,7 @@ export const loadSiteIntegrations = () => {
     script.async = true;
     script.src = `${lmsBaseUrl}/integrations/site.js${STAFF_TOOLS.test(window.location.pathname) ? '?chat=0' : ''}`;
     document.head.appendChild(script);
-  } catch (e) {
+  } catch {
     // No access to the top window (embedded by another site): nothing to load.
   }
 };
@@ -316,7 +318,9 @@ const HeaderExtras = () => {
   const [variant] = useState(currentThemeVariant);
 
   // A mode chosen in another MFE or on an LMS page arrives in the cookie: adopt it.
-  useEffect(() => { loadSiteIntegrations(); }, []);
+  useEffect(() => {
+    loadSiteIntegrations();
+  }, []);
 
   useEffect(() => {
     const fromCookie = readCookie(THEME_KEYS[0]);
@@ -332,7 +336,9 @@ const HeaderExtras = () => {
     element.className = 'tels-header-extras';
     // The logo of MainHeader points to "/" of the MFE host: send it to the site's home page.
     const homeUrl = `${getConfig().LMS_BASE_URL}/`;
-    const goHome = () => { window.location.href = homeUrl; };
+    const goHome = () => {
+      window.location.href = homeUrl;
+    };
     const place = () => {
       const anchor = document.querySelector('.header-container .usermenu-dropdown')
         || document.getElementById('user-dropdown-menu')?.closest('.dropdown');
@@ -365,7 +371,11 @@ const HeaderExtras = () => {
         ['.header-container input[placeholder="Search"]', 'placeholder', search],
         ['input.search-input[placeholder="Search"], .search-modal input[placeholder="Search"]', 'placeholder', search],
         ['button.close-search-bar', 'aria-label', intl.formatMessage(messages.closeSearch)],
-        ['button[aria-label="Close announcement banner"]', 'aria-label', intl.formatMessage(messages.closeAnnouncement)],
+        [
+          'button[aria-label="Close announcement banner"]',
+          'aria-label',
+          intl.formatMessage(messages.closeAnnouncement),
+        ],
       ];
       labels.forEach(([selector, attribute, text]) => {
         document.querySelectorAll(selector).forEach((control) => {
@@ -384,7 +394,9 @@ const HeaderExtras = () => {
           logo.setAttribute('tabindex', '0');
           logo.style.cursor = 'pointer';
           logo.addEventListener('click', goHome);
-          logo.addEventListener('keydown', (event) => { if (event.key === 'Enter') { goHome(); } });
+          logo.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') { goHome(); }
+          });
         }
       }
     };

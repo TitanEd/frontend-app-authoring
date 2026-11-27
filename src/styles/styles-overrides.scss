@@ -2796,18 +2796,6 @@ select.form-control {
 
 //So start
 
-.react-datepicker__day--selected {
-  background-color: var(--primary) !important;
-
-  &:hover {
-    background-color: var(--primary-hover) !important;
-  }
-}
-
-li.react-datepicker__time-list-item--selected{
-   background-color: var(--primary) !important;
-}
-
 .pgn__menu .pgn__menu-item{
   &:hover{
     background-color: var(--primary-light);
@@ -3412,7 +3400,7 @@ body.tels-custom-authoring {
 
   &:hover,
   &:focus,
-  &:not(:disabled):not(.disabled):active {
+  &:not(:disabled, .disabled):active {
     color: var(--pgn-color-white) !important;
     border-color: var(--pgn-color-white) !important;
     background-color: color-mix(in srgb, var(--pgn-color-white) 18%, transparent) !important;
@@ -3425,7 +3413,7 @@ body.tels-custom-authoring {
 
 // Library filter row (Tags, Type, … sort): the filter buttons sat edge to edge.
 .library-authoring-page .d-flex.mt-3.align-items-center {
-  column-gap: var(--pgn-spacing-spacer-2, 0.5rem);
+  column-gap: var(--pgn-spacing-spacer-2, .5rem);
 }
 
 // "All libraries" filter of the outline's "Add existing" panel: white text on a cleared
@@ -3805,9 +3793,9 @@ body.tels-custom-authoring {
 
   &[data-testid="chapter-delete-button"]:hover,
   &[data-testid="chapter-delete-button"]:focus-visible {
-    border-color: var(--pgn-color-danger-base, #c4320a) !important;
-    background-color: color-mix(in srgb, var(--pgn-color-danger-base, #c4320a) 12%, transparent) !important;
-    color: var(--pgn-color-danger-base, #c4320a) !important;
+    border-color: var(--pgn-color-danger-base, #C4320A) !important;
+    background-color: color-mix(in srgb, var(--pgn-color-danger-base, #C4320A) 12%, transparent) !important;
+    color: var(--pgn-color-danger-base, #C4320A) !important;
   }
 }
 
@@ -3822,7 +3810,7 @@ body.tels-custom-authoring {
 // colour on hover. Hover and focus now follow the outlined buttons, in light and dark mode.
 // The selected button (.btn-icon-primary-active / aria-selected) keeps its fill.
 // The brand rule is !important, so this one repeats that weight.
-.sidebar-toggle .rounded-iconbutton.btn-icon.btn-icon-primary:not(.btn-icon-primary-active):not([aria-selected="true"]) {
+.sidebar-toggle .rounded-iconbutton.btn-icon.btn-icon-primary:not(.btn-icon-primary-active, [aria-selected="true"]) {
   &:is(:hover, :focus):not(:disabled) {
     background-color: transparent !important;
     color: var(--pgn-color-btn-hover-text-outline-primary, var(--pgn-color-primary-base)) !important;
@@ -3835,57 +3823,8 @@ body.tels-custom-authoring {
   }
 }
 
-// Date and time pickers (Schedule a class, calendar New event and every other date/time field):
-// the browser draws the calendar / clock icon itself, dark grey, so it was almost invisible in dark
-// mode and never in the brand colour. The icon is redrawn as a mask filled with the brand token, so
-// it follows the brand (and its hover) in light and dark mode. accent-color gives the browser's own
-// picker the brand colour where the browser supports it, and in dark mode the pickers open dark.
-.tels-custom-authoring {
-  input[type="date"],
-  input[type="time"],
-  input[type="datetime-local"],
-  input[type="month"],
-  input[type="week"] {
-    accent-color: var(--pgn-color-primary-base);
-
-    &::-webkit-calendar-picker-indicator {
-      opacity: 1;
-      cursor: pointer;
-      background: var(--pgn-color-primary-base);
-      -webkit-mask: var(--tels-picker-icon) center / 1.125rem 1.125rem no-repeat;
-      mask: var(--tels-picker-icon) center / 1.125rem 1.125rem no-repeat;
-    }
-
-    &:hover::-webkit-calendar-picker-indicator {
-      background: var(--pgn-color-primary-hover, var(--pgn-color-primary-base));
-    }
-  }
-
-  input[type="date"],
-  input[type="datetime-local"],
-  input[type="month"],
-  input[type="week"] {
-    --tels-picker-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V10h16v11zm0-13H4V5h16v3z'/%3E%3C/svg%3E");
-  }
-
-  input[type="time"] {
-    --tels-picker-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z'/%3E%3C/svg%3E");
-  }
-}
-
-html[data-paragon-theme-variant="dark"] .tels-custom-authoring {
-  input[type="date"],
-  input[type="time"],
-  input[type="datetime-local"],
-  input[type="month"],
-  input[type="week"] {
-    color-scheme: dark;
-  }
-}
-
-
-// TitanEd date / time pickers (react-datepicker, TelsDateTimeInput): full-width like the other
-// fields, brand icon, and a pop-up in the brand colour that follows dark mode.
+// TitanEd date / time pickers (react-datepicker, TelsDateTimeInput): layout only.
+// Colours come from the brand package (tels-brand-openedx overrides/_datepicker.scss).
 .tels-picker {
   display: block;
   width: 100%;
@@ -3901,66 +3840,35 @@ html[data-paragon-theme-variant="dark"] .tels-custom-authoring {
     width: 1.125rem;
     height: 1.125rem;
     padding: 0;
-    color: var(--pgn-color-primary-base);
     cursor: pointer;
     z-index: 1;
   }
 
-  .tels-picker__input { padding-right: 2.5rem; padding-left: .75rem; }
+  .tels-picker__input {
+    padding-right: 2.5rem;
+    padding-left: .75rem;
+  }
 }
 
 #tels-picker-portal .react-datepicker-popper { z-index: 2100; }
 
 .tels-picker__calendar {
-  font-family: inherit;
-  border-color: var(--pgn-color-light-400, #d1d5db);
-
-  .react-datepicker__day--selected,
-  .react-datepicker__day--keyboard-selected,
-  .react-datepicker__time-list-item--selected {
-    background-color: var(--pgn-color-primary-base) !important;
-    color: #fff !important;
-  }
-
-  .react-datepicker__day:not(.react-datepicker__day--selected):not(.react-datepicker__day--disabled):hover,
-  .react-datepicker__time-list-item:not(.react-datepicker__time-list-item--selected):not(.react-datepicker__time-list-item--disabled):hover {
-    background-color: color-mix(in srgb, var(--pgn-color-primary-base) 15%, transparent) !important;
-  }
-
-  .react-datepicker__day--today { font-weight: 700; color: var(--pgn-color-primary-base); }
-  .react-datepicker__navigation-icon::before { border-color: var(--pgn-color-primary-base); }
-
   .react-datepicker__time-container, .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box { width: 7rem; }
-  .react-datepicker__time-list-item { white-space: nowrap; height: auto !important; padding: .35rem .5rem !important; }
-}
 
-html[data-paragon-theme-variant="dark"] .tels-picker__calendar {
-  background-color: #1f2937;
-  border-color: rgba(255, 255, 255, .16);
-  color: #e5e7eb;
-
-  .react-datepicker__header {
-    background-color: #111827;
-    border-bottom-color: rgba(255, 255, 255, .12);
+  .react-datepicker__time-list-item {
+    white-space: nowrap;
+    height: auto !important;
+    padding: .35rem .5rem !important;
   }
-
-  .react-datepicker__current-month,
-  .react-datepicker-time__header,
-  .react-datepicker__day-name,
-  .react-datepicker__day,
-  .react-datepicker__time-list-item { color: #e5e7eb; }
-
-  .react-datepicker__day--outside-month,
-  .react-datepicker__day--disabled,
-  .react-datepicker__time-list-item--disabled { color: #6b7280 !important; }
-
-  .react-datepicker__time-container,
-  .react-datepicker__time,
-  .react-datepicker__time-box { background-color: #1f2937; border-color: rgba(255, 255, 255, .12); }
-
-  .react-datepicker__time-list { background-color: #1f2937; }
-  .react-datepicker__time-container .react-datepicker__time { background-color: #1f2937; }
 }
 
 // TSD-61: note shown in the unit sidebar Access Restrictions when the course has no groups.
-.tels-unit-access-empty { color: var(--pgn-color-gray-700); line-height: 1.5; a { color: var(--pgn-color-primary-base); font-weight: 600; } }
+.tels-unit-access-empty {
+  color: var(--pgn-color-gray-700);
+  line-height: 1.5;
+
+  a {
+    color: var(--pgn-color-primary-base);
+    font-weight: 600;
+  }
+}

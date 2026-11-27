@@ -1,19 +1,31 @@
 import {
-  addDays, canJoin, dayKey, eventPayload, eventsByDay, filterEvents, firstDayOfWeek, monthWeeks, prepare,
-  startOfWeek, step, upcoming, visibleRange,
+  addDays,
+  canJoin,
+  dayKey,
+  eventPayload,
+  eventsByDay,
+  filterEvents,
+  firstDayOfWeek,
+  monthWeeks,
+  prepare,
+  startOfWeek,
+  step,
+  upcoming,
+  visibleRange,
 } from './dates';
 
 // Same file in both forks (src/calendar/). Run with TZ=GMT, as the other tests of the forks.
-const event = (fields) => prepare({
-  id: fields.id || fields.title,
-  type: 'assignment',
-  title: 'Event',
-  course_id: 'course-v1:A+B+C',
-  course: 'Course',
-  all_day: false,
-  end: null,
-  ...fields,
-});
+const event = (fields) =>
+  prepare({
+    id: fields.id || fields.title,
+    type: 'assignment',
+    title: 'Event',
+    course_id: 'course-v1:A+B+C',
+    course: 'Course',
+    all_day: false,
+    end: null,
+    ...fields,
+  });
 
 describe('calendar dates', () => {
   test('weeks start on the given day', () => {
@@ -50,10 +62,17 @@ describe('calendar dates', () => {
     const events = [
       event({ title: 'Due', start: '2026-10-14T23:59:00Z' }),
       event({
-        title: 'Fair', type: 'site_event', start: '2026-10-15T09:00:00Z', end: '2026-10-17T12:00:00Z',
+        title: 'Fair',
+        type: 'site_event',
+        start: '2026-10-15T09:00:00Z',
+        end: '2026-10-17T12:00:00Z',
       }),
       event({
-        title: 'Holiday', type: 'course_event', all_day: true, start: '2026-10-16', end: '2026-10-16',
+        title: 'Holiday',
+        type: 'course_event',
+        all_day: true,
+        start: '2026-10-16',
+        end: '2026-10-16',
       }),
       event({ title: 'Ends at midnight', start: '2026-10-18T10:00:00Z', end: '2026-10-19T00:00:00Z' }),
     ];
@@ -71,7 +90,11 @@ describe('calendar dates', () => {
     const events = [
       event({ title: 'Quiz 1', start: '2026-10-14T10:00:00Z' }),
       event({
-        title: 'Lab', type: 'live_class', course_id: 'course-v1:X+Y+Z', course: 'Physics', start: '2026-10-14T10:00:00Z',
+        title: 'Lab',
+        type: 'live_class',
+        course_id: 'course-v1:X+Y+Z',
+        course: 'Physics',
+        start: '2026-10-14T10:00:00Z',
       }),
     ];
     expect(filterEvents(events, { course: 'course-v1:X+Y+Z' }).map((item) => item.title)).toEqual(['Lab']);
@@ -90,10 +113,18 @@ describe('calendar dates', () => {
       event({ title: 'In six days', start: '2026-10-20T08:00:00Z' }),
       event({ title: 'In eight days', start: '2026-10-22T08:00:00Z' }),
       event({
-        title: 'Today all day', all_day: true, start: '2026-10-14', end: '2026-10-14',
+        title: 'Today all day',
+        all_day: true,
+        start: '2026-10-14',
+        end: '2026-10-14',
       }),
     ];
-    expect(upcoming(events, now).map((item) => item.title)).toEqual(['Today all day', 'Running', 'Later today', 'In six days']);
+    expect(upcoming(events, now).map((item) => item.title)).toEqual([
+      'Today all day',
+      'Running',
+      'Later today',
+      'In six days',
+    ]);
   });
 
   test('a live class opens 15 minutes before it starts', () => {
@@ -105,16 +136,31 @@ describe('calendar dates', () => {
 
   test('the form becomes the API body', () => {
     const base = {
-      course: 'course-v1:A+B+C', title: 'Office hours', kind: 'office_hours', location: '', url: '', description: '',
+      course: 'course-v1:A+B+C',
+      title: 'Office hours',
+      kind: 'office_hours',
+      location: '',
+      url: '',
+      description: '',
     };
     const timed = eventPayload({
-      ...base, allDay: false, startDate: '2026-10-20', startTime: '15:00', endDate: '2026-10-20', endTime: '16:00', repeat: '2',
+      ...base,
+      allDay: false,
+      startDate: '2026-10-20',
+      startTime: '15:00',
+      endDate: '2026-10-20',
+      endTime: '16:00',
+      repeat: '2',
     });
     expect(timed.start).toBe(new Date(2026, 9, 20, 15, 0).toISOString());
     expect(timed.end).toBe(new Date(2026, 9, 20, 16, 0).toISOString());
     expect(timed.repeat_weeks).toBe(2);
     const allDay = eventPayload({
-      ...base, allDay: true, startDate: '2026-10-20', endDate: '', repeat: 0,
+      ...base,
+      allDay: true,
+      startDate: '2026-10-20',
+      endDate: '',
+      repeat: 0,
     });
     expect([allDay.start, allDay.end, allDay.repeat_weeks]).toEqual(['2026-10-20', '2026-10-20', undefined]);
     expect(dayKey(addDays(new Date(2026, 2, 28), 2))).toBe('2026-03-30');

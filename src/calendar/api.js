@@ -9,7 +9,10 @@ import { dayKey } from './dates';
 const base = () => `${getConfig().LMS_BASE_URL}/titaned/api/v2/calendar`;
 const client = () => getAuthenticatedHttpClient();
 
-const sleep = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+const sleep = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 
 // One more try after a short pause: a request can fail while the session token is renewed or
 // the server restarts; a bad request (4xx other than 401) is not retried.
@@ -31,7 +34,9 @@ export const fetchEvents = async (audience, start, end, retries = 1) => {
 
 export const downloadIcs = async (audience, start, end, { course, types, query }) => {
   const params = {
-    audience, start: start.toISOString(), end: end.toISOString(),
+    audience,
+    start: start.toISOString(),
+    end: end.toISOString(),
   };
   if (course) { params.course = course; }
   if (types) { params.types = types.join(','); }
@@ -51,9 +56,11 @@ export const getFeed = () => client().get(`${base()}/feed/`).then((response) => 
 export const createFeed = () => client().post(`${base()}/feed/`).then((response) => response.data.url);
 export const deleteFeed = () => client().delete(`${base()}/feed/`);
 
-export const saveEvent = (payload, pk) => (pk
-  ? client().put(`${base()}/course-events/${pk}/`, payload)
-  : client().post(`${base()}/course-events/`, payload)).then((response) => response.data.events);
+export const saveEvent = (payload, pk) =>
+  (pk
+    ? client().put(`${base()}/course-events/${pk}/`, payload)
+    : client().post(`${base()}/course-events/`, payload)).then((response) => response.data.events);
 
-export const deleteEvent = (pk, series) => client()
-  .delete(`${base()}/course-events/${pk}/`, { params: series ? { series: 1 } : {} });
+export const deleteEvent = (pk, series) =>
+  client()
+    .delete(`${base()}/course-events/${pk}/`, { params: series ? { series: 1 } : {} });

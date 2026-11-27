@@ -353,7 +353,9 @@ const SectionCard = ({
                   <Bubble className="mr-1">
                     {highlights.length}
                   </Bubble>
-                  <p className="m-0 text-black"><FormattedMessage {...messages.sectionHighlightsBadge} /></p>
+                  <p className="m-0 text-black">
+                    <FormattedMessage {...messages.sectionHighlightsBadge} />
+                  </p>
                 </Button>
               </div>
               {

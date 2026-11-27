@@ -14,8 +14,10 @@ const messages = defineMessages({
   },
   rerunInProgressBody: {
     id: 'course-authoring.course-rerun.custom.notice.in-progress.body',
-    defaultMessage: '{course} is being copied. A large course can take a few minutes. You can keep working; this notice will tell you when it is ready.',
-    description: 'Text of the notice on My Courses while a course re-run is being copied; {course} is the new course name',
+    defaultMessage:
+      '{course} is being copied. A large course can take a few minutes. You can keep working; this notice will tell you when it is ready.',
+    description:
+      'Text of the notice on My Courses while a course re-run is being copied; {course} is the new course name',
   },
   rerunReadyTitle: {
     id: 'course-authoring.course-rerun.custom.notice.ready.title',
@@ -25,7 +27,8 @@ const messages = defineMessages({
   rerunReadyBody: {
     id: 'course-authoring.course-rerun.custom.notice.ready.body',
     defaultMessage: '{course} has been created.',
-    description: 'Text of the notice on My Courses when the course re-run has finished; {course} is the new course name',
+    description:
+      'Text of the notice on My Courses when the course re-run has finished; {course} is the new course name',
   },
   rerunOpenOutline: {
     id: 'course-authoring.course-rerun.custom.notice.open-outline',

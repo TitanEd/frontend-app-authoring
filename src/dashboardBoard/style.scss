@@ -3,16 +3,16 @@
 // dark mode; logical properties make it mirror in right-to-left languages.
 
 .tb-board {
-  --tb-brand: var(--pgn-color-primary-base, #2b2399);
-  --tb-surface: var(--pgn-color-bg-base, #fff);
+  --tb-brand: var(--pgn-color-primary-base, #2B2399);
+  --tb-surface: var(--pgn-color-bg-base, #FFFFFF);
   --tb-soft: color-mix(in srgb, var(--tb-brand) 10%, var(--tb-surface));
-  --tb-line: var(--pgn-color-light-400, #e3e8f0);
-  --tb-text: var(--pgn-color-text-base, #1f2937);
-  --tb-muted: var(--pgn-color-text-muted, var(--pgn-color-gray-500, #64748b));
-  --tb-good: var(--pgn-color-success-base, #15803d);
-  --tb-warm: var(--pgn-color-warning-base, #f59e0b);
-  --tb-bad: var(--pgn-color-danger-base, #dc2626);
-  --tb-info: var(--pgn-color-info-base, #0284c7);
+  --tb-line: var(--pgn-color-light-400, #E3E8F0);
+  --tb-text: var(--pgn-color-text-base, #1F2937);
+  --tb-muted: var(--pgn-color-text-muted, var(--pgn-color-gray-500, #64748B));
+  --tb-good: var(--pgn-color-success-base, #15803D);
+  --tb-warm: var(--pgn-color-warning-base, #F59E0B);
+  --tb-bad: var(--pgn-color-danger-base, #DC2626);
+  --tb-info: var(--pgn-color-info-base, #0284C7);
   --tb-radius: 16px;
   --tb-tone: var(--tb-brand);
 
@@ -213,8 +213,15 @@
   color: var(--tb-brand);
   font-weight: 600;
 
-  &.is-good { background: color-mix(in srgb, var(--tb-good) 14%, var(--tb-surface)); color: var(--tb-good); }
-  &.is-warm { background: color-mix(in srgb, var(--tb-warm) 20%, var(--tb-surface)); color: color-mix(in srgb, var(--tb-warm) 60%, var(--tb-text)); }
+  &.is-good {
+    background: color-mix(in srgb, var(--tb-good) 14%, var(--tb-surface));
+    color: var(--tb-good);
+  }
+
+  &.is-warm {
+    background: color-mix(in srgb, var(--tb-warm) 20%, var(--tb-surface));
+    color: color-mix(in srgb, var(--tb-warm) 60%, var(--tb-text));
+  }
 }
 
 .tb-rows,
@@ -354,8 +361,7 @@
     li {
       display: grid;
       grid-template-rows: 48px auto;
-      justify-items: center;
-      align-items: end;
+      place-items: end center;
       gap: .25rem;
       color: var(--tb-muted);
 
@@ -509,9 +515,20 @@
     background: var(--tb-soft);
     font-weight: 700;
 
-    &--1 { background: #f5c542; color: #3b2f00; }
-    &--2 { background: #c9d1dc; color: #1f2937; }
-    &--3 { background: #e0a878; color: #3b1f00; }
+    &--1 {
+      background: #F5C542;
+      color: #3B2F00;
+    }
+
+    &--2 {
+      background: #C9D1DC;
+      color: #1F2937;
+    }
+
+    &--3 {
+      background: #E0A878;
+      color: #3B1F00;
+    }
   }
 
   &__name {
@@ -579,7 +596,7 @@
     aspect-ratio: 16 / 9;
     border-radius: 12px;
     overflow: hidden;
-    background: #000;
+    background: #000000;
 
     iframe {
       position: absolute;
@@ -629,7 +646,11 @@
     vector-effect: non-scaling-stroke;
 
     &.is-zero { opacity: 0; }
-    &:hover { opacity: 1; fill: var(--tb-brand); }
+
+    &:hover {
+      opacity: 1;
+      fill: var(--tb-brand);
+    }
   }
 
   &__axis {
@@ -649,8 +670,7 @@
     display: grid;
     grid-template-rows: auto 1fr auto;
     flex: 1 1 0;
-    justify-items: center;
-    align-items: end;
+    place-items: end center;
     gap: .25rem;
     block-size: 100%;
     min-inline-size: 0;
@@ -790,7 +810,7 @@
   border: 1px solid color-mix(in srgb, var(--tb-brand) 35%, var(--tb-line));
   border-radius: var(--tb-radius);
   background: var(--tb-soft);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  box-shadow: 0 8px 24px rgb(0 0 0 / .12);
 
   .tb-bar-top__hint { color: var(--tb-text); }
 }
@@ -874,7 +894,7 @@
   border-color: color-mix(in srgb, var(--tb-brand) 45%, var(--tb-line));
   transition: opacity .15s, box-shadow .15s;
 
-  &:hover { box-shadow: 0 8px 24px rgb(0 0 0 / 10%); }
+  &:hover { box-shadow: 0 8px 24px rgb(0 0 0 / .1); }
 }
 
 .tb-board--editing .tb-metrics {
@@ -920,7 +940,7 @@
   opacity: .45;
 }
 
-@media (max-width: 767.98px) {
+@media (width <= 767.98px) {
   .tb-bar-top__actions {
     inline-size: 100%;
 
@@ -939,12 +959,12 @@
 
 // ---- smaller screens ----
 
-@media (max-width: 1199.98px) {
+@media (width <= 1199.98px) {
   .tb-widget--small { grid-column: span 3; }
   .tb-widget--wide { grid-column: span 6; }
 }
 
-@media (max-width: 767.98px) {
+@media (width <= 767.98px) {
   .tb-widgets {
     grid-template-columns: minmax(0, 1fr);
   }

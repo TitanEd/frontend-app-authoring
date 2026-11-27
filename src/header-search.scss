@@ -8,7 +8,7 @@
   display: block;
   inline-size: 100%;
   block-size: 100%;
-  background-color: currentColor;
+  background-color: currentcolor;
   mask: var(--tels-search-icon) center / contain no-repeat;
 }
 
@@ -23,16 +23,19 @@
 }
 
 // HelpOutline
+/* stylelint-disable-next-line selector-type-no-unknown */
 .search-result-icon .pgn__icon > quiz {
   --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z'/%3E%3C/svg%3E");
 }
 
 // Folder
+/* stylelint-disable-next-line selector-type-no-unknown */
 .search-result-icon .pgn__icon > folder {
   --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 4H2v16h20V6H12l-2-2z'/%3E%3C/svg%3E");
 }
 
 // Info
+/* stylelint-disable-next-line selector-type-no-unknown */
 .search-result-icon .pgn__icon > info {
   --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z'/%3E%3C/svg%3E");
 }
@@ -43,11 +46,13 @@
 }
 
 // Description
+/* stylelint-disable-next-line selector-type-no-unknown */
 .search-result-icon .pgn__icon > file {
   --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 2H4v20h16V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/%3E%3C/svg%3E");
 }
 
 // LibraryAdd
+/* stylelint-disable-next-line selector-type-no-unknown */
 .search-result-icon .pgn__icon > library {
   --tels-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 6H2v16h16v-2H4V6zm18-4H6v16h16V2zm-3 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z'/%3E%3C/svg%3E");
 }

@@ -3,16 +3,16 @@
 // dark mode; logical properties mirror it in right-to-left languages.
 
 .tas-page {
-  --tas-brand: var(--pgn-color-primary-base, #2b2399);
-  --tas-surface: var(--pgn-color-bg-base, #fff);
+  --tas-brand: var(--pgn-color-primary-base, #2B2399);
+  --tas-surface: var(--pgn-color-bg-base, #FFFFFF);
   --tas-soft: color-mix(in srgb, var(--tas-brand) 9%, var(--tas-surface));
-  --tas-line: var(--pgn-color-light-400, #e3e8f0);
-  --tas-text: var(--pgn-color-text-base, #1f2937);
-  --tas-muted: var(--pgn-color-text-muted, var(--pgn-color-gray-500, #64748b));
-  --tas-danger: var(--pgn-color-danger-base, #c32d3a);
-  --tas-warning: #b45f06;
-  --tas-good: var(--pgn-color-success-base, #15803d);
-  --tas-info: var(--pgn-color-info-base, #00688d);
+  --tas-line: var(--pgn-color-light-400, #E3E8F0);
+  --tas-text: var(--pgn-color-text-base, #1F2937);
+  --tas-muted: var(--pgn-color-text-muted, var(--pgn-color-gray-500, #64748B));
+  --tas-danger: var(--pgn-color-danger-base, #C32D3A);
+  --tas-warning: #B45F06;
+  --tas-good: var(--pgn-color-success-base, #15803D);
+  --tas-info: var(--pgn-color-info-base, #00688D);
 
   min-block-size: 100%;
   background: var(--bg-body, transparent);
@@ -22,10 +22,10 @@
 // Lighter status colours on dark surfaces.
 [data-paragon-theme-variant="dark"] .tas-page,
 [data-theme="dark"] .tas-page {
-  --tas-danger: #ff8a93;
-  --tas-warning: #ffb866;
-  --tas-good: #5fd38d;
-  --tas-info: #6cc8ea;
+  --tas-danger: #FF8A93;
+  --tas-warning: #FFB866;
+  --tas-good: #5FD38D;
+  --tas-info: #6CC8EA;
 }
 
 .tas-container {
@@ -54,7 +54,10 @@
     color: var(--tas-text);
   }
 
-  p { margin: 0; max-inline-size: 46ch; }
+  p {
+    margin: 0;
+    max-inline-size: 46ch;
+  }
 
   &__icon {
     inline-size: 56px;
@@ -76,30 +79,30 @@
   padding: clamp(1.25rem, 3vw, 2rem);
   border-radius: 24px;
   background:
-    radial-gradient(60% 140% at 100% 0%, color-mix(in srgb, #fff 22%, transparent), transparent 60%),
-    linear-gradient(120deg, color-mix(in srgb, var(--tas-brand) 60%, #05060f), var(--tas-brand));
-  color: #fff;
+    radial-gradient(60% 140% at 100% 0%, color-mix(in srgb, #FFFFFF 22%, transparent), transparent 60%),
+    linear-gradient(120deg, color-mix(in srgb, var(--tas-brand) 60%, #05060F), var(--tas-brand));
+  color: #FFFFFF;
 
   [dir="rtl"] & {
     background:
-      radial-gradient(60% 140% at 0% 0%, color-mix(in srgb, #fff 22%, transparent), transparent 60%),
-      linear-gradient(240deg, color-mix(in srgb, var(--tas-brand) 60%, #05060f), var(--tas-brand));
+      radial-gradient(60% 140% at 0% 0%, color-mix(in srgb, #FFFFFF 22%, transparent), transparent 60%),
+      linear-gradient(240deg, color-mix(in srgb, var(--tas-brand) 60%, #05060F), var(--tas-brand));
   }
 
   h1 {
     margin: 0 0 .35rem;
     font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem);
-    color: #fff;
+    color: #FFFFFF;
   }
 
   p {
     margin: 0;
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, .9);
+    color: rgb(255 255 255 / .9);
   }
 
-  .tas-ring__track { stroke: rgba(255, 255, 255, .22); }
-  .tas-ring__value { stroke: #fff; }
+  .tas-ring__track { stroke: rgb(255 255 255 / .22); }
+  .tas-ring__value { stroke: #FFFFFF; }
 }
 
 .tas-hero__figures {
@@ -114,13 +117,13 @@
     justify-items: center;
     padding: .8rem 1rem;
     border-radius: 16px;
-    background: rgba(255, 255, 255, .12);
+    background: rgb(255 255 255 / .12);
     text-align: center;
   }
 
   dt {
     font-weight: 400;
-    color: rgba(255, 255, 255, .85);
+    color: rgb(255 255 255 / .85);
   }
 
   dd {
@@ -170,7 +173,7 @@
   background: var(--tas-surface);
   color: var(--tas-text);
   text-decoration: none;
-  box-shadow: 0 14px 30px rgba(5, 6, 15, .25);
+  box-shadow: 0 14px 30px rgb(5 6 15 / .25);
   inline-size: clamp(260px, 30vw, 360px);
   transition: translate .2s;
 
@@ -210,7 +213,7 @@
     padding: .35rem .9rem;
     border-radius: var(--pgn-btn-border-radius-base, 999px);
     background: var(--tas-brand);
-    color: #fff;
+    color: #FFFFFF;
     font-weight: 600;
 
     [dir="rtl"] & .pgn__icon { scale: -1 1; }
@@ -265,8 +268,10 @@
   &--past_due,
   &--needs_review { --chip: var(--tas-danger); }
   &--due { --chip: var(--tas-warning); }
+
   &--submitted,
   &--closed { --chip: var(--tas-good); }
+
   &--scheduled,
   &--hidden { --chip: var(--tas-muted); }
 }
@@ -349,8 +354,10 @@
   &--past_due,
   &--needs_review { --state: var(--tas-danger); }
   &--due { --state: var(--tas-warning); }
+
   &--submitted,
   &--closed { --state: var(--tas-good); }
+
   &--scheduled,
   &--hidden { --state: var(--tas-muted); }
 
@@ -439,7 +446,7 @@
 
   &:hover &__go {
     background: var(--tas-brand);
-    color: #fff;
+    color: #FFFFFF;
   }
 }
 
@@ -523,7 +530,7 @@
   b { color: var(--tas-text); }
 }
 
-@media (max-width: 1199.98px) {
+@media (width <= 1199.98px) {
   .tas-hero {
     grid-template-columns: auto minmax(0, 1fr);
   }
@@ -556,14 +563,17 @@
   }
 }
 
-@media (max-width: 575.98px) {
+@media (width <= 575.98px) {
   .tas-hero {
     grid-template-columns: minmax(0, 1fr);
     justify-items: center;
     text-align: center;
   }
 
-  .tas-next { inline-size: 100%; text-align: start; }
+  .tas-next {
+    inline-size: 100%;
+    text-align: start;
+  }
 
   .tas-hero__figures {
     inline-size: 100%;
@@ -619,7 +629,7 @@
   justify-content: space-between;
   gap: .75rem 1rem;
   margin-block-start: 1.5rem;
-  color: var(--tas-muted, var(--pgn-color-text-muted, #64748b));
+  color: var(--tas-muted, var(--pgn-color-text-muted, #64748B));
 
   .pagination {
     margin: 0;
@@ -627,7 +637,7 @@
   }
 }
 
-@media (max-width: 575.98px) {
+@media (width <= 575.98px) {
   .tas-pager {
     justify-content: center;
     text-align: center;

@@ -8,33 +8,67 @@
  * loaded. Views: month, week, day, agenda (the default on a phone). Same file in both forks.
  */
 import React, {
-  useCallback, useEffect, useMemo, useRef, useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { getConfig } from '@edx/frontend-platform';
 import {
-  Button, Container, Form, Icon, IconButton, Toast,
+  Button,
+  Container,
+  Form,
+  Icon,
+  IconButton,
+  Toast,
 } from '@openedx/paragon';
 import {
-  Add, ChevronLeft, ChevronRight, EventNote, FilterList, RssFeed, Search,
+  Add,
+  ChevronLeft,
+  ChevronRight,
+  EventNote,
+  FilterList,
+  RssFeed,
+  Search,
 } from '@openedx/paragon/icons';
 
 import * as api from './api';
 import {
-  AGENDA_DAYS, TYPES, VIEWS, addDays, eventsByDay, filterEvents, firstDayOfWeek, prepare,
-  startOfDay, step, upcoming, visibleRange,
+  AGENDA_DAYS,
+  TYPES,
+  VIEWS,
+  addDays,
+  eventsByDay,
+  filterEvents,
+  firstDayOfWeek,
+  prepare,
+  startOfDay,
+  step,
+  upcoming,
+  visibleRange,
 } from './dates';
 import { EventDialog, EventForm, SubscribeDialog } from './dialogs';
 import messages from './messages';
 import { TYPE_META } from './meta';
 import {
-  AgendaView, EventRow, MiniMonth, MonthView, Skeleton, WeekView, useFormats,
+  AgendaView,
+  EventRow,
+  MiniMonth,
+  MonthView,
+  Skeleton,
+  WeekView,
+  useFormats,
 } from './views';
 import './style.scss';
 
 const VIEW_LABELS = {
-  month: messages.viewMonth, week: messages.viewWeek, day: messages.viewDay, agenda: messages.viewAgenda,
+  month: messages.viewMonth,
+  week: messages.viewWeek,
+  day: messages.viewDay,
+  agenda: messages.viewAgenda,
 };
 const STORAGE_KEY = 'tels-calendar-view';
 const PHONE = '(max-width: 767px)';
@@ -54,12 +88,16 @@ const initialView = () => {
 };
 
 const rememberView = (view) => {
-  try { window.localStorage.setItem(STORAGE_KEY, view); } catch { /* not kept */ }
+  try {
+    window.localStorage.setItem(STORAGE_KEY, view);
+  } catch { /* not kept */ }
 };
 
 const CalendarPage = ({ audience }) => {
   const {
-    intl, longDate, dayRange,
+    intl,
+    longDate,
+    dayRange,
   } = useFormats();
   const weekStart = useMemo(() => firstDayOfWeek(intl.locale), [intl.locale]);
   const [view, setView] = useState(initialView);
@@ -102,8 +140,12 @@ const CalendarPage = ({ audience }) => {
         if (alive) { setResult({ key: rangeKey, data: ready }); }
       })
       // 403: the calendar is not part of the site's plan (sold feature "calendar").
-      .catch((error) => { if (alive) { setFailed(error?.response?.status === 403 ? 'unavailable' : true); } });
-    return () => { alive = false; };
+      .catch((error) => {
+        if (alive) { setFailed(error?.response?.status === 403 ? 'unavailable' : true); }
+      });
+    return () => {
+      alive = false;
+    };
   }, [audience, rangeKey, reload]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -141,22 +183,43 @@ const CalendarPage = ({ audience }) => {
     [soon, course, types, now],
   );
 
-  const changeView = (value) => { setView(value); rememberView(value); };
-  const goTo = (day) => { setDate(startOfDay(day)); setMiniMonth(day); };
-  const openDay = (day) => { goTo(day); changeView('day'); };
+  const changeView = (value) => {
+    setView(value);
+    rememberView(value);
+  };
+  const goTo = (day) => {
+    setDate(startOfDay(day));
+    setMiniMonth(day);
+  };
+  const openDay = (day) => {
+    goTo(day);
+    changeView('day');
+  };
   const move = (direction) => goTo(step(view, date, direction));
-  const refresh = useCallback(() => { cache.current.clear(); setReload((value) => value + 1); }, []);
-  const toggleType = (type) => setHiddenTypes((current) => {
-    const nextTypes = new Set(current);
-    if (nextTypes.has(type)) { nextTypes.delete(type); } else { nextTypes.add(type); }
-    return nextTypes;
-  });
+  const refresh = useCallback(() => {
+    cache.current.clear();
+    setReload((value) => value + 1);
+  }, []);
+  const toggleType = (type) =>
+    setHiddenTypes((current) => {
+      const nextTypes = new Set(current);
+      if (nextTypes.has(type)) { nextTypes.delete(type); }
+      else { nextTypes.add(type); }
+      return nextTypes;
+    });
   const filtered = Boolean(course || hiddenTypes.size || query.trim());
-  const clear = () => { setCourse(''); setHiddenTypes(new Set()); setQuery(''); };
+  const clear = () => {
+    setCourse('');
+    setHiddenTypes(new Set());
+    setQuery('');
+  };
   const openEvent = (event) => setDialog({ kind: 'event', event });
-  const download = () => api.downloadIcs(audience, range.start, range.end, {
-    course, query, types: hiddenTypes.size ? [...types] : null,
-  });
+  const download = () =>
+    api.downloadIcs(audience, range.start, range.end, {
+      course,
+      query,
+      types: hiddenTypes.size ? [...types] : null,
+    });
 
   let period;
   if (view === 'month') {
@@ -183,20 +246,22 @@ const CalendarPage = ({ audience }) => {
   } else {
     let notice = null;
     if (!shown.length) {
-      notice = data.events.length ? (
-        <div className="tcal-empty">
-          <p>{intl.formatMessage(messages.noMatch)}</p>
-          <Button variant="link" size="inline" onClick={clear}>{intl.formatMessage(messages.clearFilters)}</Button>
-        </div>
-      ) : (
-        <div className="tcal-empty">
-          <Icon src={EventNote} className="tcal-empty__icon" />
-          <div>
-            <h3>{intl.formatMessage(messages.emptyTitle)}</h3>
-            <p>{intl.formatMessage(audience === 'instructor' ? messages.emptyInstructor : messages.emptyLearner)}</p>
+      notice = data.events.length ?
+        (
+          <div className="tcal-empty">
+            <p>{intl.formatMessage(messages.noMatch)}</p>
+            <Button variant="link" size="inline" onClick={clear}>{intl.formatMessage(messages.clearFilters)}</Button>
           </div>
-        </div>
-      );
+        ) :
+        (
+          <div className="tcal-empty">
+            <Icon src={EventNote} className="tcal-empty__icon" />
+            <div>
+              <h3>{intl.formatMessage(messages.emptyTitle)}</h3>
+              <p>{intl.formatMessage(audience === 'instructor' ? messages.emptyInstructor : messages.emptyLearner)}</p>
+            </div>
+          </div>
+        );
     }
     let content;
     if (view === 'month') {
@@ -215,13 +280,13 @@ const CalendarPage = ({ audience }) => {
         <WeekView start={range.start} byDay={byDay} today={today} onOpenEvent={openEvent} onOpenDay={openDay} />
       );
     } else if (view === 'day') {
-      content = shown.length ? (
-        <AgendaView start={range.start} days={1} byDay={byDay} today={today} onOpenEvent={openEvent} showEmptyDays />
-      ) : null;
+      content = shown.length ?
+        <AgendaView start={range.start} days={1} byDay={byDay} today={today} onOpenEvent={openEvent} showEmptyDays /> :
+        null;
     } else {
-      content = shown.length ? (
-        <AgendaView start={range.start} days={AGENDA_DAYS} byDay={byDay} today={today} onOpenEvent={openEvent} />
-      ) : null;
+      content = shown.length ?
+        <AgendaView start={range.start} days={AGENDA_DAYS} byDay={byDay} today={today} onOpenEvent={openEvent} /> :
+        null;
     }
     body = <>{notice}{content}</>;
   }
@@ -236,7 +301,9 @@ const CalendarPage = ({ audience }) => {
         </Helmet>
         <Container fluid size="xl" className="tcal-container">
           <header className="tcal-head">
-            <div><h1>{title}</h1></div>
+            <div>
+              <h1>{title}</h1>
+            </div>
           </header>
           <div className="tcal-state tcal-card" role="alert">
             <p>{intl.formatMessage(messages.unavailable)}</p>
@@ -260,7 +327,11 @@ const CalendarPage = ({ audience }) => {
           </div>
           <div className="tcal-head__actions">
             {canCreate && (
-              <Button variant="primary" iconBefore={Add} onClick={() => setDialog({ kind: 'form', event: null })}>
+              <Button
+                variant="primary"
+                iconBefore={Add}
+                onClick={() => setDialog({ kind: 'form', event: null })}
+              >
                 {intl.formatMessage(messages.newEvent)}
               </Button>
             )}
@@ -272,7 +343,9 @@ const CalendarPage = ({ audience }) => {
 
         <div className="tcal-toolbar">
           <div className="tcal-nav">
-            <Button variant="outline-primary" onClick={() => goTo(new Date())}>{intl.formatMessage(messages.today)}</Button>
+            <Button variant="outline-primary" onClick={() => goTo(new Date())}>
+              {intl.formatMessage(messages.today)}
+            </Button>
             <IconButton
               src={ChevronLeft}
               iconAs={Icon}
@@ -336,9 +409,10 @@ const CalendarPage = ({ audience }) => {
                 today={today}
                 busyDays={busyDays}
                 onPick={goTo}
-                onMonth={(direction) => setMiniMonth(
-                  new Date(miniMonth.getFullYear(), miniMonth.getMonth() + direction, 1),
-                )}
+                onMonth={(direction) =>
+                  setMiniMonth(
+                    new Date(miniMonth.getFullYear(), miniMonth.getMonth() + direction, 1),
+                  )}
               />
             </div>
 
@@ -349,12 +423,21 @@ const CalendarPage = ({ audience }) => {
               {next && next.length > 0 && (
                 <ul className="tcal-list">
                   {next.slice(0, UPCOMING_SHOWN).map((event) => (
-                    <li key={event.id}><EventRow event={event} onOpen={openEvent} compact withDate /></li>
+                    <li key={event.id}>
+                      <EventRow event={event} onOpen={openEvent} compact withDate />
+                    </li>
                   ))}
                 </ul>
               )}
               {next && next.length > UPCOMING_SHOWN && (
-                <Button variant="link" size="inline" onClick={() => { goTo(new Date()); changeView('agenda'); }}>
+                <Button
+                  variant="link"
+                  size="inline"
+                  onClick={() => {
+                    goTo(new Date());
+                    changeView('agenda');
+                  }}
+                >
                   {intl.formatMessage(messages.upcomingMore, { count: next.length - UPCOMING_SHOWN })}
                 </Button>
               )}
@@ -380,7 +463,9 @@ const CalendarPage = ({ audience }) => {
                           checked={!hiddenTypes.has(type)}
                           onChange={() => toggleType(type)}
                         />
-                        <span className="tcal-legend__swatch" aria-hidden="true"><Icon src={TYPE_META[type].icon} size="xs" /></span>
+                        <span className="tcal-legend__swatch" aria-hidden="true">
+                          <Icon src={TYPE_META[type].icon} size="xs" />
+                        </span>
                         <span>{intl.formatMessage(TYPE_META[type].label)}</span>
                       </label>
                     </li>
@@ -388,12 +473,18 @@ const CalendarPage = ({ audience }) => {
                 </ul>
               </fieldset>
               {filtered && (
-                <Button variant="link" size="inline" onClick={clear}>{intl.formatMessage(messages.clearFilters)}</Button>
+                <Button variant="link" size="inline" onClick={clear}>
+                  {intl.formatMessage(messages.clearFilters)}
+                </Button>
               )}
             </section>
           </aside>
 
-          <section className={`tcal-main tcal-card tcal-main--${view}`} aria-label={period} aria-busy={!data && !failed}>
+          <section
+            className={`tcal-main tcal-card tcal-main--${view}`}
+            aria-label={period}
+            aria-busy={!data && !failed}
+          >
             {body}
           </section>
         </div>
@@ -406,7 +497,11 @@ const CalendarPage = ({ audience }) => {
           now={now}
           onClose={() => setDialog(null)}
           onEdit={(event) => setDialog({ kind: 'form', event })}
-          onDeleted={() => { setDialog(null); setToast(intl.formatMessage(messages.deleted)); refresh(); }}
+          onDeleted={() => {
+            setDialog(null);
+            setToast(intl.formatMessage(messages.deleted));
+            refresh();
+          }}
         />
       )}
       {dialog && dialog.kind === 'form' && (
@@ -416,7 +511,11 @@ const CalendarPage = ({ audience }) => {
           courses={courses}
           course={course}
           onClose={() => setDialog(null)}
-          onSaved={() => { setDialog(null); setToast(intl.formatMessage(messages.saved)); refresh(); }}
+          onSaved={() => {
+            setDialog(null);
+            setToast(intl.formatMessage(messages.saved));
+            refresh();
+          }}
         />
       )}
       {dialog && dialog.kind === 'subscribe' && (

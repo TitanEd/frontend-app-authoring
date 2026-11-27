@@ -63,6 +63,7 @@ import pageMessages from './createCourseMessages';
 import './CustomCreateNewCourseForm.scss';
 
 import { useSiteFeatures } from '../../useSiteFeatures';
+import { TelsDateInput } from '../../generic/tels-date-time-input/TelsDateTimeInput';
 
 const messages = { ...formMessages, ...pageMessages };
 
@@ -410,7 +411,16 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
           help={options.help}
           error={errorOf(dateField)}
         >
-          <Form.Control type="date" max="9999-12-31" {...bind(dateField)} />
+          <TelsDateInput
+            id={fieldId(dateField)}
+            name={dateField}
+            value={values[dateField] || ''}
+            max="9999-12-31"
+            placeholder={intl.formatMessage(messages.placeholderDate)}
+            onChange={(value) => setValue(dateField, value)}
+            onBlur={() => touch(dateField)}
+            isInvalid={Boolean(errorOf(dateField))}
+          />
         </Field>
       </Col>
       <Col xs={12} sm={5}>
@@ -540,7 +550,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                 <Form.Control
                   type="text"
                   maxLength={255}
-                  placeholder={intl.formatMessage(messages.titlePlaceholder)}
+                  placeholder={intl.formatMessage(messages.placeholderTitle)}
                   {...bind('title')}
                 />
               </Field>
@@ -565,6 +575,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                   as="textarea"
                   rows={2}
                   maxLength={SHORT_DESCRIPTION_MAX_LENGTH}
+                  placeholder={intl.formatMessage(messages.placeholderShortDescription)}
                   {...bind('shortDescription')}
                 />
               </Field>
@@ -574,7 +585,12 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                 label={intl.formatMessage(messages.description)}
                 help={intl.formatMessage(messages.descriptionHelp)}
               >
-                <Form.Control as="textarea" rows={5} {...bind('description')} />
+                <Form.Control
+                  as="textarea"
+                  rows={5}
+                  placeholder={intl.formatMessage(messages.placeholderDescription)}
+                  {...bind('description')}
+                />
               </Field>
 
               <Row className="tels-create-course__row">
@@ -596,6 +612,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                           type="text"
                           list="create-course-organizations"
                           autoComplete="off"
+                          placeholder={intl.formatMessage(messages.placeholderOrganization)}
                           {...bind('organization')}
                         />
                       ) :
@@ -625,7 +642,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                   >
                     <Form.Control
                       type="text"
-                      placeholder={intl.formatMessage(messages.eGCs101)}
+                      placeholder={intl.formatMessage(messages.placeholderNumber)}
                       {...bind('courseNumber')}
                     />
                   </Field>
@@ -640,7 +657,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                   >
                     <Form.Control
                       type="text"
-                      placeholder={intl.formatMessage(messages.eG2014T1)}
+                      placeholder={intl.formatMessage(messages.placeholderRun)}
                       {...bind('courseRun')}
                     />
                   </Field>
@@ -730,7 +747,16 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                           required
                           error={errorOf('certificateAvailableDate')}
                         >
-                          <Form.Control type="date" max="9999-12-31" {...bind('certificateAvailableDate')} />
+                          <TelsDateInput
+                            id={fieldId('certificateAvailableDate')}
+                            name="certificateAvailableDate"
+                            value={values.certificateAvailableDate || ''}
+                            max="9999-12-31"
+                            placeholder={intl.formatMessage(messages.placeholderDate)}
+                            onChange={(value) => setValue('certificateAvailableDate', value)}
+                            onBlur={() => touch('certificateAvailableDate')}
+                            isInvalid={Boolean(errorOf('certificateAvailableDate'))}
+                          />
                         </Field>
                       </Col>
                     )}
@@ -800,7 +826,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                   >
                     <Form.Control
                       type="text"
-                      placeholder={intl.formatMessage(messages.eG8Weeks)}
+                      placeholder={intl.formatMessage(messages.placeholderLength)}
                       {...bind('duration')}
                     />
                   </Field>
@@ -813,7 +839,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                   >
                     <Form.Control
                       type="text"
-                      placeholder={intl.formatMessage(messages.effortPlaceholder)}
+                      placeholder={intl.formatMessage(messages.placeholderEffort)}
                       {...bind('effort')}
                     />
                   </Field>
@@ -863,6 +889,7 @@ const CustomCreateNewCourseForm = ({ handleOnClickCancel }) => {
                           min={1}
                           max={100}
                           step={1}
+                          placeholder={intl.formatMessage(messages.placeholderEntranceExamScore)}
                           {...bind('entranceExamMinimumScorePct')}
                         />
                       </Field>

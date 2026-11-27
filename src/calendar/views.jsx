@@ -8,7 +8,12 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { Icon } from '@openedx/paragon';
 
 import {
-  addDays, dayKey, isMultiDay, monthWeeks, sameDay, startOfDay,
+  addDays,
+  dayKey,
+  isMultiDay,
+  monthWeeks,
+  sameDay,
+  startOfDay,
 } from './dates';
 import messages from './messages';
 import { TYPE_META, kindLabel, shortTitle } from './meta';
@@ -41,10 +46,15 @@ export const useFormats = () => {
   const intl = useIntl();
   const time = (date) => intl.formatTime(date, { hour: 'numeric', minute: '2-digit' });
   const shortDate = (date) => intl.formatDate(date, { month: 'short', day: 'numeric' });
-  const longDate = (date) => intl.formatDate(date, {
-    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
-  });
-  const dayRange = (start, end) => formatRange(intl.locale, { month: 'long', day: 'numeric', year: 'numeric' }, start, end);
+  const longDate = (date) =>
+    intl.formatDate(date, {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  const dayRange = (start, end) =>
+    formatRange(intl.locale, { month: 'long', day: 'numeric', year: 'numeric' }, start, end);
   const isDue = (event) => !event.endDate && (event.type === 'assignment' || event.type === 'exam');
 
   const whenShort = (event) => {
@@ -53,7 +63,9 @@ export const useFormats = () => {
       return isDue(event) ? intl.formatMessage(messages.dueAt, { time: time(event.startDate) }) : time(event.startDate);
     }
     if (isMultiDay(event)) {
-      return `${shortDate(event.startDate)} ${time(event.startDate)} – ${shortDate(event.endDate)} ${time(event.endDate)}`;
+      return `${shortDate(event.startDate)} ${time(event.startDate)} – ${shortDate(event.endDate)} ${
+        time(event.endDate)
+      }`;
     }
     return `${time(event.startDate)} – ${time(event.endDate)}`;
   };
@@ -67,7 +79,9 @@ export const useFormats = () => {
       return isDue(event) ? intl.formatMessage(messages.dueAt, { time: at }) : at;
     }
     if (isMultiDay(event)) {
-      return `${longDate(event.startDate)}, ${time(event.startDate)} – ${longDate(event.endDate)}, ${time(event.endDate)}`;
+      return `${longDate(event.startDate)}, ${time(event.startDate)} – ${longDate(event.endDate)}, ${
+        time(event.endDate)
+      }`;
     }
     return `${longDate(event.startDate)}, ${time(event.startDate)} – ${time(event.endDate)}`;
   };
@@ -77,7 +91,14 @@ export const useFormats = () => {
     return null;
   };
   return {
-    intl, time, shortDate, longDate, dayRange, whenShort, whenLong, relativeDay,
+    intl,
+    time,
+    shortDate,
+    longDate,
+    dayRange,
+    whenShort,
+    whenLong,
+    relativeDay,
   };
 };
 
@@ -97,7 +118,9 @@ export const EventChip = ({ event, onOpen, day }) => {
       title={label}
     >
       {!event.all_day && !continues && (
-        <span className="tcal-chip__time">{intl.formatTime(event.startDate, { hour: 'numeric', minute: '2-digit' })}</span>
+        <span className="tcal-chip__time">
+          {intl.formatTime(event.startDate, { hour: 'numeric', minute: '2-digit' })}
+        </span>
       )}
       <span className="tcal-chip__title">{shortTitle(event)}</span>
     </button>
@@ -112,7 +135,10 @@ EventChip.propTypes = {
 
 /** One event as a row (week, day, agenda views and the "next 7 days" list). */
 export const EventRow = ({
-  event, onOpen, compact, withDate,
+  event,
+  onOpen,
+  compact,
+  withDate,
 }) => {
   const { intl, whenShort, shortDate } = useFormats();
   const meta = TYPE_META[event.type] || TYPE_META.course_event;
@@ -124,7 +150,9 @@ export const EventRow = ({
       className={`tcal-row tcal-type--${event.type} ${compact ? 'tcal-row--compact' : ''}`}
       onClick={() => onOpen(event)}
     >
-      <span className="tcal-row__icon" aria-hidden="true"><Icon src={meta.icon} size="sm" /></span>
+      <span className="tcal-row__icon" aria-hidden="true">
+        <Icon src={meta.icon} size="sm" />
+      </span>
       <span className="tcal-row__main">
         <span className="tcal-row__when">
           {withDate && !isMultiDay(event) ? `${shortDate(event.startDate)} · ` : ''}
@@ -138,8 +166,12 @@ export const EventRow = ({
           <span className="tcal-row__tags">
             <span className="tcal-tag tcal-tag--type">{intl.formatMessage(meta.label)}</span>
             {kind && <span className="tcal-tag">{kind}</span>}
-            {event.hidden && <span className="tcal-tag tcal-tag--warn">{intl.formatMessage(messages.statusStaffOnly)}</span>}
-            {event.status === 'ongoing' && <span className="tcal-tag tcal-tag--live">{intl.formatMessage(messages.statusLive)}</span>}
+            {event.hidden && (
+              <span className="tcal-tag tcal-tag--warn">{intl.formatMessage(messages.statusStaffOnly)}</span>
+            )}
+            {event.status === 'ongoing' && (
+              <span className="tcal-tag tcal-tag--live">{intl.formatMessage(messages.statusLive)}</span>
+            )}
             {event.registered && <span className="tcal-tag">{intl.formatMessage(messages.statusRegistered)}</span>}
           </span>
         )}
@@ -160,7 +192,13 @@ EventRow.defaultProps = { compact: false, withDate: false };
 const weekdayNames = (intl, week, style) => week.map((day) => intl.formatDate(day, { weekday: style }));
 
 export const MonthView = ({
-  date, weekStart, byDay, today, onOpenEvent, onOpenDay, maxPerDay,
+  date,
+  weekStart,
+  byDay,
+  today,
+  onOpenEvent,
+  onOpenDay,
+  maxPerDay,
 }) => {
   const { intl, longDate } = useFormats();
   const weeks = monthWeeks(date, weekStart);
@@ -185,14 +223,18 @@ export const MonthView = ({
               return (
                 <td
                   key={dayKey(day)}
-                  className={`tcal-cell ${outside ? 'is-outside' : ''} ${isToday ? 'is-today' : ''} ${day < today ? 'is-past' : ''}`}
+                  className={`tcal-cell ${outside ? 'is-outside' : ''} ${isToday ? 'is-today' : ''} ${
+                    day < today ? 'is-past' : ''
+                  }`}
                   aria-current={isToday ? 'date' : undefined}
                 >
                   <button
                     type="button"
                     className="tcal-cell__day"
                     onClick={() => onOpenDay(day)}
-                    aria-label={`${intl.formatMessage(messages.openDay, { date: longDate(day) })}, ${intl.formatMessage(messages.dayEvents, { count: events.length })}`}
+                    aria-label={`${intl.formatMessage(messages.openDay, { date: longDate(day) })}, ${
+                      intl.formatMessage(messages.dayEvents, { count: events.length })
+                    }`}
                   >
                     {intl.formatNumber(day.getDate())}
                   </button>
@@ -208,7 +250,9 @@ export const MonthView = ({
                   </div>
                   {events.length > 0 && (
                     <span className="tcal-dots" aria-hidden="true">
-                      {events.slice(0, 4).map((event) => <span key={event.id} className={`tcal-dot tcal-type--${event.type}`} />)}
+                      {events.slice(0, 4).map((event) => (
+                        <span key={event.id} className={`tcal-dot tcal-type--${event.type}`} />
+                      ))}
                     </span>
                   )}
                 </td>
@@ -234,7 +278,11 @@ MonthView.propTypes = {
 MonthView.defaultProps = { maxPerDay: 3 };
 
 export const WeekView = ({
-  start, byDay, today, onOpenEvent, onOpenDay,
+  start,
+  byDay,
+  today,
+  onOpenEvent,
+  onOpenDay,
 }) => {
   const { intl, longDate } = useFormats();
   const days = Array.from({ length: 7 }, (_day, index) => addDays(start, index));
@@ -244,18 +292,28 @@ export const WeekView = ({
         const events = byDay.get(dayKey(day)) || [];
         const isToday = sameDay(day, today);
         return (
-          <section key={dayKey(day)} className={`tcal-week__day ${isToday ? 'is-today' : ''}`} aria-label={longDate(day)}>
+          <section
+            key={dayKey(day)}
+            className={`tcal-week__day ${isToday ? 'is-today' : ''}`}
+            aria-label={longDate(day)}
+          >
             <h3>
               <button type="button" onClick={() => onOpenDay(day)} aria-current={isToday ? 'date' : undefined}>
                 <span>{intl.formatDate(day, { weekday: 'short' })}</span>
                 <strong>{intl.formatNumber(day.getDate())}</strong>
               </button>
             </h3>
-            {events.length ? (
-              <ul className="tcal-list">
-                {events.map((event) => <li key={event.id}><EventRow event={event} onOpen={onOpenEvent} compact /></li>)}
-              </ul>
-            ) : <p className="tcal-week__none">{intl.formatMessage(messages.dayEmpty)}</p>}
+            {events.length ?
+              (
+                <ul className="tcal-list">
+                  {events.map((event) => (
+                    <li key={event.id}>
+                      <EventRow event={event} onOpen={onOpenEvent} compact />
+                    </li>
+                  ))}
+                </ul>
+              ) :
+              <p className="tcal-week__none">{intl.formatMessage(messages.dayEmpty)}</p>}
           </section>
         );
       })}
@@ -273,7 +331,12 @@ WeekView.propTypes = {
 
 /** Days with their events, one after the other (day and agenda views). */
 export const AgendaView = ({
-  start, days, byDay, today, onOpenEvent, showEmptyDays,
+  start,
+  days,
+  byDay,
+  today,
+  onOpenEvent,
+  showEmptyDays,
 }) => {
   const { intl, longDate, relativeDay } = useFormats();
   const list = Array.from({ length: days }, (_day, index) => addDays(start, index))
@@ -292,11 +355,17 @@ export const AgendaView = ({
                 <span>{longDate(day)}</span>
               </span>
             </h3>
-            {events.length ? (
-              <ul className="tcal-list">
-                {events.map((event) => <li key={event.id}><EventRow event={event} onOpen={onOpenEvent} /></li>)}
-              </ul>
-            ) : <p className="tcal-week__none">{intl.formatMessage(messages.dayEmpty)}</p>}
+            {events.length ?
+              (
+                <ul className="tcal-list">
+                  {events.map((event) => (
+                    <li key={event.id}>
+                      <EventRow event={event} onOpen={onOpenEvent} />
+                    </li>
+                  ))}
+                </ul>
+              ) :
+              <p className="tcal-week__none">{intl.formatMessage(messages.dayEmpty)}</p>}
           </section>
         );
       })}
@@ -330,24 +399,46 @@ Skeleton.propTypes = { view: PropTypes.string.isRequired, label: PropTypes.strin
 
 /** The small month of the side panel: pick a date, see which days have events. */
 export const MiniMonth = ({
-  month, weekStart, selected, today, busyDays, onPick, onMonth,
+  month,
+  weekStart,
+  selected,
+  today,
+  busyDays,
+  onPick,
+  onMonth,
 }) => {
   const { intl, longDate } = useFormats();
   const weeks = monthWeeks(month, weekStart);
   return (
     <div className="tcal-mini">
       <div className="tcal-mini__head">
-        <button type="button" className="tcal-icon-btn tcal-flip" onClick={() => onMonth(-1)} aria-label={intl.formatMessage(messages.miniPrevious)}>
+        <button
+          type="button"
+          className="tcal-icon-btn tcal-flip"
+          onClick={() => onMonth(-1)}
+          aria-label={intl.formatMessage(messages.miniPrevious)}
+        >
           <span aria-hidden="true">‹</span>
         </button>
         <strong aria-live="polite">{intl.formatDate(month, { month: 'long', year: 'numeric' })}</strong>
-        <button type="button" className="tcal-icon-btn tcal-flip" onClick={() => onMonth(1)} aria-label={intl.formatMessage(messages.miniNext)}>
+        <button
+          type="button"
+          className="tcal-icon-btn tcal-flip"
+          onClick={() => onMonth(1)}
+          aria-label={intl.formatMessage(messages.miniNext)}
+        >
           <span aria-hidden="true">›</span>
         </button>
       </div>
       <table className="tcal-mini__grid" aria-label={intl.formatMessage(messages.miniLabel)}>
         <thead>
-          <tr>{weeks[0].map((day) => <th key={dayKey(day)} scope="col" abbr={intl.formatDate(day, { weekday: 'long' })}>{intl.formatDate(day, { weekday: 'narrow' })}</th>)}</tr>
+          <tr>
+            {weeks[0].map((day) => (
+              <th key={dayKey(day)} scope="col" abbr={intl.formatDate(day, { weekday: 'long' })}>
+                {intl.formatDate(day, { weekday: 'narrow' })}
+              </th>
+            ))}
+          </tr>
         </thead>
         <tbody>
           {weeks.map((week) => (

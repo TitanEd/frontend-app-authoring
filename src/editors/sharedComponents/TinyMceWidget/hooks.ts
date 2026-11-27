@@ -39,8 +39,12 @@ export const darkContentStyle = (): string => {
   .mce-content-body .hd-1, .mce-content-body .hd-2, .mce-content-body p, .mce-content-body ol,
   .mce-content-body ul, .mce-content-body pre, .mce-content-body code { color: ${text}; }
   .mce-content-body a, .mce-content-body a:link, .mce-content-body a:visited { color: ${link}; }
-  .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before { color: ${token('--pgn-color-text-muted') || text}; }
-  .mce-content-body table, .mce-content-body td, .mce-content-body th { border-color: ${token('--pgn-color-border') || text}; }`;
+  .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before { color: ${
+    token('--pgn-color-text-muted') || text
+  }; }
+  .mce-content-body table, .mce-content-body td, .mce-content-body th { border-color: ${
+    token('--pgn-color-border') || text
+  }; }`;
 };
 
 export const state = StrictDict({

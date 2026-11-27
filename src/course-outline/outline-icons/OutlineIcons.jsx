@@ -2,7 +2,11 @@ import React, { useId, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {
-  Dropdown, Icon, IconButton, OverlayTrigger, Tooltip,
+  Dropdown,
+  Icon,
+  IconButton,
+  OverlayTrigger,
+  Tooltip,
 } from '@openedx/paragon';
 import { DragHandle, Settings } from '@openedx/paragon/icons';
 

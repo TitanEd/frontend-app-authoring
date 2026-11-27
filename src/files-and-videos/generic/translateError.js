@@ -4,21 +4,63 @@ import { defineMessages } from '@edx/frontend-platform/i18n';
 // English sentences. They are recognised here and shown in the language of the page; a sentence
 // that is not listed is shown as it is.
 const messages = defineMessages({
-  loadAllFiles: { id: 'course-authoring.files-and-videos.error.loadAllFiles', defaultMessage: 'Failed to load all files.' },
-  loadRemainingFiles: { id: 'course-authoring.files-and-videos.error.loadRemainingFiles', defaultMessage: 'Failed to load remaining files.' },
+  loadAllFiles: {
+    id: 'course-authoring.files-and-videos.error.loadAllFiles',
+    defaultMessage: 'Failed to load all files.',
+  },
+  loadRemainingFiles: {
+    id: 'course-authoring.files-and-videos.error.loadRemainingFiles',
+    defaultMessage: 'Failed to load remaining files.',
+  },
   loadVideos: { id: 'course-authoring.files-and-videos.error.loadVideos', defaultMessage: 'Failed to load videos.' },
-  downloadZip: { id: 'course-authoring.files-and-videos.error.downloadZip', defaultMessage: 'Failed to download zip file of videos.' },
-  updateOrderTranscripts: { id: 'course-authoring.files-and-videos.error.updateOrderTranscripts', defaultMessage: 'Failed to update order transcripts settings.' },
-  cancelledUpload: { id: 'course-authoring.files-and-videos.error.cancelledUpload', defaultMessage: 'Cancelled upload for {name}.' },
-  lockFile: { id: 'course-authoring.files-and-videos.error.lockFile', defaultMessage: 'Failed to lock file id {name}.' },
-  unlockFile: { id: 'course-authoring.files-and-videos.error.unlockFile', defaultMessage: 'Failed to unlock file id {name}.' },
-  addThumbnail: { id: 'course-authoring.files-and-videos.error.addThumbnail', defaultMessage: 'Failed to add thumbnail for video id {name}.' },
-  deleteTranscript: { id: 'course-authoring.files-and-videos.error.deleteTranscript', defaultMessage: 'Failed to delete {name} transcript.' },
-  deleteFile: { id: 'course-authoring.files-and-videos.error.deleteFile', defaultMessage: 'Failed to delete file id {name}.' },
-  usageMetrics: { id: 'course-authoring.files-and-videos.error.usageMetrics', defaultMessage: 'Failed to get usage metrics for {name}.' },
-  updateCredentials: { id: 'course-authoring.files-and-videos.error.updateCredentials', defaultMessage: 'Failed to update {name} credentials.' },
-  updateTranscriptSettings: { id: 'course-authoring.files-and-videos.error.updateTranscriptSettings', defaultMessage: 'Failed to update {name} transcripts settings.' },
-  replaceTranscript: { id: 'course-authoring.files-and-videos.error.replaceTranscript', defaultMessage: 'Failed to replace {name} with {other}.' },
+  downloadZip: {
+    id: 'course-authoring.files-and-videos.error.downloadZip',
+    defaultMessage: 'Failed to download zip file of videos.',
+  },
+  updateOrderTranscripts: {
+    id: 'course-authoring.files-and-videos.error.updateOrderTranscripts',
+    defaultMessage: 'Failed to update order transcripts settings.',
+  },
+  cancelledUpload: {
+    id: 'course-authoring.files-and-videos.error.cancelledUpload',
+    defaultMessage: 'Cancelled upload for {name}.',
+  },
+  lockFile: {
+    id: 'course-authoring.files-and-videos.error.lockFile',
+    defaultMessage: 'Failed to lock file id {name}.',
+  },
+  unlockFile: {
+    id: 'course-authoring.files-and-videos.error.unlockFile',
+    defaultMessage: 'Failed to unlock file id {name}.',
+  },
+  addThumbnail: {
+    id: 'course-authoring.files-and-videos.error.addThumbnail',
+    defaultMessage: 'Failed to add thumbnail for video id {name}.',
+  },
+  deleteTranscript: {
+    id: 'course-authoring.files-and-videos.error.deleteTranscript',
+    defaultMessage: 'Failed to delete {name} transcript.',
+  },
+  deleteFile: {
+    id: 'course-authoring.files-and-videos.error.deleteFile',
+    defaultMessage: 'Failed to delete file id {name}.',
+  },
+  usageMetrics: {
+    id: 'course-authoring.files-and-videos.error.usageMetrics',
+    defaultMessage: 'Failed to get usage metrics for {name}.',
+  },
+  updateCredentials: {
+    id: 'course-authoring.files-and-videos.error.updateCredentials',
+    defaultMessage: 'Failed to update {name} credentials.',
+  },
+  updateTranscriptSettings: {
+    id: 'course-authoring.files-and-videos.error.updateTranscriptSettings',
+    defaultMessage: 'Failed to update {name} transcripts settings.',
+  },
+  replaceTranscript: {
+    id: 'course-authoring.files-and-videos.error.replaceTranscript',
+    defaultMessage: 'Failed to replace {name} with {other}.',
+  },
   download: { id: 'course-authoring.files-and-videos.error.download', defaultMessage: 'Failed to download {name}.' },
   upload: { id: 'course-authoring.files-and-videos.error.upload', defaultMessage: 'Failed to upload {name}.' },
   validate: { id: 'course-authoring.files-and-videos.error.validate', defaultMessage: 'Failed to validate {name}.' },

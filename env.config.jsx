@@ -4,7 +4,6 @@ import React from 'react';
 import { PLUGIN_OPERATIONS, DIRECT_PLUGIN } from '@openedx/frontend-plugin-framework';
 import CourseNavigationSidebar from './src/shared-components/CourseNavigationSidebar';
 import CustomScheduleAndDetails from './src/CustomScheduleAndDetails';
-import messages from './src/schedule-and-details/messages';
 import {
     Button,
     ProgressBar,

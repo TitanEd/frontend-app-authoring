@@ -86,6 +86,11 @@ const messages = defineMessages({
     defaultMessage: 'Toggle date filter',
     description: 'Alt text for calendar/close toggle button',
   },
+  placeholderDate: {
+    id: 'tels.assignment.filter.placeholder.date',
+    defaultMessage: 'Select a date',
+    description: 'Placeholder of the assignment date filter fields',
+  },
   errorLoad: {
     id: 'assignment.error.load',
     defaultMessage: 'Error loading assignments',

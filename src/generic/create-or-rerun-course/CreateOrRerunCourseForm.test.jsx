@@ -205,7 +205,10 @@ describe('<CreateOrRerunCourseForm />', () => {
       const orgInput = screen.getByText(messages.courseOrgNoOptions.defaultMessage);
       const runInput = screen.getByPlaceholderText(messages.courseRunPlaceholder.defaultMessage);
       const rerunBtn = screen.getByRole('button', { name: messages.rerunCreateButton.defaultMessage });
-      await axiosMock.onPost(getCreateOrRerunCourseUrl()).reply(200, { url: '/course/', destinationCourseKey: 'courseKey' });
+      await axiosMock.onPost(getCreateOrRerunCourseUrl()).reply(200, {
+        url: '/course/',
+        destinationCourseKey: 'courseKey',
+      });
 
       await user.type(displayNameInput, 'foo course name');
       fireEvent.click(orgInput);
@@ -222,9 +225,11 @@ describe('<CreateOrRerunCourseForm />', () => {
     it('should go to My Courses with a notice while the re-run is still being copied', async () => {
       await rerunTheCourse('in_progress');
 
-      await waitFor(() => expect(mockedUsedNavigate).toHaveBeenCalledWith('/my-courses', {
-        state: { telsRerun: expect.objectContaining({ courseKey: 'courseKey', state: 'in_progress' }) },
-      }));
+      await waitFor(() =>
+        expect(mockedUsedNavigate).toHaveBeenCalledWith('/my-courses', {
+          state: { telsRerun: expect.objectContaining({ courseKey: 'courseKey', state: 'in_progress' }) },
+        })
+      );
     });
     it('should include sourceCourseKey in request data for rerun', async () => {
       const user = userEvent.setup();

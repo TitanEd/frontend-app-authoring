@@ -5,19 +5,35 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow, Alert, Button, Form, Icon, ModalDialog, StatefulButton,
+  ActionRow,
+  Alert,
+  Button,
+  Form,
+  Icon,
+  ModalDialog,
+  StatefulButton,
 } from '@openedx/paragon';
 import {
-  ContentCopy, Download, OpenInNew, Place, RssFeed, Schedule, School,
+  ContentCopy,
+  Download,
+  OpenInNew,
+  Place,
+  RssFeed,
+  Schedule,
+  School,
 } from '@openedx/paragon/icons';
 
 import {
-  canJoin, dateInput, eventPayload, timeInput,
+  canJoin,
+  dateInput,
+  eventPayload,
+  timeInput,
 } from './dates';
 import messages from './messages';
 import { COURSE_EVENT_KINDS, TYPE_META, kindLabel } from './meta';
 import { eventShape, useFormats } from './views';
 import * as api from './api';
+import { TelsDateInput, TelsTimeInput } from './TelsDateTimeInput';
 
 const ACTION_LABELS = {
   open_studio: messages.actionOpenStudio,
@@ -28,13 +44,21 @@ const ACTION_LABELS = {
 };
 
 export const EventDialog = ({
-  event, audience, now, onClose, onEdit, onDeleted,
+  event,
+  audience,
+  now,
+  onClose,
+  onEdit,
+  onDeleted,
 }) => {
   const { intl, whenLong } = useFormats();
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
-  useEffect(() => { setConfirm(false); setFailed(false); }, [event]);
+  useEffect(() => {
+    setConfirm(false);
+    setFailed(false);
+  }, [event]);
   if (!event) { return null; }
   const meta = TYPE_META[event.type] || TYPE_META.course_event;
   const kind = kindLabel(intl, event);
@@ -76,32 +100,43 @@ export const EventDialog = ({
     >
       <ModalDialog.Header>
         <span className={`tcal-dialog__type tcal-type--${event.type}`}>
-          <Icon src={meta.icon} size="sm" /> {intl.formatMessage(meta.label)}{kind ? ` · ${kind}` : ''}
+          <Icon src={meta.icon} size="sm" /> {intl.formatMessage(meta.label)}
+          {kind ? ` · ${kind}` : ''}
         </span>
         <ModalDialog.Title as="h2">{event.title}</ModalDialog.Title>
       </ModalDialog.Header>
       <ModalDialog.Body>
         <dl className="tcal-facts">
           <div>
-            <dt><Icon src={Schedule} size="sm" /> {intl.formatMessage(messages.detailWhen)}</dt>
+            <dt>
+              <Icon src={Schedule} size="sm" /> {intl.formatMessage(messages.detailWhen)}
+            </dt>
             <dd>{whenLong(event)}</dd>
           </div>
           {event.course && (
             <div>
-              <dt><Icon src={School} size="sm" /> {intl.formatMessage(messages.detailCourse)}</dt>
+              <dt>
+                <Icon src={School} size="sm" /> {intl.formatMessage(messages.detailCourse)}
+              </dt>
               <dd>{event.course}{event.section ? ` · ${event.section}` : ''}</dd>
             </div>
           )}
           {event.location && (
             <div>
-              <dt><Icon src={Place} size="sm" /> {intl.formatMessage(messages.detailPlace)}</dt>
+              <dt>
+                <Icon src={Place} size="sm" /> {intl.formatMessage(messages.detailPlace)}
+              </dt>
               <dd>{event.location}</dd>
             </div>
           )}
         </dl>
         <div className="tcal-row__tags">
-          {event.hidden && <span className="tcal-tag tcal-tag--warn">{intl.formatMessage(messages.statusStaffOnly)}</span>}
-          {event.status === 'ongoing' && <span className="tcal-tag tcal-tag--live">{intl.formatMessage(messages.statusLive)}</span>}
+          {event.hidden && (
+            <span className="tcal-tag tcal-tag--warn">{intl.formatMessage(messages.statusStaffOnly)}</span>
+          )}
+          {event.status === 'ongoing' && (
+            <span className="tcal-tag tcal-tag--live">{intl.formatMessage(messages.statusLive)}</span>
+          )}
           {ended && <span className="tcal-tag">{intl.formatMessage(messages.statusEnded)}</span>}
           {event.registered && <span className="tcal-tag">{intl.formatMessage(messages.statusRegistered)}</span>}
           {event.series && <span className="tcal-tag">{intl.formatMessage(messages.statusSeries)}</span>}
@@ -119,9 +154,13 @@ export const EventDialog = ({
           <Alert variant="warning" className="tcal-confirm">
             <p>{intl.formatMessage(messages.deleteConfirm)}</p>
             <ActionRow>
-              <Button variant="tertiary" onClick={() => setConfirm(false)} disabled={busy}>{intl.formatMessage(messages.cancel)}</Button>
+              <Button variant="tertiary" onClick={() => setConfirm(false)} disabled={busy}>
+                {intl.formatMessage(messages.cancel)}
+              </Button>
               {event.series && (
-                <Button variant="outline-danger" onClick={() => remove(true)} disabled={busy}>{intl.formatMessage(messages.deleteSeries)}</Button>
+                <Button variant="outline-danger" onClick={() => remove(true)} disabled={busy}>
+                  {intl.formatMessage(messages.deleteSeries)}
+                </Button>
               )}
               <Button variant="danger" onClick={() => remove(false)} disabled={busy}>
                 {intl.formatMessage(event.series ? messages.deleteOne : messages.delete)}
@@ -135,8 +174,12 @@ export const EventDialog = ({
         <ActionRow className="tcal-dialog__actions">
           {event.editable && !confirm && (
             <>
-              <Button variant="outline-danger" onClick={() => setConfirm(true)}>{intl.formatMessage(messages.delete)}</Button>
-              <Button variant="outline-primary" onClick={() => onEdit(event)}>{intl.formatMessage(messages.edit)}</Button>
+              <Button variant="outline-danger" onClick={() => setConfirm(true)}>
+                {intl.formatMessage(messages.delete)}
+              </Button>
+              <Button variant="outline-primary" onClick={() => onEdit(event)}>
+                {intl.formatMessage(messages.edit)}
+              </Button>
               <ActionRow.Spacer />
             </>
           )}
@@ -223,7 +266,12 @@ const formFromEvent = (event, day, courses, course) => {
 };
 
 export const EventForm = ({
-  event, day, courses, course, onClose, onSaved,
+  event,
+  day,
+  courses,
+  course,
+  onClose,
+  onSaved,
 }) => {
   const { intl } = useFormats();
   const [form, setForm] = useState(() => formFromEvent(event, day, courses, course));
@@ -256,6 +304,8 @@ export const EventForm = ({
       return next;
     });
   };
+  // The Tels date / time inputs hand back the value itself ('YYYY-MM-DD' / 'HH:MM'), not an event.
+  const setValue = (name) => (value) => set(name)({ target: { type: 'text', value } });
 
   const submit = async (submitEvent) => {
     submitEvent.preventDefault();
@@ -309,7 +359,8 @@ export const EventForm = ({
           <div className="tcal-form">
             {!event && field(
               'course_id',
-              intl.formatMessage(messages.formCourse), (
+              intl.formatMessage(messages.formCourse),
+              (
                 <Form.Control as="select" value={form.course} onChange={set('course')} required>
                   <option value="">{intl.formatMessage(messages.formChooseCourse)}</option>
                   {editable.map((entry) => <option key={entry.id} value={entry.id}>{entry.name}</option>)}
@@ -318,13 +369,21 @@ export const EventForm = ({
             )}
             {field(
               'title',
-              intl.formatMessage(messages.formTitle), (
-                <Form.Control value={form.title} onChange={set('title')} maxLength={200} required />
+              intl.formatMessage(messages.formTitle),
+              (
+                <Form.Control
+                  value={form.title}
+                  onChange={set('title')}
+                  maxLength={200}
+                  required
+                  placeholder={intl.formatMessage(messages.formPlaceholderTitle)}
+                />
               ),
             )}
             {field(
               'kind',
-              intl.formatMessage(messages.formKind), (
+              intl.formatMessage(messages.formKind),
+              (
                 <Form.Control as="select" value={form.kind} onChange={set('kind')}>
                   {Object.entries(COURSE_EVENT_KINDS).map(([key, message]) => (
                     <option key={key} value={key}>{intl.formatMessage(message)}</option>
@@ -339,14 +398,31 @@ export const EventForm = ({
               <legend>{intl.formatMessage(messages.formStarts)}</legend>
               {field(
                 'start',
-                intl.formatMessage(messages.formDate), (
-                  <Form.Control type="date" value={form.startDate} min={unchanged ? undefined : today} onChange={set('startDate')} required />
+                intl.formatMessage(messages.formDate),
+                (
+                  <TelsDateInput
+                    id="tcal-form-start"
+                    value={form.startDate}
+                    min={unchanged ? undefined : today}
+                    onChange={setValue('startDate')}
+                    isInvalid={Boolean(shownErrors.start)}
+                    placeholder={intl.formatMessage(messages.formPlaceholderDate)}
+                  />
                 ),
               )}
               {!form.allDay && field(
                 'start_time',
-                intl.formatMessage(messages.formTime), (
-                  <Form.Control type="time" value={form.startTime} min={!unchanged && form.startDate === today ? nowTime : undefined} onChange={set('startTime')} required />
+                intl.formatMessage(messages.formTime),
+                (
+                  <TelsTimeInput
+                    id="tcal-form-start_time"
+                    value={form.startTime}
+                    min={!unchanged && form.startDate === today ? nowTime : undefined}
+                    onChange={setValue('startTime')}
+                    isInvalid={Boolean(shownErrors.start_time)}
+                    timeCaption={intl.formatMessage(messages.formTime)}
+                    placeholder={intl.formatMessage(messages.formPlaceholderTime)}
+                  />
                 ),
               )}
             </fieldset>
@@ -354,20 +430,38 @@ export const EventForm = ({
               <legend>{intl.formatMessage(messages.formEnds)}</legend>
               {field(
                 'end',
-                intl.formatMessage(messages.formDate), (
-                  <Form.Control type="date" value={form.endDate} min={form.startDate} onChange={set('endDate')} required />
+                intl.formatMessage(messages.formDate),
+                (
+                  <TelsDateInput
+                    id="tcal-form-end"
+                    value={form.endDate}
+                    min={form.startDate || undefined}
+                    onChange={setValue('endDate')}
+                    isInvalid={Boolean(shownErrors.end)}
+                    placeholder={intl.formatMessage(messages.formPlaceholderDate)}
+                  />
                 ),
               )}
               {!form.allDay && field(
                 'end_time',
-                intl.formatMessage(messages.formTime), (
-                  <Form.Control type="time" value={form.endTime} onChange={set('endTime')} required />
+                intl.formatMessage(messages.formTime),
+                (
+                  <TelsTimeInput
+                    id="tcal-form-end_time"
+                    value={form.endTime}
+                    min={form.endDate && form.endDate === form.startDate ? form.startTime || undefined : undefined}
+                    onChange={setValue('endTime')}
+                    isInvalid={Boolean(shownErrors.end_time)}
+                    timeCaption={intl.formatMessage(messages.formTime)}
+                    placeholder={intl.formatMessage(messages.formPlaceholderTime)}
+                  />
                 ),
               )}
             </fieldset>
             {!event && field(
               'repeat_weeks',
-              intl.formatMessage(messages.formRepeat), (
+              intl.formatMessage(messages.formRepeat),
+              (
                 <Form.Control as="select" value={form.repeat} onChange={set('repeat')}>
                   <option value={0}>{intl.formatMessage(messages.formRepeatNone)}</option>
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((count) => (
@@ -378,21 +472,38 @@ export const EventForm = ({
             )}
             {field(
               'location',
-              intl.formatMessage(messages.formPlace), (
-                <Form.Control value={form.location} onChange={set('location')} maxLength={255} />
-              ), intl.formatMessage(messages.formPlaceHelp),
+              intl.formatMessage(messages.formPlace),
+              (
+                <Form.Control
+                  value={form.location}
+                  onChange={set('location')}
+                  maxLength={255}
+                  placeholder={intl.formatMessage(messages.formPlaceholderPlace)}
+                />
+              ),
+              intl.formatMessage(messages.formPlaceHelp),
             )}
             {field(
               'url',
-              intl.formatMessage(messages.formLink), (
+              intl.formatMessage(messages.formLink),
+              (
                 <Form.Control type="url" value={form.url} onChange={set('url')} placeholder="https://" dir="ltr" />
-              ), intl.formatMessage(messages.formLinkHelp),
+              ),
+              intl.formatMessage(messages.formLinkHelp),
             )}
             <div className="tcal-form__wide">
               {field(
                 'description',
-                intl.formatMessage(messages.formDescription), (
-                  <Form.Control as="textarea" rows={4} value={form.description} onChange={set('description')} maxLength={5000} />
+                intl.formatMessage(messages.formDescription),
+                (
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    value={form.description}
+                    onChange={set('description')}
+                    maxLength={5000}
+                    placeholder={intl.formatMessage(messages.formPlaceholderDescription)}
+                  />
                 ),
               )}
             </div>
@@ -423,7 +534,9 @@ EventForm.propTypes = {
   event: eventShape,
   day: PropTypes.instanceOf(Date).isRequired,
   courses: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string, name: PropTypes.string, editable: PropTypes.bool,
+    id: PropTypes.string,
+    name: PropTypes.string,
+    editable: PropTypes.bool,
   })).isRequired,
   course: PropTypes.string,
   onClose: PropTypes.func.isRequired,
@@ -439,14 +552,23 @@ export const SubscribeDialog = ({ onClose, onDownload }) => {
   const [note, setNote] = useState('');
   const [failed, setFailed] = useState('');
   useEffect(() => {
-    api.getFeed().then(setUrl).catch(() => { setUrl(null); setFailed(intl.formatMessage(messages.actionFailed)); });
+    api.getFeed().then(setUrl).catch(() => {
+      setUrl(null);
+      setFailed(intl.formatMessage(messages.actionFailed));
+    });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const run = (work, failure = messages.actionFailed) => async () => {
     setBusy(true);
     setFailed('');
     setNote('');
-    try { await work(); } catch { setFailed(intl.formatMessage(failure)); } finally { setBusy(false); }
+    try {
+      await work();
+    } catch {
+      setFailed(intl.formatMessage(failure));
+    } finally {
+      setBusy(false);
+    }
   };
   const copy = run(async () => {
     try {
@@ -476,41 +598,66 @@ export const SubscribeDialog = ({ onClose, onDownload }) => {
       </ModalDialog.Header>
       <ModalDialog.Body>
         <section className="tcal-sub">
-          <h3><Icon src={Download} size="sm" /> {intl.formatMessage(messages.downloadTitle)}</h3>
+          <h3>
+            <Icon src={Download} size="sm" /> {intl.formatMessage(messages.downloadTitle)}
+          </h3>
           <p>{intl.formatMessage(messages.downloadHelp)}</p>
           <Button variant="outline-primary" onClick={download} disabled={busy} iconBefore={Download}>
             {intl.formatMessage(messages.download)}
           </Button>
         </section>
         <section className="tcal-sub">
-          <h3><Icon src={RssFeed} size="sm" /> {intl.formatMessage(messages.feedTitle)}</h3>
+          <h3>
+            <Icon src={RssFeed} size="sm" /> {intl.formatMessage(messages.feedTitle)}
+          </h3>
           <p>{intl.formatMessage(messages.feedHelp)}</p>
-          {url ? (
-            <>
-              <Form.Group controlId="tcal-feed-url">
-                <Form.Label>{intl.formatMessage(messages.feedLabel)}</Form.Label>
-                <div className="tcal-sub__copy">
-                  <Form.Control readOnly value={url} dir="ltr" onFocus={(focus) => focus.target.select()} />
-                  <Button variant="primary" onClick={copy} disabled={busy} iconBefore={ContentCopy}>
-                    {intl.formatMessage(messages.feedCopy)}
+          {url ?
+            (
+              <>
+                <Form.Group controlId="tcal-feed-url">
+                  <Form.Label>{intl.formatMessage(messages.feedLabel)}</Form.Label>
+                  <div className="tcal-sub__copy">
+                    <Form.Control readOnly value={url} dir="ltr" onFocus={(focus) => focus.target.select()} />
+                    <Button variant="primary" onClick={copy} disabled={busy} iconBefore={ContentCopy}>
+                      {intl.formatMessage(messages.feedCopy)}
+                    </Button>
+                  </div>
+                </Form.Group>
+                <ActionRow className="tcal-sub__more">
+                  <Button
+                    variant="link"
+                    size="inline"
+                    onClick={run(async () => setUrl(await api.createFeed()))}
+                    disabled={busy}
+                  >
+                    {intl.formatMessage(messages.feedRenew)}
                   </Button>
-                </div>
-              </Form.Group>
-              <ActionRow className="tcal-sub__more">
-                <Button variant="link" size="inline" onClick={run(async () => setUrl(await api.createFeed()))} disabled={busy}>
-                  {intl.formatMessage(messages.feedRenew)}
-                </Button>
-                <Button variant="link" size="inline" className="text-danger" onClick={run(async () => { await api.deleteFeed(); setUrl(null); })} disabled={busy}>
-                  {intl.formatMessage(messages.feedRemove)}
-                </Button>
-              </ActionRow>
-              <p className="tcal-hint">{intl.formatMessage(messages.feedRenewHelp)}</p>
-            </>
-          ) : (
-            <Button variant="primary" onClick={run(async () => setUrl(await api.createFeed()))} disabled={busy || url === undefined} iconBefore={RssFeed}>
-              {intl.formatMessage(messages.feedCreate)}
-            </Button>
-          )}
+                  <Button
+                    variant="link"
+                    size="inline"
+                    className="text-danger"
+                    onClick={run(async () => {
+                      await api.deleteFeed();
+                      setUrl(null);
+                    })}
+                    disabled={busy}
+                  >
+                    {intl.formatMessage(messages.feedRemove)}
+                  </Button>
+                </ActionRow>
+                <p className="tcal-hint">{intl.formatMessage(messages.feedRenewHelp)}</p>
+              </>
+            ) :
+            (
+              <Button
+                variant="primary"
+                onClick={run(async () => setUrl(await api.createFeed()))}
+                disabled={busy || url === undefined}
+                iconBefore={RssFeed}
+              >
+                {intl.formatMessage(messages.feedCreate)}
+              </Button>
+            )}
           <p className="tcal-note" aria-live="polite">{note}</p>
           {failed && <Alert variant="danger">{failed}</Alert>}
         </section>

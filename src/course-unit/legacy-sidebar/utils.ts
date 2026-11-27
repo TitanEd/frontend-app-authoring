@@ -34,9 +34,15 @@ export const getPublishInfo = (
 ): string => {
   let publishInfoText;
   if (hasChanges && editedOn && editedBy) {
-    publishInfoText = intl.formatMessage(messages.publishInfoDraftSaved, { editedOn: localizeStudioDate(editedOn), editedBy });
+    publishInfoText = intl.formatMessage(messages.publishInfoDraftSaved, {
+      editedOn: localizeStudioDate(editedOn),
+      editedBy,
+    });
   } else if (publishedOn && publishedBy) {
-    publishInfoText = intl.formatMessage(messages.publishLastPublished, { publishedOn: localizeStudioDate(publishedOn), publishedBy });
+    publishInfoText = intl.formatMessage(messages.publishLastPublished, {
+      publishedOn: localizeStudioDate(publishedOn),
+      publishedBy,
+    });
   } else {
     publishInfoText = intl.formatMessage(messages.publishInfoPreviouslyPublished);
   }

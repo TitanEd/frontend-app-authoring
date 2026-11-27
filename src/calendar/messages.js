@@ -122,6 +122,31 @@ const messages = defineMessages({
   formSaving: { id: 'tels.calendar.form.saving', defaultMessage: 'Saving…' },
   formError: { id: 'tels.calendar.form.error', defaultMessage: 'The event could not be saved. Check the fields marked in red.' },
   formPastStart: { id: 'tels.calendar.form.past', defaultMessage: 'Choose a start that is still to come.' },
+  formPlaceholderTitle: {
+    id: 'tels.calendar.form.placeholder.title',
+    defaultMessage: 'Enter a title',
+    description: 'Placeholder of the calendar event title field',
+  },
+  formPlaceholderPlace: {
+    id: 'tels.calendar.form.placeholder.place',
+    defaultMessage: 'Enter a place',
+    description: 'Placeholder of the calendar event place field',
+  },
+  formPlaceholderDescription: {
+    id: 'tels.calendar.form.placeholder.description',
+    defaultMessage: 'Enter a description',
+    description: 'Placeholder of the calendar event description field',
+  },
+  formPlaceholderDate: {
+    id: 'tels.calendar.form.placeholder.date',
+    defaultMessage: 'Select a date',
+    description: 'Placeholder of the calendar event date fields',
+  },
+  formPlaceholderTime: {
+    id: 'tels.calendar.form.placeholder.time',
+    defaultMessage: 'Select a time',
+    description: 'Placeholder of the calendar event time fields',
+  },
 
   subscribe: { id: 'tels.calendar.subscribe', defaultMessage: 'Export and subscribe' },
   subscribeTitle: { id: 'tels.calendar.subscribe.title', defaultMessage: 'Take your calendar with you' },
