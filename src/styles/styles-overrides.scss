@@ -2519,8 +2519,6 @@ select.form-control {
 // The page stays wide while the panels take the room, so these rules follow
 // the outline's own width (container queries), not the window's.
 .course-outline-container {
-  container: tels-outline-page / inline-size;
-
   > .d-flex > .flex-fill {
     container: tels-outline / inline-size;
   }
@@ -2558,37 +2556,34 @@ select.form-control {
   }
 }
 
-// Not enough room for the outline and the open Info sidebar side by side:
-// the sidebar goes above the outline at full width.
-@container tels-outline-page (max-width: 1180px) {
-  .course-outline-container > .d-flex:has(> .sidebar .resizable) {
-    flex-direction: column;
-    align-items: stretch !important;
+// Open Info sidebar always sits above the outline at full width, so the outline keeps the whole content width (with or without the AI panel docked).
+.course-outline-container > .d-flex:has(> .sidebar .resizable) {
+  flex-direction: column;
+  align-items: stretch !important;
 
-    > .flex-fill {
-      width: 100%;
+  > .flex-fill {
+    width: 100%;
+  }
+
+  // Lifts the side-by-side caps of the `.sidebar` block above (width, sticky).
+  > .sidebar {
+    order: -1;
+    align-self: stretch !important;
+    width: auto;
+    max-width: none;
+    position: static;
+    margin-left: 0;
+    margin-bottom: var(--pgn-spacing-spacer-3);
+
+    > .pgn__hstack {
+      flex: 1 1 auto !important;
+      width: auto !important;
     }
 
-    // Lifts the side-by-side caps of the `.sidebar` block above (width, sticky).
-    > .sidebar {
-      order: -1;
-      align-self: stretch !important;
-      width: auto;
+    .resizable {
+      flex: 1 1 auto;
+      width: auto !important;
       max-width: none;
-      position: static;
-      margin-left: 0;
-      margin-bottom: var(--pgn-spacing-spacer-3);
-
-      > .pgn__hstack {
-        flex: 1 1 auto !important;
-        width: auto !important;
-      }
-
-      .resizable {
-        flex: 1 1 auto;
-        width: auto !important;
-        max-width: none;
-      }
     }
   }
 }
@@ -3345,6 +3340,9 @@ body.tels-custom-authoring {
     > .courseOutlineh2 {
       margin-bottom: var(--pgn-spacing-spacer-3);
       padding-right: 12rem; // room for the button
+      display: flex;
+      align-items: center;
+      min-height: 2.75rem; // as tall as the absolute "Collapse all" button (44px), so the status row starts spacer-3 below it
     }
 
     > .courseOutlineh2 + div > .pgn__action-row:first-child {
